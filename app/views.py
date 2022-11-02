@@ -65,6 +65,7 @@ def kevin():
     return render_template('kevin.html',
                            title='Larks App')
 
+
 #############################################################
 # ROUTE FOR LANRE'S APP
 # ^^^^^^^^^^^^^^^^^^^^^^^
@@ -78,6 +79,7 @@ def lanre():
             page_requested = request.form['button']
 
             # redirect to home page if back button was clicked
+            go_back()
             if page_requested == "back":
                 return redirect(url_for('index'))
         except Exception as e:
