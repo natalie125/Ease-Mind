@@ -13,7 +13,7 @@ def index():
         try:
             # get info on the app the was requested
             app_requested = request.form['button']
-
+            print(app_requested)
             # redirect to the appropriate app
             return redirect(url_for(app_requested))
 
@@ -41,7 +41,7 @@ def alex():
                 return redirect(url_for('index'))
         except Exception as e:
             flash("Try again! An error occured")
-    return render_template('alex.html',
+    return render_template('alex/alex.html',
                            title='Larks App')
 
 #############################################################
@@ -62,7 +62,7 @@ def kevin():
         except Exception as e:
             flash("Try again! An error occured")
 
-    return render_template('kevin.html',
+    return render_template('kevin/kevin.html',
                            title='Larks App')
 
 
@@ -79,12 +79,11 @@ def lanre():
             page_requested = request.form['button']
 
             # redirect to home page if back button was clicked
-            go_back()
             if page_requested == "back":
                 return redirect(url_for('index'))
         except Exception as e:
             flash("Try again! An error occured")
-    return render_template('lanre.html',
+    return render_template('lanre/lanre.html',
                            title='Larks App')
 
 
@@ -105,7 +104,7 @@ def ramat():
                 return redirect(url_for('index'))
         except Exception as e:
             flash("Try again! An error occured")
-    return render_template('ramat.html',
+    return render_template('ramat/ramat.html',
                            title='Larks App')
 
 
@@ -126,5 +125,5 @@ def shreyas():
                 return redirect(url_for('index'))
         except Exception as e:
             flash("Try again! An error occured")
-    return render_template('shreyas.html',
+    return render_template('shreyas/shreyas.html',
                            title='Larks App')
