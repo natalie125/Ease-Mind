@@ -1,3 +1,5 @@
+image: python:latest 
+
 # Change pip's cache directory to be inside the project directory since we can
 # only cache local items.
 variables:
@@ -29,9 +31,12 @@ stages:
     - production
     - deploy
 
+build:
+  script:
+    - python3 -m pip install --upgrade build
+    - python3 -m build
 
 lint:
-  image: python:latest 
   stage: static analysis
   allow_failure: true
   image: registry.gitlab.com/mafda/python-linting
@@ -43,14 +48,12 @@ lint:
 
 
 unit_tests:
-  image: python:latest 
   stage: test
   script:
      - pip install -U pytest
      - python -m pytest -v -m unit
 
 functional_tests:
-  image: python:latest 
   stage: test
   script:
      - pip install -U pytest
