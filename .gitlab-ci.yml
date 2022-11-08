@@ -36,6 +36,7 @@ lint:
   allow_failure: true
   image: registry.gitlab.com/mafda/python-linting
   script: 
+    - pip install flake8
     - python -m flake8 .
   only:
     - merge_requests
@@ -45,12 +46,14 @@ unit_tests:
   image: python:latest 
   stage: test
   script:
+     - pip install -U pytest
      - python -m pytest -v -m unit
 
 functional_tests:
   image: python:latest 
   stage: test
   script:
+     - pip install -U pytest
      - python -m pytest -v -m unit
 
 
