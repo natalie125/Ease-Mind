@@ -1,0 +1,9 @@
+{
+    "applicationName": "Larks_Final_Project",
+    "autoRollbackConfiguration": { 
+       "enabled": true,
+       "events": [ "DEPLOYMENT_FAILURE", "DEPLOYMENT_STOP_ON_REQUEST"]
+    },
+    "fileExistsBehavior": "DISALLOW",
+    "updateOutdatedInstancesOnly":  true
+ }

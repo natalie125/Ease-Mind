@@ -1,0 +1,53 @@
+{
+    "AWSTemplateFormatVersion" : "2010-09-09",
+    "Description" : "Stack containing S3 and EC2",
+    "Resources" : {
+        "MyS3Bucket" : {
+            "Type" : "AWS::S3::Bucket",
+            "Properties" : {
+                "BucketName" : "larks_s3",
+                "ImageId" : "ami-0ff8a91507f77f867"
+            }
+        },
+        "MyS3BucketPolicy": {
+          "Type": "AWS::S3::BucketPolicy",
+          "Properties": {
+              "Bucket": {
+                  "Ref": "larks_s3"
+              },
+              "PolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                      {
+                          "Action": [
+                              "s3:GetObject"
+                          ],
+                          "Effect": "Allow",
+                          "Resource": {
+                              "Fn::Join": [
+                                  "",
+                                  [
+                                      "arn:aws:s3:::",
+                                      {
+                                          "Ref": "larks_s3"
+                                      },
+                                      "/*"
+                                  ]
+                              ]
+                          },
+                          "Principal": "*"
+                      }
+                  ]
+              }
+          }
+      },
+        "MyEC2Instance" : {
+            "Type" : "AWS::EC2::Instance",
+            "Properties" : {
+              "InstanceType":"t2.micro",
+              "AvailabilityZone" : "eu-west-1a",
+              "ImageId" : "ami-0ff8a91507f77f867"
+            }
+        }
+    }
+  }
