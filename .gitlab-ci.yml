@@ -8,6 +8,10 @@ variables:
   CI_AWS_S3_PUSH_FILE: 'aws/push_s3.json'
   CI_AWS_EC2_DEPLOYMENT_FILE: 'aws/create_deployment.json'
   CI_AWS_CF_STACK_NAME: 'larks_final_project'
+  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+  AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+  TRACE: 1
 
 include:
   - template: AWS/CF-Provision-and-Deploy-EC2.gitlab-ci.yml
