@@ -36,6 +36,7 @@ build:
   script:
     - python -m pip install build
     - python -m build
+    - cp appspec.yml dist/
   artifacts:    
     paths:      
       - dist/    
