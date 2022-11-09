@@ -32,9 +32,14 @@ stages:
     - deploy
 
 build:
+  stage: build
   script:
-    - python3 -m pip install --upgrade build
-    - python3 -m build
+    - python -m pip install build
+    - python -m build
+  artifacts:    
+      paths:      
+         - dist/    
+      expire_in: 1 hour
 
 lint:
   stage: static analysis
