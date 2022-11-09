@@ -1,5 +1,5 @@
 {
     "applicationName": "FinalProject",
-    "source": "artifacts:paths",
-    "s3Location": "s3://your/bucket/project_built_file...]"
+    "source": "dist/",
+    "s3Location": "s3://larks-final-project"
   }

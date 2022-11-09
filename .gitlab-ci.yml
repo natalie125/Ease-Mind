@@ -36,6 +36,10 @@ build:
   script:
     - python -m pip install build
     - python -m build
+  artifacts:    
+    paths:      
+      - dist/    
+    expire_in: 1 hour
 
 lint:
   stage: static analysis
@@ -58,12 +62,6 @@ functional_tests:
   script:
      - pip install -U pytest
      - python -m pytest -v -m unit
-
-review_ec2:
-  artifacts:    
-        paths:      
-          - dist/    
-        expire_in: 1 hour
 
 deploy:
   stage: deploy
