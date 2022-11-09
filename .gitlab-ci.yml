@@ -36,10 +36,6 @@ build:
   script:
     - python -m pip install build
     - python -m build
-  artifacts:    
-      paths:      
-         - dist/    
-      expire_in: 1 hour
 
 lint:
   stage: static analysis
@@ -50,7 +46,6 @@ lint:
     - python -m flake8 .
   only:
     - merge_requests
-
 
 unit_tests:
   stage: test
@@ -64,6 +59,11 @@ functional_tests:
      - pip install -U pytest
      - python -m pytest -v -m unit
 
+review_ec2:
+  artifacts:    
+        paths:      
+          - dist/    
+        expire_in: 1 hour
 
 deploy:
   stage: deploy
