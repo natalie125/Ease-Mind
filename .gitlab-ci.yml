@@ -46,10 +46,10 @@ lint:
   allow_failure: true
   image: registry.gitlab.com/mafda/python-linting
   script: 
-    - pip install flake8
-    - python -m flake8 .
+     - pip install flake8
+     - python -m flake8 .
   only:
-    - merge_requests
+     - merge_requests
 
 unit_tests:
   stage: test
