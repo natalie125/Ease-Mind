@@ -14,5 +14,18 @@
          "eTag": "4acd097614bf0b73eb09f9eccea0ac08",
          "key": "larks_final_project-0.0.1.tar.gz"
       }
+   },
+   "targetInstances": { 
+      "ec2TagSet": { 
+         "ec2TagSetList": [ 
+            [ 
+               { 
+                  "Key": "Name",
+                  "Type": "KEY_AND_VALUE",
+                  "Value": "LARKS Web Server"
+               }
+            ]
+         ]
+      }
    }
- }
+}
