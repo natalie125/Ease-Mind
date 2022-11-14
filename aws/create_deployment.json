@@ -10,7 +10,7 @@
       "revisionType": "S3",
       "s3Location": { 
          "bucket": "larks-final-project",
-         "bundleType": "tgz",
+         "bundleType": "zip",
          "key": "larks_final_project-0.0.1.tar.gz"
       }
    },
