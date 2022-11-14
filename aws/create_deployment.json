@@ -11,7 +11,7 @@
       "s3Location": { 
          "bucket": "larks-final-project",
          "bundleType": "tgz",
-         "eTag": "4acd097614bf0b73eb09f9eccea0ac08",
+         "eTag": "\"3a0d91948c61066a8ef694051ee07a25\"",
          "key": "larks_final_project-0.0.1.tar.gz"
       }
    },
