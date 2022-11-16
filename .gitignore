@@ -1,2 +1,5 @@
 __pycache__
 .DS_Store
+.vscode/settings.json
+dist/
+larks_final_project.egg-info/

@@ -1,0 +1,82 @@
+{
+    "AWSTemplateFormatVersion" : "2010-09-09",
+    "Description" : "Stack containing S3 and EC2",
+    "Resources" : {
+        "DeployS3Bucket" : {
+            "Type" : "AWS::S3::Bucket",
+            "Properties" : {
+                "BucketName" : "larks_s3",
+                "ImageId" : "ami-0ff8a91507f77f867"
+            }
+        },
+        "DeployS3BucketPolicy": {
+          "Type": "AWS::S3::BucketPolicy",
+          "Properties": {
+              "Bucket": {
+                  "Ref": "larks_s3"
+              },
+              "PolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                      {
+                          "Action": [
+                              "s3:GetObject"
+                          ],
+                          "Effect": "Allow",
+                          "Resource": {
+                              "Fn::Join": [
+                                  "",
+                                  [
+                                      "arn:aws:s3:::",
+                                      {
+                                          "Ref": "larks_s3"
+                                      },
+                                      "/*"
+                                  ]
+                              ]
+                          },
+                          "Principal": "*"
+                      }
+                  ]
+              }
+          }
+      },
+        "LARKSWebServer" : {
+            "Type" : "AWS::EC2::Instance",
+            "Properties" : {
+              "InstanceType":"t2.micro",
+              "AvailabilityZone" : "eu-west-1a",
+              "BlockDeviceMappings" : [
+                {
+                    "DeviceName" : "/dev/sda1",
+                    "Ebs" : {
+                        "Iops" : 100,
+                       "SnapshotId" : "snap-0a7626ddb0ba087bf",
+                        "VolumeSize" : 8,
+                        "VolumeType" : "gp2"
+                    }
+                }
+              ],
+              "ImageId" : "ami-096800910c1b781ba",
+              "KeyName" : "larks",
+              "PrivateIpAddress" : "172.31.22.144",
+              "SubnetId" : "subnet-04eb6718e45ee3e7c",
+              "IamInstanceProfile" : "EC2CodeDeployInstanceProfile",
+              "SecurityGroupIds" : [ "sg-0dbb60a587cee3409" ],
+              "SecurityGroups" : [ "launch-wizard-1" ],
+              "Tags" : [
+                {
+                    "Key" : "Name",
+                    "Value" : "LARKS Web Server"
+                }
+              ],
+              "Volumes" : [
+                {
+                    "Device" : "/dev/sda1",
+                    "VolumeId" : "vol-0990e43f6f232a2f0"
+                }
+              ]
+            }
+        }
+    }
+  }

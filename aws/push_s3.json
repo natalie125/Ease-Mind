@@ -1,0 +1,5 @@
+{
+    "applicationName": "FinalProject",
+    "source": "dist/",
+    "s3Location": "s3://larks-final-project/larks_final_project-0.0.1.tar.gz"
+  }
