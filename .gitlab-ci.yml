@@ -30,7 +30,6 @@ stages:
     - provision
     - review
     - production
-    - deploy
 
 build:
   stage: build
@@ -64,10 +63,3 @@ functional_tests:
   script:
      - pip install -U pytest
      - python -m pytest -v -m unit
-
-deploy:
-  stage: deploy
-  only: 
-      - master
-  script: echo "Define your deployment script!"
-  environment: production
