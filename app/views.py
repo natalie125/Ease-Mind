@@ -226,7 +226,7 @@ def tasks():
                 cv2.destroyAllWindows()
 
             else:
-                camera = cv2.VideoCapture(0)
+                # camera = cv2.VideoCapture(0)
                 switch = 1
         elif request.form.get('rec') == 'Start/Stop Recording':
             global rec, out
