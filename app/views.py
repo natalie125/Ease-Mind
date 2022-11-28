@@ -1,6 +1,6 @@
 # from flask import request, render_template, flash, redirect, url_for
 from flask import Flask, render_template, Response, request, flash, redirect, url_for, session
-from app import app
+from app import app, models, bcrypt,
 import cv2
 import datetime
 import time
@@ -8,6 +8,92 @@ import os
 import sys
 import numpy as np
 from threading import Thread
+
+#############################################################
+# ROUTE FOR LANDING APP
+# ^^^^^^^^^^^^^^^^^^^^^^^
+
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        try:
+            # get info on the app the was requested
+            app_requested = request.form['button']
+            print(app_requested)
+            # redirect to the appropriate app
+            return redirect(url_for(app_requested))
+
+        except Exception as e:
+            flash("Try again! An error occured")
+
+    return render_template('index.html',
+                           title='Larks App')
+
+
+#############################################################
+# ROUTE FOR LOGIN
+# ^^^^^^^^^^^^^^^^^^^^^^^
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+
+#     # form = 'LoginForm()'
+#     # if form.validate_on_submit():
+#     if True:
+#         # get first instance of user in db
+#         u = models.user.query.filter_by(
+#             email=form.email.data).first()  # we need a database first
+
+#         # check username and password
+#         if u:
+#             if bcrypt.check_password_hash(u.password, form.password.data):
+#                 # login_user(u)
+#                 flash('Login Successful!', 'success')
+#                 if (u.account_type == "employee" or u.account_type == "manager"):
+#                     return redirect(url_for('admin_dashboard'))
+#                 else:
+#                     return redirect(url_for('user_dashboard'))
+#             else:
+#                 now = str(datetime.now())
+#                 app.logger.info(u.email + " unsuccesfull login at " + now)
+#                 flash(f'Login unsuccessful. Please check email and password', 'danger')
+#         else:
+#             # logger.info("unsuccesful login")
+#             flash(f'Login unsuccessful. Please check email and password', 'danger')
+
+#     return render_template('login.html',
+#                            title='Login')
+
+
+#############################################################
+# ROUTE FOR REGISTER
+# ^^^^^^^^^^^^^^^^^^^^^^^
+# @app.route('/register', methods=['GET', 'POST'])
+# def register():
+#     if current_user.is_authenticated:   # if current user is logged in
+#         return redirect(url_for('index'))
+#     form = SignUpForm()
+
+#     # if form is submitted
+#     if form.validate_on_submit():
+#         # encrypt password
+#         hashed_password = bcrypt.generate_password_hash(form.password1.data)
+#         # create record
+#         u = models.user(password=hashed_password, email=form.email.data,
+#                         account_type="customer", user_type=form.user_type.data, name=form.name.data)
+#         db.session.add(u)    # add user to db
+#         try:
+#             db.session.commit()
+#         except:
+#             db.session.rollback()     # commit user to db
+
+#         now = str(datetime.now())
+#         # logger.info(u.email+" created an account at " + now)
+#         flash(f'Account Created!', 'success')
+#         return redirect(url_for('login'))   # redirect to login page
+#     else:
+#         return render_template('register.html',
+#                                title='Sign Up')
 
 
 #############################################################
@@ -35,8 +121,6 @@ def index():
 #############################################################
 # ROUTE FOR ALEX'S APP
 # ^^^^^^^^^^^^^^^^^^^^^^^
-
-
 @app.route('/alex', methods=['GET', 'POST'])
 def alex():
     if request.method == 'POST':
