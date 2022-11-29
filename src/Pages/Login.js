@@ -11,7 +11,7 @@ function App() {
 				<input />
 				<input />
 				<Link to="/home">
-					<button>Login</button>
+					<button data-cy="loginBttn">Login</button>
 				</Link>
 			</body>
 		</div>
