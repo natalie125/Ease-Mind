@@ -8,7 +8,7 @@ class Home extends Component {
 	getEC2 = () => {
 		var config = {
 			method: "get",
-			url: "http://ec2-3-249-104-153.eu-west-1.compute.amazonaws.com/",
+			url: "https://ec2-3-249-104-153.eu-west-1.compute.amazonaws.com/",
 			headers: {},
 		};
 
