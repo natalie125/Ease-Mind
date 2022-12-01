@@ -12,8 +12,6 @@ from .forms import LoginForm, RegisterForm # for testing login and register
 #############################################################
 # ROUTE FOR LANDING APP
 # ^^^^^^^^^^^^^^^^^^^^^^^
-
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -32,7 +30,7 @@ def index():
 
 
 ############################################################
-#ROUTE FOR LOGIN
+#ROUTE FOR LOGIN - FOR TESTING
 #^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -65,7 +63,7 @@ def login():
 
 
 ############################################################
-# ROUTE FOR REGISTER
+# ROUTE FOR REGISTER - FOR TESTING
 #^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/register', methods=['GET', 'POST'])
 def register():
