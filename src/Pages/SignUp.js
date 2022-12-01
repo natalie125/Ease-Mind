@@ -1,19 +1,19 @@
 import "../App.css";
-import Login from "../Component/Login";
+import SignUp from "../Component/SignUp";
 import { Link } from "react-router-dom";
 
 function App() {
 	return (
 		<div className="App">
 			<header className="App-header">
-				<p>Login</p>
+				<p>Sign Up</p>
 			</header>
 			<body className="App-body">
-				<Login />
-				<Link to="/signup">
-					<button> Sign Up </button>
-				</Link>
+				<SignUp />
 			</body>
+			<Link to="/">
+				<button> Back </button>
+			</Link>
 		</div>
 	);
 }
