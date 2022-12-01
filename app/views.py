@@ -38,22 +38,21 @@ def index():
 def login():
 
     form = LoginForm()
-    if form.validate_on_submit():
+    if form.validate_on_submit(): # will need to remove when we implement backend API
         if True:
             print("Yes")
             # get first instance of user in db
-            u = models.User_Login.query.filter_by(
-                email=form.email.data).first()  # we need a database first
+            u = models.User_Login.query.filter_by(email=form.email.data).first()
 
             # check username and password
             if u:
                 if bcrypt.check_password_hash(u.password, form.password.data):
                     # login_user(u)
-                    return redirect(url_for('alex'))
+                    return redirect(url_for('alex')) # testing - redirect to alex route to check login works
                     print('Login Successful!', 'success')
                 else:
                     # app.logger.info(u.email + " unsuccesfull login at " + now)
-                    print(f'Login unsuccessful. Please check email and password', 'danger')
+                    flash(f'Login unsuccessful. Please check email and password', 'danger')
                     print(f'Login unsuccessful. Please check email and password')
             else:
                 # logger.info("unsuccesful login")
