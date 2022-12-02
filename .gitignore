@@ -1,5 +1,8 @@
-__pycache__
+**/.idea
+**/__pycache__/
 .DS_Store
 .vscode/settings.json
 dist/
 larks_final_project.egg-info/
+**/migrations
+app.db
