@@ -6,3 +6,4 @@ dist/
 larks_final_project.egg-info/
 **/migrations
 app.db
+app.db-journal
