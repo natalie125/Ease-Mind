@@ -9,7 +9,6 @@ import sys
 import numpy as np
 from threading import Thread
 
-
 #############################################################
 # ROUTE FOR LANDING APP
 # ^^^^^^^^^^^^^^^^^^^^^^^
