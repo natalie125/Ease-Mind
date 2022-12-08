@@ -1,8 +1,16 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+/**
+ * @jest-environment jsdom
+ */
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+// import renderer from "react-test-renderer";
+// import App from "./App";
+
+// test("renders the landing page", () => {
+// 	const component = renderer.create(<App />);
+// });
+
+describe("Addition", () => {
+	it("knows that 2 and 2 make 4", () => {
+		expect(2 + 2).toBe(4);
+	});
 });

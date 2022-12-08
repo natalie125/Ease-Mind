@@ -11,7 +11,7 @@ function App() {
 			<body className="App-body">
 				<Login />
 				<Link to="/signup">
-					<button> Sign Up </button>
+					<button data-cy="signUpBttn"> Sign Up </button>
 				</Link>
 			</body>
 		</div>
