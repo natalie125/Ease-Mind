@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import PropTypes from 'prop-types';
 
 async function loginUser(credentials) {
 	return fetch('http://127.0.0.1:5000/login', {
@@ -24,14 +25,14 @@ const handleSubmit = async (credentials) => {
 		 },
 		//   withCredentials: true,
 		}
-	  );
+	  )
 
 	  console.log(response);
 	  return (response);
 }
 
 
-const Login = () => {
+const Login = ({ setToken }) => {
 	const [isFilled, setIsFilled] = React.useState(null);
 	const [userExists, setUserExists] = React.useState(false);
 	const navigate = useNavigate();
@@ -64,8 +65,8 @@ const Login = () => {
 				if (token.data.token == 'test123'){
 					console.log("User logged in")
 					setUserExists(true);
-					// setToken(true)
-					navigate("/home");
+					setToken(true);
+					// navigate("/home");
 				}
 
 				// if (userExists){
@@ -96,5 +97,10 @@ const Login = () => {
 		</>
 	);
 };
+
+
+Login.propTypes = {
+	setToken: PropTypes.func.isRequired
+}
 
 export default Login;
