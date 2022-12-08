@@ -6,6 +6,8 @@ import "../App.css";
 
 class Lanre extends Component {
 	render() {
+
+		
 		return (
 			<div className="App">
 				<header className="App-header">
