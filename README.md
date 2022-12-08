@@ -60,3 +60,17 @@ Now you can either run the tests in another terminal using:
 Or you can run it on a chromium browser using:
 
 ### `npx cypress open`
+
+# Deploying to S3
+
+First you need to rebuild the app using
+
+### `npm run build`
+
+Then you need to sync what you have locally with the S3 bucket using:
+
+### `client-s3-deploy`
+
+After that, you need to create an invalidation for ther cloudront which will clear it's cache for the app build and allow the changes made to the S3 to be visible. For this run:
+
+### `create-cloudfront-invalidation`
