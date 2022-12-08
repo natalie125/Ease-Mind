@@ -28,8 +28,20 @@ class Home extends Component {
 					<h1>Home</h1>
 				</header>
 				<body className="App-body">
+					<Link to="/lanre">
+						<button>Lanre's App</button>
+					</Link>
 					<Link to="/alex">
 						<button>Alex's App</button>
+					</Link>
+					<Link to="/ramat">
+						<button>Ramat's App</button>
+					</Link>
+					<Link to="/kevin">
+						<button>Kevin's App</button>
+					</Link>
+					<Link to="/shreyas">
+						<button>Shreyas' App</button>
 					</Link>
 					<button onClick={this.getEC2}> Get EC2 </button>
 				</body>
