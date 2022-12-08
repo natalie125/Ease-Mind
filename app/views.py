@@ -1,17 +1,20 @@
 # from flask import request, render_template, flash, redirect, url_for
-from flask import Flask, render_template, Response, request, flash, redirect, url_for, session
+from flask import Flask, render_template, Response, request, flash, redirect, url_for, session, jsonify
 from app import app, models, bcrypt, db
 import datetime
 import time
 import os
 import sys
+import json
 # import numpy as np
 from threading import Thread
-from .forms import LoginForm, RegisterForm # for testing login and register
+from .forms import LoginForm, RegisterForm  # for testing login and register
 
 #############################################################
-# ROUTE FOR LANDING APP
+# ROUTE FOR LANDING PAGE
 # ^^^^^^^^^^^^^^^^^^^^^^^
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -30,41 +33,81 @@ def index():
 
 
 ############################################################
-#ROUTE FOR LOGIN - FOR TESTING
-#^^^^^^^^^^^^^^^^^^^^^^^
+# ROUTE FOR LOGIN - FOR TESTING
+# ^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-
-    form = LoginForm()
-    if form.validate_on_submit(): # will need to remove when we implement backend API
-        if True:
-            print("Yes")
-            # get first instance of user in db
-            u = models.User_Login.query.filter_by(email=form.email.data).first()
-
-            # check username and password
-            if u:
-                if bcrypt.check_password_hash(u.password, form.password.data):
-                    # login_user(u)
-                    return redirect(url_for('alex')) # testing - redirect to alex route to check login works
-                    print('Login Successful!', 'success')
-                else:
-                    # app.logger.info(u.email + " unsuccesfull login at " + now)
-                    flash(f'Login unsuccessful. Please check email and password', 'danger')
-                    print(f'Login unsuccessful. Please check email and password')
+    if request.method == "POST":
+        print("Request is POST!")
+        print(request.data)
+        # to convert byte data into utf characters
+        data = json.loads(request.data.decode('utf-8'))
+        print(data)
+        # flash(request)
+        # return {"type": "POST"}
+        u = models.User_Login.query.filter_by(
+            email=data['email']).first()
+        # check username and password
+        if u:
+            if bcrypt.check_password_hash(u.password, data['password']):
+                response = {"token": "test123"}
+                print('Login Successful!', 'success')
+                return jsonify(response)
             else:
-                # logger.info("unsuccesful login")
-                flash(f'Login unsuccessful. Please check email and password', 'danger')
-                print(f'Login unsuccessful. Please check email and password')
+                print("Wrong Password")
+                response = {"token": "testxxx"}
+                return jsonify(response)
 
-    return render_template('login.html',
-                            form=form,
-                           title='Login')
+        else:
+            print("Wrong username")
+            response = {"token": "testxxx"}
+            return jsonify(response)
+
+    elif request.method == "GET":
+        return {"type": "GET"}
+    else:
+        # app.logger.info(u.email + " unsuccesfull login at " + now)
+        flash(f'Login unsuccessful. Please check email and password', 'danger')
+        print(f'Login unsuccessful. Please check email and password!')
+        return {}
+
+    # form = LoginForm()
+    # if form.validate_on_submit():  # will need to remove when we implement backend API
+    #     if True:
+    #         print("Yes")
+    #         # get first instance of user in db
+    #         u = models.User_Login.query.filter_by(
+    #             email=form.email.data).first()
+
+    #         # check username and password
+    #         if u:
+    #             if bcrypt.check_password_hash(u.password, form.password.data):
+    #                 # login_user(u)
+    #                 # testing - redirect to alex route to check login works
+    #                 response = {"token": "test123"}
+    #                 print('Login Successful!', 'success')
+    #                 return jsonify(response)
+    #                 # return redirect(url_for('alex'))
+    #                 # TODO: log something on the server side here
+
+    #             else:
+    #                 # app.logger.info(u.email + " unsuccesfull login at " + now)
+    #                 flash(
+    #                     f'Login unsuccessful. Please check email and password', 'danger')
+    #                 print(f'Login unsuccessful. Please check email and password')
+    #         else:
+    #             # logger.info("unsuccesful login")
+    #             flash(f'Login unsuccessful. Please check email and password', 'danger')
+    #             print(f'Login unsuccessful. Please check email and password')
+
+    # return render_template('login.html',
+    #                        form=form,
+    #                        title='Login')
 
 
 ############################################################
 # ROUTE FOR REGISTER - FOR TESTING
-#^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     # if current_user.is_authenticated:   # if current user is logged in
@@ -89,7 +132,7 @@ def register():
         return redirect(url_for('login'))   # redirect to login page
     else:
         return render_template('register.html',
-                                form=form,
+                               form=form,
                                title='Sign Up')
 
 
