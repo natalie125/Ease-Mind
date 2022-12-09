@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 import PropTypes from 'prop-types';
@@ -13,8 +13,15 @@ const handleSubmit = async (credentials) => {
 		 },
 		//   withCredentials: true,
 		}
-	  )
-
+	  ).then((response) => {
+		console.log(response)
+		console.log(response.status)
+		if (response){
+			console.log("User logged in")
+			sessionStorage.setItem('token', JSON.stringify(response.data.token));
+		}
+	})
+	  
 	  console.log(response);
 	  return (response);
 }
@@ -25,10 +32,10 @@ const Login = ({ setToken }) => {
 	const [userExists, setUserExists] = React.useState(false);
 	const navigate = useNavigate();
 
-	const token = sessionStorage.getItem('token');
-	if(token){
-		navigate("/home");
-	}
+	// const token = sessionStorage.getItem('token');
+	// if(token){
+	// 	navigate("/home");
+	// }
 
 	// used to login user
 	const validateLogin = async () => {
@@ -37,37 +44,9 @@ const Login = ({ setToken }) => {
 
 		if (email.length > 0) {
 			if (password.length > 0) {
-				// setIsFilled(true);
 				//add code to check the database to see if user exists
-
 				//call login function
-				const token = await handleSubmit({
-					email,
-					password
-				});
-
-				// console.log(token['token']);
-				// const output =  JSON.stringify(token['token']);
-				// console.log(output);
-
-				console.log(token)
-				console.log(token.status)
-				console.log(token.data.token)
-
-				// setUserExists(true);
-				if (token.data.token == 'test123'){
-					console.log("User logged in")
-					setUserExists(true);
-					// setToken(true);
-					sessionStorage.setItem('token', JSON.stringify(token.data.token));
-					// navigate("/home");
-				}
-
-				// if (userExists){
-				// 	console.log("User logged in")
-				// 	setUserExists(true);
-				// 	navigate("/home");
-				// }
+				await handleSubmit({email,password})
 			}
 		}
 		setIsFilled(false);
