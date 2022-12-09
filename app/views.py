@@ -9,7 +9,13 @@ import json
 # import numpy as np
 from threading import Thread
 from .forms import LoginForm, RegisterForm  # for testing login and register
-
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import JWTManager
+from datetime import datetime, timedelta, timezone
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+jwt = JWTManager(app)
 #############################################################
 # ROUTE FOR LANDING PAGE
 # ^^^^^^^^^^^^^^^^^^^^^^^
@@ -42,26 +48,34 @@ def login():
         print(request.data)
         # to convert byte data into utf characters
         data = json.loads(request.data.decode('utf-8'))
+
+
+
         print(data)
+        print(data.get('credentials'))
+        
         # flash(request)
         # return {"type": "POST"}
         u = models.User_Login.query.filter_by(
-            email=data['email']).first()
+            email=data['credentials']['email']).first()
         # check username and password
         if u:
-            if bcrypt.check_password_hash(u.password, data['password']):
-                response = {"token": "test123"}
+            if bcrypt.check_password_hash(u.password, data['credentials']['password']):
+                # response = {"token": "test123"}
                 print('Login Successful!', 'success')
-                return jsonify(response)
+                access_token = create_access_token(identity=data['credentials']['email'])
+                print(access_token)
+                response = {"token": access_token}
+                return jsonify(response), 200
             else:
                 print("Wrong Password")
-                response = {"token": "testxxx"}
-                return jsonify(response)
+                response = {"msg": "Bad Password"}
+                return jsonify(response), 401
 
         else:
             print("Wrong username")
-            response = {"token": "testxxx"}
-            return jsonify(response)
+            response = {"msg": "Bad Username"}
+            return jsonify(response), 401
 
     elif request.method == "GET":
         return {"type": "GET"}
@@ -69,7 +83,8 @@ def login():
         # app.logger.info(u.email + " unsuccesfull login at " + now)
         flash(f'Login unsuccessful. Please check email and password', 'danger')
         print(f'Login unsuccessful. Please check email and password!')
-        return {}
+        response = {"msg": "Login unsuccessful"}
+        return jsonify(response), 401
 
     # form = LoginForm()
     # if form.validate_on_submit():  # will need to remove when we implement backend API
