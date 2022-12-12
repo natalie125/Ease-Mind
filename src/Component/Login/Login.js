@@ -29,11 +29,11 @@ const Login = () => {
 		<>
 			<input id="login_email" />
 			<input id="login_password" />
-			<button id="login_button" onClick={validateLogin}>
+			<button id="login_button" onClick={validateLogin} data-cy="loginBttn">
 				Login
 			</button>
 
-			{isFilled === false && <p>Please enter a username and password</p>}
+			{isFilled === false && <p data-cy="loginError">Please enter a username and password</p>}
 		</>
 	);
 };

@@ -12,7 +12,7 @@ function App() {
 				<SignUp />
 			</body>
 			<Link to="/">
-				<button> Back </button>
+				<button data-cy="signUpBackBttn"> Back </button>
 			</Link>
 		</div>
 	);

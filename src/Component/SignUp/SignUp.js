@@ -31,12 +31,12 @@ const SignUp = ({ email, password }) => {
 
 	return (
 		<>
-			<input id="signup_email" />
-			<input id="signup_password" />
-			<button id="signup_button" onClick={validatesignup}>
+			<input data-cy="signUpEmail" id="signup_email" />
+			<input data-cy="signUpPasswd" id="signup_password" />
+			<button data-cy="signUpBttn" id="signup_button" onClick={validatesignup}>
 				Sign Up
 			</button>
-			{isValid === false && <p>Please enter a valid username or password</p>}
+			{isValid === false && <p data-cy="signUpError">Please enter a valid username or password</p>}
 		</>
 	);
 };
