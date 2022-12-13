@@ -8,6 +8,20 @@ import sys
 # import numpy as np
 from threading import Thread
 from .forms import LoginForm, RegisterForm # for testing login and register
+import werkzeug
+
+#############################################################
+# BEGINNING OF HTTP ERROR HANDLERS
+# ^^^^^^^^^^^^^^^^^^^^^^^
+
+#############################################################
+# REGISTER 400 ERROR
+# ^^^^^^^^^^^^^^^^^^^^^^^
+# HTTP Error for bad request is specifically No. 400
+@app.errorhandler(werkzeug.exceptions.MethodNotAllowed)
+def handle_bad_request(e):
+    # Need to figure out how to request the "400Error" page on the React frontend
+    return 'bad request!', 400
 
 #############################################################
 # ROUTE FOR LANDING APP
