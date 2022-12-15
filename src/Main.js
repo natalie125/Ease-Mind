@@ -10,6 +10,7 @@ import Alex from "./Pages/Alex";
 import Ramat from "./Pages/Ramat";
 import Kevin from "./Pages/Kevin";
 import Shreyas from "./Pages/Shreyas";
+import Error404 from "./Pages/Error404";
 
 const Main = () => {
 	return (
@@ -22,6 +23,7 @@ const Main = () => {
 			<Route exact path="/ramat" element={<Ramat />}></Route>
 			<Route exact path="/kevin" element={<Kevin />}></Route>
 			<Route exact path="/shreyas" element={<Shreyas />}></Route>
+			<Route path="*" element={<Error404 />}></Route>
 		</Routes>
 	);
 };
