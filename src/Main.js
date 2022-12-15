@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import Home from "./Pages/Home";
+import Error400 from "./Pages/Error400";
 
 import Lanre from "./Pages/Lanre";
 import Alex from "./Pages/Alex";
@@ -18,6 +19,7 @@ const Main = () => {
 			<Route path="/" element={<Login />}></Route>
 			<Route exact path="/signup" element={<SignUp />}></Route>
 			<Route exact path="/home" element={<Home />}></Route>
+			<Route exact path="/error400" element={<Error400 />}></Route>
 			<Route exact path="/lanre" element={<Lanre />}></Route>
 			<Route exact path="/alex" element={<Alex />}></Route>
 			<Route exact path="/ramat" element={<Ramat />}></Route>
