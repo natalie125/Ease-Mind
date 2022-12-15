@@ -8,7 +8,9 @@ import sys
 # import numpy as np
 from threading import Thread
 from .forms import LoginForm, RegisterForm # for testing login and register
+from .models import User_Login
 import werkzeug
+import json
 
 #############################################################
 # BEGINNING OF HTTP ERROR HANDLERS
@@ -81,6 +83,26 @@ def login():
 #^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if request.method == "POST":
+        print("Request is post")
+        print(request.data)
+        data = json.loads(request.data.decode('utf-8'))
+        data = data.get('regAttempt')
+        print(data['email'])
+        username_database_check = models.User_Login.query.filter_by(email=data['email']).first()
+        if username_database_check:
+            print("Username already exists!")
+            return {"msg": "Username taken"},401
+        else:
+            print("Valid!")
+            hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
+            new_user = User_Login(email = data['email'], password = hashed_password)
+            db.session.add(new_user)
+            db.session.commit()
+            return {"msg":"New User Added!"}, 200
+
+
+    '''
     # if current_user.is_authenticated:   # if current user is logged in
     #     return redirect(url_for('index'))
     form = RegisterForm()
@@ -105,7 +127,7 @@ def register():
         return render_template('register.html',
                                 form=form,
                                title='Sign Up')
-
+    '''
 
 #############################################################
 # ROUTE FOR ALEX'S APP
