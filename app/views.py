@@ -16,6 +16,21 @@ from datetime import datetime, timedelta, timezone
 app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 jwt = JWTManager(app)
+import werkzeug
+
+#############################################################
+# BEGINNING OF HTTP ERROR HANDLERS
+# ^^^^^^^^^^^^^^^^^^^^^^^
+
+#############################################################
+# REGISTER 400 ERROR
+# ^^^^^^^^^^^^^^^^^^^^^^^
+# HTTP Error for bad request is specifically No. 400
+@app.errorhandler(werkzeug.exceptions.MethodNotAllowed)
+def handle_bad_request(e):
+    # Need to figure out how to request the "400Error" page on the React frontend
+    return 'bad request!', 400
+
 #############################################################
 # ROUTE FOR LANDING PAGE
 # ^^^^^^^^^^^^^^^^^^^^^^^
