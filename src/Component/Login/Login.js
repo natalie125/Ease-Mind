@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 import PropTypes from 'prop-types';
+import App from "../../App";
+import Main from "../../Main";
 
 const handleSubmit = async (credentials) => {
 	// e.preventDefault();
@@ -18,12 +20,13 @@ const handleSubmit = async (credentials) => {
 		console.log(response.status)
 		if (response){
 			console.log("User logged in")
+			console.log(response)
 			sessionStorage.setItem('token', JSON.stringify(response.data.token));
 		}
+		return response;
 	})
-	  
 	  console.log(response);
-	  return (response);
+	  return response;
 }
 
 
@@ -44,17 +47,35 @@ const Login = ({ setToken }) => {
 
 		if (email.length > 0) {
 			if (password.length > 0) {
+				setIsFilled(true)
+				console.log(isFilled)
 				//add code to check the database to see if user exists
 				//call login function
-				await handleSubmit({email,password})
+				const response = await handleSubmit({email,password})
+				console.log("Got a response")
+				console.log(response)
+				setUserExists(true)
+				// navigate("/home");
+
 			}
 		}
 		setIsFilled(false);
 	};
 
+	// React.useEffect(() => {
+	// 	if (isFilled) {
+	// 		navigate("/home");
+	// 	}
+	// });
+
 	React.useEffect(() => {
-		if (isFilled) {
-			navigate("/home");
+		if (userExists) {
+			return (
+				<div className="App">
+					<Main />
+				</div>
+			);
+			// navigate("/home");
 		}
 	});
 
@@ -65,9 +86,11 @@ const Login = ({ setToken }) => {
 			<button id="login_button" onClick={validateLogin}>
 				Login
 			</button>
-
+			
 			{isFilled === false && <p>Please enter a username and password</p>}
+
 		</>
+		
 	);
 };
 
