@@ -2,33 +2,18 @@ import React from "react";
 import Main from "../../Main";
 import "../App/App.css";
 import Login from '../Login/Login';
-import Lanre from "../Lanre/Lanre";
-import Alex from "../Alex/Alex";
-import Ramat from "../Ramat/Ramat";
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { useState, useEffect } from "react";
-import { Redirect } from 'react-router'
-import {Navigate} from 'react-router-dom';
-
-function setToken(userToken) {
-	sessionStorage.setItem('token', JSON.stringify(userToken));
-}
-
-function getToken() {
-	const tokenString = sessionStorage.getItem('token');
-  	const userToken = JSON.parse(tokenString);
-  	return userToken?.token
-}
-
+import useToken from '../App/useToken';
 
 export default function App() {
-	// const [token, setToken] = useState();
-	const token = getToken();
-
+	const { token, setToken } = useToken();
 
 	if(!token) {
+		console.log("Here")
 		return <Login setToken={setToken} />
-	  }
+		console.log("Here")
+	}
+
+	console.log("Here2")
 
 	return (
 		<div className="App">

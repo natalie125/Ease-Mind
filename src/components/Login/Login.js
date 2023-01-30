@@ -47,6 +47,7 @@ function Login({setToken}) {
 		password
 	});
 	// Set the token of the application
+	console.log("Setting Token")
 	setToken(token);
 	}
 

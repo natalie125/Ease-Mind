@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const SignUp = ({ email, password }) => {
 	const [isValid, setIsValid] = React.useState(null);
@@ -30,14 +31,31 @@ const SignUp = ({ email, password }) => {
 	});
 
 	return (
-		<>
-			<input id="signup_email" />
-			<input id="signup_password" />
-			<button id="signup_button" onClick={validatesignup}>
-				Sign Up
-			</button>
-			{isValid === false && <p>Please enter a valid username or password</p>}
-		</>
+		<div className="App">
+			<div className="App-body">
+				<h1>Please Sign Up</h1>
+				<form>
+					<label>
+						<p>Email</p>
+						<input id="signup_email" />
+					</label>
+
+					<label>
+						<p>Password</p>
+						<input id="signup_password" />
+					</label>
+			
+					<div>
+						<button id="signup_button" onClick={validatesignup}>Sign Up</button>
+					</div>
+
+					{/* <Link to="/">
+						<button> Back </button>
+					</Link> */}
+				</form>
+			</div>
+		</div>
+	
 	);
 };
 
