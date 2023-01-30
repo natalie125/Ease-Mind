@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import WebcamStreamCapture from "../Component/Webcam";
+import WebcamStreamCapture from "../components/Webcam";
 
-import "../App.css";
+import "../components/App/App.css";
 
 class Kevin extends Component {
 	render() {

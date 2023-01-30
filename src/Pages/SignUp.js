@@ -1,6 +1,7 @@
-import "../App.css";
-import SignUp from "../Component/SignUp";
+import SignUp from "../components/SignUp";
 import { Link } from "react-router-dom";
+
+import "../components/App/App.css";
 
 function App() {
 	return (

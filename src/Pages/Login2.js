@@ -1,6 +1,7 @@
-import "../App.css";
-import Login from "../Component/Login";
+import Login from "../components/Login";
 import { Link } from "react-router-dom";
+
+import "../components/App/App.css";
 
 function App() {
 	

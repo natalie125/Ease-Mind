@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import WebcamStreamCapture from "../Component/Webcam";
+import WebcamStreamCapture from "../Webcam";
 
-import "../App.css";
+import "../App/App.css";
 
 class Ramat extends Component {
 	render() {
