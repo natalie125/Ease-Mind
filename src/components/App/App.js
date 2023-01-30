@@ -10,9 +10,17 @@ import { useState, useEffect } from "react";
 import { Redirect } from 'react-router'
 import {Navigate} from 'react-router-dom';
 
+function setToken(userToken) {
+}
+
+function getToken() {
+}
+
 
 export default function App() {
 	const [token, setToken] = useState();
+
+
 
 	if(!token) {
 		return <Login setToken={setToken} />

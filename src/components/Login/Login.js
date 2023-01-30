@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 import PropTypes from 'prop-types';
@@ -7,7 +7,7 @@ import Main from "../../Main";
 import { Link } from "react-router-dom";
 import "../App/App.css";
 
-const handleSubmit = async (credentials) => {
+const loginUser = async (credentials) => {
 	// e.preventDefault();
 	  const response = await axios.post("http://127.0.0.1:5000/login",
 		JSON.stringify({ credentials}),
@@ -32,20 +32,40 @@ const handleSubmit = async (credentials) => {
 }
 
 // The login Form
-function Login() {
+function Login({setToken}) {
+	const [isFilled, setIsFilled] = React.useState(null);
+	const [userExists, setUserExists] = React.useState(false);
+
+	const [email, setEmail] = useState();
+  	const [password, setPassword] = useState();
+
+	// This function to calls the login function
+	const handleSubmit = async e => {
+	e.preventDefault();
+	const token = await loginUser({
+		email,
+		password
+	});
+	// Set the token of the application
+	setToken(token);
+	}
+
+
+
+	// The Login form that is displayed to the user
 	return (
 		<div className="App">
 			<div className="App-body">
 				<h1>Please Log In</h1>
-				<form>
+				<form onSubmit={handleSubmit}>
 					<label>
 						<p>Username</p>
-						<input id="login_email" type="text" />
+						<input id="login_email" type="text" onChange={e => setEmail(e.target.value)} />
 					</label>
 
 					<label>
 						<p>Password</p>
-						<input id="login_password" type="password" />
+						<input id="login_password" type="password" onChange={e => setPassword(e.target.value)}/>
 					</label>
 			
 					<div>
