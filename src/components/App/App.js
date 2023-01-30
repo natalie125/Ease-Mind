@@ -11,6 +11,7 @@ import { Redirect } from 'react-router'
 import {Navigate} from 'react-router-dom';
 
 function setToken(userToken) {
+	sessionStorage.setItem('token', JSON.stringify(userToken));
 }
 
 function getToken() {
@@ -18,8 +19,8 @@ function getToken() {
 
 
 export default function App() {
-	const [token, setToken] = useState();
-
+	// const [token, setToken] = useState();
+	const token = getToken();
 
 
 	if(!token) {
