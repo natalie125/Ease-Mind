@@ -1,7 +1,7 @@
 import React from "react";
 import Main from "../../Main";
 import "../App/App.css";
-import Login from '../Login';
+import Login from '../Login/Login';
 import Lanre from "../Lanre/Lanre";
 import Alex from "../Alex/Alex";
 import Ramat from "../Ramat/Ramat";
@@ -12,6 +12,12 @@ import {Navigate} from 'react-router-dom';
 
 
 export default function App() {
+	const [token, setToken] = useState();
+
+	if(!token) {
+		return <Login setToken={setToken} />
+	  }
+
 	return (
 		<div className="App">
 			<Main />
