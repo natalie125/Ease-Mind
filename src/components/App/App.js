@@ -4,7 +4,7 @@ import "../App/App.css";
 import Login from '../Login/Login';
 import useToken from '../App/useToken';
 
-export default function App() {
+function App() {
 	const { token, setToken } = useToken();
 
 	if(!token) {
@@ -17,3 +17,5 @@ export default function App() {
 		</div>
 	);
 }
+
+export default App;
