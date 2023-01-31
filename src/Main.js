@@ -20,7 +20,7 @@ const Main = () => {
 	
 	return (
 		<Routes>
-			<Route path="/" element={<Login />}></Route>
+			<Route path="/" element={<Home />}></Route>
 			<Route exact path="/signup" element={<SignUp />}></Route>
 			<Route exact path="/home" element={<Home />}></Route>
 

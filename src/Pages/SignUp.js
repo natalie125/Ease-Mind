@@ -12,6 +12,7 @@ function App() {
 			<body className="App-body">
 				<SignUp />
 			</body>
+			
 			<Link to="/">
 				<button> Back </button>
 			</Link>

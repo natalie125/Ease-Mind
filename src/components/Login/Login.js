@@ -6,6 +6,7 @@ import App from "../App/App";
 import Main from "../../Main";
 import { Link } from "react-router-dom";
 import "../App/App.css";
+// import { Redirect } from 'react-router'
 
 const loginUser = async (credentials) => {
 	// e.preventDefault();
@@ -74,7 +75,7 @@ function Login({setToken}) {
 					</div>
 
 					<Link to="/signup">
-						<button data-cy="signUpBttn"> Sign Up </button>
+						<button> Sign Up </button>
 					</Link>
 				</form>
 			</div>
