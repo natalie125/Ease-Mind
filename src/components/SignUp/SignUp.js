@@ -20,7 +20,6 @@ const SignUp = ({ email, password }) => {
 				return;
 			}
 		}
-
 		setIsValid(false);
 	};
 
