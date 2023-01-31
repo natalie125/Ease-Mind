@@ -51,7 +51,8 @@ function Login({setToken}) {
 	console.log("Setting Token")
 	setToken(token);
 
-
+	// Go to home page after successful login
+	navigate('/home', { replace: true });
 
 	}
 
