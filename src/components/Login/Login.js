@@ -6,6 +6,8 @@ import "../App/App.css";
 import { Navigate } from 'react-router'
 import { useNavigate } from 'react-router-dom';
 
+
+// This fucntion is userd to login the user
 const loginUser = async (credentials) => {
 	// e.preventDefault();
 	  const response = await axios.post("http://127.0.0.1:5000/login",
@@ -32,32 +34,30 @@ const loginUser = async (credentials) => {
 
 // The login Form
 function Login({setToken}) {
-	const [isFilled, setIsFilled] = React.useState(null);
-	const [userExists, setUserExists] = React.useState(false);
-
 	const [email, setEmail] = useState();
   	const [password, setPassword] = useState();
 
+	// to navigate the user to the home page
 	const navigate = useNavigate();
 
-	// This function to calls the login function
+	// This function to calls the login function which returns after a login request
 	const handleSubmit = async e => {
 	e.preventDefault();
 	const token = await loginUser({
 		email,
 		password
 	});
+
 	// Set the token of the application
-	console.log("Setting Token")
+	console.log("Setting Token");
 	setToken(token);
 
 	// Go to home page after successful login
 	navigate('/home', { replace: true });
-
 	}
 
 
-
+	// This is rendered to the user 
 	// The Login form that is displayed to the user
 	return (
 		<div className="App">

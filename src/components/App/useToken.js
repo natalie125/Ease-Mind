@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+// Custom Hook that is used to save and get the authentication tokens
 export default function useToken() {
   const getToken = () => {
     const tokenString = sessionStorage.getItem('token');
