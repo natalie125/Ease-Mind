@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 import PropTypes from 'prop-types';
-import App from "../App/App";
-import Main from "../../Main";
 import { Link } from "react-router-dom";
 import "../App/App.css";
-// import { Redirect } from 'react-router'
+import { Navigate } from 'react-router'
+import { useNavigate } from 'react-router-dom';
 
 const loginUser = async (credentials) => {
 	// e.preventDefault();
@@ -40,6 +38,8 @@ function Login({setToken}) {
 	const [email, setEmail] = useState();
   	const [password, setPassword] = useState();
 
+	const navigate = useNavigate();
+
 	// This function to calls the login function
 	const handleSubmit = async e => {
 	e.preventDefault();
@@ -50,6 +50,9 @@ function Login({setToken}) {
 	// Set the token of the application
 	console.log("Setting Token")
 	setToken(token);
+
+
+
 	}
 
 
@@ -153,10 +156,8 @@ function Login({setToken}) {
 // };
  
 
-
-
-Login.propTypes = {
-	setToken: PropTypes.func.isRequired
-}
+// Login.propTypes = {
+// 	setToken: PropTypes.func.isRequired
+// }
 
 export default Login;

@@ -2,7 +2,7 @@ import React from "react";
 import { Routes } from "react-router-dom";
 import { Route, Redirect } from 'react-router'
 import Login from "./components/Login/Login";
-import SignUp from "./Pages/SignUp";
+import SignUp from "./components/SignUp";
 import Home from "./components/Home/Home";
 
 import Lanre from "./components/Lanre/Lanre";
@@ -22,7 +22,9 @@ const Main = () => {
 		<Routes>
 			<Route path="/" element={<Home />}></Route>
 			<Route exact path="/signup" element={<SignUp />}></Route>
+			<Route exact path="/login" element={<Login />}></Route>
 			<Route exact path="/home" element={<Home />}></Route>
+
 
 			<Route exact path="/lanre" element={<Lanre />}></Route>
 			<Route exact path="/alex" element={<Alex />}></Route>
