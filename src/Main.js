@@ -3,13 +3,13 @@ import { Routes } from "react-router-dom";
 import { Route, Redirect } from 'react-router'
 import Login from "./components/Login/Login";
 import SignUp from "./Pages/SignUp";
-import Home from "./Pages/Home";
+import Home from "./components/Home/Home";
 
 import Lanre from "./components/Lanre/Lanre";
 import Alex from "./components/Alex/Alex";
 import Ramat from "./components/Ramat/Ramat";
-import Kevin from "./Pages/Kevin";
-import Shreyas from "./Pages/Shreyas";
+import Kevin from "./components/Kevin/Kevin";
+import Shreyas from "./components/Shreyas/Shreyas";
 import {Navigate} from 'react-router-dom';
 
 const Main = () => {

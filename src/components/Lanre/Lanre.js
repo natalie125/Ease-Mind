@@ -9,13 +9,12 @@ class Lanre extends Component {
 			<div className="App">
 				<header className="App-header">
 					<h1>Lanre's app</h1>
-					<p> Component</p>
 				</header>
-				<body className="App-body">
+				<div className="App-body">
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
-				</body>
+				</div>
 			</div>
 		);
 	}

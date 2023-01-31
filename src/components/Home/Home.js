@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-import "../components/App/App.css";
+import "../App/App.css";
 
 class Home extends Component {
 	getEC2 = () => {
@@ -27,7 +27,7 @@ class Home extends Component {
 				<header className="App-header">
 					<h1>Home</h1>
 				</header>
-				<body className="App-body">
+				<div className="App-body">
 					<Link to="/lanre">
 						<button>Lanre's App</button>
 					</Link>
@@ -44,7 +44,7 @@ class Home extends Component {
 						<button>Shreyas' App</button>
 					</Link>
 					<button onClick={this.getEC2}> Get EC2 </button>
-				</body>
+				</div>
 			</div>
 		);
 	}

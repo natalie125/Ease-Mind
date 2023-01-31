@@ -11,12 +11,12 @@ class Alex extends Component {
 				<header className="App-header">
 					<h1>Alex's app</h1>
 				</header>
-				<body className="App-body">
+				<div className="App-body">
 					<WebcamStreamCapture />
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
-				</body>
+				</div>
 			</div>
 		);
 	}

@@ -11,15 +11,14 @@ class Ramat extends Component {
 				<header className="App-header">
 					<h1>Ramat's app</h1>
 				</header>
-				<body className="App-body">
+				<div className="App-body">
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
-				</body>
+				</div>
 			</div>
 		);
 	}
 }
-
 
 export default Ramat;
