@@ -12,8 +12,9 @@ from .forms import LoginForm, RegisterForm  # for testing login and register
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import JWTManager
 from datetime import datetime, timedelta, timezone
+
 # Setup the Flask-JWT-Extended extension
-app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+app.config["JWT_SECRET_KEY"] = "comp3931-larks"  # Change this!
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 jwt = JWTManager(app)
 import werkzeug
@@ -34,8 +35,6 @@ def handle_bad_request(e):
 #############################################################
 # ROUTE FOR LANDING PAGE
 # ^^^^^^^^^^^^^^^^^^^^^^^
-
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -102,7 +101,7 @@ def login():
         return jsonify(response), 401
 
     # form = LoginForm()
-    # if form.validate_on_submit():  # will need to remove when we implement backend API
+    # if form.validate_on_submit():  # Lanre: will need to remove when I implement backend API
     #     if True:
     #         print("Yes")
     #         # get first instance of user in db
