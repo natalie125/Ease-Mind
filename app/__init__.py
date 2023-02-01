@@ -6,6 +6,7 @@ from flask_cors import CORS
 # define the app
 app = Flask(__name__)
 
+
 # added for hashing the passwords
 bcrypt = Bcrypt(app)
 
@@ -14,6 +15,9 @@ app.app_context().push()
 
 # read configuration from config.py file
 app.config.from_object('config')
+
+# added to enable cors
+CORS(app)
 
 # define the database
 db = SQLAlchemy(app)
