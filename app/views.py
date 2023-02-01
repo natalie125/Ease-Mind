@@ -145,7 +145,6 @@ def register():
         print("Request is post")
         print(request.data)
         data = json.loads(request.data.decode('utf-8'))
-        data = data.get('regAttempt')
         print(data['email'])
         username_database_check = models.User_Login.query.filter_by(email=data['email']).first()
         if username_database_check:
