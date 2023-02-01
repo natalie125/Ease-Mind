@@ -23,28 +23,36 @@ class Home extends Component {
 
 	render() {
 		return (
+			// TODO: Need to create page that will present app options in nicer way.
 			<div className="App">
 				<header className="App-header">
 					<h1>Home</h1>
 				</header>
-				<div className="App-body">
-					<Link to="/lanre">
-						<button>Lanre's App</button>
+				<body className="login-form">
+
+					<div className = "btn-row">
+					<Link to="/alex">
+						<button className="btn-choice">Alex's App</button>
 					</Link>
 					<Link to="/alex">
-						<button>Alex's App</button>
+						<button className="btn-choice">Kevins's App</button>
 					</Link>
-					<Link to="/ramat">
-						<button>Ramat's App</button>
+					<Link to="/alex">
+						<button className="btn-choice">Lanre's App</button>
 					</Link>
-					<Link to="/kevin">
-						<button>Kevin's App</button>
+					</div>
+
+					<div className = "btn-row">
+					<Link to="/alex">
+						<button className="btn-choice">Shreyas' App</button>
 					</Link>
-					<Link to="/shreyas">
-						<button>Shreyas' App</button>
+					<Link to="/alex">
+						<button className="btn-choice">Ramat's App</button>
 					</Link>
+					</div>
+					
 					<button onClick={this.getEC2}> Get EC2 </button>
-				</div>
+				</body>
 			</div>
 		);
 	}

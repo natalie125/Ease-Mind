@@ -15,9 +15,9 @@ import Error404 from "./Pages/Error404";
 
 const Main = () => {
 	// const [loggedIn, setLoggedIn] = React.useState(null);
-	const loggedIn = sessionStorage.getItem("token");
-	console.log("This is the token");
-	console.log(loggedIn);
+	// const loggedIn = sessionStorage.getItem("token");
+	// console.log("This is the token");
+	// console.log(loggedIn);
 
 	return (
 		<Routes>

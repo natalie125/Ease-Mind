@@ -11,12 +11,17 @@ class Alex extends Component {
 				<header className="App-header">
 					<h1>Alex's app</h1>
 				</header>
-				<div className="App-body">
-					<WebcamStreamCapture />
+				<body>
+				<div className="webcam-capture-holder">
+
+						<p>Webcam capture below</p>
+						<WebcamStreamCapture/>
+					
+				</div>
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
-				</div>
+				</body>
 			</div>
 		);
 	}

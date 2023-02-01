@@ -62,27 +62,37 @@ function Login({setToken}) {
 	return (
 		<div className="App">
 			<div className="App-body">
-				<h1>Please Log In</h1>
-				<form onSubmit={handleSubmit}>
-					<label>
-						<p>Username</p>
-						<input id="login_email" type="text" onChange={e => setEmail(e.target.value)} />
-					</label>
+			<header className="App-header">
+				<nav class="navbar navbar-dark bg-dark" id = 'navbar'>
+					{/* <a class="navbar-brand" href="#"></a> */}
+					<h1>LARKS APP</h1>
+				</nav>
+			</header>
+				<div class="login-form">
 
-					<label>
-						<p>Password</p>
-						<input id="login_password" type="password" onChange={e => setPassword(e.target.value)}/>
-					</label>
-			
-					<div>
-						<button type="submit">Login</button>
+				<form class="login-form" onSubmit={handleSubmit}>
+					<div class="login-form__content">
+						<div class="login-form__header">Log into an existing account below:</div>  
+							<label>
+								<input id="login_email" class="login-form__input" type="text" placeholder="Email" onChange={e => setEmail(e.target.value)} />
+							</label>
+							
+							<label>
+								<input id="login_password" class="login-form__input" type="password" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
+							</label>
+
+							<div>
+								<button class ="login-form__button" type="submit">Login</button>
+							</div>
+
+							<Link to="/signup">
+								<button class ="login-form__button"> Sign Up </button>
+							</Link>
 					</div>
-
-					<Link to="/signup">
-						<button> Sign Up </button>
-					</Link>
+					
 				</form>
 			</div>
+		</div>
 		</div>
 	);
   }
