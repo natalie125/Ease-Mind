@@ -32,8 +32,8 @@ describe("Log In", () => {
 		});
 		describe("When the user enters an invalid password and tries to sign up", () => {
 			beforeEach(() => {
-				cy.get(elements.SignUp.Email).type("test@email.com");
-				cy.get(elements.SignUp.Password).type("Testing123");
+				cy.get(elements.SignUp.Email).type(unregisteredUser.email);
+				cy.get(elements.SignUp.Password).type(unregisteredUser.invalidPassword);
 			});
 			it("Should stay on the log in page", () => {
 				cy.get(elements.SignUp.Create_Account_Button).click();

@@ -30,7 +30,7 @@
 		"test": "jest",
 		"eject": "react-scripts eject",
 		"client-s3-deploy": "aws s3 sync build/ s3://deploy-larks-ui/",
-		"create-cloudfront-invalidation": "aws cloudfront create-invalidation --distribution-id E1KMTDTJ1HCMXR --paths '/build/*'",
+		"create-cloudfront-invalidation": "aws cloudfront create-invalidation --distribution-id E1KMTDTJ1HCMXR --paths /*",
 		"client-deploy": "npm run build && npm run client-s3-deploy && npm run create-cloudfront-invalidation"
 	},
 	"eslintConfig": {

@@ -1,7 +1,11 @@
 export var elements = {
-	Login_Button: "[data-cy=loginBttn]",
 	SignUp_Button: "[data-cy=signUpBttn]",
-	Login_Error_Text: "[data-cy=loginError]",
+	Login: {
+		Email: "[data-cy=loginEmail]",
+		Password: "[data-cy=loginPasswd]",
+		Error_Text: "[data-cy=loginError]",
+		Login_Button: "[data-cy=loginBttn]",
+	},
 	SignUp: {
 		Email: "[data-cy=signUpEmail]",
 		Password: "[data-cy=signUpPasswd]",
