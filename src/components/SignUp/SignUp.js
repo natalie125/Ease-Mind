@@ -1,12 +1,34 @@
+import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+
+axios.interceptors.response.use(undefined, (err) => {
+	const error = err.response;
+	return error;
+});
+
+const handleSubmit = async (email, password) => {
+	var data = {
+		email: email,
+		password: password,
+	};
+
+	const response = await axios.post("http://127.0.0.1:5000/register", data, {
+		headers: {
+			"Content-Type": "application/json",
+			"Access-Control-Allow-Origin": true,
+		},
+	});
+
+	return response;
+};
 
 const SignUp = ({ email, password }) => {
 	const [isValid, setIsValid] = React.useState(null);
 	const navigate = useNavigate();
 
-	const validatesignup = () => {
+	const validatesignup = async () => {
 		const email = document.getElementById("signup_email").value;
 		const password = document.getElementById("signup_password").value;
 
@@ -16,45 +38,39 @@ const SignUp = ({ email, password }) => {
 		if (email.includes("@")) {
 			//add code to check if user exists already
 			if (passwordRules.test(password)) {
-				setIsValid(true);
+				const response = await handleSubmit(email, password);
+				if (response.status == 200) {
+					setIsValid(2);
+				} else setIsValid(1);
 				return;
 			}
 		}
-		setIsValid(false);
+		setIsValid(0);
 	};
 
 	React.useEffect(() => {
-		if (isValid) {
-			navigate("/home");
+		if (isValid == 2) {
+			navigate("/");
 		}
 	});
 
 	return (
 		<div className="App">
 			<div className="App-body">
-				<h1>Please Sign Up</h1>
-				<form>
-					<label>
-						<p>Email</p>
-						<input id="signup_email" />
-					</label>
-
-					<label>
-						<p>Password</p>
-						<input id="signup_password" />
-					</label>
-			
-					<div>
-						<button id="signup_button" onClick={validatesignup}>Sign Up</button>
-					</div>
-
-					{/* <Link to="/">
-						<button> Back </button>
-					</Link> */}
-				</form>
+				<input data-cy="signUpEmail" id="signup_email" />
+				<input data-cy="signUpPasswd" id="signup_password" />
+				<button data-cy="signUpBttn" id="signup_button" onClick={validatesignup}>
+					Sign Up
+				</button>
+				{isValid == 0 && (
+					<p data-cy="signUpError">
+						Please enter a valid email or password. Passwords need to have minimum 10 characters,
+						uppercase, lowercase and special character.
+					</p>
+				)}
+				{isValid == 1 && <p data-cy="signUpError">Email already exists.</p>}
 			</div>
 		</div>
-	
 	);
 };
 
