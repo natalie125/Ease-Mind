@@ -2,7 +2,6 @@ import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-
 import Login from "../Login/Login";
 
 import "../App/App.css";
@@ -10,6 +9,10 @@ import "../App/App.css";
 const INVALIDDETAILS = 0;
 const USEREXISTS = 1;
 const SUCCESS = 2;
+let BASEURL = "";
+process.env.NODE_ENV === 'development' ? BASEURL = process.env.REACT_APP_DEV : BASEURL = process.env.REACT_APP_PROD
+
+
 
 axios.interceptors.response.use(undefined, (err) => {
 	const error = err.response;
@@ -22,7 +25,7 @@ const handleSubmit = async (email, password) => {
 		password: password,
 	};
 
-	const response = await axios.post("http://127.0.0.1:5000/register", data, {
+	const response = await axios.post(BASEURL + "register", data, {
 		headers: {
 			"Content-Type": "application/json",
 			"Access-Control-Allow-Origin": true,
