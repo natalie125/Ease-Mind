@@ -1,24 +1,24 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import WebcamStreamCapture from "../Component/Webcam";
+import WebcamStreamCapture from "../Webcam";
 
-import "../App.css";
+import "../App/App.css";
 
-class Lanre extends Component {
+class Kevin extends Component {
 	render() {
 		return (
 			<div className="App">
 				<header className="App-header">
-					<h1>Lanre's app</h1>
+					<h1>Kevin's app</h1>
 				</header>
-				<body className="App-body">
+				<div className="App-body">
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
-				</body>
+				</div>
 			</div>
 		);
 	}
 }
 
-export default Lanre;
+export default Kevin;
