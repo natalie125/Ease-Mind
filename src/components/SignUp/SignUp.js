@@ -6,7 +6,7 @@ import Login from "../Login/Login";
 
 import "../App/App.css";
 
-const INVALIDDETAILS = 1;
+const INVALIDDETAILS = 0;
 const USEREXISTS = 1;
 const SUCCESS = 2;
 let BASEURL = "";
@@ -35,12 +35,12 @@ const handleSubmit = async (email, password) => {
 	return response;
 };
 
-const SignUp = ({ email, password }) => {
+const SignUp = () => {
 	const [isValid, setIsValid] = React.useState(null);
 
 	const navigate = useNavigate();
 
-	const validatesignup = async () => {
+	const validateSignup = async () => {
 		const email = document.getElementById("signup_email").value;
 		const password = document.getElementById("signup_password").value;
 
@@ -48,7 +48,6 @@ const SignUp = ({ email, password }) => {
 		var passwordRules = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
 		if (email.length > 0 && password.length > 0) {
-			console.log("aaaaa");
 			console.log(email.length);
 			if (email.includes("@")) {
 				if (passwordRules.test(password)) {
@@ -61,6 +60,8 @@ const SignUp = ({ email, password }) => {
 			}
 		}
 		setIsValid(INVALIDDETAILS);
+
+		console.log("isValid");
 	};
 
 	React.useEffect(() => {
@@ -79,56 +80,54 @@ const SignUp = ({ email, password }) => {
 					</nav>
 				</header>
 				<div class="login-form">
-					<form class="login-form">
-						<div class="login-form__content">
-							<div class="login-form__header">Create a new account below:</div>
+					<div class="login-form__content">
+						<div class="login-form__header">Create a new account below:</div>
 
-							<label>
-								<input
-									data-cy="signUpEmail"
-									class="login-form__input"
-									type="text"
-									name="dc_email"
-									placeholder="Email"
-								></input>
-							</label>
+						<label>
+							<input
+								data-cy="signUpEmail"
+								id="signup_email"
+								class="login-form__input"
+								type="text"
+								placeholder="Email"
+							></input>
+						</label>
 
-							<label>
-								<input
-									data-cy="signUpPasswd"
-									class="login-form__input"
-									type="password"
-									name="dc_password"
-									placeholder="Password"
-								></input>
-							</label>
+						<label>
+							<input
+								data-cy="signUpPasswd"
+								id="signup_password"
+								class="login-form__input"
+								type="password"
+								placeholder="Password"
+							></input>
+						</label>
 
-							<div>
-								<button
-									data-cy="signUpBttn"
-									id="signup_button"
-									class="login-form__button"
-									onClick={validatesignup}
-								>
-									Sign Up
-								</button>
-							</div>
-
-							<Link to="/login">
-								<button data-cy="signUpBttn" id="login_button" class="login-form__button">
-									Already have an account? Log In
-								</button>
-							</Link>
-
-							{isValid === INVALIDDETAILS && (
-								<p data-cy="signUpError">
-									Please enter a valid email and password. Passwords need to have minimum 10
-									characters, uppercase, lowercase and special character.
-								</p>
-							)}
-							{isValid === USEREXISTS && <p data-cy="signUpError">Email already exists.</p>}
+						<div>
+							<button
+								data-cy="signUpBttn"
+								id="signup_button"
+								class="login-form__button"
+								onClick={validateSignup}
+							>
+								Sign Up
+							</button>
 						</div>
-					</form>
+
+						<Link to="/login">
+							<button data-cy="signUpBttn" id="login_button" class="login-form__button">
+								Already have an account? Log In
+							</button>
+						</Link>
+
+						{isValid === INVALIDDETAILS && (
+							<p data-cy="signUpError">
+								Please enter a valid email and password. Passwords need to have minimum 10
+								characters, uppercase, lowercase and special character.
+							</p>
+						)}
+						{isValid === USEREXISTS && <p data-cy="signUpError">Email already exists.</p>}
+					</div>
 				</div>
 			</div>
 		</div>
