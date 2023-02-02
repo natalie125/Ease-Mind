@@ -15,6 +15,7 @@ const loginUser = async (credentials) => {
 		.then((response) => {
 			console.log(response);
 			console.log(response.status);
+
 			if (response) {
 				console.log("User logged in");
 				console.log(response);
@@ -29,6 +30,7 @@ const loginUser = async (credentials) => {
 // The login Form
 function Login({ setToken }) {
 	const [isFilled, setIsFilled] = React.useState(null);
+	const [isValid, setIsValid] = React.useState(null);
 
 	// to navigate the user to the home page
 	const navigate = useNavigate();
@@ -39,10 +41,18 @@ function Login({ setToken }) {
 		const password = document.getElementById("login_password").value;
 
 		if (email.length > 0 && password.length > 0) {
+			setIsFilled(true);
+
 			const token = await loginUser({
 				email,
 				password,
 			});
+
+			token.data.token === undefined ? setIsValid(false) : setIsValid(true);
+
+			console.log("AAAAAAAAAA");
+			console.log(token.data.token);
+			console.log(isValid);
 
 			// Set the token of the application
 			console.log("Setting Token");
@@ -101,6 +111,10 @@ function Login({ setToken }) {
 						</Link>
 
 						{isFilled === false && <p data-cy="loginError">Please enter a username and password</p>}
+
+						{isValid === false && (
+							<p data-cy="loginError">Your username or password is incorrect. Please try again.</p>
+						)}
 					</div>
 				</div>
 			</div>
