@@ -13,8 +13,6 @@ const loginUser = async (credentials) => {
 			//   withCredentials: true,
 		})
 		.then((response) => {
-			console.log(response);
-			console.log(response.status);
 			if (response) {
 				console.log("User logged in");
 				console.log(response);
@@ -22,7 +20,6 @@ const loginUser = async (credentials) => {
 			}
 			return response;
 		});
-	console.log(response);
 	return response;
 };
 
@@ -39,6 +36,8 @@ function Login({ setToken }) {
 	// This function to calls the login function which returns after a login request
 	const handleSubmit = async (e) => {
 		if (email.length > 0 && password.length > 0) {
+			setIsFilled(true);
+
 			e.preventDefault();
 			const token = await loginUser({
 				email,
@@ -55,7 +54,11 @@ function Login({ setToken }) {
 			return;
 		}
 
+		console.log(isFilled);
+
 		setIsFilled(false);
+
+		return;
 	};
 
 	// This is rendered to the user
@@ -70,44 +73,40 @@ function Login({ setToken }) {
 					</nav>
 				</header>
 				<div class="login-form">
-					<form class="login-form" onSubmit={handleSubmit}>
-						<div class="login-form__content">
-							<div class="login-form__header">Log into an existing account below:</div>
-							<label>
-								<input
-									id="login_email"
-									class="login-form__input"
-									type="text"
-									placeholder="Email"
-									onChange={(e) => setEmail(e.target.value)}
-								/>
-							</label>
+					<div class="login-form__content">
+						<div class="login-form__header">Log into an existing account below:</div>
+						<label>
+							<input
+								id="login_email"
+								class="login-form__input"
+								type="text"
+								placeholder="Email"
+								onChange={(e) => setEmail(e.target.value)}
+							/>
+						</label>
 
-							<label>
-								<input
-									id="login_password"
-									class="login-form__input"
-									type="password"
-									placeholder="Password"
-									onChange={(e) => setPassword(e.target.value)}
-								/>
-							</label>
+						<label>
+							<input
+								id="login_password"
+								class="login-form__input"
+								type="password"
+								placeholder="Password"
+								onChange={(e) => setPassword(e.target.value)}
+							/>
+						</label>
 
-							{isFilled === false && (
-								<p data-cy="loginError">Please enter a username and password</p>
-							)}
-
-							<div>
-								<button class="login-form__button" type="submit">
-									Login
-								</button>
-							</div>
-
-							<Link to="/signup">
-								<button class="login-form__button"> Sign Up </button>
-							</Link>
+						<div>
+							<button class="login-form__button" onClick={handleSubmit}>
+								Login
+							</button>
 						</div>
-					</form>
+
+						<Link to="/signup">
+							<button class="login-form__button"> Sign Up </button>
+						</Link>
+
+						{isFilled === false && <p data-cy="loginError">Please enter a username and password</p>}
+					</div>
 				</div>
 			</div>
 		</div>
