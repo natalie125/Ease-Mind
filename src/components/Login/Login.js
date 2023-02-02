@@ -66,19 +66,19 @@ function Login({ setToken }) {
 		<div className="App">
 			<div className="App-body">
 				<header className="App-header">
-					<nav class="navbar navbar-dark bg-dark" id="navbar">
+					<nav className="navbar navbar-dark bg-dark" id="navbar">
 						{/* <a class="navbar-brand" href="#"></a> */}
 						<h1>LARKS APP</h1>
 					</nav>
 				</header>
-				<div class="login-form">
-					<form class="login-form" onSubmit={handleSubmit}>
-						<div class="login-form__content">
-							<div class="login-form__header">Log into an existing account below:</div>
+				<div className="login-form">
+					<form className="login-form" onSubmit={handleSubmit}>
+						<div className="login-form__content">
+							<div className="login-form__header">Log into an existing account below:</div>
 							<label>
 								<input
 									id="login_email"
-									class="login-form__input"
+									className="login-form__input"
 									type="text"
 									placeholder="Email"
 									onChange={(e) => setEmail(e.target.value)}
@@ -88,7 +88,7 @@ function Login({ setToken }) {
 							<label>
 								<input
 									id="login_password"
-									class="login-form__input"
+									className="login-form__input"
 									type="password"
 									placeholder="Password"
 									onChange={(e) => setPassword(e.target.value)}
@@ -100,13 +100,13 @@ function Login({ setToken }) {
 							)}
 
 							<div>
-								<button class="login-form__button" type="submit">
+								<button className="login-form__button" type="submit">
 									Login
 								</button>
 							</div>
 
 							<Link to="/signup">
-								<button class="login-form__button"> Sign Up </button>
+								<button className="login-form__button"> Sign Up </button>
 							</Link>
 						</div>
 					</form>
