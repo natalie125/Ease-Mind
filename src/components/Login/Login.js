@@ -7,14 +7,16 @@ import { useNavigate } from "react-router-dom";
 let BASEURL = "";
 process.env.NODE_ENV === 'development' ? BASEURL = process.env.REACT_APP_DEV : BASEURL = process.env.REACT_APP_PROD
 // This fucntion is userd to login the user
-const loginUser = (credentials) => {
+const loginUser = async (credentials) => {
 	// e.preventDefault();
-	const response = axios
+	const response = await axios
 		.post(BASEURL + "login", JSON.stringify({ credentials }), {
 			headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": true },
 			//   withCredentials: true,
 		})
 		.then((response) => {
+			console.log(response);
+			console.log(response.status);
 			if (response) {
 				console.log("User logged in");
 				console.log(response);
@@ -22,34 +24,28 @@ const loginUser = (credentials) => {
 			}
 			return response;
 		});
+	console.log(response);
 	return response;
 };
 
 // The login Form
 function Login({ setToken }) {
+	const [email, setEmail] = useState();
+	const [password, setPassword] = useState();
+
 	const [isFilled, setIsFilled] = React.useState(null);
-	const [isValid, setIsValid] = React.useState(null);
 
 	// to navigate the user to the home page
 	const navigate = useNavigate();
 
 	// This function to calls the login function which returns after a login request
-	const handleSubmit = () => {
-		const email = document.getElementById("login_email").value;
-		const password = document.getElementById("login_password").value;
-
+	const handleSubmit = async (e) => {
 		if (email.length > 0 && password.length > 0) {
-			setIsFilled(true);
-
-			const token = loginUser({
+			e.preventDefault();
+			const token = await loginUser({
 				email,
 				password,
 			});
-
-			console.log(" TOK");
-			console.log(token);
-
-			token ? setIsValid(true) : setIsValid(false);
 
 			// Set the token of the application
 			console.log("Setting Token");
@@ -57,12 +53,11 @@ function Login({ setToken }) {
 
 			// Go to home page after successful login
 			navigate("/home", { replace: true });
+
 			return;
 		}
 
 		setIsFilled(false);
-
-		return;
 	};
 
 	// This is rendered to the user
@@ -77,37 +72,44 @@ function Login({ setToken }) {
 					</nav>
 				</header>
 				<div class="login-form">
-					<div class="login-form__content">
-						<div class="login-form__header">Log into an existing account below:</div>
-						<label>
-							<input id="login_email" class="login-form__input" type="text" placeholder="Email" />
-						</label>
+					<form class="login-form" onSubmit={handleSubmit}>
+						<div class="login-form__content">
+							<div class="login-form__header">Log into an existing account below:</div>
+							<label>
+								<input
+									id="login_email"
+									class="login-form__input"
+									type="text"
+									placeholder="Email"
+									onChange={(e) => setEmail(e.target.value)}
+								/>
+							</label>
 
-						<label>
-							<input
-								id="login_password"
-								class="login-form__input"
-								type="password"
-								placeholder="Password"
-							/>
-						</label>
+							<label>
+								<input
+									id="login_password"
+									class="login-form__input"
+									type="password"
+									placeholder="Password"
+									onChange={(e) => setPassword(e.target.value)}
+								/>
+							</label>
 
-						<div>
-							<button class="login-form__button" onClick={handleSubmit}>
-								Login
-							</button>
+							{isFilled === false && (
+								<p data-cy="loginError">Please enter a username and password</p>
+							)}
+
+							<div>
+								<button class="login-form__button" type="submit">
+									Login
+								</button>
+							</div>
+
+							<Link to="/signup">
+								<button class="login-form__button"> Sign Up </button>
+							</Link>
 						</div>
-
-						<Link to="/signup">
-							<button class="login-form__button"> Sign Up </button>
-						</Link>
-
-						{isFilled === false && <p data-cy="loginError">Please enter a username and password</p>}
-
-						{isValid === false && (
-							<p data-cy="loginError">Your username or password is incorrect. Please try again.</p>
-						)}
-					</div>
+					</form>
 				</div>
 			</div>
 		</div>
