@@ -110,10 +110,16 @@ function Login({ setToken }) {
 							<button class="login-form__button"> Sign Up </button>
 						</Link>
 
-						{isFilled === false && <p data-cy="loginError">Please enter a username and password</p>}
+						{isFilled === false && (
+							<p data-cy="loginError" class="error-message">
+								Please enter a username and password
+							</p>
+						)}
 
 						{isValid === false && (
-							<p data-cy="loginError">Your username or password is incorrect. Please try again.</p>
+							<p data-cy="loginError" class="error-message">
+								Your username or password is incorrect. Please try again.
+							</p>
 						)}
 					</div>
 				</div>

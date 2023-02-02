@@ -118,12 +118,16 @@ const SignUp = () => {
 						</Link>
 
 						{isValid === INVALIDDETAILS && (
-							<p data-cy="signUpError">
+							<p data-cy="signUpError" class="error-message">
 								Please enter a valid email and password. Passwords need to have minimum 10
 								characters, uppercase, lowercase and special character.
 							</p>
 						)}
-						{isValid === USEREXISTS && <p data-cy="signUpError">Email already exists.</p>}
+						{isValid === USEREXISTS && (
+							<p data-cy="signUpError" class="error-message">
+								A user with this email already exixts.
+							</p>
+						)}
 					</div>
 				</div>
 			</div>
