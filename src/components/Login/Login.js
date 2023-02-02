@@ -1,106 +1,118 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 import "../App/App.css";
-import { Navigate } from 'react-router'
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 
 // This fucntion is userd to login the user
 const loginUser = async (credentials) => {
 	// e.preventDefault();
-	  const response = await axios.post("http://127.0.0.1:5000/login",
-		JSON.stringify({ credentials}),
-		{
-		  headers: { "Content-Type": "application/json",
-		  "Access-Control-Allow-Origin" : true,
-		 },
-		//   withCredentials: true,
-		}
-	  ).then((response) => {
-		console.log(response)
-		console.log(response.status)
-		if (response){
-			console.log("User logged in")
-			console.log(response)
-			sessionStorage.setItem('token', JSON.stringify(response.data.token));
-		}
-		return response;
-	})
-	  console.log(response);
-	  return response;
-}
+	const response = await axios
+		.post("http://127.0.0.1:5000/login", JSON.stringify({ credentials }), {
+			headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": true },
+			//   withCredentials: true,
+		})
+		.then((response) => {
+			console.log(response);
+			console.log(response.status);
+			if (response) {
+				console.log("User logged in");
+				console.log(response);
+				sessionStorage.setItem("token", JSON.stringify(response.data.token));
+			}
+			return response;
+		});
+	console.log(response);
+	return response;
+};
 
 // The login Form
-function Login({setToken}) {
+function Login({ setToken }) {
 	const [email, setEmail] = useState();
-  	const [password, setPassword] = useState();
+	const [password, setPassword] = useState();
+
+	const [isFilled, setIsFilled] = React.useState(null);
 
 	// to navigate the user to the home page
 	const navigate = useNavigate();
 
 	// This function to calls the login function which returns after a login request
-	const handleSubmit = async e => {
-	e.preventDefault();
-	const token = await loginUser({
-		email,
-		password
-	});
+	const handleSubmit = async (e) => {
+		if (email.length > 0 && password.length > 0) {
+			e.preventDefault();
+			const token = await loginUser({
+				email,
+				password,
+			});
 
-	// Set the token of the application
-	console.log("Setting Token");
-	setToken(token);
+			// Set the token of the application
+			console.log("Setting Token");
+			setToken(token);
 
-	// Go to home page after successful login
-	navigate('/home', { replace: true });
-	}
+			// Go to home page after successful login
+			navigate("/home", { replace: true });
 
+			return;
+		}
 
-	// This is rendered to the user 
+		setIsFilled(false);
+	};
+
+	// This is rendered to the user
 	// The Login form that is displayed to the user
 	return (
 		<div className="App">
 			<div className="App-body">
-			<header className="App-header">
-				<nav class="navbar navbar-dark bg-dark" id = 'navbar'>
-					{/* <a class="navbar-brand" href="#"></a> */}
-					<h1>LARKS APP</h1>
-				</nav>
-			</header>
+				<header className="App-header">
+					<nav class="navbar navbar-dark bg-dark" id="navbar">
+						{/* <a class="navbar-brand" href="#"></a> */}
+						<h1>LARKS APP</h1>
+					</nav>
+				</header>
 				<div class="login-form">
+					<form class="login-form" onSubmit={handleSubmit}>
+						<div class="login-form__content">
+							<div class="login-form__header">Log into an existing account below:</div>
+							<label>
+								<input
+									id="login_email"
+									class="login-form__input"
+									type="text"
+									placeholder="Email"
+									onChange={(e) => setEmail(e.target.value)}
+								/>
+							</label>
 
-				<form class="login-form" onSubmit={handleSubmit}>
-					<div class="login-form__content">
-						<div class="login-form__header">Log into an existing account below:</div>  
 							<label>
-								<input id="login_email" class="login-form__input" type="text" placeholder="Email" onChange={e => setEmail(e.target.value)} />
+								<input
+									id="login_password"
+									class="login-form__input"
+									type="password"
+									placeholder="Password"
+									onChange={(e) => setPassword(e.target.value)}
+								/>
 							</label>
-							
-							<label>
-								<input id="login_password" class="login-form__input" type="password" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
-							</label>
+
+							{isFilled === false && (
+								<p data-cy="loginError">Please enter a username and password</p>
+							)}
 
 							<div>
-								<button class ="login-form__button" type="submit">Login</button>
+								<button class="login-form__button" type="submit">
+									Login
+								</button>
 							</div>
 
 							<Link to="/signup">
-								<button class ="login-form__button"> Sign Up </button>
+								<button class="login-form__button"> Sign Up </button>
 							</Link>
-					</div>
-					
-				</form>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
-		</div>
 	);
-  }
-
-
-
-
-
+}
 
 // const Login = ({ setToken }) => {
 // 	const [isFilled, setIsFilled] = React.useState(null);
@@ -158,14 +170,13 @@ function Login({setToken}) {
 // 			<button id="login_button" onClick={validateLogin}>
 // 				Login
 // 			</button>
-			
+
 // 			{isFilled === false && <p>Please enter a username and password</p>}
 
 // 		</>
-		
+
 // 	);
 // };
- 
 
 // Login.propTypes = {
 // 	setToken: PropTypes.func.isRequired
