@@ -46,104 +46,105 @@
 	}
 }
 
+body {
+	background-color: lightblue;
+}
 
-body{
-    background-color: lightblue;
+.error-message {
+	color: #ff0000;
+	font-size: calc(3px + 2vmin);
 }
 
 .login-form,
 .login-form * {
-box-sizing: border-box;
-font-family: 'Source Sans Pro';
+	box-sizing: border-box;
+	font-family: "Source Sans Pro";
 }
 
 .login-form {
-max-width: 550px;
-margin: 0 auto;
-border-radius: 5px;
-overflow: hidden;
-/* box-shadow: 0 0 15px rgba(0, 0, 0, 0.15); */
+	max-width: 550px;
+	margin: 0 auto;
+	border-radius: 5px;
+	overflow: hidden;
+	/* box-shadow: 0 0 15px rgba(0, 0, 0, 0.15); */
 }
 
 
 .login-form__title-box {
-padding: 30px;
-background: #005eb8;
-text-align: center;
+	padding: 30px;
+	background: #005eb8;
+	text-align: center;
 }
 
-
-
 .login-form__content {
-padding: 30px;
-background: #eeeeee;
-max-height: 50%;
+	padding: 30px;
+	background: #eeeeee;
+	max-height: 50%;
 }
 
 .login-form__header {
-margin-bottom: 15px;
-text-align: center;
-color: #333333;
+	margin-bottom: 15px;
+	text-align: center;
+	color: #333333;
 }
 
 .login-form__input {
-width: 100%;
-margin-bottom: 10px;
-padding: 10px;
-border-radius: 5px;
-border: 2px solid #dddddd;
-background: #ffffff;
-outline: none;
-transition: border-color 0.5s;
+	width: 100%;
+	margin-bottom: 10px;
+	padding: 10px;
+	border-radius: 5px;
+	border: 2px solid #dddddd;
+	background: #ffffff;
+	outline: none;
+	transition: border-color 0.5s;
 }
 
 .login-form__input:focus {
-border-color: #005eb8;
+	border-color: #005eb8;
 }
 
 .login-form__input::placeholder {
-color: #aaaaaa;
+	color: #aaaaaa;
 }
 
 .login-form__button {
-padding: 10px;
-color: #ffffff;
-font-weight: bold;
-background:#005eb8;
-width: 100%;
-border: none;
-outline: none;
-border-radius: 5px;
-cursor: pointer;
-margin-bottom: 10px;
+	padding: 10px;
+	color: #ffffff;
+	font-weight: bold;
+	background: #005eb8;
+	width: 100%;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-bottom: 10px;
 }
 
 .login-form__links {
-margin-top: 15px;
-text-align: center;
+	margin-top: 15px;
+	text-align: center;
 }
 
 .login-form__link {
-font-size: 0.9em;
-color: #005eb8;
-text-decoration: none;
+	font-size: 0.9em;
+	color: #005eb8;
+	text-decoration: none;
 }
 
-
-#EnterText{
-    margin-bottom: 10px;
+#EnterText {
+	margin-bottom: 10px;
 }
-  
-#vidCapture{
+
+#vidCapture {
 	padding: 10px;
 	align-items: center;
 }
 
 /* Right now webcam is using the whole page size for resizing, not the element that it is within */
 
-.webcam{
+.webcam {
 	width: fit-content;
-	height:fit-content;
+	height: fit-content;
 	border-radius: 5px;
 }
 
@@ -164,33 +165,30 @@ text-decoration: none;
 	margin: 4px 2px;
 	transition: 0.3s;
 	cursor: pointer;
-	border-radius: 50px;
-  }
-  
-  @media (max-width: 800px) {
-	.btn-row, .btn-row-2 {
-	  flex-direction: column;
+}
+
+@media (max-width: 800px) {
+	.btn-row,
+	.btn-row-2 {
+		flex-direction: column;
 	}
-  
+
 	.btn-choice {
-	  width: 90%;
+		width: 90%;
 	}
-  }
+}
 
-
-  .webcam-capture-holder {
+.webcam-capture-holder {
 	margin: 0 auto;
 	border-radius: 5px;
 	width: 100%;
-  }
-  
+}
 
-  .logo-image {
-	
+.logo-image {
 	background-size: cover;
 	height: 100px;
 	width: 100px;
 	display: block;
-  	margin-left: auto;
-  	margin-right: auto;
-  }
+	margin-left: auto;
+	margin-right: auto;
+}

@@ -17,6 +17,7 @@ const loginUser = async (credentials) => {
 		.then((response) => {
 			console.log(response);
 			console.log(response.status);
+
 			if (response) {
 				console.log("User logged in");
 				console.log(response);
@@ -30,22 +31,30 @@ const loginUser = async (credentials) => {
 
 // The login Form
 function Login({ setToken }) {
-	const [email, setEmail] = useState();
-	const [password, setPassword] = useState();
-
 	const [isFilled, setIsFilled] = React.useState(null);
+	const [isValid, setIsValid] = React.useState(null);
 
 	// to navigate the user to the home page
 	const navigate = useNavigate();
 
 	// This function to calls the login function which returns after a login request
 	const handleSubmit = async (e) => {
+		const email = document.getElementById("login_email").value;
+		const password = document.getElementById("login_password").value;
+
 		if (email.length > 0 && password.length > 0) {
-			e.preventDefault();
+			setIsFilled(true);
+
 			const token = await loginUser({
 				email,
 				password,
 			});
+
+			token.data.token === undefined ? setIsValid(false) : setIsValid(true);
+
+			console.log("AAAAAAAAAA");
+			console.log(token.data.token);
+			console.log(isValid);
 
 			// Set the token of the application
 			console.log("Setting Token");
@@ -71,45 +80,50 @@ function Login({ setToken }) {
 						<h1>LARKS APP</h1>
 					</nav>
 				</header>
-				<div className="login-form">
-					<form className="login-form" onSubmit={handleSubmit}>
-						<div className="login-form__content">
-							<div className="login-form__header">Log into an existing account below:</div>
-							<label>
-								<input
-									id="login_email"
-									className="login-form__input"
-									type="text"
-									placeholder="Email"
-									onChange={(e) => setEmail(e.target.value)}
-								/>
-							</label>
+				<div class="login-form">
+					<div class="login-form__content">
+						<div class="login-form__header">Log into an existing account below:</div>
+						<label>
+							<input id="login_email" class="login-form__input" type="text" placeholder="Email" />
+						</label>
 
-							<label>
-								<input
-									id="login_password"
-									className="login-form__input"
-									type="password"
-									placeholder="Password"
-									onChange={(e) => setPassword(e.target.value)}
-								/>
-							</label>
+						<label>
+							<input
+								id="login_password"
+								class="login-form__input"
+								type="password"
+								placeholder="Password"
+							/>
+						</label>
 
-							{isFilled === false && (
-								<p data-cy="loginError">Please enter a username and password</p>
-							)}
-
-							<div>
-								<button className="login-form__button" type="submit">
-									Login
-								</button>
-							</div>
-
-							<Link to="/signup">
-								<button className="login-form__button"> Sign Up </button>
-							</Link>
+						<div>
+							<button
+								class="login-form__button"
+								type="submit"
+								onClick={async () => {
+									await handleSubmit();
+								}}
+							>
+								Login
+							</button>
 						</div>
-					</form>
+
+						<Link to="/signup">
+							<button class="login-form__button"> Sign Up </button>
+						</Link>
+
+						{isFilled === false && (
+							<p data-cy="loginError" class="error-message">
+								Please enter a username and password
+							</p>
+						)}
+
+						{isValid === false && (
+							<p data-cy="loginError" class="error-message">
+								Your username or password is incorrect. Please try again.
+							</p>
+						)}
+					</div>
 				</div>
 			</div>
 		</div>
