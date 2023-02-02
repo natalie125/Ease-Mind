@@ -3,6 +3,10 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 import "../App/App.css";
+import canopy_logo from '../../images/canopy-logo.png';
+import dipstik_logo from '../../images/dipstik-logo.png';
+import stroke_logo from '../../images/stroke-logo.png';
+import tonsilitis_detector_logo from '../../images/tonsilitis-detector-logo.png';
 
 class Home extends Component {
 	getEC2 = () => {
@@ -28,31 +32,32 @@ class Home extends Component {
 				<header className="App-header">
 					<h1>Home</h1>
 				</header>
-				<body className="login-form">
+					<div className="btn-row">
+						<Link to="/alex">
+							<img className="btn-choice" src={canopy_logo} alt="Logo" />
+							{/* <button className="btn-choice" >Alex's App</button> */}
+						</Link>
+						
+						<Link to="/kevin">
+							<img className="btn-choice" src={canopy_logo} alt="Logo" />
+							{/* <button className="btn-choice" >Kevin's App</button> */}
+						</Link>
 
-					<div className = "btn-row">
-					<Link to="/alex">
-						<button className="btn-choice">Alex's App</button>
-					</Link>
-					<Link to="/alex">
-						<button className="btn-choice">Kevins's App</button>
-					</Link>
-					<Link to="/alex">
-						<button className="btn-choice">Lanre's App</button>
-					</Link>
-					</div>
+						<Link to="/lanre">
+							<img className="btn-choice" src={dipstik_logo} alt="Logo" />
+							{/* <button className="btn-choice" >Lanre's App</button> */}
+						</Link>
+						<Link to="/ramat">
+							<img className="btn-choice" src={stroke_logo} alt="Logo" />
+							{/* <button className="btn-choice" >Ramat's App</button> */}
 
-					<div className = "btn-row">
-					<Link to="/alex">
-						<button className="btn-choice">Shreyas' App</button>
-					</Link>
-					<Link to="/alex">
-						<button className="btn-choice">Ramat's App</button>
-					</Link>
+						</Link>
+						<Link to="/shreyas">
+							<img className="btn-choice" src={tonsilitis_detector_logo} alt="Logo" />
+							{/* <button className="btn-choice" >Shreyas' App</button> */}
+						</Link>
+						<button onClick={this.getEC2}> Get EC2 </button>
 					</div>
-					
-					<button onClick={this.getEC2}> Get EC2 </button>
-				</body>
 			</div>
 		);
 	}

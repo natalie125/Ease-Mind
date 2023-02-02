@@ -75,7 +75,7 @@ function Login({ setToken }) {
 		<div className="App">
 			<div className="App-body">
 				<header className="App-header">
-					<nav class="navbar navbar-dark bg-dark" id="navbar">
+					<nav className="navbar navbar-dark bg-dark" id="navbar">
 						{/* <a class="navbar-brand" href="#"></a> */}
 						<h1>LARKS APP</h1>
 					</nav>
