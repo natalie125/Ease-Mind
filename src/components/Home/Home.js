@@ -57,7 +57,7 @@ class Home extends Component {
 								<img className="btn-choice" src={tonsilitis_detector_logo} alt="Logo" />
 								{/* <button className="btn-choice" >Shreyas' App</button> */}
 							</Link>
-							<button onClick={this.getEC2}> Get EC2 </button>
+							{/* <button onClick={this.getEC2}> Get EC2 </button> */}
 						</div>
 					</div>
 			</div>

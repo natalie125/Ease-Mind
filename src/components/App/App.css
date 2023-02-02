@@ -160,7 +160,7 @@ body {
 	display: flex;
 	/* flex-direction: column; */
 	flex-wrap: wrap;
-	border: 1px solid red;
+	/* border: 1px solid red; */
 	align-items: center;
 	justify-content: center;
 	width: 40%;
@@ -182,7 +182,7 @@ body {
 	transition: 0.3s;
 	cursor: pointer;
 	border-radius: 20px;
-	border: 1px solid red;
+	/* border: 1px solid red; */
 }
 
 @media (max-width: 800px) {
