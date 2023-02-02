@@ -5,9 +5,9 @@ import "../App/App.css";
 import { useNavigate } from "react-router-dom";
 
 // This fucntion is userd to login the user
-const loginUser = async (credentials) => {
+const loginUser = (credentials) => {
 	// e.preventDefault();
-	const response = await axios
+	const response = axios
 		.post("http://127.0.0.1:5000/login", JSON.stringify({ credentials }), {
 			headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": true },
 			//   withCredentials: true,
@@ -25,24 +25,29 @@ const loginUser = async (credentials) => {
 
 // The login Form
 function Login({ setToken }) {
-	const [email, setEmail] = useState();
-	const [password, setPassword] = useState();
-
 	const [isFilled, setIsFilled] = React.useState(null);
+	const [isValid, setIsValid] = React.useState(null);
 
 	// to navigate the user to the home page
 	const navigate = useNavigate();
 
 	// This function to calls the login function which returns after a login request
-	const handleSubmit = async (e) => {
+	const handleSubmit = () => {
+		const email = document.getElementById("login_email").value;
+		const password = document.getElementById("login_password").value;
+
 		if (email.length > 0 && password.length > 0) {
 			setIsFilled(true);
 
-			e.preventDefault();
-			const token = await loginUser({
+			const token = loginUser({
 				email,
 				password,
 			});
+
+			console.log(" TOK");
+			console.log(token);
+
+			token ? setIsValid(true) : setIsValid(false);
 
 			// Set the token of the application
 			console.log("Setting Token");
@@ -50,11 +55,8 @@ function Login({ setToken }) {
 
 			// Go to home page after successful login
 			navigate("/home", { replace: true });
-
 			return;
 		}
-
-		console.log(isFilled);
 
 		setIsFilled(false);
 
@@ -76,13 +78,7 @@ function Login({ setToken }) {
 					<div class="login-form__content">
 						<div class="login-form__header">Log into an existing account below:</div>
 						<label>
-							<input
-								id="login_email"
-								class="login-form__input"
-								type="text"
-								placeholder="Email"
-								onChange={(e) => setEmail(e.target.value)}
-							/>
+							<input id="login_email" class="login-form__input" type="text" placeholder="Email" />
 						</label>
 
 						<label>
@@ -91,7 +87,6 @@ function Login({ setToken }) {
 								class="login-form__input"
 								type="password"
 								placeholder="Password"
-								onChange={(e) => setPassword(e.target.value)}
 							/>
 						</label>
 
@@ -106,6 +101,10 @@ function Login({ setToken }) {
 						</Link>
 
 						{isFilled === false && <p data-cy="loginError">Please enter a username and password</p>}
+
+						{isValid === false && (
+							<p data-cy="loginError">Your username or password is incorrect. Please try again.</p>
+						)}
 					</div>
 				</div>
 			</div>
