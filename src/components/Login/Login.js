@@ -4,11 +4,13 @@ import { Link } from "react-router-dom";
 import "../App/App.css";
 import { useNavigate } from "react-router-dom";
 
+let BASEURL = "";
+process.env.NODE_ENV === 'development' ? BASEURL = process.env.REACT_APP_DEV : BASEURL = process.env.REACT_APP_PROD
 // This fucntion is userd to login the user
 const loginUser = async (credentials) => {
 	// e.preventDefault();
 	const response = await axios
-		.post("http://127.0.0.1:5000/login", JSON.stringify({ credentials }), {
+		.post(BASEURL + "login", JSON.stringify({ credentials }), {
 			headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": true },
 			//   withCredentials: true,
 		})
