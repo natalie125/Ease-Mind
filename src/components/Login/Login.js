@@ -28,9 +28,6 @@ const loginUser = async (credentials) => {
 
 // The login Form
 function Login({ setToken }) {
-	const [email, setEmail] = useState();
-	const [password, setPassword] = useState();
-
 	const [isFilled, setIsFilled] = React.useState(null);
 
 	// to navigate the user to the home page
@@ -38,8 +35,10 @@ function Login({ setToken }) {
 
 	// This function to calls the login function which returns after a login request
 	const handleSubmit = async (e) => {
+		const email = document.getElementById("login_email").value;
+		const password = document.getElementById("login_password").value;
+
 		if (email.length > 0 && password.length > 0) {
-			e.preventDefault();
 			const token = await loginUser({
 				email,
 				password,
@@ -70,44 +69,39 @@ function Login({ setToken }) {
 					</nav>
 				</header>
 				<div class="login-form">
-					<form class="login-form" onSubmit={handleSubmit}>
-						<div class="login-form__content">
-							<div class="login-form__header">Log into an existing account below:</div>
-							<label>
-								<input
-									id="login_email"
-									class="login-form__input"
-									type="text"
-									placeholder="Email"
-									onChange={(e) => setEmail(e.target.value)}
-								/>
-							</label>
+					<div class="login-form__content">
+						<div class="login-form__header">Log into an existing account below:</div>
+						<label>
+							<input id="login_email" class="login-form__input" type="text" placeholder="Email" />
+						</label>
 
-							<label>
-								<input
-									id="login_password"
-									class="login-form__input"
-									type="password"
-									placeholder="Password"
-									onChange={(e) => setPassword(e.target.value)}
-								/>
-							</label>
+						<label>
+							<input
+								id="login_password"
+								class="login-form__input"
+								type="password"
+								placeholder="Password"
+							/>
+						</label>
 
-							{isFilled === false && (
-								<p data-cy="loginError">Please enter a username and password</p>
-							)}
-
-							<div>
-								<button class="login-form__button" type="submit">
-									Login
-								</button>
-							</div>
-
-							<Link to="/signup">
-								<button class="login-form__button"> Sign Up </button>
-							</Link>
+						<div>
+							<button
+								class="login-form__button"
+								type="submit"
+								onClick={async () => {
+									await handleSubmit();
+								}}
+							>
+								Login
+							</button>
 						</div>
-					</form>
+
+						<Link to="/signup">
+							<button class="login-form__button"> Sign Up </button>
+						</Link>
+
+						{isFilled === false && <p data-cy="loginError">Please enter a username and password</p>}
+					</div>
 				</div>
 			</div>
 		</div>
