@@ -2,7 +2,6 @@ import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Login from "../Login/Login";
 
 import "../App/App.css";
 
@@ -74,20 +73,20 @@ const SignUp = () => {
 		<div className="App">
 			<div className="App-body">
 				<header className="App-header-primary">
-					<nav class="navbar navbar-dark bg-dark" id="navbar">
+					<nav className="navbar navbar-dark bg-dark" id="navbar">
 						{/* <a class="navbar-brand" href="#"></a> */}
 						<h1> LARKS APP</h1>
 					</nav>
 				</header>
-				<div class="login-form">
-					<div class="login-form__content">
-						<div class="login-form__header">Create a new account below:</div>
+				<div className="login-form">
+					<div className="login-form__content">
+						<div className="login-form__header">Create a new account below:</div>
 
 						<label>
 							<input
 								data-cy="signUpEmail"
 								id="signup_email"
-								class="login-form__input"
+								className="login-form__input"
 								type="text"
 								placeholder="Email"
 							></input>
@@ -97,7 +96,7 @@ const SignUp = () => {
 							<input
 								data-cy="signUpPasswd"
 								id="signup_password"
-								class="login-form__input"
+								className="login-form__input"
 								type="password"
 								placeholder="Password"
 							></input>
@@ -107,7 +106,7 @@ const SignUp = () => {
 							<button
 								data-cy="signUpBttn"
 								id="signup_button"
-								class="login-form__button"
+								className="login-form__button"
 								onClick={validateSignup}
 							>
 								Sign Up
@@ -115,19 +114,19 @@ const SignUp = () => {
 						</div>
 
 						<Link to="/login">
-							<button data-cy="signUpBttn" id="login_button" class="login-form__button">
+							<button data-cy="signUpBttn" id="login_button" className="login-form__button">
 								Already have an account? Log In
 							</button>
 						</Link>
 
 						{isValid === INVALIDDETAILS && (
-							<p data-cy="signUpError" class="error-message">
+							<p data-cy="signUpError" className="error-message">
 								Please enter a valid email and password. Passwords need to have minimum 10
 								characters, uppercase, lowercase and special character.
 							</p>
 						)}
 						{isValid === USEREXISTS && (
-							<p data-cy="signUpError" class="error-message">
+							<p data-cy="signUpError" className="error-message">
 								A user with this email already exixts.
 							</p>
 						)}

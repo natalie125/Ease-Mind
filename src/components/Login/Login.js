@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../App/App.css";
@@ -82,17 +82,22 @@ function Login({ setToken }) {
 						<h1>LARKS APP</h1>
 					</nav>
 				</header>
-				<div class="login-form">
-					<div class="login-form__content">
-						<div class="login-form__header">Log into an existing account below:</div>
+				<div className="login-form">
+					<div className="login-form__content">
+						<div className="login-form__header">Log into an existing account below:</div>
 						<label>
-							<input id="login_email" class="login-form__input" type="text" placeholder="Email" />
+							<input
+								id="login_email"
+								className="login-form__input"
+								type="text"
+								placeholder="Email"
+							/>
 						</label>
 
 						<label>
 							<input
 								id="login_password"
-								class="login-form__input"
+								className="login-form__input"
 								type="password"
 								placeholder="Password"
 							/>
@@ -100,7 +105,7 @@ function Login({ setToken }) {
 
 						<div>
 							<button
-								class="login-form__button"
+								className="login-form__button"
 								type="submit"
 								onClick={async () => {
 									await handleSubmit();
@@ -111,17 +116,17 @@ function Login({ setToken }) {
 						</div>
 
 						<Link to="/signup">
-							<button class="login-form__button"> Sign Up </button>
+							<button className="login-form__button"> Sign Up </button>
 						</Link>
 
 						{isFilled === false && (
-							<p data-cy="loginError" class="error-message">
+							<p data-cy="loginError" className="error-message">
 								Please enter a username and password
 							</p>
 						)}
 
 						{isValid === false && (
-							<p data-cy="loginError" class="error-message">
+							<p data-cy="loginError" className="error-message">
 								Your username or password is incorrect. Please try again.
 							</p>
 						)}
