@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import WebcamStreamCapture from "../Webcam";
+import WebcamCapture from "../camera/camera";
+
+
 
 import "../App/App.css";
 import Header from "../Header";
@@ -11,11 +13,15 @@ class Shreyas extends Component {
 			<div className="App">
 				<Header />
 				<h1>Shreyas' app</h1>
-				<div className="App-body">
+				<body>
+					<div className="webcam-capture-holder">
+						<p>Webcam capture below (to use flash please brighten your screen)</p>
+						<WebcamCapture />
+					</div>
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
-				</div>
+				</body>
 			</div>
 		);
 	}
