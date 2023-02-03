@@ -2,19 +2,20 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 import "../App/App.css";
-import Header from "../Header";
 
 class Alex extends Component {
 	render() {
 		return (
 			<div className="App">
-				<Header />
-				<h1>Alex's app</h1>
+				<header className="App-header">
+					<h1>Alex's app</h1>
+				</header>
 				<body>
-					<div className="webcam-capture-holder">
-						<p>Webcam capture below</p>
-						<WebcamStreamCapture />
-					</div>
+				<div>
+
+						<p>Second nested page</p>
+					
+				</div>
 					<Link to="/home">
 						<button> Back </button>
 					</Link>

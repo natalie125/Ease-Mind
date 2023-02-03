@@ -7,6 +7,7 @@ import Home from "./components/Home/Home";
 
 import Lanre from "./components/Lanre/Lanre";
 import Alex from "./components/Alex/Alex";
+import Alex2 from "./components/Alex/Alex2";
 import Ramat from "./components/Ramat/Ramat";
 import Kevin from "./components/Kevin/Kevin";
 import Shreyas from "./components/Shreyas/Shreyas";
@@ -28,8 +29,8 @@ const Main = () => {
 			<Route exact path="/error400" element={<Error400 />}></Route>
 			<Route exact path="/lanre" element={<Lanre />}></Route>
 			<Route exact path="/alex" element={<Alex />}></Route>
+			<Route exact path="/alex/alex2" element={<Alex2 />}></Route>
 			<Route exact path="/ramat" element={<Ramat />}></Route>
-
 			<Route exact path="/kevin" element={<Kevin />}></Route>
 			<Route exact path="/shreyas" element={<Shreyas />}></Route>
 			<Route path="*" element={<Error404 />}></Route>
