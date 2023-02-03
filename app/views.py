@@ -39,9 +39,9 @@ def handle_bad_request(e):
 # ^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if request.method == 'POST':
-        response = {"Larks App": "Welcome"}
-        return jsonify(response), 200
+    response = {"Larks App": "Welcome"}
+    return jsonify(response)
+        
 
 
 ############################################################
