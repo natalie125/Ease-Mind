@@ -32,10 +32,8 @@ class Home extends Component {
 		return (
 			// TODO: Need to create page that will present app options in nicer way.
 			<div className="App">
-				<header className="App-header">
-					<h1>Home</h1>
-				</header>
 				<Header />
+				<h1>Home</h1>
 				<div className="btn-container">
 					<div className="btn-row">
 						<Link className="link" to="/alex">
