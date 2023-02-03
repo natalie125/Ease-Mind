@@ -7,15 +7,13 @@ class Alex extends Component {
 	render() {
 		return (
 			<div className="App">
-				<header className="App-header">
+				<header className="App-header-primary">
 					<h1>Alex's app</h1>
 				</header>
 				<body>
-				<div>
-
+					<div>
 						<p>Second nested page</p>
-					
-				</div>
+					</div>
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
