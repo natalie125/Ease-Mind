@@ -5,7 +5,9 @@ import "../App/App.css";
 import { useNavigate } from "react-router-dom";
 
 let BASEURL = "";
-process.env.NODE_ENV === 'development' ? BASEURL = process.env.REACT_APP_DEV : BASEURL = process.env.REACT_APP_PROD
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
 // This fucntion is userd to login the user
 const loginUser = async (credentials) => {
 	// e.preventDefault();
@@ -74,7 +76,7 @@ function Login({ setToken }) {
 	return (
 		<div className="App">
 			<div className="App-body">
-				<header className="App-header">
+				<header className="App-header-primary">
 					<nav className="navbar navbar-dark bg-dark" id="navbar">
 						{/* <a class="navbar-brand" href="#"></a> */}
 						<h1>LARKS APP</h1>
