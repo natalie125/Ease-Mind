@@ -5,7 +5,6 @@ import WebcamCapture from "../camera/camera";
 
 
 import "../App/App.css";
-import Header from "../Header";
 
 class Shreyas extends Component {
 	render() {

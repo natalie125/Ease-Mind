@@ -10,9 +10,9 @@ const INVALIDDETAILS = 0;
 const USEREXISTS = 1;
 const SUCCESS = 2;
 let BASEURL = "";
-process.env.NODE_ENV === "development"
-	? (BASEURL = process.env.REACT_APP_DEV)
-	: (BASEURL = process.env.REACT_APP_PROD);
+process.env.NODE_ENV === 'development' ? BASEURL = process.env.REACT_APP_DEV : BASEURL = process.env.REACT_APP_PROD
+
+
 
 axios.interceptors.response.use(undefined, (err) => {
 	const error = err.response;
@@ -73,7 +73,7 @@ const SignUp = () => {
 	return (
 		<div className="App">
 			<div className="App-body">
-				<header className="App-header-primary">
+				<header className="App-header">
 					<nav class="navbar navbar-dark bg-dark" id="navbar">
 						{/* <a class="navbar-brand" href="#"></a> */}
 						<h1> LARKS APP</h1>
