@@ -3,21 +3,19 @@ import { Link } from "react-router-dom";
 import WebcamStreamCapture from "../Webcam";
 
 import "../App/App.css";
+import Header from "../Header";
 
 class Alex extends Component {
 	render() {
 		return (
 			<div className="App">
-				<header className="App-header">
-					<h1>Alex's app</h1>
-				</header>
+				<Header />
+				<h1>Alex's app</h1>
 				<body>
-				<div className="webcam-capture-holder">
-
+					<div className="webcam-capture-holder">
 						<p>Webcam capture below</p>
-						<WebcamStreamCapture/>
-					
-				</div>
+						<WebcamStreamCapture />
+					</div>
 					<Link to="/home">
 						<button> Back </button>
 					</Link>

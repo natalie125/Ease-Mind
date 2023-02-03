@@ -1,27 +1,23 @@
-import { useNavigate } from "react-router-dom";
-
 const Header = () => {
-	const navigate = useNavigate();
-
 	const logout = () => {
 		sessionStorage.clear();
-		navigate("/login");
+		window.location.reload(false);
 	};
 
 	return (
-		<div className="App-body">
-			<header className="App-header">
-				<nav class="navbar navbar-dark bg-dark" id="navbar">
-					{/* <a class="navbar-brand" href="#"></a> */}
-					<h1> LARKS APP</h1>
-				</nav>
-			</header>
-			<div>
-				<button data-cy="logoutBttn" id="logout_button" class="login-form__button" onClick={logout}>
+		<header className="App-header-secondary">
+			<h1 id="header_name"> LARKS APP</h1>
+			<div id="header_buttons">
+				<button
+					data-cy="logoutBttn"
+					id="logout_button"
+					className="login-form__button"
+					onClick={logout}
+				>
 					Logout
 				</button>
 			</div>
-		</div>
+		</header>
 	);
 };
 
