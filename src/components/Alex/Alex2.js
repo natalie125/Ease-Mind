@@ -13,9 +13,7 @@ class Alex extends Component {
 				<body>
 				<div>
 
-					<Link to="/alex/alex2">
-						<button> Go to second page </button>
-					</Link>
+						<p>Second nested page</p>
 					
 				</div>
 					<Link to="/home">
