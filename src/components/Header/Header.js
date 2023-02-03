@@ -1,11 +1,7 @@
-import { useNavigate } from "react-router-dom";
-
 const Header = () => {
-	const navigate = useNavigate();
-
 	const logout = () => {
 		sessionStorage.clear();
-		navigate("/login");
+		window.location.reload(false);
 	};
 
 	return (
