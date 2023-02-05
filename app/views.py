@@ -76,8 +76,12 @@ def login():
         
         # flash(request)
         # return {"type": "POST"}
-        u = models.User_Login.query.filter_by(
-            email=data['credentials']['email']).first()
+        if(testing):
+            u = models.User_Login_Test.query.filter_by(
+                email=data['credentials']['email']).first()
+        else:
+            u = models.User_Login.query.filter_by(
+                email=data['credentials']['email']).first()
         # check username and password
         if u:
             if bcrypt.check_password_hash(u.password, data['credentials']['password']):
@@ -117,7 +121,10 @@ def register():
         print(request.data)
         data = json.loads(request.data.decode('utf-8'))
         print(data['email'])
-        username_database_check = models.User_Login.query.filter_by(email=data['email']).first()
+        if(testing):
+            username_database_check = models.User_Login_Test.query.filter_by(email=data['email']).first()
+        else:
+            username_database_check = models.User_Login.query.filter_by(email=data['email']).first()
         if username_database_check:
             print("Username already exists!")
             return {"msg": "Username taken"},401
