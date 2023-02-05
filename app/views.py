@@ -8,7 +8,7 @@ import sys
 import json
 # import numpy as np
 from threading import Thread
-from .models import User_Login
+from .models import User_Login, User_Login_Test
 from .forms import LoginForm, RegisterForm  # for testing login and register
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import JWTManager
@@ -22,6 +22,11 @@ import werkzeug
 import json
 
 #############################################################
+# BEGINNING OF GLOBAL VARIABLES
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+testing = False # keeps track of whether we are in testing mode, passed to functions that have different behaviour
+
+#############################################################
 # BEGINNING OF HTTP ERROR HANDLERS
 # ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -33,6 +38,17 @@ import json
 def handle_bad_request(e):
     # Need to figure out how to request the "400Error" page on the React frontend
     return 'bad request!', 400
+
+#############################################################
+# GETTER AND SETTER METHODS
+# ^^^^^^^^^^^^^^^^^^^^^^^
+def set_testing(setting):
+    if(bool(setting)):
+        testing = setting
+    return testing
+
+def get_testing():
+    return testing
 
 #############################################################
 # ROUTE FOR LANDING PAGE
@@ -108,7 +124,11 @@ def register():
         else:
             print("Valid!")
             hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
-            new_user = User_Login(email = data['email'], password = hashed_password)
+            # check if we're in testing mode
+            if(testing):
+                new_user = User_Login_Test(email=data['email'], password=hashed_password)
+            else:
+                new_user = User_Login(email = data['email'], password = hashed_password)
             db.session.add(new_user)
             db.session.commit()
             return {"msg":"New User Added!"}, 200
