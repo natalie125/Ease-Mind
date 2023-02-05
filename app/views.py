@@ -1,4 +1,5 @@
 # from flask import request, render_template, flash, redirect, url_for
+import werkzeug
 from flask import Flask, render_template, Response, request, flash, redirect, url_for, session, jsonify
 from app import app, models, bcrypt, db
 import datetime
@@ -6,6 +7,7 @@ import time
 import os
 import sys
 import json
+import base64
 # import numpy as np
 from threading import Thread
 from .models import User_Login, User_Login_Test
@@ -18,13 +20,11 @@ from datetime import datetime, timedelta, timezone
 app.config["JWT_SECRET_KEY"] = "comp3931-larks"  # Change this!
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 jwt = JWTManager(app)
-import werkzeug
-import json
 
 #############################################################
 # BEGINNING OF GLOBAL VARIABLES
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-testing = False # keeps track of whether we are in testing mode, passed to functions that have different behaviour
+testing = True  # keeps track of whether we are in testing mode, passed to functions that have different behaviour
 
 #############################################################
 # BEGINNING OF HTTP ERROR HANDLERS
@@ -34,6 +34,8 @@ testing = False # keeps track of whether we are in testing mode, passed to funct
 # REGISTER 400 ERROR
 # ^^^^^^^^^^^^^^^^^^^^^^^
 # HTTP Error for bad request is specifically No. 400
+
+
 @app.errorhandler(werkzeug.exceptions.MethodNotAllowed)
 def handle_bad_request(e):
     # Need to figure out how to request the "400Error" page on the React frontend
@@ -42,10 +44,13 @@ def handle_bad_request(e):
 #############################################################
 # GETTER AND SETTER METHODS
 # ^^^^^^^^^^^^^^^^^^^^^^^
+
+
 def set_testing(setting):
-    if(bool(setting)):
+    if (bool(setting)):
         testing = setting
     return testing
+
 
 def get_testing():
     return testing
@@ -53,11 +58,12 @@ def get_testing():
 #############################################################
 # ROUTE FOR LANDING PAGE
 # ^^^^^^^^^^^^^^^^^^^^^^^
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     response = {"Larks App": "Welcome"}
     return jsonify(response)
-        
 
 
 ############################################################
@@ -73,10 +79,10 @@ def login():
 
         print(data)
         print(data.get('credentials'))
-        
+
         # flash(request)
         # return {"type": "POST"}
-        if(testing):
+        if (testing):
             u = models.User_Login_Test.query.filter_by(
                 email=data['credentials']['email']).first()
         else:
@@ -87,7 +93,8 @@ def login():
             if bcrypt.check_password_hash(u.password, data['credentials']['password']):
                 # response = {"token": "test123"}
                 print('Login Successful!', 'success')
-                access_token = create_access_token(identity=data['credentials']['email'])
+                access_token = create_access_token(
+                    identity=data['credentials']['email'])
                 print(access_token)
                 response = {"token": access_token}
                 return jsonify(response), 200
@@ -121,24 +128,54 @@ def register():
         print(request.data)
         data = json.loads(request.data.decode('utf-8'))
         print(data['email'])
-        if(testing):
-            username_database_check = models.User_Login_Test.query.filter_by(email=data['email']).first()
+        if (testing):
+            username_database_check = models.User_Login_Test.query.filter_by(
+                email=data['email']).first()
         else:
-            username_database_check = models.User_Login.query.filter_by(email=data['email']).first()
+            username_database_check = models.User_Login.query.filter_by(
+                email=data['email']).first()
         if username_database_check:
             print("Username already exists!")
-            return {"msg": "Username taken"},401
+            return {"msg": "Username taken"}, 401
         else:
             print("Valid!")
-            hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
+            hashed_password = bcrypt.generate_password_hash(
+                data['password']).decode('utf-8')
             # check if we're in testing mode
-            if(testing):
-                new_user = User_Login_Test(email=data['email'], password=hashed_password)
+            if (testing):
+                new_user = User_Login_Test(
+                    email=data['email'], password=hashed_password)
             else:
-                new_user = User_Login(email = data['email'], password = hashed_password)
+                new_user = User_Login(
+                    email=data['email'], password=hashed_password)
             db.session.add(new_user)
             db.session.commit()
-            return {"msg":"New User Added!"}, 200
+            return {"msg": "New User Added!"}, 200
+
+
+#############################################################
+# ROUTE SIMPLY PROVIDING A PROOF OF CONCEPT OF UPLOADING IMAGES TO SERVER
+# CURRENTLY SAVES IMAGE TO SHOTS FOLDER, BUT I IMAGINE WE DONT WANT TO DO THAT AND ONLY WANT TO PROCESS IMAGES
+# ^^^^^^^^^^^^^^^^^^^^^^^
+@app.route('/upload', methods=['POST'])
+def upload():
+    image = request.form['image']
+    # if frontend sends no image return error
+    if image == "null":
+        return {"msg": "No image sent!"}, 415
+
+    # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
+    image = image[22:]
+    image_decoded = base64.b64decode(image)
+
+    # gets string of curr time and names file that
+    timestamp = str(int(time.time()))
+    filename = timestamp+".png"
+
+    # saves decoded base 64 string to that image
+    with open(os.path.join("shots", filename), "wb") as f:
+        f.write(image_decoded)
+    return {"msg": "image successfully saved in server!"}, 200
 
 
 #############################################################
@@ -157,7 +194,6 @@ def alex():
 def kevin():
     if request.method == 'POST':
         print("Kevin App Requested")
-
 
 
 #############################################################
