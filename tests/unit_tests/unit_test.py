@@ -8,7 +8,7 @@ def test1():
 def test_login_database():
     try:
         # test for empty email
-        test_entry = models.User_Login(email="", password="password")
+        test_entry = models.User_Login_Test(email="", password="password")
         db.session.add(test_entry)
     except AssertionError as e:
         # nice the database raised an assertion error
@@ -16,7 +16,7 @@ def test_login_database():
 
     try:
         # test for email without "@" symbol
-        test_entry = models.User_Login(email="nope", password="password")
+        test_entry = models.User_Login_Test(email="nope", password="password")
         db.session.add(test_entry)
     except AssertionError as e:
         # nice the database raised an assertion error
@@ -24,9 +24,9 @@ def test_login_database():
 
     try:
         # test for already taken email
-        test_entry = models.User_Login(email="already@taken.com", password="password")
+        test_entry = models.User_Login_Test(email="already@taken.com", password="password")
         db.session.add(test_entry)
-        test_entry = models.User_Login(email="already@taken.com", password="password")
+        test_entry = models.User_Login_Test(email="already@taken.com", password="password")
         db.session.add(test_entry)
     except AssertionError as e:
         # nice the database raised an assertion error
@@ -34,7 +34,7 @@ def test_login_database():
 
     try:
         # test for empty password
-        test_entry = models.User_Login(email="Pass@email.com", password="")
+        test_entry = models.User_Login_Test(email="Pass@email.com", password="")
         db.session.add(test_entry)
     except AssertionError as e:
         # nice the database raised an assertion error
