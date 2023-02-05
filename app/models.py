@@ -46,7 +46,7 @@ class User_Login_Test(db.Model):
         if not email:
             raise AssertionError('No email provided')
         # Check for already taken email
-        if User_Login.query.filter(User_Login.email == email).first():
+        if User_Login_Test.query.filter(User_Login_Test.email == email).first():
             raise AssertionError('Email is already in use')
         # Check for no '@' character
         if "@" not in email:
