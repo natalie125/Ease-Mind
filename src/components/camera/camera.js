@@ -1,6 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
+import axios from "axios";
 
+
+let BASEURL = "";
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
 
 //This component is used to take pictures
 //pictures are stored in the imageSrc variable after taking it
@@ -9,6 +15,28 @@ const WebcamCapture = () => {
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
   const [flash, setFlash] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("image", imageSrc);
+    const response = await axios(BASEURL+"upload",{
+      method: 'post',
+      data: formData,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error=> {
+      console.error(error);
+    });
+    console.log(response);
+  }
+
 
 
 //takes pictures without flash
@@ -69,6 +97,7 @@ const WebcamCapture = () => {
       <Webcam class="webcam" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} ref={webcamRef} />
       <button onClick={handleTakePicture}>Take Picture</button>
       <button onClick={handleTakePictureWithFlash}>Take Picture With Flash</button>
+      <button onClick={handleSubmit}>Submit Image</button>
       {flash && <div className="flash" />}
       {imageSrc && (
         <img src={imageSrc} alt="Captured photo" />
