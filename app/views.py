@@ -24,7 +24,7 @@ jwt = JWTManager(app)
 #############################################################
 # BEGINNING OF GLOBAL VARIABLES
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-testing = True  # keeps track of whether we are in testing mode, passed to functions that have different behaviour
+testing = False  # keeps track of whether we are in testing mode, passed to functions that have different behaviour
 
 #############################################################
 # BEGINNING OF HTTP ERROR HANDLERS
