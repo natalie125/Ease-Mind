@@ -1,7 +1,12 @@
+import { useNavigate } from "react-router-dom";
+
 const Header = () => {
+	const navigate = useNavigate();
+
 	const logout = () => {
-		sessionStorage.clear();
-		window.location.reload(false);
+		sessionStorage.clear();	// clear the session, including the token that keeps us logged in
+		navigate("/", { replace: true }); // send us to the "/" URL
+		window.location.reload(false);	// refresh the page
 	};
 
 	return (
