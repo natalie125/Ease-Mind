@@ -25,7 +25,5 @@ db = SQLAlchemy(app)
 # helps us handle migrations
 migrate = Migrate(app, db)
 
-CORS(app)
-
 # import these python files from /app directory
 from app import views, models
