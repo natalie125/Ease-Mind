@@ -27,7 +27,7 @@ const handleSubmit = async (email, password) => {
 	const response = await axios.post(BASEURL + "register", data, {
 		headers: {
 			"Content-Type": "application/json",
-			"Access-Control-Allow-Origin": true,
+			"Access-Control-Allow-Origin": "*",
 		},
 	});
 

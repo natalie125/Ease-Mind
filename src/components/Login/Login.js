@@ -13,7 +13,7 @@ const loginUser = async (credentials) => {
 	// e.preventDefault();
 	const response = await axios
 		.post(BASEURL + "login", JSON.stringify({ credentials }), {
-			headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": true },
+			headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": '*'},
 			//   withCredentials: true,
 		})
 		.then((response) => {
