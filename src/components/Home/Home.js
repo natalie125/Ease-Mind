@@ -38,7 +38,7 @@ class Home extends Component {
 			<div className="btn-container">
 				<div className="btn-row">
 					<Link className="link" to="/alex">
-						<img className="btn-choice" src={canopy_logo} alt="Canopy_App_Alex" />
+						<img data-cy="alexAppLogo" className="btn-choice" src={canopy_logo} alt="Canopy_App_Alex" />
 						{/* <button className="btn-choice" >Alex's App</button> */}
 					</Link>
 
