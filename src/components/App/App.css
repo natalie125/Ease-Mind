@@ -1,0 +1,242 @@
+.App {
+	text-align: center;
+	background-color: lightblue;
+	min-height: 100vh;
+}
+
+.App-logo {
+	height: 40vmin;
+	pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.App-logo {
+		animation: App-logo-spin infinite 20s linear;
+	}
+}
+
+.App-header-primary {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(10px + 2vmin);
+	color: white;
+}
+
+.App-header-secondary {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(10px + 2vmin);
+	background: #005eb8;
+	color: white;
+	margin-top: 4%;
+	margin-bottom: 4%;
+}
+
+#header_name {
+	position: absolute;
+	left: 0;
+	padding-left: 2%;
+}
+
+#header_buttons {
+	position: absolute;
+	right: 0;
+	padding: 2%;
+}
+
+.App-body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(6px + 2vmin);
+	color: white;
+}
+
+.App-link {
+	color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+body {
+	background-color: lightblue;
+}
+
+.error-message {
+	color: #ff0000;
+	font-size: calc(3px + 2vmin);
+}
+
+.login-form,
+.login-form * {
+	box-sizing: border-box;
+	font-family: "Source Sans Pro";
+}
+
+.login-form {
+	max-width: 550px;
+	margin: 0 auto;
+	border-radius: 5px;
+	overflow: hidden;
+	/* box-shadow: 0 0 15px rgba(0, 0, 0, 0.15); */
+}
+
+.login-form__title-box {
+	padding: 30px;
+	background: #005eb8;
+	text-align: center;
+}
+
+.login-form__content {
+	padding: 30px;
+	background: #eeeeee;
+	max-height: 50%;
+}
+
+.login-form__header {
+	margin-bottom: 15px;
+	text-align: center;
+	color: #333333;
+}
+
+.login-form__input {
+	width: 100%;
+	margin-bottom: 10px;
+	padding: 10px;
+	border-radius: 5px;
+	border: 2px solid #dddddd;
+	background: #ffffff;
+	outline: none;
+	transition: border-color 0.5s;
+}
+
+.login-form__input:focus {
+	border-color: #005eb8;
+}
+
+.login-form__input::placeholder {
+	color: #aaaaaa;
+}
+
+.login-form__button {
+	padding: 10px;
+	color: #ffffff;
+	font-weight: bold;
+	background: #005eb8;
+	width: 100%;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-bottom: 10px;
+}
+
+.login-form__links {
+	margin-top: 15px;
+	text-align: center;
+}
+
+.login-form__link {
+	font-size: 0.9em;
+	color: #005eb8;
+	text-decoration: none;
+}
+
+#EnterText {
+	margin-bottom: 10px;
+}
+
+#vidCapture {
+	padding: 10px;
+	align-items: center;
+}
+
+/* Right now webcam is using the whole page size for resizing, not the element that it is within */
+
+.webcam {
+	width: fit-content;
+	height: fit-content;
+	border-radius: 5px;
+}
+
+.btn-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	/* border: 1px solid blue; */
+}
+
+.btn-row {
+	display: flex;
+	/* flex-direction: column; */
+	flex-wrap: wrap;
+	/* border: 1px solid red; */
+	align-items: center;
+	justify-content: center;
+	width: 40%;
+}
+
+.link {
+	/* border: 1px solid red; */
+	width: fit-content;
+	display: flex;
+}
+
+.btn-choice {
+	/* background-position: center; */
+	width: 300px;
+	margin: 30px 30px;
+	font-size: 16px;
+	transition: 0.3s;
+	cursor: pointer;
+	border-radius: 20px;
+	/* border: 1px solid red; */
+}
+
+@media (max-width: 800px) {
+	.btn-row,
+	.btn-row-2 {
+		flex-direction: column;
+	}
+
+	.btn-choice {
+		width: 90%;
+	}
+}
+
+.webcam-capture-holder {
+	margin: 0 auto;
+	border-radius: 5px;
+	width: 100%;
+}
+
+.logo-image {
+	background-size: cover;
+	height: 100px;
+	width: 100px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.flash {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	z-index: 2;
+}

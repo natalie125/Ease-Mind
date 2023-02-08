@@ -1,17 +1,19 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import WebcamStreamCapture from "../Component/Webcam";
 
-import "../App.css";
+import "../App/App.css";
 
-class Shreyas extends Component {
+class Alex extends Component {
 	render() {
 		return (
 			<div className="App">
-				<header className="App-header">
-					<h1>Shreyas' app</h1>
+				<header className="App-header-primary">
+					<h1>Alex's app</h1>
 				</header>
-				<body className="App-body">
+				<body>
+					<div>
+						<p>Second nested page</p>
+					</div>
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
@@ -21,4 +23,4 @@ class Shreyas extends Component {
 	}
 }
 
-export default Shreyas;
+export default Alex;

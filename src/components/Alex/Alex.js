@@ -1,18 +1,23 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import WebcamStreamCapture from "../Component/Webcam";
 
-import "../App.css";
+import WebcamStreamCapture from "../Webcam";
+
+import "../App/App.css";
+import Header from "../Header/Header";
 
 class Alex extends Component {
 	render() {
 		return (
 			<div className="App">
-				<header className="App-header">
-					<h1>Alex's app</h1>
-				</header>
-				<body className="App-body">
-					<WebcamStreamCapture />
+				<Header />
+				<h1>Alex's app</h1>
+				<body>
+					<div>
+						<Link to="/alex/alex2">
+							<button> Go to second page </button>
+						</Link>
+					</div>
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
