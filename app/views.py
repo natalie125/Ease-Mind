@@ -110,7 +110,7 @@ def login():
             return jsonify(response), 401
 
     elif request.method == "GET":
-        return {"type": "GET"}
+        return {"type": "GET"}, 405
     else:
         # app.logger.info(u.email + " unsuccesfull login at " + now)
         flash(f'Login unsuccessful. Please check email and password', 'danger')
