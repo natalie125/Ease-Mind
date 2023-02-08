@@ -3,6 +3,7 @@ from app import app
 from app import db, models
 import json
 
+
 @pytest.fixture()
 def client():
     """
@@ -11,6 +12,7 @@ def client():
     """
     client = app.test_client()
     yield client
+
 
 @pytest.mark.functional
 def test_GET_request(client):
@@ -21,8 +23,11 @@ def test_GET_request(client):
 
     Tests that we can make a GET request to the api
     """
-    response = client.post('/')
+    response = client.get('/')
     assert response.status_code == 200
+    response2 = client.post('/')
+    assert response2.status_code == 200
+
 
 @pytest.mark.functional
 def test_GET_request_to_login_route(client):
@@ -58,17 +63,18 @@ def test_token_generated(client):
 
         data = {
             'credentials': {
-            'email': 'admin@gmail.com',
-            'password': 'admin'
+                'email': 'admin@gmail.com',
+                'password': 'admin'
             }
         }
-        
+
         url = '/login'
 
         response = client.post(url, data=json.dumps(data), headers=headers)
-        
+
         assert response.status_code == 200
-        assert response.json['token'] != '' 
+        assert response.json['token'] != ''
+
 
 @pytest.mark.functional
 def test_incorrect_email(client):
@@ -90,18 +96,19 @@ def test_incorrect_email(client):
 
         data = {
             'credentials': {
-            'email': 'ad@gmail.com',
-            'password': 'admin'
+                'email': 'ad@gmail.com',
+                'password': 'admin'
             }
         }
-        
+
         url = '/login'
 
         response = client.post(url, data=json.dumps(data), headers=headers)
-        
+
         # assert a success response code and message
         assert response.status_code == 401
         assert response.json['msg'] == 'Bad Username'
+
 
 @pytest.mark.functional
 def test_incorrect_password(client):
@@ -123,18 +130,19 @@ def test_incorrect_password(client):
 
         data = {
             'credentials': {
-            'email': 'admin@gmail.com',
-            'password': 'a'
+                'email': 'admin@gmail.com',
+                'password': 'a'
             }
         }
-        
+
         url = '/login'
 
         response = client.post(url, data=json.dumps(data), headers=headers)
-        
+
         # assert a failure response code and message
         assert response.status_code == 401
         assert response.json['msg'] == 'Bad Password'
+
 
 @pytest.mark.functional
 def test_incorrect_credentials(client):
@@ -156,14 +164,14 @@ def test_incorrect_credentials(client):
 
         data = {
             'credentials': {
-            'email': 'ad@gmail.com',
-            'password': 'a'
+                'email': 'ad@gmail.com',
+                'password': 'a'
             }
         }
-        
+
         url = '/login'
 
         response = client.post(url, data=json.dumps(data), headers=headers)
-        
+
         # assert a failure response code and a token exists
         assert response.status_code == 401
