@@ -25,7 +25,7 @@ jwt = JWTManager(app)
 # BEGINNING OF GLOBAL VARIABLES
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # keeps track of whether we are in testing mode, passed to functions that want to have different behaviour when testing
-testing = False # default should be False, explictly change to True whenever you want to run in Test mode
+testing = True  # default should be False, explictly change to True whenever you want to run in Test mode
 
 #############################################################
 # BEGINNING OF HTTP ERROR HANDLERS
@@ -125,10 +125,13 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == "POST":
-        print("Request is post")
+        print(testing)
         print(request.data)
         data = json.loads(request.data.decode('utf-8'))
         print(data['email'])
+        if (data['email'] == '' or data['password'] == ''):
+            return {"msg": "One or more credentials not provided"}, 401
+
         if (testing):
             username_database_check = models.User_Login_Test.query.filter_by(
                 email=data['email']).first()
