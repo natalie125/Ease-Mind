@@ -74,38 +74,37 @@ function Login({ setToken }) {
 	// This is rendered to the user
 	// The Login form that is displayed to the user
 	return (
-		<div className="App">
+		<div className="App-unauthorised">
 			<div className="App-body">
-				<header className="App-header-primary">
+				<header className="App-header">
 					<nav className="navbar navbar-dark bg-dark" id="navbar">
 						{/* <a class="navbar-brand" href="#"></a> */}
 						<h1>LARKS APP</h1>
 					</nav>
 				</header>
-				<div className="login-form">
-					<div className="login-form__content">
-						<div className="login-form__header">Log into an existing account below:</div>
-						<label>
-							<input
-								id="login_email"
-								className="login-form__input"
-								type="text"
-								placeholder="Email"
-							/>
-						</label>
-
-						<label>
-							<input
-								id="login_password"
-								className="login-form__input"
-								type="password"
-								placeholder="Password"
-							/>
-						</label>
+				<div class="login-form">
+					<div class="login-form__content">
+						<div class="login-form__header">Log into an existing account below:</div>
+							<label for="login_email" className="form-labels">Enter Email:
+								<input data-cy="loginEmail" id="login_email" class="login-form__input" type="text" placeholder="Email" />
+							</label>
+							
+							
+							<label for="login_password" className="form-labels"> Enter Password:</label>
+								<input
+									id="login_password"
+									class="login-form__input"
+									type="password"
+									placeholder="Password"
+									data-cy="loginPassword"
+								/>
+							
+							
 
 						<div>
 							<button
-								className="login-form__button"
+								class="login-form__button"
+								data-cy="loginBttn"
 								type="submit"
 								onClick={async () => {
 									await handleSubmit();
@@ -116,17 +115,17 @@ function Login({ setToken }) {
 						</div>
 
 						<Link to="/signup">
-							<button className="login-form__button"> Sign Up </button>
+							<button class="login-form__button" data-cy="signUpBttn"> Sign Up </button>
 						</Link>
 
 						{isFilled === false && (
-							<p data-cy="loginError" className="error-message">
+							<p data-cy="loginError" class="error-message">
 								Please enter a username and password
 							</p>
 						)}
 
 						{isValid === false && (
-							<p data-cy="loginError" className="error-message">
+							<p data-cy="loginError" class="error-message">
 								Your username or password is incorrect. Please try again.
 							</p>
 						)}
