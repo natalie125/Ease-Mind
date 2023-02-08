@@ -13,7 +13,7 @@ const loginUser = async (credentials) => {
 	// e.preventDefault();
 	const response = await axios
 		.post(BASEURL + "login", JSON.stringify({ credentials }), {
-			headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": '*'},
+			headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
 			//   withCredentials: true,
 		})
 		.then((response) => {
@@ -91,6 +91,7 @@ function Login({ setToken }) {
 								className="login-form__input"
 								type="text"
 								placeholder="Email"
+								data-cy="loginEmail"
 							/>
 						</label>
 
@@ -100,6 +101,7 @@ function Login({ setToken }) {
 								className="login-form__input"
 								type="password"
 								placeholder="Password"
+								data-cy="loginPasswd"
 							/>
 						</label>
 
