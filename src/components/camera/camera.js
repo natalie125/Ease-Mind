@@ -15,6 +15,8 @@ const WebcamCapture = () => {
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
   const [flash, setFlash] = useState(false);
+  const [frontFacing, setFrontFacing] = React.useState(true);
+	const [applyCameraValue,setApplyCameraValue] = React.useState("user");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,6 +58,23 @@ const WebcamCapture = () => {
   };
 
 
+  // Using button to change what camera is being used
+	// Should work based on MDN documentation: https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints/facingMode
+	// But I cannot test properly as its running on a laptop.
+	const switchCameraFacing = React.useCallback(() => {
+		if (frontFacing){
+			setApplyCameraValue("environment");
+			setFrontFacing(false);
+		}
+		
+		else{
+			setApplyCameraValue("user");
+			setFrontFacing(true);
+		}
+	
+	},[frontFacing,setApplyCameraValue]);
+
+
 	// Trying to do the dimensions stuff.
 	// Rounded to floats to ensure dimensions used here make sense, only issue I see right now - the videos will record in different format each time.
     const size = useWindowSize();
@@ -87,22 +106,32 @@ const WebcamCapture = () => {
         min: cameraHeight,
         max: cameraHeight
       },
-      aspectRatio 
+      aspectRatio,
+      facingMode: { exact: applyCameraValue }
     };
 
 
 //two buttons, one for taking pictures with flash and one for without
   return (
-    <div>
-      <Webcam class="webcam" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} ref={webcamRef} />
-      <button onClick={handleTakePicture}>Take Picture</button>
-      <button onClick={handleTakePictureWithFlash}>Take Picture With Flash</button>
-      <button onClick={handleSubmit}>Submit Image</button>
+    <>
+    
+    <div style={{width:"100%"}}>
+      <Webcam class="webcam" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} ref={webcamRef} marginWidth={"10px"} />
+      
+
       {flash && <div className="flash" />}
       {imageSrc && (
-        <img src={imageSrc} alt="Captured photo" />
+        <img src={imageSrc} width={minValue} alt="Captured photo" />
       )}
     </div>
+  <div style={{width:"100%"}}>
+    <button onClick={handleTakePicture}>Take Picture</button>
+    <button onClick={handleTakePictureWithFlash}>Take Picture With Flash</button>
+    <button onClick={switchCameraFacing}>Change Camera</button>
+    <button onClick={handleSubmit}>Submit Image</button>
+  </div>
+
+</>
   );
 };
 

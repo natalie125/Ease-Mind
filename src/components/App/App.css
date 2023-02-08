@@ -195,7 +195,7 @@
 	/* border: 1px solid red; */
 	align-items: center;
 	justify-content: center;
-	width: 40%;
+	width: 60%;
 }
 
 .link {
@@ -225,6 +225,11 @@
 
 	.btn-choice {
 		width: 90%;
+
+	}
+
+	.link{
+		width: fit-content;
 	}
 }
 
