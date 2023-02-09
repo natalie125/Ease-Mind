@@ -106,7 +106,7 @@ const SignUp = () => {
 							<button
 								data-cy="signUpBttn"
 								id="signup_button"
-								class="login-form__button"
+								class="authentication-button"
 								onClick={validateSignup}
 							>
 								Sign Up
