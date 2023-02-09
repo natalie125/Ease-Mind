@@ -137,7 +137,7 @@ function Login({ setToken }) {
 
 						<div className="signup-link-container"> 
 							<Link to="/signup">
-								<p className="sigup-link" data-cy="signUpBttn"> Don't have an account? <b>Sign Up</b>  </p>
+								<p className="sigup-link" data-cy="loginSignUpBttn"> Don't have an account? <b>Sign Up</b>  </p>
 							</Link>
 						</div>
 						

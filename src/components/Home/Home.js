@@ -36,7 +36,7 @@ class Home extends Component {
 				<Header />
 
 				<h1 className="homepage-title">Home</h1>
-				<div className="btn-container">
+				<div data-cy="homeBttnContainer" className="btn-container">
 					<div className="btn-row">
 						<Link className="link" to="/alex">
 							<img data-cy="alexAppLogo" className="homepage-button" src={canopy_logo} alt="Canopy_App_Alex" />
