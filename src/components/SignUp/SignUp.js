@@ -76,7 +76,7 @@ const SignUp = () => {
 
 					<header className="authentication-header">
 						<nav className="navbar navbar-dark bg-dark" id="navbar">
-							{/* <a class="navbar-brand" href="#"></a> */}
+							{/* <a className="navbar-brand" href="#"></a> */}
 							<h1 className="authentication-page-title"> LARKS APP</h1>
 						</nav>
 					</header>

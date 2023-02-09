@@ -12,7 +12,7 @@ class Shreyas extends Component {
 			<div className="App">
 				<Header />
 				<h1>Shreyas' app</h1>
-				<body>
+				<div>
 					<div className="webcam-capture-holder">
 						<p>Webcam capture below (to use flash please brighten your screen)</p>
 						<WebcamCapture />
@@ -21,7 +21,7 @@ class Shreyas extends Component {
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
-				</body>
+				</div>
 			</div>
 		);
 	}
