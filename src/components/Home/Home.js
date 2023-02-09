@@ -11,10 +11,10 @@ import skinscan_logo from "../../images/skinscan_logo.png";
 import Header from "../Header/Header";
 
 class Home extends Component {
-	getEC2 = () => {
+	getBackend = () => {
 		var config = {
 			method: "get",
-			url: "https://ec2-3-249-104-153.eu-west-1.compute.amazonaws.com/",
+			url: "https://d23bykmxle9vsv.cloudfront.net/",
 			headers: {},
 		};
 
