@@ -1,23 +1,20 @@
+/* RESETTING DEFAULT CSS */
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 	font-family:Arial, Helvetica, sans-serif;
-  }
+}
 
 html{
     width: 100%;
     height: 100vh;
-
 }
 
 body{
-    /* display: flex; */
-    /* justify-content: center; */
     width: 100%;
     height: 10vh;
 }
-
 
 .App {
 	text-align: center;
@@ -25,8 +22,8 @@ body{
 	min-height: 100vh;
 }
 
+
 .App-unauthorised {
-	/* text-align: center; */
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -35,22 +32,8 @@ body{
 	height: 100vh;
 	min-width: 320px;
 	/* border: 2px solid pink; */
-	
 }
 
-/* .App-logo {
-	height: 40vmin;
-	pointer-events: none;
-} */
-
-
-
-/* OLD REACT LOGO */
-/* @media (prefers-reduced-motion: no-preference) {
-	.App-logo {
-		animation: App-logo-spin infinite 20s linear;
-	}
-} */
 
 .App-header-primary {
 	display: flex;
@@ -70,6 +53,7 @@ body{
 	background: #005eb8;
 	margin-top: clamp(15px, 7%, 40px);
 	margin-bottom: clamp(15px, 7%, 40px);
+	border: 1px solid red;
 }
 
 #header_name {
@@ -93,27 +77,13 @@ body{
 	color: white;
 }
 
-/* .App-link {
-	color: #61dafb;
-} */
-
-/* @keyframes App-logo-spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
-} */
-
-/* body {
-	background-color: green;
-} */
-
 .error-message {
 	color: #A40000;
-	font-size: calc(3px + 2vmin);
+	font-size: calc(5px + 2vmin);
+	text-align: center;
 }
+
+
 
 /***********************
 *** LOGIN PAGE 
@@ -126,13 +96,6 @@ body{
 	background-color: white;
 	margin: 20px;
 }
-
-
-/* .login-form,
-.login-form * {
-	font-family: "Source Sans Pro";
-	border: 1px solid red;
-} */
 
 .authentication-header{
 	display: flex;
@@ -151,28 +114,11 @@ body{
 
 .signup-form,
 .login-form {
-	/* max-width: 550px; */
 	margin: 0 auto;
-	/* border-radius: 5px; */
 	overflow: hidden;
 	padding: 30px;
-	/* border: 1px solid pink; */
 }
 
-.login-form__content {
-	
-	/* background: #eeeeee; */
-	/* max-height: 50%; */
-	/* border-radius: 10px; */
-}
-
-
-/* .login-form__title-box {
-	padding: 30px;
-	background: #005eb8;
-	text-align: center;
-	border: 1px solid green;
-} */
 .signup-title,
 .login-title{
 	font-size: 40px;
@@ -189,12 +135,9 @@ body{
 	font-size: 18px;
 }
 
-
-
 .form-labels{
 	color: black;
 	text-align: left;
-	/* border: 1px solid blue; */
 }
 
 
@@ -218,7 +161,6 @@ body{
 
 .authentication-form-input::placeholder {
 	/* color: #aaaaaa; */
-	/* margin-left: 50px; */
 }
 
 /* .login-form__button {
@@ -235,8 +177,6 @@ body{
 
 } */
 
-
-/* Global Style for the button on teh login and signup pages */
 .authentication-button {
 	padding: 10px;
 	color: #ffffff;
@@ -258,18 +198,17 @@ body{
 	font-weight: bold;
 }
 
-.sigup-link-container {
+.login-link-container,
+.signup-link-container {
 	display: flex;
 	flex-direction:column;
 	justify-content: end;
 	/* border:1px solid red; */
-	/* height: auto; */
 }
 
 .login-link,
 .sigup-link {
 	font-size: 15px;
-	/* border: 1px solid blue; */
 	text-align: center;
 	color: gray;
 	margin: 20px 0px 0px 0px;

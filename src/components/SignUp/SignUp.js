@@ -81,7 +81,7 @@ const SignUp = () => {
 						</nav>
 					</header>
 					
-					<div class="signup-form">
+					<div className="signup-form">
 							<div>
 								<h2 className="signup-title">Sign Up</h2>
 								<p className="signup-subtitle">Create a new account below </p>
@@ -92,16 +92,16 @@ const SignUp = () => {
 								<input
 									data-cy="signUpEmail"
 									id="signup_email"
-									class="authentication-form-input"
+									className="authentication-form-input"
 									type="text"
 									placeholder="Email" />
 							</label>
 
-							<label for="signup_password" className="form-labels">
+							<label htmlFor="signup_password" className="form-labels">
 								<input
 									data-cy="signUpPasswd"
 									id="signup_password"
-									class="authentication-form-input"
+									className="authentication-form-input"
 									type="password"
 									placeholder="Password"
 								></input>
@@ -111,29 +111,29 @@ const SignUp = () => {
 								<button
 									data-cy="signUpBttn"
 									id="signup_button"
-									class="authentication-button"
+									className="authentication-button"
 									onClick={validateSignup}>
 									Sign Up
 								</button>
 							</div>
 
 							{isValid === INVALIDDETAILS && (
-								<p data-cy="signUpError" class="error-message">
+								<p data-cy="signUpError" className="error-message">
 									Please enter a valid email and password. Passwords need to have minimum 10
 									characters, uppercase, lowercase and special character.
 								</p>
 							)}
 							{isValid === USEREXISTS && (
-								<p data-cy="signUpError" class="error-message">
+								<p data-cy="signUpError" className="error-message">
 									A user with this email already exixts.
 								</p>
 							)}
-
-							<Link to="/login">
-								<p class="login-link" data-cy="signUpBackBttn" id="login_button" >
-									Already have an account? Log In
-								</p>
-							</Link>
+							
+							<div className="signup-link-container"> 
+								<Link to="/login">
+									<p className="login-link" data-cy="signUpBackBttn" id="login_button"> Already have an account? <b>Log In</b> </p>
+								</Link>
+							</div>
 
 							
 					</div>
