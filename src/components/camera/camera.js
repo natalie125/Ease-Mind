@@ -116,7 +116,7 @@ const WebcamCapture = () => {
     <>
     
     <div style={{width:"100%"}}>
-      <Webcam class="webcam" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} ref={webcamRef} marginWidth={"10px"} />
+      <Webcam className="webcam" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} ref={webcamRef} marginWidth={"10px"} />
       
 
       {flash && <div className="flash" />}

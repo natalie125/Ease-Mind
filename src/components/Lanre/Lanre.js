@@ -8,7 +8,7 @@ import Header from "../Header/Header";
 class Lanre extends Component {
 	render() {
 		return (
-			<div className="App">
+			<div className="Lanre">
 				<Header />
 				<h1>Lanre's app</h1>
 				<div className="App-body">

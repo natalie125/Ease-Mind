@@ -12,7 +12,7 @@ class Alex extends Component {
 			<div className="App">
 				<Header />
 				<h1>Alex's app</h1>
-				<body>
+				<div>
 					<div>
 						<Link to="/alex/alex2">
 							<button> Go to second page </button>
@@ -21,7 +21,7 @@ class Alex extends Component {
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
-				</body>
+				</div>
 			</div>
 		);
 	}

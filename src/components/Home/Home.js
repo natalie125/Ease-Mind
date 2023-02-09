@@ -31,47 +31,36 @@ class Home extends Component {
 		return (
 			// TODO: Need to create page that will present app options in nicer way.
 			// TODO: Need to create page that will present app options in nicer way.
-
-			<div className="App">
+			
+			<div className="Home">
 				<Header />
-				<h1>Home</h1>
+
+				<h1 className="homepage-title">Home</h1>
 				<div data-cy="homeBttnContainer" className="btn-container">
 					<div className="btn-row">
 						<Link className="link" to="/alex">
-							<img
-								data-cy="alexAppLogo"
-								className="btn-choice"
-								src={canopy_logo}
-								alt="Canopy_App_Alex"
-							/>
-							{/* <button className="btn-choice" >Alex's App</button> */}
+							<img data-cy="alexAppLogo" className="homepage-button" src={canopy_logo} alt="Canopy_App_Alex" />
 						</Link>
 
 						<Link className="link" to="/kevin">
-							<img className="btn-choice" src={skinscan_logo} alt="Skin-Scan_App_Kevin" />
-							{/* <button className="btn-choice" >Kevin's App</button> */}
+							<img className="homepage-button" src={skinscan_logo} alt="Skin-Scan_App_Kevin" />
 						</Link>
 
 						<Link className="link" to="/lanre">
-							<img className="btn-choice" src={dipstik_logo} alt="Dipstik_App_Lanre" />
-							{/* <button className="btn-choice" >Lanre's App</button> */}
+							<img className="homepage-button" src={dipstik_logo} alt="Dipstik_App_Lanre" />
 						</Link>
+
 						<Link className="link" to="/ramat">
-							<img className="btn-choice" src={stroke_logo} alt="Stroke_App_Ramat" />
-							{/* <button className="btn-choice" >Ramat's App</button> */}
+							<img className="homepage-button" src={stroke_logo} alt="Stroke_App_Ramat" />
 						</Link>
+
 						<Link className="link" to="/shreyas">
-							<img
-								className="btn-choice"
-								src={tonsilitis_detector_logo}
-								alt="Tonsilitis_App_Shreyas"
-							/>
-							{/* <button className="btn-choice" >Shreyas' App</button> */}
+							<img className="homepage-button" src={tonsilitis_detector_logo} alt="Tonsilitis_App_Shreyas" />
 						</Link>
 						{/* <button onClick={this.getEC2}> Get EC2 </button> */}
 					</div>
 				</div>
-			</div>
+		</div>
 		);
 	}
 }

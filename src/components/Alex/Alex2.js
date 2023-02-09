@@ -10,14 +10,14 @@ class Alex extends Component {
 				<header className="App-header-primary">
 					<h1>Alex's app</h1>
 				</header>
-				<body>
+				<div>
 					<div>
 						<p>Second nested page</p>
 					</div>
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
-				</body>
+				</div>
 			</div>
 		);
 	}

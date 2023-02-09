@@ -70,68 +70,72 @@ const SignUp = () => {
 	});
 
 	return (
-		<div className="App-unauthorised">
-			<div className="App-body">
-				<header className="App-header-primary">
-					<nav class="navbar navbar-dark bg-dark" id="navbar">
-						{/* <a class="navbar-brand" href="#"></a> */}
-						<h1> LARKS APP</h1>
-					</nav>
-				</header>
-				<div class="login-form">
-					<div class="login-form__content">
-						<div class="login-form__header">Create a new account below:</div>
+		<div className="authentication-container">
+			<div className="authentication-background">
+				<div className="App-body">
 
-						<label for="signup_email" className="form-labels">
-							Enter Email:
-							<input
-								data-cy="signUpEmail"
-								id="signup_email"
-								class="login-form__input"
-								type="text"
-								placeholder="Email"
-							></input>
-						</label>
+					<header className="authentication-header">
+						<nav className="navbar navbar-dark bg-dark" id="navbar">
+							{/* <a className="navbar-brand" href="#"></a> */}
+							<h1 className="authentication-page-title"> LARKS APP</h1>
+						</nav>
+					</header>
+					
+					<div className="signup-form">
+							<div>
+								<h2 className="signup-title">Sign Up</h2>
+								<p className="signup-subtitle">Create a new account below </p>
+							</div>
 
-						<label for="signup_password" className="form-labels">
-							Enter Password:
-							<input
-								data-cy="signUpPasswd"
-								id="signup_password"
-								class="login-form__input"
-								type="password"
-								placeholder="Password"
-							></input>
-						</label>
 
-						<div>
-							<button
-								data-cy="signUpBttn"
-								id="signup_button"
-								class="login-form__button"
-								onClick={validateSignup}
-							>
-								Sign Up
-							</button>
-						</div>
+							<label htmlFor="signup_email" className="form-labels">
+								<input
+									data-cy="signUpEmail"
+									id="signup_email"
+									className="authentication-form-input"
+									type="text"
+									placeholder="Email" />
+							</label>
 
-						<Link to="/login">
-							<button data-cy="signUpLoginBttn" id="login_button" className="login-form__button">
-								Already have an account? Log In
-							</button>
-						</Link>
+							<label htmlFor="signup_password" className="form-labels">
+								<input
+									data-cy="signUpPasswd"
+									id="signup_password"
+									className="authentication-form-input"
+									type="password"
+									placeholder="Password"
+								></input>
+							</label>
 
-						{isValid === INVALIDDETAILS && (
-							<p data-cy="signUpError" class="error-message">
-								Please enter a valid email and password. Passwords need to have minimum 10
-								characters, uppercase, lowercase and special character.
-							</p>
-						)}
-						{isValid === USEREXISTS && (
-							<p data-cy="signUpError" className="error-message">
-								A user with this email already exists.
-							</p>
-						)}
+							<div>
+								<button
+									data-cy="signUpBttn"
+									id="signup_button"
+									className="authentication-button"
+									onClick={validateSignup}>
+									Sign Up
+								</button>
+							</div>
+
+							{isValid === INVALIDDETAILS && (
+								<p data-cy="signUpError" className="error-message">
+									Please enter a valid email and password. Passwords need to have minimum 10
+									characters, uppercase, lowercase and special character.
+								</p>
+							)}
+							{isValid === USEREXISTS && (
+								<p data-cy="signUpError" className="error-message">
+									A user with this email already exists.
+								</p>
+							)}
+							
+							<div className="signup-link-container"> 
+								<Link to="/login">
+									<p className="login-link" data-cy="signUpLoginBttn" id="login_button"> Already have an account? <b>Log In</b> </p>
+								</Link>
+							</div>
+
+							
 					</div>
 				</div>
 			</div>
