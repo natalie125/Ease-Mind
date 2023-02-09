@@ -75,13 +75,13 @@ function Login({ setToken }) {
 	// The Login form that is displayed to the user
 	return (
 		<div className="App-unauthorised">
-			<div className="login-background">
+			<div className="authentication-background">
 				<div className="App-body">
 					{/* LOGIN HEADER */}
-					<header className="login-header">
+					<header className="authentication-header">
 						<nav className="navbar navbar-dark bg-dark" id="navbar">
 							{/* <a className="navbar-brand" href="#"></a> */}
-							<h1 className="login-page-title">LARKS APP</h1>
+							<h1 className="authentication-page-title">LARKS APP</h1>
 						</nav>
 					</header>
 					
@@ -93,13 +93,17 @@ function Login({ setToken }) {
 						</div>
 							
 						<label htmlFor="login_email" className="form-labels">
-							<input data-cy="loginEmail" id="login_email" className="login-form-input" type="text" placeholder="Email" />
+							<input 
+							data-cy="loginEmail" 
+							id="login_email" className="authentication-form-input" 
+							type="text" 
+							placeholder="Email" />
 						</label>
 								
 						<label htmlFor="login_password" className="form-labels"></label>
 						<input
 							id="login_password"
-							className="login-form-input"
+							className="authentication-form-input"
 							type="password"
 							placeholder="Password"
 							data-cy="loginPassword"
@@ -113,7 +117,7 @@ function Login({ setToken }) {
 									await handleSubmit();
 								}}
 							>
-								LOGIN
+								Login
 							</button>
 						</div>
 
