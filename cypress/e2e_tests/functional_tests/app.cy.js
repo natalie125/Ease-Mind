@@ -1,24 +1,24 @@
 /* eslint-disable no-undef */
 
-import { elements } from "../support/elements";
+import { elements } from "../../support/elements";
 
 describe("Page Navigation", () => {
 	beforeEach(() => {
-		cy.visit("https://d28hkjxjjxob5p.cloudfront.net/");
+		cy.visit("http://localhost:3000/");
 	});
 
 	describe("When a user that is not logged in tries to navigate to an app from the login page", () => {
 		it("Should stay on the login page", () => {
-			cy.visit("https://d28hkjxjjxob5p.cloudfront.net/ramat");
-			cy.url().should("eq", "https://d28hkjxjjxob5p.cloudfront.net/");
+			cy.visit("http://localhost:3000/ramat");
+			cy.get(elements.Login.Email);
 		});
 	});
 
 	describe("When a user that is not logged in tries to navigate to an app from the sign up page", () => {
-		it("Should stay on the login page", () => {
-			cy.get(elements.SignUp_Button).click();
-			cy.visit("https://d28hkjxjjxob5p.cloudfront.net/ramat");
-			cy.url().should("eq", "https://d28hkjxjjxob5p.cloudfront.net/signup");
+		it("Should redirect to the login page", () => {
+			cy.get(elements.Login.SignUp_Button).click();
+			cy.visit("http://localhost:3000/ramat");
+			cy.get(elements.Login.Email);
 		});
 	});
 

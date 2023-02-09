@@ -114,7 +114,7 @@ const SignUp = () => {
 						</div>
 
 						<Link to="/login">
-							<button data-cy="signUpBttn" id="login_button" className="login-form__button">
+							<button data-cy="signUpLoginBttn" id="login_button" className="login-form__button">
 								Already have an account? Log In
 							</button>
 						</Link>
@@ -127,7 +127,7 @@ const SignUp = () => {
 						)}
 						{isValid === USEREXISTS && (
 							<p data-cy="signUpError" className="error-message">
-								A user with this email already exixts.
+								A user with this email already exists.
 							</p>
 						)}
 					</div>

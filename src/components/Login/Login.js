@@ -107,6 +107,7 @@ function Login({ setToken }) {
 
 						<div>
 							<button
+								data-cy="loginBttn"
 								className="login-form__button"
 								type="submit"
 								onClick={async () => {
@@ -118,7 +119,10 @@ function Login({ setToken }) {
 						</div>
 
 						<Link to="/signup">
-							<button className="login-form__button"> Sign Up </button>
+							<button data-cy="loginSignUpBttn" className="login-form__button">
+								{" "}
+								Sign Up{" "}
+							</button>
 						</Link>
 
 						{isFilled === false && (
