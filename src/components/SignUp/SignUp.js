@@ -82,7 +82,8 @@ const SignUp = () => {
 					<div class="login-form__content">
 						<div class="login-form__header">Create a new account below:</div>
 
-						<label for="signup_email" className="form-labels">Enter Email:
+						<label for="signup_email" className="form-labels">
+							Enter Email:
 							<input
 								data-cy="signUpEmail"
 								id="signup_email"
@@ -92,7 +93,8 @@ const SignUp = () => {
 							></input>
 						</label>
 
-						<label for="signup_password" className="form-labels">Enter Password:
+						<label for="signup_password" className="form-labels">
+							Enter Password:
 							<input
 								data-cy="signUpPasswd"
 								id="signup_password"
@@ -114,7 +116,7 @@ const SignUp = () => {
 						</div>
 
 						<Link to="/login">
-							<button data-cy="signUpBackBttn" id="login_button" class="login-form__button">
+							<button data-cy="signUpLoginBttn" id="login_button" className="login-form__button">
 								Already have an account? Log In
 							</button>
 						</Link>
@@ -126,8 +128,8 @@ const SignUp = () => {
 							</p>
 						)}
 						{isValid === USEREXISTS && (
-							<p data-cy="signUpError" class="error-message">
-								A user with this email already exixts.
+							<p data-cy="signUpError" className="error-message">
+								A user with this email already exists.
 							</p>
 						)}
 					</div>

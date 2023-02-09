@@ -13,7 +13,7 @@ const loginUser = async (credentials) => {
 	// e.preventDefault();
 	const response = await axios
 		.post(BASEURL + "login", JSON.stringify({ credentials }), {
-			headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": '*'},
+			headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
 			//   withCredentials: true,
 		})
 		.then((response) => {
@@ -85,21 +85,28 @@ function Login({ setToken }) {
 				<div class="login-form">
 					<div class="login-form__content">
 						<div class="login-form__header">Log into an existing account below:</div>
-							<label for="login_email" className="form-labels">Enter Email:
-								<input data-cy="loginEmail" id="login_email" class="login-form__input" type="text" placeholder="Email" />
-							</label>
-							
-							
-							<label for="login_password" className="form-labels"> Enter Password:</label>
-								<input
-									id="login_password"
-									class="login-form__input"
-									type="password"
-									placeholder="Password"
-									data-cy="loginPassword"
-								/>
-							
-							
+						<label for="login_email" className="form-labels">
+							Enter Email:
+							<input
+								data-cy="loginEmail"
+								id="login_email"
+								class="login-form__input"
+								type="text"
+								placeholder="Email"
+							/>
+						</label>
+
+						<label for="login_password" className="form-labels">
+							{" "}
+							Enter Password:
+						</label>
+						<input
+							id="login_password"
+							class="login-form__input"
+							type="password"
+							placeholder="Password"
+							data-cy="loginPassword"
+						/>
 
 						<div>
 							<button
@@ -115,7 +122,10 @@ function Login({ setToken }) {
 						</div>
 
 						<Link to="/signup">
-							<button class="login-form__button" data-cy="signUpBttn"> Sign Up </button>
+							<button class="login-form__button" data-cy="loginSignUpBttn">
+								{" "}
+								Sign Up{" "}
+							</button>
 						</Link>
 
 						{isFilled === false && (
