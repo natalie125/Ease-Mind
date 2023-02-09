@@ -37,11 +37,12 @@ body{
 	background: #005eb8;
 	color: white;
 	height: 70px;
-	font-size: calc(10px + 2vmin);
+	/* font-size: calc(10px + 2vmin); */
+	font-size: 16px;
 	/* margin-top: clamp(15px, 7%, 40px); */
 	/* margin-bottom: clamp(15px, 7%, 40px); */
-	padding: 20px;
-	border: 1px solid red;
+	/* padding: 20px; */
+	/* border: 1px solid red; */
 }
 
 #header_name {
@@ -164,9 +165,6 @@ body{
 	border-color: #005eb8;
 }
 
-.authentication-form-input::placeholder {
-	/* color: #aaaaaa; */
-}
 
 .authentication-button {
 	padding: 10px;
@@ -217,6 +215,7 @@ body{
 
 .homepage-title {
 	color: #005eb8;
+	margin: 10px 0px;
 }
 
 .btn-container {

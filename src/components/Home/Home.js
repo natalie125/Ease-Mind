@@ -35,7 +35,7 @@ class Home extends Component {
 			<div className="Home">
 				<Header />
 
-				<h1>Home</h1>
+				<h1 className="homepage-title">Home</h1>
 				<div className="btn-container">
 					<div className="btn-row">
 						<Link className="link" to="/alex">
