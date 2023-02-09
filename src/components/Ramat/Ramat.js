@@ -9,7 +9,7 @@ import "../App/App.css";
 class Ramat extends Component {
 	render() {
 		return (
-			<div className="App">
+			<div className="Ramat">
 				<Header />
 				<h1>Ramat's app</h1>
 				<div className="App-body">

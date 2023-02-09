@@ -70,7 +70,7 @@ const SignUp = () => {
 	});
 
 	return (
-		<div className="App-unauthorised">
+		<div className="authentication-container">
 			<div className="authentication-background">
 				<div className="App-body">
 

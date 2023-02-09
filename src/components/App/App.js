@@ -21,7 +21,7 @@ function App() {
 		console.log(location)
 
 		// Don't show the login form on the sign up page
-		if(location != "/signup" ){
+		if(location !== "/signup" ){
 			return <Login setToken={setToken} />
 		}
 	}

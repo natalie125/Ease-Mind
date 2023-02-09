@@ -11,14 +11,12 @@ const Header = () => {
 
 	return (
 		<header className="App-header-primary">
-			<div className="App-header-secondary">
 				<h1 id="header_name"> LARKS APP</h1>
 				<div id="header_buttons">
-					<button data-cy="logoutBttn" id="logout_button" class="logout-button" onClick={logout}>
+					<button data-cy="logoutBttn" id="logout_button" className="logout-button" onClick={logout}>
 						Logout
 					</button>
 				</div>
-			</div>
 		</header>
 	);
 };
