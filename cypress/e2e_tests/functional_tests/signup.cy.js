@@ -53,10 +53,15 @@ describe("Log In", () => {
 			});
 		});
 		describe("When the user already has an account", () => {
-			it("Should display an appropriate error message", () => {
+			beforeEach(() => {
 				cy.get(elements.SignUp.Email).type(registeredUser.email);
 				cy.get(elements.SignUp.Password).type(registeredUser.incorrectPassword);
-
+			});
+			it("Should stay on the sign up page", () => {
+				cy.get(elements.SignUp.Create_Account_Button).click();
+				cy.url().should("eq", "http://localhost:3000/signup");
+			});
+			it("Should display an appropriate error message", () => {
 				cy.get(elements.SignUp.Create_Account_Button).click();
 				cy.get(elements.SignUp.Error_Text).should("be.visible"); // Assert that error text is visible
 				cy.get(elements.SignUp.Error_Text).should(

@@ -1,6 +1,12 @@
 .App {
 	text-align: center;
-	background-color: lightblue;
+	background-color: #FFFFFF;
+	min-height: 100vh;
+}
+
+.App-unauthorised {
+	text-align: center;
+	background-color: #005eb8;
 	min-height: 100vh;
 }
 
@@ -20,7 +26,7 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	font-size: calc(10px + 2vmin);
+	background: #005eb8;
 	color: white;
 }
 
@@ -31,9 +37,8 @@
 	justify-content: center;
 	font-size: calc(10px + 2vmin);
 	background: #005eb8;
-	color: white;
-	margin-top: 4%;
-	margin-bottom: 4%;
+	margin-top: clamp(15px, 7%, 40px);
+	margin-bottom: clamp(15px, 7%, 40px);
 }
 
 #header_name {
@@ -70,12 +75,12 @@
 	}
 }
 
-body {
-	background-color: lightblue;
-}
+/* body {
+	background-color: green;
+} */
 
 .error-message {
-	color: #ff0000;
+	color: #A40000;
 	font-size: calc(3px + 2vmin);
 }
 
@@ -109,6 +114,11 @@ body {
 	margin-bottom: 15px;
 	text-align: center;
 	color: #333333;
+}
+
+.form-labels{
+	color: black;
+	text-align: left;
 }
 
 .login-form__input {
@@ -185,19 +195,21 @@ body {
 	/* border: 1px solid red; */
 	align-items: center;
 	justify-content: center;
-	width: 40%;
+	width: 60%;
 }
 
 .link {
 	/* border: 1px solid red; */
 	width: fit-content;
 	display: flex;
+	margin: 10px 10px;
+	max-width: 150px;
 }
 
 .btn-choice {
 	/* background-position: center; */
-	width: 300px;
-	margin: 30px 30px;
+	max-width: 150px;
+	
 	font-size: 16px;
 	transition: 0.3s;
 	cursor: pointer;
@@ -213,6 +225,11 @@ body {
 
 	.btn-choice {
 		width: 90%;
+
+	}
+
+	.link{
+		width: fit-content;
 	}
 }
 

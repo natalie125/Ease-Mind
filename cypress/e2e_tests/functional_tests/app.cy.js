@@ -4,6 +4,7 @@ import { elements } from "../../support/elements";
 
 describe("Page Navigation", () => {
 	beforeEach(() => {
+		sessionStorage.clear(); // as login functionality is being tested, assume fresh user after each test.
 		cy.visit("http://localhost:3000/");
 	});
 

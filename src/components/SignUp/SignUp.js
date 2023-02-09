@@ -70,33 +70,35 @@ const SignUp = () => {
 	});
 
 	return (
-		<div className="App">
+		<div className="App-unauthorised">
 			<div className="App-body">
 				<header className="App-header-primary">
-					<nav className="navbar navbar-dark bg-dark" id="navbar">
+					<nav class="navbar navbar-dark bg-dark" id="navbar">
 						{/* <a class="navbar-brand" href="#"></a> */}
 						<h1> LARKS APP</h1>
 					</nav>
 				</header>
-				<div className="login-form">
-					<div className="login-form__content">
-						<div className="login-form__header">Create a new account below:</div>
+				<div class="login-form">
+					<div class="login-form__content">
+						<div class="login-form__header">Create a new account below:</div>
 
-						<label>
+						<label for="signup_email" className="form-labels">
+							Enter Email:
 							<input
 								data-cy="signUpEmail"
 								id="signup_email"
-								className="login-form__input"
+								class="login-form__input"
 								type="text"
 								placeholder="Email"
 							></input>
 						</label>
 
-						<label>
+						<label for="signup_password" className="form-labels">
+							Enter Password:
 							<input
 								data-cy="signUpPasswd"
 								id="signup_password"
-								className="login-form__input"
+								class="login-form__input"
 								type="password"
 								placeholder="Password"
 							></input>
@@ -106,7 +108,7 @@ const SignUp = () => {
 							<button
 								data-cy="signUpBttn"
 								id="signup_button"
-								className="login-form__button"
+								class="login-form__button"
 								onClick={validateSignup}
 							>
 								Sign Up
@@ -120,7 +122,7 @@ const SignUp = () => {
 						</Link>
 
 						{isValid === INVALIDDETAILS && (
-							<p data-cy="signUpError" className="error-message">
+							<p data-cy="signUpError" class="error-message">
 								Please enter a valid email and password. Passwords need to have minimum 10
 								characters, uppercase, lowercase and special character.
 							</p>
