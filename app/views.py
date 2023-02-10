@@ -21,6 +21,13 @@ app.config["JWT_SECRET_KEY"] = "comp3931-larks"  # Change this!
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 jwt = JWTManager(app)
 
+# import everyone's individual python files
+from app.alex.alex import *
+from app.kevin.kevin import *
+from app.lanre.lanre import *
+from app.ramat.ramat import *
+from app.shreyas.shreyas import *
+
 #############################################################
 # BEGINNING OF GLOBAL VARIABLES
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -180,48 +187,3 @@ def upload():
     with open(os.path.join("shots", filename), "wb") as f:
         f.write(image_decoded)
     return {"msg": "image successfully saved in server!"}, 200
-
-
-#############################################################
-# ROUTE FOR ALEX'S APP
-# ^^^^^^^^^^^^^^^^^^^^^^^
-@app.route('/alex', methods=['GET', 'POST'])
-def alex():
-    if request.method == 'POST':
-        print("Alex App Requested")
-
-
-#############################################################
-# ROUTE FOR KEVIN'S APP
-# ^^^^^^^^^^^^^^^^^^^^^^^
-@app.route('/kevin', methods=['GET', 'POST'])
-def kevin():
-    if request.method == 'POST':
-        print("Kevin App Requested")
-
-
-#############################################################
-# ROUTE FOR LANRE'S APP
-# ^^^^^^^^^^^^^^^^^^^^^^^
-@app.route('/lanre', methods=['GET', 'POST'])
-def lanre():
-    if request.method == 'POST':
-        print("Lanre App Requested")
-
-
-#############################################################
-# ROUTE FOR RAMAT'S APP
-# ^^^^^^^^^^^^^^^^^^^^^^^
-@app.route('/ramat', methods=['GET', 'POST'])
-def ramat():
-    if request.method == 'POST':
-        print("Ramat App Requested")
-
-
-#############################################################
-# ROUTE FOR SHREYAS' APP
-# ^^^^^^^^^^^^^^^^^^^^^^^
-@app.route('/shreyas', methods=['GET', 'POST'])
-def shreyas():
-    if request.method == 'POST':
-        print("Shreyas App Requested")
