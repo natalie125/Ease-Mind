@@ -81,7 +81,7 @@ class Pedigree_Patient(db.Model):
     ethnicity = db.Column(db.String(500), nullable=False) # ethnicity of the patient
 
 # table for health_conditions
-class Pedigree_Health_Conditions(db.Model):
+class Pedigree_Health_Condition(db.Model):
     __bind_key__ = 'canopy'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(500), nullable=False) # name of the health condition
@@ -94,5 +94,13 @@ tree_patient = db.Table('tree_patient',
 )
 
 # join table for the relationship of "a patient is the parent of another patient" or "a patient is the child of another patient"
+parent_child = db.Table('parent_child',
+    db.Column('parent_id', db.Integer, db.ForeignKey('pedigree_patient.id')),
+    db.Column('child_id', db.Integer, db.ForeignKey('pedigree_patient.id'))
+)
 
 # join table for the relationship of "a patient has this health condition" or "this health condition affects this patient"
+patient_condition = db.Table('patient_condition',
+    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient_id')),
+    db.Column('condition_id', db.Integer, db.ForeignKey('pedigree_health_condition.id'))
+)
