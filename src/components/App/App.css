@@ -321,19 +321,6 @@ body{
 *************************/
 /* Right now webcam is using the whole page size for resizing, not the element that it is within */
 .webcam {
-<<<<<<< HEAD
-	width: fit-content;
-	height: fit-content;
-	border-radius: 5px;
-	border: 1px solid blue;
-}
-
-.webcam-capture-holder {
-	margin: 0 auto;
-	border-radius: 5px;
-	width: 100%;
-	border: 1px solid red;
-=======
     width: fit-content;
     height: fit-content;
     border-radius: 5px;
@@ -343,7 +330,6 @@ body{
     margin: 0 auto;
     border-radius: 5px;
     width: 100%;
->>>>>>> master
 }
 
 .flash {
