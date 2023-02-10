@@ -14,7 +14,7 @@ function GetCurrentPage() {
 
 function App() {
 	const { token, setToken } = useToken();
-
+	/*
 	// If a user does not have an authentication token, a login page is displayed to them
 	if(!token) {
 		const location = GetCurrentPage();
@@ -25,7 +25,7 @@ function App() {
 			return <Login setToken={setToken} />
 		}
 	}
-
+	*/
 	return (
 		<div className="App">
 			<Main />

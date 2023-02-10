@@ -276,12 +276,14 @@ body{
 	width: fit-content;
 	height: fit-content;
 	border-radius: 5px;
+	border: 1px solid blue;
 }
 
 .webcam-capture-holder {
 	margin: 0 auto;
 	border-radius: 5px;
 	width: 100%;
+	border: 1px solid red;
 }
 
 .flash {

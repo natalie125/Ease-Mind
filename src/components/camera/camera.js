@@ -63,12 +63,12 @@ const WebcamCapture = () => {
 	// But I cannot test properly as its running on a laptop.
 	const switchCameraFacing = React.useCallback(() => {
 		if (frontFacing){
-			setApplyCameraValue("environment");
+			setApplyCameraValue("exact: \"environment\"");
 			setFrontFacing(false);
 		}
 		
 		else{
-			setApplyCameraValue("user");
+			setApplyCameraValue("\"user\"");
 			setFrontFacing(true);
 		}
 	
@@ -107,7 +107,7 @@ const WebcamCapture = () => {
         max: cameraHeight
       },
       aspectRatio,
-      facingMode: { exact: applyCameraValue }
+      facingMode: { applyCameraValue }
     };
 
 
@@ -116,7 +116,7 @@ const WebcamCapture = () => {
     <>
     
     <div style={{width:"100%"}}>
-      <Webcam className="webcam" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} ref={webcamRef} marginWidth={"10px"} />
+      <Webcam className="webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"10px"} />
       
 
       {flash && <div className="flash" />}
