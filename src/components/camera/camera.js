@@ -16,7 +16,7 @@ const WebcamCapture = () => {
   const [imageSrc, setImageSrc] = useState(null);
   const [flash, setFlash] = useState(false);
   const [frontFacing, setFrontFacing] = React.useState(true);
-	const [applyCameraValue,setApplyCameraValue] = React.useState("user");
+	
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,16 +63,14 @@ const WebcamCapture = () => {
 	// But I cannot test properly as its running on a laptop.
 	const switchCameraFacing = React.useCallback(() => {
 		if (frontFacing){
-			setApplyCameraValue("environment");
 			setFrontFacing(false);
 		}
 		
 		else{
-			setApplyCameraValue("user");
 			setFrontFacing(true);
 		}
 	
-	},[frontFacing,setApplyCameraValue]);
+	},[frontFacing]);
 
 
 	// Trying to do the dimensions stuff.
@@ -93,45 +91,55 @@ const WebcamCapture = () => {
         cameraHeight = minValue;
     };
     
-    
-    
-    const aspectRatio = cameraWidth/cameraHeight;
-    
-    const cameraConstraints = {
-      width: {
-        min: cameraWidth,
-        max:cameraWidth
-      },
-      height: {
-        min: cameraHeight,
-        max: cameraHeight
-      },
-      aspectRatio,
-      facingMode: { exact: applyCameraValue }
-    };
+
+    var cameraConstraints;
+    if (frontFacing){
+      var x = "user";
+      cameraConstraints = {
+        width: {
+          min: cameraWidth,
+          max:cameraWidth
+        },
+        height: {
+          min: cameraHeight,
+          max: cameraHeight
+        },
+        facingMode: {x}
+      };
+    }else{
+      cameraConstraints = {
+        width: {
+          min: cameraWidth,
+          max:cameraWidth
+        },
+        height: {
+          min: cameraHeight,
+          max: cameraHeight
+        },
+        facingMode: {exact: "environment"}
+      };
+    }
 
 
 //two buttons, one for taking pictures with flash and one for without
   return (
     <>
-    
-    <div style={{width:"100%"}}>
-      <Webcam className="webcam" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} ref={webcamRef} marginWidth={"10px"} />
-      
-
-      {flash && <div className="flash" />}
-      {imageSrc && (
-        <img src={imageSrc} width={minValue} alt="Captured photo" />
-      )}
-    </div>
-  <div style={{width:"100%"}}>
-    <button onClick={handleTakePicture}>Take Picture</button>
-    <button onClick={handleTakePictureWithFlash}>Take Picture With Flash</button>
-    <button onClick={switchCameraFacing}>Change Camera</button>
-    <button onClick={handleSubmit}>Submit Image</button>
-  </div>
-
-</>
+      <div style={{width:"100%"}}>
+        <Webcam className="webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"10px"} />
+      </div>
+      <div style={{width:"100%"}}>
+        <button onClick={handleTakePicture}>Take Picture</button>
+        <button onClick={handleTakePictureWithFlash}>Take Picture With Flash</button>
+        <button onClick={switchCameraFacing}>Change Camera</button>
+        <button onClick={handleSubmit}>Submit Image</button>
+      </div>
+      <div>
+        {flash && <div className="flash" />}
+        {imageSrc && (
+          <img src={imageSrc} width={minValue} alt="Captured photo" />
+        )}
+      </div>
+    </>
   );
 };
 
