@@ -100,3 +100,4 @@ Whoosh==2.7.4
 WTForms==3.0.1
 zipp==3.11.0
 flask-jwt-extended==4.4.4
+pyopenssl==23.0.0
