@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
+from pathlib import Path
 # define the app
 app = Flask(__name__)
 
@@ -16,8 +17,15 @@ app.app_context().push()
 # read configuration from config.py file
 app.config.from_object('config')
 
-# added to enable cors
-CORS(app)
+# check if there is a file called "app.py" in the outside folder
+# if so we are in the EC2 instance and we DO NOT want to include the CORS(app) line below
+path = Path("app.py")
+if not Path.is_file(path):
+    # added to enable cors
+    CORS(app)
+    print("CORS included, we're on local because there's no app.py")
+else:
+    print("app.py detected, we're on EC2, don't include CORS in __init__.py")
 
 # define the database
 db = SQLAlchemy(app)
