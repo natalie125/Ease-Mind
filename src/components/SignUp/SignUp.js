@@ -88,24 +88,26 @@ const SignUp = () => {
 							</div>
 
 
-							<label htmlFor="signup_email" className="form-labels">
+							
 								<input
 									data-cy="signUpEmail"
 									id="signup_email"
 									className="authentication-form-input"
 									type="text"
-									placeholder="Email" />
-							</label>
+									placeholder="Email"
+									aria-label="Enter Email"/>
+							
 
-							<label htmlFor="signup_password" className="form-labels">
+							
 								<input
 									data-cy="signUpPasswd"
 									id="signup_password"
 									className="authentication-form-input"
 									type="password"
 									placeholder="Password"
+									aria-label="Enter Password"
 								></input>
-							</label>
+						
 
 							<div>
 								<button
