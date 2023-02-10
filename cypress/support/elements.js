@@ -1,5 +1,5 @@
 export var elements = {
-	Logout_Button: "[data-cy=logoutBttn]",
+
 
 	Login: {
 		Email: "[data-cy=loginEmail]",
@@ -19,5 +19,6 @@ export var elements = {
 	Home: {
 		ButtonContainer: "[data-cy=homeBttnContainer]",
 		applicationButton: "[data-cy=alexAppLogo]",
+		Logout_Button: "[data-cy=logoutBttn]"
 	},
 };

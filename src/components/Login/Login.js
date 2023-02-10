@@ -92,22 +92,26 @@ function Login({ setToken }) {
 							<p className="login-subtitle">Please login to your account below </p>
 						</div>
 							
-						<label htmlFor="login_email" className="form-labels">
+						
 							<input 
-							data-cy="loginEmail" 
-							id="login_email" className="authentication-form-input" 
-							type="text" 
-							placeholder="Email" />
-						</label>
+								data-cy="loginEmail" 
+								id="login_email" className="authentication-form-input" 
+								type="text" 
+								placeholder="Email"
+								aria-label="Enter Password"
+							/>
+					
 								
-						<label htmlFor="login_password" className="form-labels"></label>
-						<input
-							id="login_password"
-							className="authentication-form-input"
-							type="password"
-							placeholder="Password"
-							data-cy="loginPassword"
-						/>
+						
+							<input
+								id="login_password"
+								className="authentication-form-input"
+								type="password"
+								placeholder="Password"
+								data-cy="loginPassword"
+								aria-label="Enter Password"
+							/>
+							
 						<div>
 							<button
 								className="authentication-button"
