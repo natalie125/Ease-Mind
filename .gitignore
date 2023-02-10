@@ -4,3 +4,4 @@
 .vscode/settings.json
 dist/
 larks_final_project.egg-info/
+test.db-journal
