@@ -37,7 +37,6 @@ build:
     - python -m pip install build
     - python -m build
     - cp appspec.yml dist/
-    - pip install -r requirements.txt
   artifacts:
     paths:
       - dist/
@@ -56,11 +55,13 @@ lint:
 unit_tests:
   stage: test
   script:
+    - pip install -r requirements.txt
     - pip install -U pytest
     - python -m pytest -v -m unit
 
 functional_tests:
   stage: test
   script:
+    - pip install -r requirements.txt
     - pip install -U pytest
     - python -m pytest -v -m functional
