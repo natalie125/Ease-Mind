@@ -60,3 +60,39 @@ class User_Login_Test(db.Model):
         if not password:
             raise AssertionError('No password provided')
         return password
+
+########################################
+# FAMILY PEDIGREE TABLES
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+# table for family trees
+class Pedigree_Tree(db.Model):
+    __bind_key__ = 'canopy'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(500), nullable=False) # name of the tree
+    owner = db.Column(db.String(500), nullable=False) # syncs with the email column in the User_Login table
+
+# table for patients
+class Pedigree_Patient(db.Model):
+    __bind_key__ = 'canopy'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(500), nullable=False) # name of the patient
+    dob = db.Column(db.DateTime, nullable=False) # their date of birth as a Python DateTime object
+    ethnicity = db.Column(db.String(500), nullable=False) # ethnicity of the patient
+
+# table for health_conditions
+class Pedigree_Health_Conditions(db.Model):
+    __bind_key__ = 'canopy'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(500), nullable=False) # name of the health condition
+    hereditary = db.Column(db.Boolean, default=False) # boolean for whether the condition is hereditary, default False
+
+# join table for the relationship of "a tree owns a patient" or "a patient belongs to a tree"
+tree_patient = db.Table('tree_patient',
+    db.Column('tree_id', db.Integer, db.ForeignKey('pedigree_tree.id')),
+    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient.id'))
+)
+
+# join table for the relationship of "a patient is the parent of another patient" or "a patient is the child of another patient"
+
+# join table for the relationship of "a patient has this health condition" or "this health condition affects this patient"

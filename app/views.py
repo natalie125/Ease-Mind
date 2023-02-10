@@ -16,6 +16,9 @@ from flask_jwt_extended import create_access_token
 from flask_jwt_extended import JWTManager
 from datetime import datetime, timedelta, timezone
 
+# import our own app's Python files
+from app.alex.canopy import *
+
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = "comp3931-larks"  # Change this!
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
