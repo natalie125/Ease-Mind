@@ -1,13 +1,13 @@
-image: python:latest 
+image: python:latest
 
 # Change pip's cache directory to be inside the project directory since we can
 # only cache local items.
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-  CI_AWS_CF_CREATE_STACK_FILE: 'aws/cf_create_stack.json'
-  CI_AWS_S3_PUSH_FILE: 'aws/push_s3.json'
-  CI_AWS_EC2_DEPLOYMENT_FILE: 'aws/create_deployment.json'
-  CI_AWS_CF_STACK_NAME: 'larks_final_project'
+  CI_AWS_CF_CREATE_STACK_FILE: "aws/cf_create_stack.json"
+  CI_AWS_S3_PUSH_FILE: "aws/push_s3.json"
+  CI_AWS_EC2_DEPLOYMENT_FILE: "aws/create_deployment.json"
+  CI_AWS_CF_STACK_NAME: "larks_final_project"
   TRACE: 1
 
 include:
@@ -24,12 +24,12 @@ cache:
     - venv/
 
 stages:
-    - build
-    - static analysis
-    - test
-    - provision
-    - review
-    - production
+  - build
+  - static analysis
+  - test
+  - provision
+  - review
+  - production
 
 build:
   stage: build
@@ -37,29 +37,31 @@ build:
     - python -m pip install build
     - python -m build
     - cp appspec.yml dist/
-  artifacts:    
-    paths:      
-      - dist/    
+  artifacts:
+    paths:
+      - dist/
     expire_in: 1 hour
 
 lint:
   stage: static analysis
   allow_failure: true
   image: registry.gitlab.com/mafda/python-linting
-  script: 
-     - pip install flake8
-     - python -m flake8 .
+  script:
+    - pip install flake8
+    - python -m flake8 .
   only:
-     - merge_requests
+    - merge_requests
 
 unit_tests:
   stage: test
   script:
-     - pip install -U pytest
-     - python -m pytest -v -m unit
+    - pip install Flask
+    - pip install -U pytest
+    - python -m pytest -v -m unit
 
 functional_tests:
   stage: test
   script:
-     - pip install -U pytest
-     - python -m pytest -v -m unit
+    - pip install Flask
+    - pip install -U pytest
+    - python -m pytest -v -m functional
