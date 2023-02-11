@@ -43,19 +43,19 @@ class Home extends Component {
 						</Link>
 
 						<Link className="link" to="/kevin">
-							<img className="homepage-button" src={skinscan_logo} alt="Skin-Scan_App_Kevin" />
+							<img data-cy="kevinAppLogo" className="homepage-button" src={skinscan_logo} alt="Skin-Scan_App_Kevin" />
 						</Link>
 
 						<Link className="link" to="/lanre">
-							<img className="homepage-button" src={dipstik_logo} alt="Dipstik_App_Lanre" />
+							<img data-cy="lanreAppLogo" className="homepage-button" src={dipstik_logo} alt="Dipstik_App_Lanre" />
 						</Link>
 
 						<Link className="link" to="/ramat">
-							<img className="homepage-button" src={stroke_logo} alt="Stroke_App_Ramat" />
+							<img data-cy="ramatAppLogo" className="homepage-button" src={stroke_logo} alt="Stroke_App_Ramat" />
 						</Link>
 
 						<Link className="link" to="/shreyas">
-							<img className="homepage-button" src={tonsilitis_detector_logo} alt="Tonsilitis_App_Shreyas" />
+							<img data-cy="shreyasAppLogo" className="homepage-button" src={tonsilitis_detector_logo} alt="Tonsilitis_App_Shreyas" />
 						</Link>
 						{/* <button onClick={this.getEC2}> Get EC2 </button> */}
 					</div>
