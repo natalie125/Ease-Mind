@@ -65,42 +65,130 @@ class User_Login_Test(db.Model):
 # FAMILY PEDIGREE TABLES
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-# table for family trees
-class Pedigree_Tree(db.Model):
-    __bind_key__ = 'canopy'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(500), nullable=False) # name of the tree
-    owner = db.Column(db.String(500), nullable=False) # syncs with the email column in the User_Login table
-
-# table for patients
-class Pedigree_Patient(db.Model):
-    __bind_key__ = 'canopy'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(500), nullable=False) # name of the patient
-    dob = db.Column(db.DateTime, nullable=False) # their date of birth as a Python DateTime object
-    ethnicity = db.Column(db.String(500), nullable=False) # ethnicity of the patient
-
-# table for health_conditions
-class Pedigree_Health_Condition(db.Model):
-    __bind_key__ = 'canopy'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(500), nullable=False) # name of the health condition
-    hereditary = db.Column(db.Boolean, default=False) # boolean for whether the condition is hereditary, default False
+# for join tables, make sure to explicitly name your models below them or they won't be able to find them
+# during the create_all() process
 
 # join table for the relationship of "a tree owns a patient" or "a patient belongs to a tree"
 tree_patient = db.Table('tree_patient',
-    db.Column('tree_id', db.Integer, db.ForeignKey('pedigree_tree.id')),
-    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient.id'))
+    db.Column('tree_id', db.Integer, db.ForeignKey('pedigree_tree.id'), primary_key=True),
+    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
+    bind_key='canopy'
 )
 
 # join table for the relationship of "a patient is the parent of another patient" or "a patient is the child of another patient"
 parent_child = db.Table('parent_child',
-    db.Column('parent_id', db.Integer, db.ForeignKey('pedigree_patient.id')),
-    db.Column('child_id', db.Integer, db.ForeignKey('pedigree_patient.id'))
+    db.Column('parent_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
+    db.Column('child_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
+    bind_key='canopy'
 )
 
 # join table for the relationship of "a patient has this health condition" or "this health condition affects this patient"
 patient_condition = db.Table('patient_condition',
-    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient_id')),
-    db.Column('condition_id', db.Integer, db.ForeignKey('pedigree_health_condition.id'))
+    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
+    db.Column('condition_id', db.Integer, db.ForeignKey('pedigree_health_condition.id'), primary_key=True),
+    bind_key='canopy'
 )
+
+# table for family trees
+class Pedigree_Tree(db.Model):
+    __bind_key__ = 'canopy'
+    __tablename__ = 'pedigree_tree'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(500), nullable=False) # name of the tree
+    owner = db.Column(db.String(500), nullable=False) # syncs with the email column in the User_Login table
+
+    # relationships
+    nodes = db.relationship('Pedigree_Patient', secondary=tree_patient, backref=db.backref('node_of'))
+
+    def __repr__(self):
+        return f'<Pedigree_Tree: {self.name}>'
+
+# table for patients
+class Pedigree_Patient(db.Model):
+    __bind_key__ = 'canopy'
+    __tablename__ = 'pedigree_patient'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(500), nullable=False) # name of the patient
+    dob = db.Column(db.DateTime) # their date of birth as a Python DateTime object
+    ethnicity = db.Column(db.String(500), nullable=False) # ethnicity of the patient
+
+    # relationships
+    children = db.relationship('Pedigree_Patient', secondary=parent_child, primaryjoin=id==parent_child.c.parent_id, secondaryjoin=id==parent_child.c.child_id, backref=db.backref('parents'))
+    conditions = db.relationship('Pedigree_Health_Condition', secondary=patient_condition, backref=db.backref('condition_of'))
+
+    def __repr__(self):
+        return f'<Pedigree_Patient: {self.name}>'
+
+# table for health_conditions
+class Pedigree_Health_Condition(db.Model):
+    __bind_key__ = 'canopy'
+    __tablename__ = 'pedigree_health_condition'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(500), nullable=False) # name of the health condition
+    hereditary = db.Column(db.Boolean, default=False) # boolean for whether the condition is hereditary, default False
+
+    def __repr__(self):
+        return f'<Pedigree_Health_Condition: {self.name}>'
+
+# Test tables for the family pedigree app
+# join table for the relationship of "a tree owns a patient" or "a patient belongs to a tree"
+tree_patient_test = db.Table('tree_patient_test',
+    db.Column('tree_id', db.Integer, db.ForeignKey('pedigree_tree_test.id'), primary_key=True),
+    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
+    bind_key='canopy_test'
+)
+
+# join table for the relationship of "a patient is the parent of another patient" or "a patient is the child of another patient"
+parent_child_test = db.Table('parent_child_test',
+    db.Column('parent_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
+    db.Column('child_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
+    bind_key='canopy_test'
+)
+
+# join table for the relationship of "a patient has this health condition" or "this health condition affects this patient"
+patient_condition_test = db.Table('patient_condition_test',
+    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
+    db.Column('condition_id', db.Integer, db.ForeignKey('pedigree_health_condition_test.id'), primary_key=True),
+    bind_key='canopy_test'
+)
+
+# table for family trees
+class Pedigree_Tree_Test(db.Model):
+    __bind_key__ = 'canopy_test'
+    __tablename__ = 'pedigree_tree_test'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(500), nullable=False) # name of the tree
+    owner = db.Column(db.String(500), nullable=False) # syncs with the email column in the User_Login table
+
+    # relationships
+    nodes = db.relationship('Pedigree_Patient_Test', secondary=tree_patient_test, backref=db.backref('node_of'))
+
+    def __repr__(self):
+        return f'<Pedigree_Tree_Test: {self.name}>'
+
+# table for patients
+class Pedigree_Patient_Test(db.Model):
+    __bind_key__ = 'canopy_test'
+    __tablename__ = 'pedigree_patient_test'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(500), nullable=False) # name of the patient
+    dob = db.Column(db.DateTime) # their date of birth as a Python DateTime object
+    ethnicity = db.Column(db.String(500), nullable=False) # ethnicity of the patient
+
+    # relationships
+    children = db.relationship('Pedigree_Patient_Test', secondary=parent_child_test, primaryjoin=id==parent_child_test.c.parent_id, secondaryjoin=id==parent_child_test.c.child_id, backref=db.backref('parents'))
+    conditions = db.relationship('Pedigree_Health_Condition_Test', secondary=patient_condition_test, backref=db.backref('condition_of'))
+
+    def __repr__(self):
+        return f'<Pedigree_Patient_Test: {self.name}>'
+
+# table for health_conditions
+class Pedigree_Health_Condition_Test(db.Model):
+    __bind_key__ = 'canopy_test'
+    __tablename__ = 'pedigree_health_condition_test'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(500), nullable=False) # name of the health condition
+    hereditary = db.Column(db.Boolean, default=False) # boolean for whether the condition is hereditary, default False
+
+    def __repr__(self):
+        return f'<Pedigree_Health_Condition_Test: {self.name}>'
