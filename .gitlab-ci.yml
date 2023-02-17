@@ -34,8 +34,7 @@ stages:
 build:
   stage: build
   script:
-    - import shutil
-    - shutil.make_archive("TEMP_DIR", 'zip', "/app")
+    - python3 zip.py
   artifacts:
     paths:
       - dist/
