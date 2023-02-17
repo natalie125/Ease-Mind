@@ -1,6 +1,7 @@
 from app import db
 from sqlalchemy.orm import validates
 
+
 # Definition of the table named "User_Login" for storing user login information
 # emails are unique, passwords are not
 class User_Login(db.Model):
@@ -29,6 +30,7 @@ class User_Login(db.Model):
         if not password:
             raise AssertionError('No password provided')
         return password
+
 
 # exact same table as above, but the test version
 # Definition of the table named "User_Login" for storing user login information

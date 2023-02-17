@@ -1,9 +1,11 @@
 import pytest
 from app import db, models
 
+
 @pytest.mark.unit
 def test1():
     assert 5 == 5
+
 
 def test_login_database():
     try:
@@ -40,4 +42,5 @@ def test_login_database():
         # nice the database raised an assertion error
         error4 = str(e)
 
-    assert error1 == "No email provided" and error2 == 'Email address missing "@" symbol' and error3 == "Email is already in use" and error4 == "No password provided"
+    assert (error1 == "No email provided" and error2 == 'Email address missing "@" symbol'
+            and error3 == "Email is already in use" and error4 == "No password provided")

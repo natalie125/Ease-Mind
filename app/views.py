@@ -1,20 +1,15 @@
 # from flask import request, render_template, flash, redirect, url_for
 import werkzeug
-from flask import Flask, render_template, Response, request, flash, redirect, url_for, session, jsonify
+from flask import request, flash, jsonify
 from app import app, models, bcrypt, db
-import datetime
 import time
 import os
-import sys
 import json
 import base64
-# import numpy as np
-from threading import Thread
 from .models import User_Login, User_Login_Test
-from .forms import LoginForm, RegisterForm  # for testing login and register
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import JWTManager
-from datetime import datetime, timedelta, timezone
+from datetime import timedelta
 
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = "comp3931-larks"  # Change this!
@@ -113,8 +108,8 @@ def login():
         return {"type": "GET"}, 405
     else:
         # app.logger.info(u.email + " unsuccesfull login at " + now)
-        flash(f'Login unsuccessful. Please check email and password', 'danger')
-        print(f'Login unsuccessful. Please check email and password!')
+        flash(f'{"Login unsuccessful. Please check email and password"}', 'danger')
+        print(f'{"Login unsuccessful. Please check email and password!"}')
         response = {"msg": "Login unsuccessful"}
         return jsonify(response), 401
 

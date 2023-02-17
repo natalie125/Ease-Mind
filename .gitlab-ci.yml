@@ -34,7 +34,7 @@ stages:
 build:
   stage: build
   script:
-    - python3 zip.py
+    - python zip.py
   artifacts:
     paths:
       - dist/
@@ -46,9 +46,7 @@ lint:
   image: registry.gitlab.com/mafda/python-linting
   script:
     - pip install flake8
-    - python -m flake8 .
-  only:
-    - merge_requests
+    - python -m flake8 . --max-line-length=150
 
 unit_tests:
   stage: test

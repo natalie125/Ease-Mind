@@ -1,6 +1,5 @@
 import pytest
 from app import app
-from app import db, models
 import json
 
 

@@ -26,4 +26,4 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 # import these python files from /app directory
-from app import views, models
+from app import views, models  # noqa: E402, F401
