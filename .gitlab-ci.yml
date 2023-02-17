@@ -42,7 +42,6 @@ build:
 
 lint:
   stage: static analysis
-  allow_failure: true
   image: registry.gitlab.com/mafda/python-linting
   script:
     - pip install flake8
