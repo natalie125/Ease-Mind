@@ -34,9 +34,8 @@ stages:
 build:
   stage: build
   script:
-    - python -m pip install build
-    - python -m build
-    - cp appspec.yml dist/
+    - import shutil
+    - shutil.make_archive("TEMP_DIR", 'zip', "/app")
   artifacts:
     paths:
       - dist/
