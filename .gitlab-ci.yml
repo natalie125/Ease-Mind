@@ -54,14 +54,14 @@ unit_tests:
   script:
     - pip install -r requirements.txt
     - pip install -U pytest
-    - python -m  pytest tests/functional_tests
+    - python -m pytest tests/unit_tests
 
 functional_tests:
   stage: test
   script:
     - pip install -r requirements.txt
     - pip install -U pytest
-    - python -m pytest tests/unit_tests
+    - python -m  pytest tests/functional_tests
 
 review_ec2:
   stage: review
