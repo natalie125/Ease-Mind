@@ -1,5 +1,5 @@
 {
 	"applicationName": "FinalProject",
-	"source": "build/",
+	"source": "deploy/",
 	"s3Location": "s3://larks-final-project/temp_app.tar.gz"
 }

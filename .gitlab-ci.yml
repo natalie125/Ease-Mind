@@ -34,7 +34,7 @@ stages:
 build:
   stage: build
   script:
-    - python build/zip.py
+    - python deploy/zip.py
   artifacts:
     paths:
       - dist/
