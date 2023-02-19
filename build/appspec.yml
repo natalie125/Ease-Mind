@@ -1,6 +1,9 @@
 version: 0.0
 os: linux
 files:
-   - source: /
-     destination: /var/www/html
-file_exists_behavior: RETAIN
+  - source: /
+    destination: /var/www/html
+file_exists_behavior: OVERWRITE
+hooks:
+  BeforeInstall:
+    - location: /scripts/unzip_build.sh
