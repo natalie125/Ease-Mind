@@ -5,5 +5,5 @@ files:
     destination: /var/www/html
 hooks:
   AfterInstall:
-    - location: scripts/unzip_build.sh
+    - location: unzip_build.sh
 file_exists_behavior: OVERWRITE

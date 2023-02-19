@@ -36,6 +36,7 @@ build:
   script:
     - python deploy/zip.py
     - cp deploy/appspec.yml dist/
+    - cp deploy/scripts/unzip_build.sh dist/
   artifacts:
     paths:
       - dist/
