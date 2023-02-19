@@ -1,7 +1,3 @@
 cd ../..
-ls
-pwd
 cd var/www/html
-ls
-pwd
-unzip temp_app.tar.gz
+sudo tar -xf temp_app.tar.gz -C ../../../home/ubuntu/larks/app

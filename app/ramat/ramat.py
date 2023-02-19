@@ -9,4 +9,4 @@ from app import app, models, bcrypt, db
 @app.route('/ramat', methods=['GET', 'POST'])
 def ramat():
     if request.method == 'GET' or request.method == 'POST':
-        return "Ramat's App Requested"
+        return "Ramat's App has been Requested"
