@@ -65,6 +65,5 @@ functional_tests:
 
 review_ec2:
   stage: review
-  only:
-    refs:
-      - master
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
