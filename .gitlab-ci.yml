@@ -45,7 +45,7 @@ lint:
   image: registry.gitlab.com/mafda/python-linting
   script:
     - pip install flake8
-    - python -m flake8 . --max-line-length=150 --per-file-ignores=".\app\views.py:F401"
+    - python -m flake8 . --max-line-length=150 --per-file-ignores="app\views.py:F401"
 
 unit_tests:
   stage: test
