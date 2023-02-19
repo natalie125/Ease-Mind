@@ -9,7 +9,7 @@
 	"revision": {
 		"revisionType": "S3",
 		"s3Location": {
-			"bucket": "larks-final-project/",
+			"bucket": "larks-final-project",
 			"bundleType": "zip",
 			"key": "temp_app.tar.gz"
 		}
