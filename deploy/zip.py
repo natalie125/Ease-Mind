@@ -1,2 +1,2 @@
 import shutil
-shutil.make_archive("deploy/temp_app", 'gztar', "./app")
+shutil.make_archive("dist/temp_app", 'gztar', "./app")
