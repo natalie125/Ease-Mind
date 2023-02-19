@@ -3,16 +3,18 @@ from app import db, models
 from pathlib import Path
 import datetime
 
+
 @pytest.mark.unit
 def test1():
     assert 5 == 5
+
 
 def test_login_database():
     error0 = True
     # test that the login database can be created
     try:
         db.create_all('test')
-    except Exception as e:
+    except Exception as e:  # noqa: F841
         error0 = False
 
     try:
@@ -49,7 +51,9 @@ def test_login_database():
         # nice the database raised an assertion error
         error4 = str(e)
 
-    assert error1 == "No email provided" and error2 == 'Email address missing "@" symbol' and error3 == "Email is already in use" and error4 == "No password provided" and error0
+    assert (error1 == "No email provided" and error2 == 'Email address missing "@" symbol'
+            and error3 == "Email is already in use" and error4 == "No password provided" and error0)
+
 
 # unit tests for the database of Alex's family pedigree app "Canopy"
 def test_canopy_database():
@@ -119,7 +123,7 @@ def test_canopy_database():
         health_condition_query = models.Pedigree_Health_Condition_Test.query.first()
         if health_condition_query.name != "Test Health Condition":
             errors.append("Query from health_condition table doesn't have the correct name, instead contains: " + health_condition_query.name)
-        if health_condition_query.hereditary != True:
+        if health_condition_query.hereditary is not True:
             errors.append("Query from health_condition table doesn't have the correct boolean value, instead contains: " + health_condition_query.dob)
     except Exception as e:
         errors.append("Error while querying Pedigree_Health_Condition_Test table: " + str(e))
@@ -156,7 +160,8 @@ def test_canopy_database():
         if not patient.conditions[0] == health_condition:
             errors.append("patient.conditions does not contain the correct health condition, instead contains: " + str(patient.conditions[0]))
         if not health_condition.condition_of[0] == patient:
-            errors.append("health_condition.condition_of does not contain the correct patient, instead contains: " + str(health_condition.condition_of[0]))
+            errors.append("health_condition.condition_of does not contain the correct patient, instead contains: " +
+                          str(health_condition.condition_of[0]))
     except Exception as e:
         errors.append("Error while testing patient_condition_test table: " + str(e))
 
@@ -166,7 +171,7 @@ def test_canopy_database():
         db.session.delete(tree)
         db.session.commit()
         tree_query = db.session.query(models.Pedigree_Tree_Test).first()
-        if tree_query != None:
+        if tree_query is not None:
             errors.append("Entry not removed from Pedigree_Tree_Test, instead contains: " + str(tree_query))
     except Exception as e:
         errors.append("Error while removing from Pedigree_Tree_Test: " + str(e))
@@ -177,7 +182,7 @@ def test_canopy_database():
         db.session.delete(child)
         db.session.commit()
         patient_query = db.session.query(models.Pedigree_Patient_Test).first()
-        if patient_query != None:
+        if patient_query is not None:
             errors.append("Entry not removed from Pedigree_Patient_Test, instead contains: " + str(patient_query))
     except Exception as e:
         errors.append("Error while removing from Pedigree_Patient_Test: " + str(e))
@@ -187,7 +192,7 @@ def test_canopy_database():
         db.session.delete(health_condition)
         db.session.commit()
         health_condition_query = db.session.query(models.Pedigree_Health_Condition_Test).first()
-        if health_condition_query != None:
+        if health_condition_query is not None:
             errors.append("Entry not removed from Pedigree_Health_Condition_Test, instead contains: " + str(health_condition_query))
     except Exception as e:
         errors.append("Error while removing from Pedigree_Health_Condition_Test: " + str(e))
