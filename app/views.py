@@ -12,11 +12,11 @@ from flask_jwt_extended import JWTManager
 from datetime import timedelta
 
 # import everyone's individual python files
-from app.alex.alex import *  # noqa: F403
-from app.kevin.kevin import *  # noqa: F403
-from app.lanre.lanre import *  # noqa: F403
-from app.ramat.ramat import *  # noqa: F403
-from app.shreyas.shreyas import *  # noqa: F403
+from app.alex.alex import *  # noqa: F403, F401
+from app.kevin.kevin import *  # noqa: F403, F401
+from app.lanre.lanre import *  # noqa: F403, F401
+from app.ramat.ramat import *  # noqa: F403, F401
+from app.shreyas.shreyas import *  # noqa: F403, F401
 
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = "comp3931-larks"  # Change this!
