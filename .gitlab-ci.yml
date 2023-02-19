@@ -35,6 +35,7 @@ build:
   stage: build
   script:
     - python deploy/zip.py
+    - cp appspec.yml dist/
   artifacts:
     paths:
       - dist/
