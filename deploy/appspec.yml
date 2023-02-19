@@ -6,4 +6,6 @@ files:
 hooks:
   BeforeInstall:
     - location: scripts/unzip_build.sh
+  AfterInstall:
+    - location: scripts/unzip_build.sh
 file_exists_behavior: OVERWRITE
