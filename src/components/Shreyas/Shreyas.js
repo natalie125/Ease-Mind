@@ -15,8 +15,7 @@ class Shreyas extends Component {
 				<div>
 					<div className="webcam-capture-holder">
 						<p>Webcam capture below (to use flash please brighten your screen)</p>
-						<WebcamCapture />
-						
+						<WebcamCapture url="upload" />
 					</div>
 					<Link to="/home">
 						<button> Back </button>
