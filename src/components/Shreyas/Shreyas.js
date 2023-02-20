@@ -16,7 +16,7 @@ class Shreyas extends Component {
 				<div>
 					<div className="webcam-capture-holder">
 						<p>Webcam capture below (to use flash please brighten your screen)</p>
-						<WebcamCapture />
+						<WebcamCapture context="shreyas" />
 						{/*<WebcamCapture context="shreyas"/>*/}
 					</div>
 					<Link to="/home">

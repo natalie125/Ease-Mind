@@ -16,7 +16,7 @@ const WebcamCapture = (props) => {
   const [imageSrc, setImageSrc] = useState(null);
   const [flash, setFlash] = useState(false);
   const [frontFacing, setFrontFacing] = React.useState(true);
-
+  const [serverResponse, setServerResponse] = React.useState(null);
   //pass endpoint in as a props to the component whichever endpoint you want to send the image to.
   //if in doubt how to do that please refer to shreyas.js
   //if no context is provided it will send to /upload endpoint
@@ -36,14 +36,12 @@ const WebcamCapture = (props) => {
       }
     })
       .then(response => {
-        console.log(response);
+        setServerResponse(response.data['msg']);
       })
       .catch(error => {
         console.error(error);
       });
-    console.log(response);
   }
-
 
 
   //takes pictures without flash
@@ -142,6 +140,14 @@ const WebcamCapture = (props) => {
         {flash && <div className="flash" />}
         {imageSrc && (
           <img src={imageSrc} width={minValue} alt="Captured photo" />
+        )}
+      </div>
+      <div>
+        {context === "shreyas" && serverResponse === 0 && (
+          <p>Congrats, you're clean!</p>
+        )}
+        {context === "shreyas" && serverResponse === 1 && (
+          <p>You might have tonsillitis... please go to doctor.</p>
         )}
       </div>
     </>
