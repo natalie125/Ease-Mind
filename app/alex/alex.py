@@ -2,6 +2,14 @@ from flask import Flask, render_template, Response, request, flash, redirect, ur
 from app import app, models, bcrypt, db
 from datetime import datetime
 
+#############################################################
+# Routes to pull information from outside the canopy app
+# ^^^^^^^^^^^^^^^^^^^^^^^
+@app.route('/owner', methods=['GET'])
+def get_owner():
+    if request.method == 'GET':
+
+        return
 
 #############################################################
 # Routes for pages to display to users of the Canopy app (family pedigree)
