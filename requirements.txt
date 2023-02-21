@@ -26,3 +26,6 @@ WTForms==3.0.1
 zipp==3.11.0
 flask-jwt-extended==4.4.4
 pyopenssl==23.0.0
+matplotlib==3.6.3
+tensorflow==2.10.0
+Pillow==9.4.0
