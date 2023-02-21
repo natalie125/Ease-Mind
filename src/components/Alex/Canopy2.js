@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import "../App/App.css";
 
-class Alex extends Component {
+class Canopy2 extends Component {
 	render() {
 		return (
 			<div className="App">
@@ -23,4 +23,4 @@ class Alex extends Component {
 	}
 }
 
-export default Alex;
+export default Canopy2;
