@@ -167,9 +167,110 @@ class Alex extends Component {
 		}) 
 	}
 
+	// methods for getting the relationships between entities, starting from their id
+	// get nodes of a tree
+	getTreeNodes = (url_input, tree_data) => {
+		axios.get(url_input, {params: tree_data})
+		.then(function (response) {
+			alert(response.data)
+		})
+		.catch(function (error) {
+			alert(error);
+		}) 
+	}
+
+	// get trees of a patient
+	getPatientTrees = (url_input, patient_data) => {
+		axios.get(url_input, {params: patient_data})
+		.then(function (response) {
+			alert(response.data)
+		})
+		.catch(function (error) {
+			alert(error);
+		}) 
+	}
+
+	// get children of a parent
+	getParentChildren = (url_input, parent_data) => {
+		axios.get(url_input, {params: parent_data})
+		.then(function (response) {
+			alert(response.data)
+		})
+		.catch(function (error) {
+			alert(error);
+		}) 
+	}
+
+	// get parents of a child
+	getChildParents = (url_input, child_data) => {
+		axios.get(url_input, {params: child_data})
+		.then(function (response) {
+			alert(response.data)
+		})
+		.catch(function (error) {
+			alert(error);
+		}) 
+	}
+
+	// get health conditions of a patient
+	getPatientConditions = (url_input, patient_data) => {
+		axios.get(url_input, {params: patient_data})
+		.then(function (response) {
+			alert(response.data)
+		})
+		.catch(function (error) {
+			alert(error);
+		}) 
+	}
+
+	// get afflicted (condition_of) a health condition
+	getConditionPatients = (url_input, condition_data) => {
+		axios.get(url_input, {params: condition_data})
+		.then(function (response) {
+			alert(response.data)
+		})
+		.catch(function (error) {
+			alert(error);
+		}) 
+	}
+
+	// methods for linking entities with relationships
+	// link tree with patient
+	linkTreePatient = (url_input, tree_patient_data) => {
+		axios.put(url_input, null, {params: tree_patient_data})
+		.then(function (response) {
+			alert(response.data)
+		})
+		.catch(function (error) {
+			alert(error);
+		}) 
+	}
+
+	// link parent patient with child patient
+	linkParentChild = (url_input, parent_child_data) => {
+		axios.put(url_input, null, {params: parent_child_data})
+		.then(function (response) {
+			alert(response.data)
+		})
+		.catch(function (error) {
+			alert(error);
+		}) 
+	}
+
+	// link patient with health condition
+	linkPatientCondition = (url_input, patient_condition_data) => {
+		axios.put(url_input, null, {params: patient_condition_data})
+		.then(function (response) {
+			alert(response.data)
+		})
+		.catch(function (error) {
+			alert(error);
+		}) 
+	}
+
 	render() {
 		var test_tree_params = {
-			id: 2,
+			id: 1,
 			name: "new_tree",
 			owner: "new@gmail.com",
 			new_name: "replaced_tree",
@@ -184,12 +285,30 @@ class Alex extends Component {
 			new_dob: "2002-01-01",
 			new_ethnicity: "replace_ethnicity"
 		}
+		var test_child_params = {
+			id: 2,
+			name: "replace_patient",
+			dob: "2002-01-01",
+			ethnicity: "replace_ethnicity",
+		}
 		var test_condition_params = {
 			id: 1,
 			name: "test_condition",
 			hereditary: false,
 			new_name: "replace_patient",
 			new_hereditary: true
+		}
+		var test_tree_patient_params = {
+			tree_id: 1,
+			patient_id: 1
+		}
+		var test_parent_child_params = {
+			parent_id: 1,
+			child_id: 2
+		}
+		var test_patient_condition_params = {
+			patient_id: 1,
+			condition_id: 1
 		}
 
 		return (
@@ -259,6 +378,48 @@ class Alex extends Component {
 
 					<div>
 						<button onClick={() => {this.deleteCondition(baseurl + "condition/prod", test_condition_params)}}>DELETE health condition at: {baseurl}</button>
+					</div>
+
+					<br></br>
+
+					{/* GET buttons that retreieve relationships */}
+					<div>
+						<button onClick={() => {this.getTreeNodes(baseurl + "tree_nodes/prod", test_tree_params)}}>Get nodes of tree at: {baseurl}</button>
+					</div>
+
+					<div>
+						<button onClick={() => {this.getPatientTrees(baseurl + "patient_trees/prod", test_patient_params)}}>Get trees of patient at: {baseurl}</button>
+					</div>
+
+					<div>
+						<button onClick={() => {this.getParentChildren(baseurl + "parent_children/prod", test_patient_params)}}>Get children of parent at: {baseurl}</button>
+					</div>
+
+					<div>
+						<button onClick={() => {this.getChildParents(baseurl + "child_parents/prod", test_child_params)}}>Get parents of child at: {baseurl}</button>
+					</div>
+
+					<div>
+						<button onClick={() => {this.getPatientConditions(baseurl + "patient_conditions/prod", test_patient_params)}}>Get conditions of patient at: {baseurl}</button>
+					</div>
+
+					<div>
+						<button onClick={() => {this.getConditionPatients(baseurl + "condition_patients/prod", test_condition_params)}}>Get patients of condition at: {baseurl}</button>
+					</div>
+
+					<br></br>
+
+					{/* PUT buttons that link entities */}
+					<div>
+						<button onClick={() => {this.linkTreePatient(baseurl + "tree_patient/prod", test_tree_patient_params)}}>Link tree and patient at: {baseurl}</button>
+					</div>
+
+					<div>
+						<button onClick={() => {this.linkParentChild(baseurl + "parent_child/prod", test_parent_child_params)}}>Link parent and child at: {baseurl}</button>
+					</div>
+
+					<div>
+						<button onClick={() => {this.linkPatientCondition(baseurl + "patient_condition/prod", test_patient_condition_params)}}>Link patient and health condition at: {baseurl}</button>
 					</div>
 
 					<div>
