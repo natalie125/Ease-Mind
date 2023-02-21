@@ -402,3 +402,189 @@ def query_condition(mode):
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
     return "error, not enough information given in HTTP request"
+
+#############################################################
+# Routes for serving requests that query about relationships between database entries
+# ^^^^^^^^^^^^^^^^^^^^^^^
+# function for getting nodes of a tree
+@app.route('/canopy/tree_nodes/<string:mode>', methods=['GET'])
+def get_tree_nodes(mode):
+    tree_id = request.args.get('id')
+
+    # check for testing mode
+    if mode == "test":
+        tree = models.Pedigree_Tree_Test.query.filter_by(id=tree_id).first()
+        if tree != None:
+            return "tree.nodes: " + str(tree.nodes) + "\ntree_id: " + tree_id
+        else:
+            return "error, tree not found at tree_id: " + tree_id
+    # we are in production mode
+    else:
+        tree = models.Pedigree_Tree.query.filter_by(id=tree_id).first()
+        if tree != None:
+            return "tree.nodes: " + str(tree.nodes) + "\ntree_id: " + tree_id
+        else:
+            return "error, tree not found at tree_id: " + tree_id
+
+# function for getting trees of a patient
+@app.route('/canopy/patient_trees/<string:mode>', methods=['GET'])
+def get_patient_trees(mode):
+    patient_id = request.args.get('id')
+
+    # check for testing mode
+    if mode == "test":
+        patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
+        if patient != None:
+            return "patient.node_of: " + str(patient.node_of) + "\npatient_id: " + patient_id
+        else:
+            return "error, patient not found at patient_id: " + patient_id
+    # we are in production mode
+    else:
+        patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
+        if patient != None:
+            return "patient.node_of: " + str(patient.node_of) + "\npatient_id: " + patient_id
+        else:
+            return "error, patient not found at patient_id: " + patient_id
+
+# function for getting children of a parent
+@app.route('/canopy/parent_children/<string:mode>', methods=['GET'])
+def get_parent_children(mode):
+    patient_id = request.args.get('id')
+
+    # check for testing mode
+    if mode == "test":
+        patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
+        if patient != None:
+            return "patient.children: " + str(patient.children) + "\npatient_id: " + patient_id
+        else:
+            return "error, patient not found at patient_id: " + patient_id
+    # we are in production mode
+    else:
+        patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
+        if patient != None:
+            return "patient.children: " + str(patient.children) + "\npatient_id: " + patient_id
+        else:
+            return "error, patient not found at patient_id: " + patient_id
+
+# function for getting parents of a child
+@app.route('/canopy/child_parents/<string:mode>', methods=['GET'])
+def get_child_parents(mode):
+    patient_id = request.args.get('id')
+
+    # check for testing mode
+    if mode == "test":
+        patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
+        if patient != None:
+            return "patient.parents: " + str(patient.parents) + "\npatient_id: " + patient_id
+        else:
+            return "error, patient not found at patient_id: " + patient_id
+    # we are in production mode
+    else:
+        patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
+        if patient != None:
+            return "patient.parents: " + str(patient.parents) + "\npatient_id: " + patient_id
+        else:
+            return "error, patient not found at patient_id: " + patient_id
+
+# function for getting conditions of a patient
+@app.route('/canopy/patient_conditions/<string:mode>', methods=['GET'])
+def get_patient_conditions(mode):
+    patient_id = request.args.get('id')
+
+    # check for testing mode
+    if mode == "test":
+        patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
+        if patient != None:
+            return "patient.conditions: " + str(patient.conditions) + "\npatient_id: " + patient_id
+        else:
+            return "error, patient not found at patient_id: " + patient_id
+    # we are in production mode
+    else:
+        patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
+        if patient != None:
+            return "patient.conditions: " + str(patient.conditions) + "\npatient_id: " + patient_id
+        else:
+            return "error, patient not found at patient_id: " + patient_id
+
+# function for getting patients with a condition
+@app.route('/canopy/condition_patients/<string:mode>', methods=['GET'])
+def get_condition_patients(mode):
+    condition_id = request.args.get('id')
+
+    # check for testing mode
+    if mode == "test":
+        condition = models.Pedigree_Health_Condition_Test.query.filter_by(id=condition_id).first()
+        if condition != None:
+            return "condition.condition_of: " + str(condition.condition_of) + "\ncondition_id: " + condition_id
+        else:
+            return "error, condition not found at condition_id: " + condition_id
+    # we are in production mode
+    else:
+        condition = models.Pedigree_Health_Condition.query.filter_by(id=condition_id).first()
+        if condition != None:
+            return "condition.condition_of: " + str(condition.condition_of) + "\ncondition_id: " + condition_id
+        else:
+            return "error, condition not found at condition_id: " + condition_id
+
+# function for linking a tree and a patient
+@app.route('/canopy/tree_patient/<string:mode>', methods=['PUT'])
+def link_tree_patient(mode):
+    tree_id = request.args.get('tree_id')
+    patient_id = request.args.get('patient_id')
+
+    # check for testing mode
+    if mode == "test":
+        tree = models.Pedigree_Tree_Test.query.filter_by(id=tree_id).first()
+        patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
+        tree.nodes.append(patient)
+        db.session.commit()
+        return "tree.nodes: " + str(tree.nodes) + "\ntree_id: " + tree_id + "\npatient_id: " + patient_id
+    # we are in production mode
+    else:
+        tree = models.Pedigree_Tree.query.filter_by(id=tree_id).first()
+        patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
+        tree.nodes.append(patient)
+        db.session.commit()
+        return "tree.nodes: " + str(tree.nodes) + "\ntree_id: " + tree_id + "\npatient_id: " + patient_id
+
+# function for linking a parent and child
+@app.route('/canopy/parent_child/<string:mode>', methods=['PUT'])
+def link_parent_child(mode):
+    parent_id = request.args.get('parent_id')
+    child_id = request.args.get('child_id')
+
+    # check for testing mode
+    if mode == "test":
+        parent = models.Pedigree_Patient_Test.query.filter_by(id=parent_id).first()
+        child = models.Pedigree_Patient_Test.query.filter_by(id=child_id).first()
+        parent.children.append(child)
+        db.session.commit()
+        return "parent.children: " + str(parent.children) + "\nparent_id: " + parent_id + "\nchild_id: " + child_id
+    # we are in production mode
+    else:
+        parent = models.Pedigree_Patient.query.filter_by(id=parent_id).first()
+        child = models.Pedigree_Patient.query.filter_by(id=child_id).first()
+        parent.children.append(child)
+        db.session.commit()
+        return "parent.children: " + str(parent.children) + "\nparent_id: " + parent_id + "\nchild_id: " + child_id
+
+# function for linking a patient and a health condition
+@app.route('/canopy/patient_condition/<string:mode>', methods=['PUT'])
+def link_patient_condition(mode):
+    patient_id = request.args.get('patient_id')
+    condition_id = request.args.get('condition_id')
+
+    # check for testing mode
+    if mode == "test":
+        patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
+        condition = models.Pedigree_Health_Condition_Test.query.filter_by(id=condition_id).first()
+        patient.conditions.append(condition)
+        db.session.commit()
+        return "patient.conditions: " + str(patient.conditions) + "\npatient_id: " + patient_id + "\ncondition_id: " + condition_id
+    # we are in production mode
+    else:
+        patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
+        condition = models.Pedigree_Health_Condition.query.filter_by(id=condition_id).first()
+        patient.conditions.append(condition)
+        db.session.commit()
+        return "patient.conditions: " + str(patient.conditions) + "\npatient_id: " + patient_id + "\ncondition_id: " + condition_id
