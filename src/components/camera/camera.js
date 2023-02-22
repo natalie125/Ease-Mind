@@ -125,8 +125,8 @@ const WebcamCapture = (props) => {
   }
 
   const tons_outcome = (serverResponse) => {
-    if (serverResponse === 0) navigate("/tonsillitis_outcome_1", { replace: true });
-    else navigate("/tonsillitis_outcome_2", { replace: true });
+    if (serverResponse === 0) navigate("/shreyas/tonsillitis_outcome_1", { replace: true });
+    else navigate("/shreyas/tonsillitis_outcome_2", { replace: true });
   }
 
 

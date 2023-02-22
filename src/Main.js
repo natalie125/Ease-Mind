@@ -35,10 +35,10 @@ const Main = () => {
 			<Route exact path="/alex/alex2" element={<Alex2 />}></Route>
 			<Route exact path="/ramat" element={<Ramat />}></Route>
 			<Route exact path="/kevin" element={<Kevin />}></Route>
-			<Route exact path="/shreyas" element={<Shreyas />}></Route>
-			<Route exact path="/tonsillitis_instructions" element={<TonsPhotoInstructions />}></Route>
-			<Route exact path="/tonsillitis_outcome_1" element={<TonsillitisOutcome1 />}></Route>
-			<Route exact path="/tonsillitis_outcome_2" element={<TonsillitisOutcome2 />}></Route>
+			<Route exact path="/shreyas/shreyas" element={<Shreyas />}></Route>
+			<Route exact path="/shreyas/tonsillitis_instructions" element={<TonsPhotoInstructions />}></Route>
+			<Route exact path="/shreyas/tonsillitis_outcome_1" element={<TonsillitisOutcome1 />}></Route>
+			<Route exact path="/shreyas/tonsillitis_outcome_2" element={<TonsillitisOutcome2 />}></Route>
 			<Route path="*" element={<Error404 />}></Route>
 		</Routes>
 	);

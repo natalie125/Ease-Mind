@@ -22,7 +22,7 @@ class TonsPhotoInstructions extends Component {
                     <p>In order for the model to correctly analyse your mouth sample, the tonsils must be clearly visible</p>
                     <p>Example picture of what should be produced can be seen below</p>
                     <img src={exampleImg} alt="Example picture" />
-                    <Link to="/shreyas">
+                    <Link to="/shreyas/shreyas">
                         <button> Continue </button>
                     </Link>
                 </div>
