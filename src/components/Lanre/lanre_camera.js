@@ -91,6 +91,10 @@ const LanreWebcamCapture = () => {
     if (cameraWidth > 400){
       cameraWidth = 400;
     }
+
+    if (cameraHeight > 719) {
+      cameraHeight = 719;
+    }
     
     // if (cameraHeight < minValue){
     //     minValue = cameraHeight;
@@ -133,9 +137,13 @@ const LanreWebcamCapture = () => {
 //two buttons, one for taking pictures with flash and one for without
   return (
     <>
-      <div style={{width:"100%"}}>
-        <Webcam className="webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"10px"} screenshotQuality="1" />
+      <div className="camera-container">
+        <div className="overlay-ancestor">
+          {flash && <div className="camera-overlay" />}
+          <Webcam className="webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"10px"} screenshotQuality="1" />
+        </div>
       </div>
+      
       <div style={{width:"100%"}}>
         <button onClick={handleTakePicture}>Take Picture</button>
         <button onClick={handleTakePictureWithFlash}>Take Picture With Flash</button>
@@ -143,7 +151,7 @@ const LanreWebcamCapture = () => {
         <button onClick={handleSubmit}>Submit Image</button>
       </div>
       <div>
-        {flash && <div className="camera-overlay" />}
+        {/* {flash && <div className="camera-overlay" />} */}
 
         {imageSrc && (
           <img src={imageSrc} width={minValue} alt="Captured photo" />
