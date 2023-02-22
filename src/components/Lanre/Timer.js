@@ -6,145 +6,75 @@ import { useState, useRef, useEffect } from 'react';
 
 import Header from "../Header/Header";
 
-// class DipstickTimer extends Component {
-// 	render() {
-//         const [days, setDays] = useState(0);
-//         const [hours, setHours] = useState(0);
-//         const [minutes, setMinutes] = useState(0);
-//         const [seconds, setSeconds] = useState(0);
-//         const deadline = "December, 31, 2023";
 
-// 		return (
+const getPadTime = (time) => time.toString().padStart(2,'0');
 
-            
-// 			<div className="Timer">
-// 				<Header />
-// 				<h1>Timer app</h1>
-// 				<div>
+// Working Timer
+export default function DipstickTimer() {
+    const [timeLeft, setTimeLeft] = useState( 2 * 60) 
+    const [isCounting, setIsCounting] = useState(false) 
 
+    const minutes = getPadTime(Math.floor(timeLeft / 60));
+    const seconds = getPadTime(timeLeft - minutes * 60)
 
-// 					<Link to="/home">
-// 						<button> Back </button>
-// 					</Link>
-// 				</div>
-// 			</div>
-// 		);
-// 	}
-// }
-
-
-const DipstickTimer = () => {
-  
-    // We need ref in this, because we are dealing
-    // with JS setInterval to keep track of it and
-    // stop it when needed
-    const Ref = useRef(null);
-  
-    // The state for our timer
-    const [timer, setTimer] = useState('00:00:00');
-  
-  
-    const getTimeRemaining = (e) => {
-        const total = Date.parse(e) - Date.parse(new Date());
-        const seconds = Math.floor((total / 1000) % 60);
-        const minutes = Math.floor((total / 1000 / 60) % 60);
-        const hours = Math.floor((total / 1000 / 60 / 60) % 24);
-        return {
-            total, hours, minutes, seconds
-        };
-    }
-  
-  
-    const startTimer = (e) => {
-        let { total, hours, minutes, seconds } 
-                    = getTimeRemaining(e);
-        if (total >= 0) {
-  
-            // update the timer
-            // check if less than 10 then we need to 
-            // add '0' at the beginning of the variable
-            setTimer(
-                (hours > 9 ? hours : '0' + hours) + ':' +
-                (minutes > 9 ? minutes : '0' + minutes) + ':'
-                + (seconds > 9 ? seconds : '0' + seconds)
-            )
-        }
-    }
-  
-  
-    const clearTimer = (e) => {
-  
-        // If you adjust it you should also need to
-        // adjust the Endtime formula we are about
-        // to code next    
-        setTimer('00:00:10');
-
-  
-        // If you try to remove this line the 
-        // updating of timer Variable will be
-        // after 1000ms or 1sec
-        if (Ref.current) clearInterval(Ref.current);
-        const id = setInterval(() => {
-            startTimer(e);
-        }, 1000)
-        Ref.current = id;
-    }
-  
-    const getDeadTime = () => {
-        let deadline = new Date();
-  
-        // This is where you need to adjust if 
-        // you entend to add more time
-        deadline.setSeconds(deadline.getSeconds() + 10);
-        return deadline;
-    }
-
-    // const getDeadTime2 = (e) => {
-    //     let deadline = new Date();
-  
-    //     // This is where you need to adjust if 
-    //     // you entend to add more time
-    //     deadline.setSeconds(deadline.getSeconds() + e);
-    //     return deadline;
-    // }
-  
-    // We can use useEffect so that when the component
-    // mount the timer will start as soon as possible
-  
-    // We put empty array to act as componentDid
-    // mount only
     useEffect(() => {
-        clearTimer(getDeadTime());
-    }, []);
-  
-    // Another way to call the clearTimer() to start
-    // the countdown is via action event from the
-    // button first we create function to be called
-    // by the button
-    const onClickReset = () => {
-        clearTimer(getDeadTime());
+        const interval = setInterval(() => {
+            isCounting && setTimeLeft ((timeLeft) => (timeLeft > 1 ? timeLeft - 1 : 0))
+        }, 1000);
+        return() => {
+            clearInterval(interval);
+        };
+    },[isCounting])
+
+    const handleStart = () => {
+        setIsCounting(true);
     }
 
-    // const onClickReset2 = (e) => {
-    //     clearTimer(getDeadTime2(e));
-    // }
+    const handleStop = () => {
+        setIsCounting(false);
+    }
 
-    
+    const handleReset = () => {
+        setIsCounting(false);
+        setTimeLeft(0);
+    }
+
+    const handle60s = () => {
+        setTimeLeft(60);
+        setIsCounting(true);
+    }
+
+    const handle120s = () => {
+        setTimeLeft(120);
+        setIsCounting(false);
+    }
 
 
-
-  
     return (
-        <div className="App">
-            <h2>{timer}</h2>
-            <button onClick={onClickReset}>Reset</button>
-            <button onClick={onClickReset}>60s</button>
-            <button onClick={onClickReset}>120s</button>
+        <div>
+            {/* <CountDown seconds={seconds} /> */}
+            <p>Here</p>
+            <div className="timer"> 
+                <span>{minutes}</span>:
+                <span>{seconds}</span>
+            </div>
 
+            <div className="buttons">
+                {!isCounting ?
+                (<button onClick={handleStart}>Start</button>)
+                :
+                (<button onClick={handleStop}>Stop</button>)}
+                
+                <button onClick={handleReset}>Reset</button>
+                <button onClick={handle60s}>60s</button>
+                <button onClick={handle120s}>120s</button>
+
+
+            </div>
+            
 
         </div>
+            
+        
     )
 }
-
-
-export default DipstickTimer;
