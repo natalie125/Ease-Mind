@@ -18,7 +18,7 @@ class Canopy_Edit_Tree extends Component {
 	getTree = (url_input, tree_data) => {
 		axios.get(url_input, {params: tree_data})
 		.then(function (response) {
-			alert(response.data)
+			alert(JSON.stringify(response.data))
 		})
 		.catch(function (error) {
 			alert(error);
@@ -66,7 +66,7 @@ class Canopy_Edit_Tree extends Component {
 	getTreeNodes = (url_input, tree_data) => {
 		axios.get(url_input, {params: tree_data})
 		.then(function (response) {
-			alert(response.data)
+			alert(JSON.stringify(response.data))
 		})
 		.catch(function (error) {
 			alert(error);
@@ -87,11 +87,11 @@ class Canopy_Edit_Tree extends Component {
 
 	render() {
 		var test_tree_params = {
-			id: 1,
-			name: "new_tree",
-			owner: "new@gmail.com",
-			new_name: "replaced_tree",
-			new_owner: "replaced@gmail.com"
+			// id: 1,
+			// name: "new_tree",
+			// owner: "new@gmail.com",
+			// new_name: "replaced_tree",
+			// new_owner: "replaced@gmail.com"
 		}
 
 		var test_tree_patient_params = {

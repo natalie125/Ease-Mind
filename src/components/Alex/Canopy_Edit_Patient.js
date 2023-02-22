@@ -17,7 +17,7 @@ class Canopy_Edit_Patient extends Component {
 	getPatient = (url_input, patient_data) => {
 		axios.get(url_input, {params: patient_data})
 		.then(function (response) {
-			alert(response.data)
+			alert(JSON.stringify(response.data))
 		})
 		.catch(function (error) {
 			alert(error);
@@ -61,7 +61,7 @@ class Canopy_Edit_Patient extends Component {
 	getPatientTrees = (url_input, patient_data) => {
 		axios.get(url_input, {params: patient_data})
 		.then(function (response) {
-			alert(response.data)
+			alert(JSON.stringify(response.data))
 		})
 		.catch(function (error) {
 			alert(error);
@@ -72,7 +72,7 @@ class Canopy_Edit_Patient extends Component {
 	getParentChildren = (url_input, parent_data) => {
 		axios.get(url_input, {params: parent_data})
 		.then(function (response) {
-			alert(response.data)
+			alert(JSON.stringify(response.data))
 		})
 		.catch(function (error) {
 			alert(error);
@@ -83,7 +83,7 @@ class Canopy_Edit_Patient extends Component {
 	getChildParents = (url_input, child_data) => {
 		axios.get(url_input, {params: child_data})
 		.then(function (response) {
-			alert(response.data)
+			alert(JSON.stringify(response.data))
 		})
 		.catch(function (error) {
 			alert(error);
@@ -94,7 +94,7 @@ class Canopy_Edit_Patient extends Component {
 	getPatientConditions = (url_input, patient_data) => {
 		axios.get(url_input, {params: patient_data})
 		.then(function (response) {
-			alert(response.data)
+			alert(JSON.stringify(response.data))
 		})
 		.catch(function (error) {
 			alert(error);
@@ -137,13 +137,13 @@ class Canopy_Edit_Patient extends Component {
 
 	render() {
 		var test_patient_params = {
-			id: 1,
-			name: "test_patient",
-			dob: "2000-01-01",
-			ethnicity: "test_ethnicity",
-			new_name: "replace_patient",
-			new_dob: "2002-01-01",
-			new_ethnicity: "replace_ethnicity"
+			// id: 1,
+			// name: "test_patient",
+			// dob: "2000-01-01",
+			// ethnicity: "test_ethnicity",
+			// new_name: "replace_patient",
+			// new_dob: "2002-01-01",
+			// new_ethnicity: "replace_ethnicity"
 		}
 
 		var test_child_params = {

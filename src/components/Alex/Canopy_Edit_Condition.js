@@ -17,7 +17,7 @@ class Canopy_Edit_Condition extends Component {
 	getCondition = (url_input, condition_data) => {
 		axios.get(url_input, {params: condition_data})
 		.then(function (response) {
-			alert(response.data)
+			alert(JSON.stringify(response.data))
 		})
 		.catch(function (error) {
 			alert(error);
@@ -61,7 +61,7 @@ class Canopy_Edit_Condition extends Component {
 	getConditionPatients = (url_input, condition_data) => {
 		axios.get(url_input, {params: condition_data})
 		.then(function (response) {
-			alert(response.data)
+			alert(JSON.stringify(response.data))
 		})
 		.catch(function (error) {
 			alert(error);
@@ -81,11 +81,11 @@ class Canopy_Edit_Condition extends Component {
 
 	render() {
 		var test_condition_params = {
-			id: 1,
-			name: "test_condition",
-			hereditary: false,
-			new_name: "replace_patient",
-			new_hereditary: true
+			// id: 1,
+			// name: "test_condition",
+			// hereditary: false,
+			// new_name: "replace_patient",
+			// new_hereditary: true
 		}
 		
 		var test_patient_condition_params = {
