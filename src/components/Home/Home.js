@@ -63,7 +63,7 @@ class Home extends Component {
 							/>
 						</Link>
 
-						<Link className="link" to="/shreyas">
+						<Link className="link" to="/tonsillitis_instructions">
 							<img
 								className="homepage-button"
 								src={tonsilitis_detector_logo}
