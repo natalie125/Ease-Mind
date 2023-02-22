@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../App/App.css";
 import "../Lanre/Lanre.css";
 import Header from "../Header/Header";
-import DipstickTimer from "./Timer";
+import DipstickTimer from "./DipstikTimer";
 
 class DipstikInstructions extends Component {
 	render() {
@@ -36,12 +36,14 @@ class DipstikInstructions extends Component {
                     
 					</div>
                     <div className="start-button-container">
-                        <button className="start-button"> Start </button>
+                        <Link to="/dipstik-home/dipstik-timer">
+                            <button className="start-button"> Start </button>
+                        </Link>
                     </div>
 
                     
 
-					<Link to="/lanre">
+					<Link to="/home">
 						<button> Back </button>
 					</Link>
 
