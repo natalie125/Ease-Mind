@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "../App/App.css";
-import "../Lanre/Lanre.css";
+import "../Lanre/dipstik.css";
 import Header from "../Header/Header";
 import DipstickTimer from "./DipstikTimer";
 

@@ -4,7 +4,6 @@ import LanreWebcamCapture from "../Lanre/lanre_camera";
 import "../App/App.css";
 
 import Header from "../Header/Header";
-import DipstickTimer from "./Timer";
 
 class Lanre extends Component {
 	render() {
@@ -18,12 +17,10 @@ class Lanre extends Component {
 						<LanreWebcamCapture />
 						
 					</div>
-
-					<DipstickTimer/>
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
-					<Link to="/lanre/dipstik-instructions">
+					<Link to="/lanre/dipstik-home">
 						<button> Instructions </button>
 					</Link>
 				</div>

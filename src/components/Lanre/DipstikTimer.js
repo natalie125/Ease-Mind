@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import LanreWebcamCapture from "./lanre_camera";
 import "../App/App.css";
-import { useState, useRef, useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
 import Header from "../Header/Header";
@@ -48,12 +47,12 @@ export default function DipstikTimer() {
     
     function skip() {
         setIsCounting(false);
-        navigate("/dipstick-home/dipstik-timer/dipstik-camera", { replace: true });
+        navigate("/dipstik-home/dipstik-timer/dipstik-camera", { replace: true });
     }
 
 
     if (timeLeft == 0 && isCounting){
-        navigate("/dipstick-home/dipstik-timer/dipstik-camera", { replace: true });
+        navigate("/dipstik-home/dipstik-timer/dipstik-camera", { replace: true });
     }
 
 

@@ -21,8 +21,8 @@ class DipstikCamera extends Component {
 					<Link to="/dipstik-home/dipstik-timer">
 						<button> Back </button>
 					</Link>
-					<Link to="/lanre/dipstik-instructions">
-						<button> Instructions </button>
+					<Link to="/dipstik-home/dipstik-timer/dipstik-camera/dipstik-results">
+						<button> Results </button>
 					</Link>
 				</div>
 			</div>
