@@ -1,0 +1,50 @@
+/* **********************
+** LANRE STYLES
+*************************/
+.instructions-container{
+    /* border: 1px solid red; */
+    padding: 0px 5px;
+}
+
+.instructions-title{
+    padding: 15px 0px 0px 0px;
+}
+
+.important-note {
+    line-height:28px;
+    color: rgb(87, 87, 87);
+    margin-bottom: 15px;
+}
+
+
+.instructions{
+    /* border: 1px solid blue; */
+    padding: 3px 0px;
+    font-size: 16px;
+    color: rgb(87, 87, 87);
+    line-height:28px;
+}
+
+
+.start-button {
+    border: 1px solid green;
+    width: 90px;
+    height: 90px;
+    border-radius: 90px;
+    background-color: green;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+
+    margin-top: 10px;
+}
+
+.start-button:hover{
+    background-color: white;
+    color: green;
+}
+
+
+
+
