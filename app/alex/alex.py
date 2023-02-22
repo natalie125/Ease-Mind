@@ -54,18 +54,25 @@ def query_tree(mode):
                 tree_query = models.Pedigree_Tree_Test.query.filter_by(name=name).all()
             elif id == None and name == None and owner == None:
                 tree_query = models.Pedigree_Tree_Test.query.all()
-            return str(tree_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\nowner= " + str(owner)
+            query_parameters = {
+                'ids': [],
+                'names': [],
+                'owners': []
+            }
+            for query in tree_query:
+                query_parameters.get('ids').append(query.id)
+                query_parameters.get('names').append(query.name)
+                query_parameters.get('owners').append(query.owner)
+            return jsonify(query_parameters)
         if request.method == 'POST':
             # check using the correct combination of parameters
             if name != None and owner != None:
                 new_tree = models.Pedigree_Tree_Test(name=name, owner=owner)
                 db.session.add(new_tree)
                 db.session.commit()
-                return str(new_tree) + "\nid= " + str(new_tree.id) + "\nname= " + str(
-                    new_tree.name) + "\nowner= " + str(new_tree.owner)
+                return str(new_tree) + "\nid= " + str(new_tree.id) + "\nname= " + str(new_tree.name) + "\nowner= " + str(new_tree.owner)
             else:
-                return "Not enough information provided to create a new tree" + "\nid= " + str(id) + "\nname= " + str(
-                    name) + "\nowner= " + str(owner)
+                return "Not enough information provided to create a new tree" + "\nid= " + str(id) + "\nname= " + str(name) + "\nowner= " + str(owner)
         if request.method == 'PUT':
             # should only be allowed to put using the tree's id as name and owner are not unique
             if id != None:
@@ -107,7 +114,16 @@ def query_tree(mode):
                 tree_query = models.Pedigree_Tree.query.filter_by(name=name).all()
             elif id == None and name == None and owner == None:
                 tree_query = models.Pedigree_Tree.query.all()
-            return str(tree_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\nowner= " + str(owner)
+            query_parameters = {
+                'ids': [],
+                'names': [],
+                'owners': []
+            }
+            for query in tree_query:
+                query_parameters.get('ids').append(query.id)
+                query_parameters.get('names').append(query.name)
+                query_parameters.get('owners').append(query.owner)
+            return jsonify(query_parameters)
         if request.method == 'POST':
             # check using the correct combination of parameters
             if name != None and owner != None:
@@ -145,10 +161,14 @@ def query_patient(mode):
     # read in the query string for parameters
     id = request.args.get('id')
     name = request.args.get('name')
-    dob = datetime.strptime(request.args.get('dob'), '%Y-%m-%d')
+    dob = request.args.get('dob')
+    if dob != None:
+        dob = datetime.strptime(dob, '%Y-%m-%d')
     ethnicity = request.args.get('ethnicity')
     new_name = request.args.get('new_name')
-    new_dob = datetime.strptime(request.args.get('new_dob'), '%Y-%m-%d')
+    new_dob = request.args.get('new_dob')
+    if new_dob != None:
+        new_dob = datetime.strptime(new_dob, '%Y-%m-%d')
     new_ethnicity = request.args.get('new_ethnicity')
 
     # testing mode, bind to canopy test databases
@@ -188,7 +208,18 @@ def query_patient(mode):
                 patient_query = models.Pedigree_Patient_Test.query.filter_by(dob=dob).all()
             elif id == None and name == None and dob == None and ethnicity == None:
                 patient_query = models.Pedigree_Patient_Test.query.all()
-            return str(patient_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
+            query_parameters = {
+                'ids': [],
+                'names': [],
+                'dobs': [],
+                'ethnicities': []
+            }
+            for query in patient_query:
+                query_parameters.get('ids').append(query.id)
+                query_parameters.get('names').append(query.name)
+                query_parameters.get('dobs').append(query.dob)
+                query_parameters.get('ethnicities').append(query.ethnicity)
+            return jsonify(query_parameters)
         if request.method == 'POST':
             # check using the correct combination of parameters
             if name != None and ethnicity != None:
@@ -257,7 +288,18 @@ def query_patient(mode):
                 patient_query = models.Pedigree_Patient.query.filter_by(dob=dob).all()
             elif id == None and name == None and dob == None and ethnicity == None:
                 patient_query = models.Pedigree_Patient.query.all()
-            return str(patient_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
+            query_parameters = {
+                'ids': [],
+                'names': [],
+                'dobs': [],
+                'ethnicities': []
+            }
+            for query in patient_query:
+                query_parameters.get('ids').append(query.id)
+                query_parameters.get('names').append(query.name)
+                query_parameters.get('dobs').append(query.dob)
+                query_parameters.get('ethnicities').append(query.ethnicity)
+            return jsonify(query_parameters)
         if request.method == 'POST':
             # check using the correct combination of parameters
             if name != None and ethnicity != None:
@@ -266,8 +308,7 @@ def query_patient(mode):
                 db.session.commit()
                 return str(new_patient) + "\nid= " + str(new_patient.id) + "\nname= " + str(new_patient.name) + "\ndob= " + str(new_patient.dob) + "\nethnicity= " + str(ethnicity)
             else:
-                return "Not enough information provided to create a new patient" + "\nid= " + str(
-                    id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
+                return "Not enough information provided to create a new patient" + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
         if request.method == 'PUT':
             # should only be allowed to put using the tree's id as name and owner are not unique
             if id != None:
@@ -287,8 +328,7 @@ def query_patient(mode):
             if id != None:
                 models.Pedigree_Patient.query.filter_by(id=id).delete()
                 db.session.commit()
-                return "id= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(
-                    ethnicity)
+                return "id= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
     return "error, not enough information given in HTTP request"
@@ -299,9 +339,13 @@ def query_condition(mode):
     # read in the query string for parameters
     id = request.args.get('id')
     name = request.args.get('name')
-    hereditary = eval(request.args.get('hereditary').capitalize())
+    hereditary = request.args.get('hereditary')
+    if hereditary != None:
+        hereditary = eval(request.args.get('hereditary').capitalize())
     new_name = request.args.get('new_name')
-    new_hereditary = eval(request.args.get('new_hereditary').capitalize())
+    new_hereditary = request.args.get('new_hereditary')
+    if new_hereditary != None:
+        new_hereditary = eval(request.args.get('new_hereditary').capitalize())
 
     # testing mode, bind to canopy test databases
     if mode == "test":
@@ -324,7 +368,16 @@ def query_condition(mode):
                 condition_query = models.Pedigree_Health_Condition_Test.query.filter_by(name=name).all()
             elif id == None and name == None and hereditary == None:
                 condition_query = models.Pedigree_Health_Condition_Test.query.all()
-            return str(condition_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
+            query_parameters = {
+                'ids': [],
+                'names': [],
+                'hereditarys': []
+            }
+            for query in condition_query:
+                query_parameters.get('ids').append(query.id)
+                query_parameters.get('names').append(query.name)
+                query_parameters.get('hereditarys').append(query.hereditary)
+            return jsonify(query_parameters)
         if request.method == 'POST':
             # check using the correct combination of parameters
             if name != None:
@@ -377,7 +430,16 @@ def query_condition(mode):
                 condition_query = models.Pedigree_Health_Condition.query.filter_by(name=name).all()
             elif id == None and name == None and hereditary == None:
                 condition_query = models.Pedigree_Health_Condition.query.all()
-            return str(condition_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
+            query_parameters = {
+                'ids': [],
+                'names': [],
+                'hereditarys': []
+            }
+            for query in condition_query:
+                query_parameters.get('ids').append(query.id)
+                query_parameters.get('names').append(query.name)
+                query_parameters.get('hereditarys').append(query.hereditary)
+            return jsonify(query_parameters)
         if request.method == 'POST':
             # check using the correct combination of parameters
             if name != None:
@@ -423,16 +485,26 @@ def get_tree_nodes(mode):
     if mode == "test":
         tree = models.Pedigree_Tree_Test.query.filter_by(id=tree_id).first()
         if tree != None:
-            return "tree.nodes: " + str(tree.nodes) + "\ntree_id: " + tree_id
+            tree_json = {
+                'id': tree.id,
+                'name': tree.name,
+                'owner': tree.owner
+            }
+            return jsonify(tree_json)
         else:
-            return "error, tree not found at tree_id: " + tree_id
+            return "error, tree not found at tree_id: " + str(tree_id)
     # we are in production mode
     else:
         tree = models.Pedigree_Tree.query.filter_by(id=tree_id).first()
         if tree != None:
-            return "tree.nodes: " + str(tree.nodes) + "\ntree_id: " + tree_id
+            tree_json = {
+                'id': tree.id,
+                'name': tree.name,
+                'owner': tree.owner
+            }
+            return jsonify(tree_json)
         else:
-            return "error, tree not found at tree_id: " + tree_id
+            return "error, tree not found at tree_id: " + str(tree_id)
 
 # function for getting trees of a patient
 @app.route('/canopy/patient_trees/<string:mode>', methods=['GET'])
@@ -443,16 +515,28 @@ def get_patient_trees(mode):
     if mode == "test":
         patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
         if patient != None:
-            return "patient.node_of: " + str(patient.node_of) + "\npatient_id: " + patient_id
+            patient_json = {
+                'id': patient.id,
+                'name': patient.name,
+                'dob': patient.dob,
+                'ethnicity': patient.ethnicity
+            }
+            return jsonify(patient_json)
         else:
-            return "error, patient not found at patient_id: " + patient_id
+            return "error, patient not found at patient_id: " + str(patient_id)
     # we are in production mode
     else:
         patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
         if patient != None:
-            return "patient.node_of: " + str(patient.node_of) + "\npatient_id: " + patient_id
+            patient_json = {
+                'id': patient.id,
+                'name': patient.name,
+                'dob': patient.dob,
+                'ethnicity': patient.ethnicity
+            }
+            return jsonify(patient_json)
         else:
-            return "error, patient not found at patient_id: " + patient_id
+            return "error, patient not found at patient_id: " + str(patient_id)
 
 # function for getting children of a parent
 @app.route('/canopy/parent_children/<string:mode>', methods=['GET'])
@@ -463,16 +547,28 @@ def get_parent_children(mode):
     if mode == "test":
         patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
         if patient != None:
-            return "patient.children: " + str(patient.children) + "\npatient_id: " + patient_id
+            patient_json = {
+                'id': patient.id,
+                'name': patient.name,
+                'dob': patient.dob,
+                'ethnicity': patient.ethnicity
+            }
+            return jsonify(patient_json)
         else:
-            return "error, patient not found at patient_id: " + patient_id
+            return "error, patient not found at patient_id: " + str(patient_id)
     # we are in production mode
     else:
         patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
         if patient != None:
-            return "patient.children: " + str(patient.children) + "\npatient_id: " + patient_id
+            patient_json = {
+                'id': patient.id,
+                'name': patient.name,
+                'dob': patient.dob,
+                'ethnicity': patient.ethnicity
+            }
+            return jsonify(patient_json)
         else:
-            return "error, patient not found at patient_id: " + patient_id
+            return "error, patient not found at patient_id: " + str(patient_id)
 
 # function for getting parents of a child
 @app.route('/canopy/child_parents/<string:mode>', methods=['GET'])
@@ -483,16 +579,28 @@ def get_child_parents(mode):
     if mode == "test":
         patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
         if patient != None:
-            return "patient.parents: " + str(patient.parents) + "\npatient_id: " + patient_id
+            patient_json = {
+                'id': patient.id,
+                'name': patient.name,
+                'dob': patient.dob,
+                'ethnicity': patient.ethnicity
+            }
+            return jsonify(patient_json)
         else:
-            return "error, patient not found at patient_id: " + patient_id
+            return "error, patient not found at patient_id: " + str(patient_id)
     # we are in production mode
     else:
         patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
         if patient != None:
-            return "patient.parents: " + str(patient.parents) + "\npatient_id: " + patient_id
+            patient_json = {
+                'id': patient.id,
+                'name': patient.name,
+                'dob': patient.dob,
+                'ethnicity': patient.ethnicity
+            }
+            return jsonify(patient_json)
         else:
-            return "error, patient not found at patient_id: " + patient_id
+            return "error, patient not found at patient_id: " + str(patient_id)
 
 # function for getting conditions of a patient
 @app.route('/canopy/patient_conditions/<string:mode>', methods=['GET'])
@@ -503,16 +611,28 @@ def get_patient_conditions(mode):
     if mode == "test":
         patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
         if patient != None:
-            return "patient.conditions: " + str(patient.conditions) + "\npatient_id: " + patient_id
+            patient_json = {
+                'id': patient.id,
+                'name': patient.name,
+                'dob': patient.dob,
+                'ethnicity': patient.ethnicity
+            }
+            return jsonify(patient_json)
         else:
-            return "error, patient not found at patient_id: " + patient_id
+            return "error, patient not found at patient_id: " + str(patient_id)
     # we are in production mode
     else:
         patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
         if patient != None:
-            return "patient.conditions: " + str(patient.conditions) + "\npatient_id: " + patient_id
+            patient_json = {
+                'id': patient.id,
+                'name': patient.name,
+                'dob': patient.dob,
+                'ethnicity': patient.ethnicity
+            }
+            return jsonify(patient_json)
         else:
-            return "error, patient not found at patient_id: " + patient_id
+            return "error, patient not found at patient_id: " + str(patient_id)
 
 # function for getting patients with a condition
 @app.route('/canopy/condition_patients/<string:mode>', methods=['GET'])
@@ -523,16 +643,26 @@ def get_condition_patients(mode):
     if mode == "test":
         condition = models.Pedigree_Health_Condition_Test.query.filter_by(id=condition_id).first()
         if condition != None:
-            return "condition.condition_of: " + str(condition.condition_of) + "\ncondition_id: " + condition_id
+            condition_json = {
+                'id': condition.id,
+                'name': condition.name,
+                'hereditary': condition.hereditary
+            }
+            return jsonify(condition_json)
         else:
-            return "error, condition not found at condition_id: " + condition_id
+            return "error, condition not found at condition_id: " + str(condition_id)
     # we are in production mode
     else:
         condition = models.Pedigree_Health_Condition.query.filter_by(id=condition_id).first()
         if condition != None:
-            return "condition.condition_of: " + str(condition.condition_of) + "\ncondition_id: " + condition_id
+            condition_json = {
+                'id': condition.id,
+                'name': condition.name,
+                'hereditary': condition.hereditary
+            }
+            return jsonify(condition_json)
         else:
-            return "error, condition not found at condition_id: " + condition_id
+            return "error, condition not found at condition_id: " + str(condition_id)
 
 # function for linking a tree and a patient
 @app.route('/canopy/tree_patient/<string:mode>', methods=['PUT'])
