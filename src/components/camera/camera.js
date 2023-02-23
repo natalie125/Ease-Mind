@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
+import "../App/App.css";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
@@ -17,6 +18,7 @@ const WebcamCapture = (props) => {
   const [flash, setFlash] = useState(false);
   const [frontFacing, setFrontFacing] = React.useState(true);
   const [serverResponse, setServerResponse] = React.useState(null);
+  const navigate = useNavigate();
   //pass endpoint in as a props to the component whichever endpoint you want to send the image to.
   //if in doubt how to do that please refer to shreyas.js
   //if no context is provided it will send to /upload endpoint
@@ -123,37 +125,43 @@ const WebcamCapture = (props) => {
     };
   }
 
+  const tons_outcome = (serverResponse) => {
+    if (serverResponse === 0) navigate("/shreyas/tonsillitis_outcome_1", { replace: true });
+    else navigate("/shreyas/tonsillitis_outcome_2", { replace: true });
+  }
+
 
   //two buttons, one for taking pictures with flash and one for without
   return (
     <>
-      <div style={{ width: "100%" }}>
-        <Webcam className="webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"10px"} />
-      </div>
-      <div style={{ width: "100%" }}>
-        <button onClick={handleTakePicture}>Take Picture</button>
-        <button onClick={handleTakePictureWithFlash}>Take Picture With Flash</button>
-        <button onClick={switchCameraFacing}>Change Camera</button>
-        <button onClick={handleSubmit}>Submit Image</button>
+      <div className="cam-horizontal-container">
+        <div style={{ width: "80%", paddingRight: "5px" }}>
+          <Webcam className="webcam" videoConstraints={cameraConstraints} ref={webcamRef} style={{ width: "100%" }} />
+        </div>
+        <div style={{ width: "20%", paddingLeft: "5px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+          <button className="cam-button" onClick={handleTakePicture}>Take Picture</button>
+          <button className="cam-button" onClick={handleTakePictureWithFlash}>Take Picture With Flash</button>
+          <button className="cam-button" onClick={switchCameraFacing}>Change Camera</button>
+          <button className="cam-button" onClick={handleSubmit}>Submit Image</button>
+        </div>
       </div>
       <div>
         {flash && <div className="flash" />}
         {imageSrc && (
-          <img src={imageSrc} width={minValue} alt="Captured photo" />
+          <img src={imageSrc} style={{ width: "100%", borderRadius: "5px" }} alt="Captured photo" />
         )}
       </div>
       <div>
         {context === "shreyas" && serverResponse === 0 && (
-          <p>Congrats, you're clean!</p>
+          tons_outcome(serverResponse)
         )}
         {context === "shreyas" && serverResponse === 1 && (
-          <p>You might have tonsillitis... please go to doctor.</p>
+          tons_outcome(serverResponse)
         )}
       </div>
     </>
   );
 };
-
 
 
 // Found at:
