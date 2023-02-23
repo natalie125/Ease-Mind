@@ -11,13 +11,15 @@ class TonsillitisOutcome1 extends Component {
 		return (
 			<div className="App">
 				<Header />
-				<h1>Outcome of your results</h1>
-				<div>
-					<h2> You aren't showing any signs of throat infection!</h2>
-					<p>Enjoy the rest of your day :)</p>
-					<Link to="/home">
-						<button> Go back to home </button>
-					</Link>
+				<div className="tons-page-container">
+					<h1 className="tons-page-header">Outcome of your results</h1>
+					<div>
+						<h2 className="tons-page-subheader"> You aren't showing any signs of throat infection!</h2>
+						<p className="bullet-point">Enjoy the rest of your day :)</p>
+						<Link to="/home">
+							<button className="tons-page-button"> Go back to home </button>
+						</Link>
+					</div>
 				</div>
 			</div>
 		);

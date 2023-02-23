@@ -31,7 +31,7 @@ class TonsillitisOutcome2 extends Component {
                             <li>the symptoms do not go away within 4 days</li>
                         </ul>
                         <Link to="/home">
-                            <button className="continue-button"> Go back to home </button>
+                            <button className="tons-page-button"> Go back to home </button>
                         </Link>
                     </div>
                 </div>

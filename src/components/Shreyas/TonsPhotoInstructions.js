@@ -28,7 +28,7 @@ class TonsPhotoInstructions extends Component {
                     </div>
                     <div className="btn-container">
                         <Link to="/shreyas/shreyas">
-                            <button className="continue-button"> Continue </button>
+                            <button className="tons-page-button"> Continue </button>
                         </Link>
                     </div>
                 </div>
