@@ -13,6 +13,28 @@ var baseurl = "http://localhost:5000/canopy/";
 	}
 
 class Canopy_View_Tree extends Component {
+	// form methods
+	constructor(props) {
+		super(props);
+		this.state = {
+		  tree_id: 1,
+		  name: "test_tree",
+		  owner: "test@gmail.com"
+		};
+	
+		this.handleInputChange = this.handleInputChange.bind(this);
+	  }
+	
+	handleInputChange(event) {
+	const target = event.target;
+	const value = target.value;
+	const name = target.name;
+
+	this.setState({
+		[name]: value
+	});
+	}
+
 	// methods for receiving data from the Flask app
 	// get data from the tree table
 	getTree = (url_input, tree_data) => {
@@ -58,13 +80,38 @@ class Canopy_View_Tree extends Component {
 					<h1>View Tree Details</h1>
 				</header>
 				<div>
-					<div>
-						<p>tree details appear here</p>
-					</div>
+					<form>
+						<label>
+							Tree ID:
+							<input
+							name="tree_id"
+							type="number"
+							value={this.state.tree_id}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Name:
+							<input
+							name="name"
+							type="text"
+							value={this.state.name}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Owner:
+							<input
+							name="owner"
+							type="text"
+							value={this.state.owner}
+							onChange={this.handleInputChange} />
+						</label>
+					</form>
 
 					<div>
-						<button onClick={() => {this.getTree(baseurl + "tree/prod", test_tree_params)}}>GET tree at: {baseurl}</button>
-					</div>	
+						<button onClick={() => {this.getTree(baseurl + "tree/prod", {id: this.state.tree_id, name: this.state.name, owner: this.state.owner})}}>GET tree at: {baseurl}</button>
+					</div>
 
 					<Link to="/home">
 						<button> Back </button>
