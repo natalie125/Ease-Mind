@@ -12,18 +12,18 @@ class Shreyas extends Component {
 		return (
 			<div className="App">
 				<Header />
-				<h1>Shreyas' app</h1>
-				<div>
+				<h1 className="tons-page-header">Shreyas' app</h1>
+				<div className="tons-page-camera-container">
 					<div className="webcam-capture-holder">
-						<p>Webcam capture below (to use flash please brighten your screen)</p>
+						<p style={{ textAlign: "center", marginBottom: "20px" }}>Webcam capture below (to use flash please brighten your screen)</p>
 						<WebcamCapture context="shreyas" />
 						{/*<WebcamCapture context="shreyas"/>*/}
 					</div>
 					<Link to="/home">
-						<button> Back </button>
+						<button className="tons-page-button"> Back </button>
 					</Link>
 				</div>
-			</div>
+			</div >
 		);
 	}
 }

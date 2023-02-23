@@ -11,7 +11,7 @@ class TonsPhotoInstructions extends Component {
         return (
             <div className="App">
                 <Header />
-                <h1>Instructions for using the tonsillitis detector</h1>
+                <h1 className="tons-page-header">Instructions for using the tonsillitis detector</h1>
                 <div className="tons-page-container">
                     <div>
                         <ol className="bullet-point-container" type="1">

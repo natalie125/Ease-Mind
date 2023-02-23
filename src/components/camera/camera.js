@@ -134,19 +134,21 @@ const WebcamCapture = (props) => {
   //two buttons, one for taking pictures with flash and one for without
   return (
     <>
-      <div style={{ width: "100%" }}>
-        <Webcam className="webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"10px"} />
-      </div>
-      <div style={{ width: "100%" }}>
-        <button onClick={handleTakePicture}>Take Picture</button>
-        <button onClick={handleTakePictureWithFlash}>Take Picture With Flash</button>
-        <button onClick={switchCameraFacing}>Change Camera</button>
-        <button onClick={handleSubmit}>Submit Image</button>
+      <div className="cam-horizontal-container">
+        <div style={{ width: "80%", paddingRight: "5px" }}>
+          <Webcam className="webcam" videoConstraints={cameraConstraints} ref={webcamRef} style={{ width: "100%" }} />
+        </div>
+        <div style={{ width: "20%", paddingLeft: "5px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+          <button className="cam-button" onClick={handleTakePicture}>Take Picture</button>
+          <button className="cam-button" onClick={handleTakePictureWithFlash}>Take Picture With Flash</button>
+          <button className="cam-button" onClick={switchCameraFacing}>Change Camera</button>
+          <button className="cam-button" onClick={handleSubmit}>Submit Image</button>
+        </div>
       </div>
       <div>
         {flash && <div className="flash" />}
         {imageSrc && (
-          <img src={imageSrc} width={minValue} alt="Captured photo" />
+          <img src={imageSrc} style={{ width: "100%", borderRadius: "5px" }} alt="Captured photo" />
         )}
       </div>
       <div>
