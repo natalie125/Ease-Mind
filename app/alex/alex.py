@@ -28,10 +28,20 @@ def canopy_home():
 def query_tree(mode):
     # read in the query string for parameters
     id = request.args.get('id')
+    if id == "":
+        id = None
     name = request.args.get('name')
+    if name == "":
+        name = None
     owner = request.args.get('owner')
+    if owner == "":
+        owner = None
     new_name = request.args.get('new_name')
+    if new_name == "":
+        new_name = None
     new_owner = request.args.get('new_owner')
+    if new_owner == "":
+        new_owner = None
 
     # testing mode, bind to canopy test databases
     if mode == "test":
@@ -160,16 +170,30 @@ def query_tree(mode):
 def query_patient(mode):
     # read in the query string for parameters
     id = request.args.get('id')
+    if id == "":
+        id = None
     name = request.args.get('name')
+    if name == "":
+        name = None
     dob = request.args.get('dob')
-    if dob != None:
+    if dob == "":
+        dob = None
+    elif dob != None:
         dob = datetime.strptime(dob, '%Y-%m-%d')
     ethnicity = request.args.get('ethnicity')
+    if ethnicity == "":
+        ethnicity = None
     new_name = request.args.get('new_name')
+    if new_name == "":
+        new_name = None
     new_dob = request.args.get('new_dob')
-    if new_dob != None:
+    if new_dob == "":
+        new_dob = None
+    elif new_dob != None:
         new_dob = datetime.strptime(new_dob, '%Y-%m-%d')
     new_ethnicity = request.args.get('new_ethnicity')
+    if new_ethnicity == "":
+        new_ethnicity = None
 
     # testing mode, bind to canopy test databases
     if mode == "test":
@@ -338,12 +362,22 @@ def query_patient(mode):
 def query_condition(mode):
     # read in the query string for parameters
     id = request.args.get('id')
+    if id == "":
+        id = None
     name = request.args.get('name')
+    if name == "":
+        name = None
     hereditary = request.args.get('hereditary')
+    if hereditary == "":
+        hereditary = None
     if hereditary != None:
         hereditary = eval(request.args.get('hereditary').capitalize())
     new_name = request.args.get('new_name')
+    if new_name == "":
+        new_name = None
     new_hereditary = request.args.get('new_hereditary')
+    if new_hereditary == "":
+        new_hereditary = None
     if new_hereditary != None:
         new_hereditary = eval(request.args.get('new_hereditary').capitalize())
 
