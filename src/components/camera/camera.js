@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "../App/App.css";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
@@ -15,6 +17,13 @@ const WebcamCapture = (props) => {
 	const [imageSrc, setImageSrc] = useState(null);
 	const [flash, setFlash] = useState(false);
 	const [frontFacing, setFrontFacing] = React.useState(true);
+	const [serverResponse, setServerResponse] = React.useState(null);
+	const navigate = useNavigate();
+	//pass endpoint in as a props to the component whichever endpoint you want to send the image to.
+	//if in doubt how to do that please refer to shreyas.js
+	//if no context is provided it will send to /upload endpoint
+	let context = props.context || "upload";
+	context = context.toString();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -109,26 +118,100 @@ const WebcamCapture = (props) => {
 		};
 	}
 
+	// Trying to do the dimensions stuff.
+	// Rounded to floats to ensure dimensions used here make sense, only issue I see right now - the videos will record in different format each time.
+	const size = useWindowSize();
+	var cameraWidth = Math.round(size.width * 0.8);
+	var cameraHeight = Math.round(size.height * 0.5);
+
+	// This code attempts for the dimensions of the camera to be in a 1:1 aspect ratio, by taking the previous measurements of the size of the screen.
+	// Takes the smaller of the two calcs of width and height, to ensure it will fit on the screen.
+	var minValue = cameraWidth;
+
+	if (cameraHeight < minValue) {
+		minValue = cameraHeight;
+		cameraWidth = minValue;
+	} else {
+		cameraHeight = minValue;
+	}
+
+	var cameraConstraints;
+	if (frontFacing) {
+		var x = "user";
+		cameraConstraints = {
+			width: {
+				min: cameraWidth,
+				max: cameraWidth,
+			},
+			height: {
+				min: cameraHeight,
+				max: cameraHeight,
+			},
+			facingMode: { x },
+		};
+	} else {
+		cameraConstraints = {
+			width: {
+				min: cameraWidth,
+				max: cameraWidth,
+			},
+			height: {
+				min: cameraHeight,
+				max: cameraHeight,
+			},
+			facingMode: { exact: "environment" },
+		};
+	}
+
+	const tons_outcome = (serverResponse) => {
+		if (serverResponse === 0) navigate("/shreyas/tonsillitis_outcome_1", { replace: true });
+		else navigate("/shreyas/tonsillitis_outcome_2", { replace: true });
+	};
+
 	//two buttons, one for taking pictures with flash and one for without
 	return (
 		<>
-			<div style={{ width: "100%" }}>
-				<Webcam
-					className="webcam"
-					videoConstraints={cameraConstraints}
-					ref={webcamRef}
-					marginWidth={"10px"}
-				/>
-			</div>
-			<div style={{ width: "100%" }}>
-				<button onClick={handleTakePicture}>Take Picture</button>
-				<button onClick={handleTakePictureWithFlash}>Take Picture With Flash</button>
-				<button onClick={switchCameraFacing}>Change Camera</button>
-				<button onClick={handleSubmit}>Submit Image</button>
+			<div className="cam-horizontal-container">
+				<div style={{ width: "80%", paddingRight: "5px" }}>
+					<Webcam
+						className="webcam"
+						videoConstraints={cameraConstraints}
+						ref={webcamRef}
+						style={{ width: "100%" }}
+					/>
+				</div>
+				<div
+					style={{
+						width: "20%",
+						paddingLeft: "5px",
+						display: "flex",
+						flexDirection: "column",
+						justifyContent: "space-between",
+					}}
+				>
+					<button className="cam-button" onClick={handleTakePicture}>
+						Take Picture
+					</button>
+					<button className="cam-button" onClick={handleTakePictureWithFlash}>
+						Take Picture With Flash
+					</button>
+					<button className="cam-button" onClick={switchCameraFacing}>
+						Change Camera
+					</button>
+					<button className="cam-button" onClick={handleSubmit}>
+						Submit Image
+					</button>
+				</div>
 			</div>
 			<div>
 				{flash && <div className="flash" />}
-				{imageSrc && <img src={imageSrc} width={minValue} alt="Captured photo" />}
+				{imageSrc && (
+					<img src={imageSrc} style={{ width: "100%", borderRadius: "5px" }} alt="Captured photo" />
+				)}
+			</div>
+			<div>
+				{context === "shreyas" && serverResponse === 0 && tons_outcome(serverResponse)}
+				{context === "shreyas" && serverResponse === 1 && tons_outcome(serverResponse)}
 			</div>
 		</>
 	);

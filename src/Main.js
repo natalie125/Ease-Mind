@@ -11,6 +11,9 @@ import Alex2 from "./components/Alex/Alex2";
 import Ramat from "./components/Ramat/Ramat";
 import Kevin from "./components/Kevin/Kevin";
 import Shreyas from "./components/Shreyas/Shreyas";
+import TonsPhotoInstructions from "./components/Shreyas/TonsPhotoInstructions";
+import TonsillitisOutcome1 from "./components/Shreyas/TonsillitsOutcome1";
+import TonsillitisOutcome2 from "./components/Shreyas/TonsillitisOutcome2";
 import Error400 from "./Pages/Error400";
 import Error404 from "./Pages/Error404";
 
@@ -32,7 +35,10 @@ const Main = () => {
 			<Route exact path="/alex/alex2" element={<Alex2 />}></Route>
 			<Route exact path="/ramat" element={<Ramat />}></Route>
 			<Route exact path="/kevin" element={<Kevin />}></Route>
-			<Route exact path="/shreyas" element={<Shreyas />}></Route>
+			<Route exact path="/shreyas/shreyas" element={<Shreyas />}></Route>
+			<Route exact path="/shreyas/tonsillitis_instructions" element={<TonsPhotoInstructions />}></Route>
+			<Route exact path="/shreyas/tonsillitis_outcome_1" element={<TonsillitisOutcome1 />}></Route>
+			<Route exact path="/shreyas/tonsillitis_outcome_2" element={<TonsillitisOutcome2 />}></Route>
 			<Route path="*" element={<Error404 />}></Route>
 		</Routes>
 	);
