@@ -6,6 +6,7 @@ import Header from "../Header/Header";
 
 import "../App/App.css";
 
+//commented code below webcam capture is an example of how to send to '/shreyas' endpoint instead of '/upload' endpoint
 class Shreyas extends Component {
 	render() {
 		return (
@@ -15,7 +16,8 @@ class Shreyas extends Component {
 				<div>
 					<div className="webcam-capture-holder">
 						<p>Webcam capture below (to use flash please brighten your screen)</p>
-						<WebcamCapture url="upload" />
+						<WebcamCapture context="shreyas" />
+						{/*<WebcamCapture context="shreyas"/>*/}
 					</div>
 					<Link to="/home">
 						<button> Back </button>

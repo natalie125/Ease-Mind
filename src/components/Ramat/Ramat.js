@@ -15,7 +15,7 @@ class Ramat extends Component {
 				<Header />
 				<h1>Ramat's app</h1>
 				<div className="App-body">
-					<WebcamCapture url="ramat" />
+					<WebcamCapture context="ramat" />
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
