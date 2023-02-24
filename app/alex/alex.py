@@ -179,7 +179,10 @@ def query_patient(mode):
     if dob == "":
         dob = None
     elif dob != None:
-        dob = datetime.strptime(dob, '%Y-%m-%d')
+        try:
+            dob = datetime.strptime(dob, '%Y-%m-%d')
+        except Exception as e:
+            return str(e)
     ethnicity = request.args.get('ethnicity')
     if ethnicity == "":
         ethnicity = None
@@ -190,7 +193,10 @@ def query_patient(mode):
     if new_dob == "":
         new_dob = None
     elif new_dob != None:
-        new_dob = datetime.strptime(new_dob, '%Y-%m-%d')
+        try:
+            new_dob = datetime.strptime(new_dob, '%Y-%m-%d')
+        except Exception as e:
+            return str(e)
     new_ethnicity = request.args.get('new_ethnicity')
     if new_ethnicity == "":
         new_ethnicity = None
@@ -519,24 +525,36 @@ def get_tree_nodes(mode):
     if mode == "test":
         tree = models.Pedigree_Tree_Test.query.filter_by(id=tree_id).first()
         if tree != None:
-            tree_json = {
-                'id': tree.id,
-                'name': tree.name,
-                'owner': tree.owner
+            nodes_json = {
+                'ids': [],
+                'names': [],
+                'dobs': [],
+                'ethnicities': []
             }
-            return jsonify(tree_json)
+            for node in tree.nodes:
+                nodes_json.get('ids').append(node.id)
+                nodes_json.get('names').append(node.name)
+                nodes_json.get('dobs').append(node.dob)
+                nodes_json.get('ethnicities').append(node.ethnicity)
+            return jsonify(nodes_json)
         else:
             return "error, tree not found at tree_id: " + str(tree_id)
     # we are in production mode
     else:
         tree = models.Pedigree_Tree.query.filter_by(id=tree_id).first()
         if tree != None:
-            tree_json = {
-                'id': tree.id,
-                'name': tree.name,
-                'owner': tree.owner
+            nodes_json = {
+                'ids': [],
+                'names': [],
+                'dobs': [],
+                'ethnicities': []
             }
-            return jsonify(tree_json)
+            for node in tree.nodes:
+                nodes_json.get('ids').append(node.id)
+                nodes_json.get('names').append(node.name)
+                nodes_json.get('dobs').append(node.dob)
+                nodes_json.get('ethnicities').append(node.ethnicity)
+            return jsonify(nodes_json)
         else:
             return "error, tree not found at tree_id: " + str(tree_id)
 
@@ -549,26 +567,32 @@ def get_patient_trees(mode):
     if mode == "test":
         patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
         if patient != None:
-            patient_json = {
-                'id': patient.id,
-                'name': patient.name,
-                'dob': patient.dob,
-                'ethnicity': patient.ethnicity
+            node_of_json = {
+                'ids': [],
+                'names': [],
+                'owners': []
             }
-            return jsonify(patient_json)
+            for tree in patient.node_of:
+                node_of_json.get('ids').append(tree.id)
+                node_of_json.get('names').append(tree.name)
+                node_of_json.get('owners').append(tree.owner)
+            return jsonify(node_of_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
     # we are in production mode
     else:
         patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
         if patient != None:
-            patient_json = {
-                'id': patient.id,
-                'name': patient.name,
-                'dob': patient.dob,
-                'ethnicity': patient.ethnicity
+            node_of_json = {
+                'ids': [],
+                'names': [],
+                'owners': []
             }
-            return jsonify(patient_json)
+            for tree in patient.node_of:
+                node_of_json.get('ids').append(tree.id)
+                node_of_json.get('names').append(tree.name)
+                node_of_json.get('owners').append(tree.owner)
+            return jsonify(node_of_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
 
@@ -581,26 +605,36 @@ def get_parent_children(mode):
     if mode == "test":
         patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
         if patient != None:
-            patient_json = {
-                'id': patient.id,
-                'name': patient.name,
-                'dob': patient.dob,
-                'ethnicity': patient.ethnicity
+            children_json = {
+                'ids': [],
+                'names': [],
+                'dobs': [],
+                'ethnicities': []
             }
-            return jsonify(patient_json)
+            for child in patient.children:
+                children_json.get('ids').append(child.id)
+                children_json.get('names').append(child.name)
+                children_json.get('dobs').append(child.dob)
+                children_json.get('ethnicities').append(child.ethnicity)
+            return jsonify(children_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
     # we are in production mode
     else:
         patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
         if patient != None:
-            patient_json = {
-                'id': patient.id,
-                'name': patient.name,
-                'dob': patient.dob,
-                'ethnicity': patient.ethnicity
+            children_json = {
+                'ids': [],
+                'names': [],
+                'dobs': [],
+                'ethnicities': []
             }
-            return jsonify(patient_json)
+            for child in patient.children:
+                children_json.get('ids').append(child.id)
+                children_json.get('names').append(child.name)
+                children_json.get('dobs').append(child.dob)
+                children_json.get('ethnicities').append(child.ethnicity)
+            return jsonify(children_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
 
@@ -613,26 +647,36 @@ def get_child_parents(mode):
     if mode == "test":
         patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
         if patient != None:
-            patient_json = {
-                'id': patient.id,
-                'name': patient.name,
-                'dob': patient.dob,
-                'ethnicity': patient.ethnicity
+            parents_json = {
+                'ids': [],
+                'names': [],
+                'dobs': [],
+                'ethnicities': []
             }
-            return jsonify(patient_json)
+            for parent in patient.parents:
+                parents_json.get('ids').append(parent.id)
+                parents_json.get('names').append(parent.name)
+                parents_json.get('dobs').append(parent.dob)
+                parents_json.get('ethnicities').append(parent.ethnicity)
+            return jsonify(parents_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
     # we are in production mode
     else:
         patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
         if patient != None:
-            patient_json = {
-                'id': patient.id,
-                'name': patient.name,
-                'dob': patient.dob,
-                'ethnicity': patient.ethnicity
+            parents_json = {
+                'ids': [],
+                'names': [],
+                'dobs': [],
+                'ethnicities': []
             }
-            return jsonify(patient_json)
+            for parent in patient.parents:
+                parents_json.get('ids').append(parent.id)
+                parents_json.get('names').append(parent.name)
+                parents_json.get('dobs').append(parent.dob)
+                parents_json.get('ethnicities').append(parent.ethnicity)
+            return jsonify(parents_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
 
@@ -645,26 +689,32 @@ def get_patient_conditions(mode):
     if mode == "test":
         patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
         if patient != None:
-            patient_json = {
-                'id': patient.id,
-                'name': patient.name,
-                'dob': patient.dob,
-                'ethnicity': patient.ethnicity
+            conditions_json = {
+                'ids': [],
+                'names': [],
+                'hereditarys': []
             }
-            return jsonify(patient_json)
+            for condition in patient.conditions:
+                conditions_json.get('ids').append(condition.id)
+                conditions_json.get('names').append(condition.name)
+                conditions_json.get('hereditarys').append(condition.hereditary)
+            return jsonify(conditions_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
     # we are in production mode
     else:
         patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
         if patient != None:
-            patient_json = {
-                'id': patient.id,
-                'name': patient.name,
-                'dob': patient.dob,
-                'ethnicity': patient.ethnicity
+            conditions_json = {
+                'ids': [],
+                'names': [],
+                'hereditarys': []
             }
-            return jsonify(patient_json)
+            for condition in patient.conditions:
+                conditions_json.get('ids').append(condition.id)
+                conditions_json.get('names').append(condition.name)
+                conditions_json.get('hereditarys').append(condition.hereditary)
+            return jsonify(conditions_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
 
@@ -677,24 +727,36 @@ def get_condition_patients(mode):
     if mode == "test":
         condition = models.Pedigree_Health_Condition_Test.query.filter_by(id=condition_id).first()
         if condition != None:
-            condition_json = {
-                'id': condition.id,
-                'name': condition.name,
-                'hereditary': condition.hereditary
+            condition_of_json = {
+                'ids': [],
+                'names': [],
+                'dobs': [],
+                'ethnicities': []
             }
-            return jsonify(condition_json)
+            for patient in condition.condition_of:
+                condition_of_json.get('ids').append(patient.id)
+                condition_of_json.get('names').append(patient.name)
+                condition_of_json.get('dobs').append(patient.dob)
+                condition_of_json.get('ethnicities').append(patient.ethnicity)
+            return jsonify(condition_of_json)
         else:
             return "error, condition not found at condition_id: " + str(condition_id)
     # we are in production mode
     else:
         condition = models.Pedigree_Health_Condition.query.filter_by(id=condition_id).first()
         if condition != None:
-            condition_json = {
-                'id': condition.id,
-                'name': condition.name,
-                'hereditary': condition.hereditary
+            condition_of_json = {
+                'ids': [],
+                'names': [],
+                'dobs': [],
+                'ethnicities': []
             }
-            return jsonify(condition_json)
+            for patient in condition.condition_of:
+                condition_of_json.get('ids').append(patient.id)
+                condition_of_json.get('names').append(patient.name)
+                condition_of_json.get('dobs').append(patient.dob)
+                condition_of_json.get('ethnicities').append(patient.ethnicity)
+            return jsonify(condition_of_json)
         else:
             return "error, condition not found at condition_id: " + str(condition_id)
 
