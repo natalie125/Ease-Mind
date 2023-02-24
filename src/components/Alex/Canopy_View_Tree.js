@@ -18,8 +18,8 @@ class Canopy_View_Tree extends Component {
 		super(props);
 		this.state = {
 		  tree_id: 1,
-		  name: "test_tree",
-		  owner: "test@gmail.com"
+		  name: "tree name",
+		  owner: "owner's email"
 		};
 	
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -61,19 +61,6 @@ class Canopy_View_Tree extends Component {
 	}
 	
 	render() {
-		var test_tree_params = {
-			// id: 1,
-			// name: "test_tree",
-			// owner: "test@gmail.com",
-			// new_name: "replaced_tree",
-			// new_owner: "replaced@gmail.com"
-		}
-
-		var test_tree_patient_params = {
-			tree_id: 1,
-			patient_id: 1
-		}
-
 		return (
 			<div className="App">
 				<header className="App-header-primary">
@@ -113,7 +100,7 @@ class Canopy_View_Tree extends Component {
 						<button onClick={() => {this.getTree(baseurl + "tree/prod", {id: this.state.tree_id, name: this.state.name, owner: this.state.owner})}}>GET tree at: {baseurl}</button>
 					</div>
 
-					<Link to="/home">
+					<Link to="/canopy">
 						<button> Back </button>
 					</Link>
 				</div>

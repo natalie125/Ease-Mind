@@ -13,6 +13,38 @@ var baseurl = "http://localhost:5000/canopy/";
 	}
 
 class Canopy_Edit_Patient extends Component {
+	// form methods
+	constructor(props) {
+		super(props);
+		this.state = {
+		  patient_id: 1,
+		  name: "patient's name",
+		  dob: "YYYY-MM-DD",
+		  ethnicity: "patient's ethnicity",
+		  new_name: "new patient name",
+		  new_dob: "YYYY-MM-DD",
+		  new_ethnicity: "new patient's ethnicity",
+		  tree_nodes_id: 1,
+		  patient_node_of_id: 1,
+		  parent_id: 1,
+		  child_id: 2,
+		  patient_conditions_id: 1,
+		  condition_patients_id: 1
+		};
+	
+		this.handleInputChange = this.handleInputChange.bind(this);
+	  }
+	
+	handleInputChange(event) {
+	const target = event.target;
+	const value = target.value;
+	const name = target.name;
+
+	this.setState({
+		[name]: value
+	});
+	}
+
 	// get data from the patient table
 	getPatient = (url_input, patient_data) => {
 		axios.get(url_input, {params: patient_data})
@@ -136,86 +168,169 @@ class Canopy_Edit_Patient extends Component {
 	}
 
 	render() {
-		var test_patient_params = {
-			// id: 1,
-			// name: "test_patient",
-			// dob: "2000-01-01",
-			// ethnicity: "test_ethnicity",
-			// new_name: "replace_patient",
-			// new_dob: "2002-01-01",
-			// new_ethnicity: "replace_ethnicity"
-		}
-
-		var test_child_params = {
-			id: 2,
-			name: "replace_patient",
-			dob: "2002-01-01",
-			ethnicity: "replace_ethnicity",
-		}
-
-		var test_tree_patient_params = {
-			tree_id: 1,
-			patient_id: 1
-		}
-
-		var test_parent_child_params = {
-			parent_id: 1,
-			child_id: 2
-		}
-
-		var test_patient_condition_params = {
-			patient_id: 1,
-			condition_id: 1
-		}
-		
 		return (
 			<div className="App">
 				<header className="App-header-primary">
 					<h1>Edit Patient Information</h1>
 				</header>
 				<div>
+					<form>
+						<label>
+							Patient ID:
+							<input
+							name="patient_id"
+							type="number"
+							value={this.state.patient_id}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Name:
+							<input
+							name="name"
+							type="text"
+							value={this.state.name}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Date Of Birth:
+							<input
+							name="dob"
+							type="text"
+							value={this.state.dob}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Ethnicity:
+							<input
+							name="ethnicity"
+							type="text"
+							value={this.state.ethnicity}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							New Name:
+							<input
+							name="new_name"
+							type="text"
+							value={this.state.new_name}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							New DOB:
+							<input
+							name="new_dob"
+							type="text"
+							value={this.state.new_dob}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							New Ethnicity:
+							<input
+							name="new_ethnicity"
+							type="text"
+							value={this.state.new_ethnicity}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Patient ID to check trees of:
+							<input
+							name="patient_node_of_id"
+							type="number"
+							value={this.state.patient_node_of_id}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Tree ID to link with:
+							<input
+							name="tree_nodes_id"
+							type="number"
+							value={this.state.tree_nodes_id}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Parent's ID to link or read children of:
+							<input
+							name="parent_id"
+							type="number"
+							value={this.state.parent_id}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Child's ID to link or read parents of:
+							<input
+							name="child_id"
+							type="number"
+							value={this.state.child_id}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Patient ID to check conditions of:
+							<input
+							name="patient_conditions_id"
+							type="number"
+							value={this.state.patient_conditions_id}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Condition ID to link to:
+							<input
+							name="condition_patients_id"
+							type="number"
+							value={this.state.condition_patients_id}
+							onChange={this.handleInputChange} />
+						</label>
+					</form>
+
 					<div>
-						<p>edit patient information here</p>
+						<button onClick={() => {this.postPatient(baseurl + "patient/prod", {id: this.state.patient_id, name: this.state.name, dob: this.state.dob, ethnicity: this.state.ethnicity})}}>POST patient at: {baseurl}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.postPatient(baseurl + "patient/prod", test_patient_params)}}>POST patient at: {baseurl}</button>
+						<button onClick={() => {this.putPatient(baseurl + "patient/prod", {id: this.state.patient_id, name: this.state.name, dob: this.state.dob, ethnicity: this.state.ethnicity, new_name: this.state.new_name, new_dob: this.state.new_dob, new_ethnicity: this.state.new_ethnicity})}}>PUT patient at: {baseurl}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.putPatient(baseurl + "patient/prod", test_patient_params)}}>PUT patient at: {baseurl}</button>
+						<button onClick={() => {this.deletePatient(baseurl + "patient/prod", {id: this.state.patient_id, name: this.state.name, dob: this.state.dob, ethnicity: this.state.ethnicity})}}>DELETE patient at: {baseurl}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.deletePatient(baseurl + "patient/prod", test_patient_params)}}>DELETE patient at: {baseurl}</button>
+						<button onClick={() => {this.getPatientTrees(baseurl + "patient_trees/prod", {id: this.state.patient_node_of_id})}}>Get trees of patient at: {baseurl}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.getPatientTrees(baseurl + "patient_trees/prod", test_patient_params)}}>Get trees of patient at: {baseurl}</button>
+						<button onClick={() => {this.getParentChildren(baseurl + "parent_children/prod", {id: this.state.parent_id})}}>Get children of parent at: {baseurl}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.getParentChildren(baseurl + "parent_children/prod", test_patient_params)}}>Get children of parent at: {baseurl}</button>
+						<button onClick={() => {this.getChildParents(baseurl + "child_parents/prod", {id: this.state.child_id})}}>Get parents of child at: {baseurl}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.getChildParents(baseurl + "child_parents/prod", test_child_params)}}>Get parents of child at: {baseurl}</button>
+						<button onClick={() => {this.getPatientConditions(baseurl + "patient_conditions/prod", {id: this.state.patient_conditions_id})}}>Get conditions of patient at: {baseurl}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.getPatientConditions(baseurl + "patient_conditions/prod", test_patient_params)}}>Get conditions of patient at: {baseurl}</button>
+						<button onClick={() => {this.linkTreePatient(baseurl + "tree_patient/prod", {tree_id: this.state.tree_nodes_id, patient_id: this.state.patient_node_of_id})}}>Link tree and patient at: {baseurl}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.linkTreePatient(baseurl + "tree_patient/prod", test_tree_patient_params)}}>Link tree and patient at: {baseurl}</button>
+						<button onClick={() => {this.linkParentChild(baseurl + "parent_child/prod", {parent_id: this.state.parent_id, child_id: this.state.child_id})}}>Link parent and child at: {baseurl}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.linkParentChild(baseurl + "parent_child/prod", test_parent_child_params)}}>Link parent and child at: {baseurl}</button>
-					</div>
-
-					<div>
-						<button onClick={() => {this.linkPatientCondition(baseurl + "patient_condition/prod", test_patient_condition_params)}}>Link patient and health condition at: {baseurl}</button>
+						<button onClick={() => {this.linkPatientCondition(baseurl + "patient_condition/prod", {patient_id: this.state.patient_conditions_id, condition_id: this.state.condition_patients_id})}}>Link patient and health condition at: {baseurl}</button>
 					</div>
 
 					<Link to="/home">

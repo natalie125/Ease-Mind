@@ -13,6 +13,29 @@ var baseurl = "http://localhost:5000/canopy/";
 	}
 
 class Canopy_View_Patient extends Component {
+	// form methods
+	constructor(props) {
+		super(props);
+		this.state = {
+		  patient_id: 1,
+		  name: "patient name",
+		  dob: "YYYY-MM-DD",
+		  ethnicity: "patient ethnicity"
+		};
+	
+		this.handleInputChange = this.handleInputChange.bind(this);
+	  }
+	
+	handleInputChange(event) {
+	const target = event.target;
+	const value = target.value;
+	const name = target.name;
+
+	this.setState({
+		[name]: value
+	});
+	}
+	
 	// get data from the patient table
 	getPatient = (url_input, patient_data) => {
 		axios.get(url_input, {params: patient_data})
@@ -69,53 +92,55 @@ class Canopy_View_Patient extends Component {
 	}
 	
 	render() {
-		var test_patient_params = {
-			// id: 1,
-			// name: "test_patient",
-			// dob: "2000-01-01",
-			// ethnicity: "test_ethnicity",
-			// new_name: "replace_patient",
-			// new_dob: "2002-01-01",
-			// new_ethnicity: "replace_ethnicity"
-		}
-
-		var test_child_params = {
-			id: 2,
-			name: "replace_patient",
-			dob: "2002-01-01",
-			ethnicity: "replace_ethnicity",
-		}
-
-		var test_tree_patient_params = {
-			tree_id: 1,
-			patient_id: 1
-		}
-
-		var test_parent_child_params = {
-			parent_id: 1,
-			child_id: 2
-		}
-		
-		var test_patient_condition_params = {
-			patient_id: 1,
-			condition_id: 1
-		}
-
 		return (
 			<div className="App">
 				<header className="App-header-primary">
-					<h1>Alex's app</h1>
+					<h1>View Patient</h1>
 				</header>
 				<div>
-					<div>
-						<p>Second nested page</p>
-					</div>
+					<form>
+						<label>
+							Patient ID:
+							<input
+							name="patient_id"
+							type="number"
+							value={this.state.patient_id}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Name:
+							<input
+							name="name"
+							type="text"
+							value={this.state.name}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Date Of Birth:
+							<input
+							name="dob"
+							type="text"
+							value={this.state.dob}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Ethnicity:
+							<input
+							name="ethnicity"
+							type="text"
+							value={this.state.ethnicity}
+							onChange={this.handleInputChange} />
+						</label>
+					</form>
 
 					<div>
-						<button onClick={() => {this.getPatient(baseurl + "patient/prod", test_patient_params)}}>GET patient at: {baseurl}</button>
+						<button onClick={() => {this.getPatient(baseurl + "patient/prod", {id: this.state.patient_id, name: this.state.name, dob: this.state.dob, ethnicity: this.state.ethnicity})}}>GET patient at: {baseurl}</button>
 					</div>
 
-					<Link to="/home">
+					<Link to="/canopy">
 						<button> Back </button>
 					</Link>
 				</div>

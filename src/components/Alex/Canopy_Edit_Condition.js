@@ -13,6 +13,32 @@ var baseurl = "http://localhost:5000/canopy/";
 	}
 
 class Canopy_Edit_Condition extends Component {
+	// form methods
+	constructor(props) {
+		super(props);
+		this.state = {
+		  condition_id: 1,
+		  name: "condition name",
+		  hereditary: true,
+		  new_name: "new condition name",
+		  new_hereditary: true,
+		  condition_patients_id: 1,
+		  patient_conditions_id: 1
+		};
+	
+		this.handleInputChange = this.handleInputChange.bind(this);
+	  }
+	
+	handleInputChange(event) {
+	const target = event.target;
+	const value = target.type === 'checkbox' ? target.checked : target.value;
+	const name = target.name;
+
+	this.setState({
+		[name]: value
+	});
+	}
+
 	// get data from the health condition table
 	getCondition = (url_input, condition_data) => {
 		axios.get(url_input, {params: condition_data})
@@ -99,28 +125,89 @@ class Canopy_Edit_Condition extends Component {
 					<h1>Edit Health Condition Information</h1>
 				</header>
 				<div>
+					<form>
+						<label>
+							Condition ID:
+							<input
+							name="condition_id"
+							type="number"
+							value={this.state.condition_id}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Condition Name:
+							<input
+							name="name"
+							type="text"
+							value={this.state.name}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+						Hereditary:
+						<input
+							name="hereditary"
+							type="checkbox"
+							checked={this.state.hereditary}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							New Condition Name:
+							<input
+							name="new_name"
+							type="text"
+							value={this.state.new_name}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+						New Hereditary Value:
+						<input
+							name="new_hereditary"
+							type="checkbox"
+							checked={this.state.new_hereditary}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Condition ID to link or check patients of:
+							<input
+							name="condition_patients_id"
+							type="number"
+							value={this.state.condition_patients_id}
+							onChange={this.handleInputChange} />
+						</label>
+						<br />
+						<label>
+							Patient ID to link to:
+							<input
+							name="patient_conditions_id"
+							type="number"
+							value={this.state.patient_conditions_id}
+							onChange={this.handleInputChange} />
+						</label>
+					</form>
+
 					<div>
-						<p>edit condition here</p>
+						<button onClick={() => {this.postCondition(baseurl + "condition/prod", {id: this.state.condition_id, name: this.state.name, hereditary: this.state.hereditary})}}>POST health condition at: {baseurl}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.postCondition(baseurl + "condition/prod", test_condition_params)}}>POST health condition at: {baseurl}</button>
+						<button onClick={() => {this.putCondition(baseurl + "condition/prod", {id: this.state.condition_id, name: this.state.name, hereditary: this.state.hereditary, new_name: this.state.new_name, new_hereditary: this.state.new_hereditary})}}>PUT health condition at: {baseurl}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.putCondition(baseurl + "condition/prod", test_condition_params)}}>PUT health condition at: {baseurl}</button>
+						<button onClick={() => {this.deleteCondition(baseurl + "condition/prod", {id: this.state.condition_id, name: this.state.name, hereditary: this.state.hereditary})}}>DELETE health condition at: {baseurl}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.deleteCondition(baseurl + "condition/prod", test_condition_params)}}>DELETE health condition at: {baseurl}</button>
+						<button onClick={() => {this.getConditionPatients(baseurl + "condition_patients/prod", {id: this.state.condition_patients_id})}}>Get patients of condition at: {baseurl}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.getConditionPatients(baseurl + "condition_patients/prod", test_condition_params)}}>Get patients of condition at: {baseurl}</button>
-					</div>
-
-					<div>
-						<button onClick={() => {this.linkPatientCondition(baseurl + "patient_condition/prod", test_patient_condition_params)}}>Link patient and health condition at: {baseurl}</button>
+						<button onClick={() => {this.linkPatientCondition(baseurl + "patient_condition/prod", {condition_id: this.state.condition_patients_id, patient_id: this.state.patient_conditions_id})}}>Link patient and health condition at: {baseurl}</button>
 					</div>
 
 					<Link to="/home">
