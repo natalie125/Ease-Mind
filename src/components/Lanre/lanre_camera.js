@@ -108,22 +108,16 @@ const LanreWebcamCapture = () => {
 
     var cameraConstraints;
 
-    if (frontFacing){
+    if (!frontFacing){
       var x = "user";
       console.log("Size.height:",size.height)
       console.log("Size.width:",size.width)
 
       cameraConstraints = {
-        // height: size.height,
-        // width: cameraWidth,
         width: {
           // min: cameraWidth,
           // max: cameraWidth
         },
-        // height: {
-        //   min: cameraHeight,
-        //   max: cameraHeight
-        // },
         facingMode: {x}
       };
     }else{
@@ -132,10 +126,7 @@ const LanreWebcamCapture = () => {
           // min: cameraWidth,
           // max: cameraWidth
         },
-        // height: {
-        //   min: cameraHeight,
-        //   max: cameraHeight
-        // },
+
         facingMode: {exact: "environment"}
       };
     }
@@ -146,15 +137,14 @@ const LanreWebcamCapture = () => {
     <>
       <div className="camera-container">
         <div className="overlay-ancestor">
-          {flash && <div className="camera-overlay" />}
+          <div className="camera-overlay"></div>
           <Webcam className="lanre-webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"10px"} screenshotQuality="1" />
         </div>
       </div>
       
       {/* <div style={{width:"100%"}}> */}
-      <div>
+      <div className="lanre-camera-buttons-container">
         <button onClick={handleTakePicture}>Take Picture</button>
-        <button onClick={handleTakePictureWithFlash}>Show overlay</button>
         <button onClick={switchCameraFacing}>Change Camera</button>
         <button onClick={handleSubmit}>Submit Image</button>
       </div>
