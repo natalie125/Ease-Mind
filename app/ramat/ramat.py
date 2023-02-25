@@ -12,30 +12,7 @@ import dlib
 import os
 
 
-def faceDetection(raw_image):
-    # load the detector
-    detector = dlib.get_frontal_face_detector()
-
-    # convert the image from bytes to a cvs::Umat
-    img = cv2.imdecode(raw_image, cv2.IMREAD_COLOR)    
-
-    # convert the image into grayscale
-    grayscale_image = cv2.cvtColor(src=img, code=cv2.COLOR_BGR2GRAY)
-    # use the detector to find landmarks
-    faces = detector(grayscale_image)
-
-    # check there is only 1 face in the imagea
-    if (len(faces) < 1):
-        print("NO FACE")
-        return "None", grayscale_image
-    elif (len(faces) > 1):
-        print("MULTI FACE")
-        return "Multi", grayscale_image
-
-    return faces, grayscale_image
-
-
-def featureExtraction (faces, gray):
+def featureExtraction (raw_image):
     face_predictor_path = os.path.join(os.getcwd(),'app/ramat/shape_predictor_68_face_landmarks.dat')
 
     x_coords= np.array([])
@@ -43,10 +20,29 @@ def featureExtraction (faces, gray):
 
     # load the predictor
     predictor = dlib.shape_predictor(face_predictor_path)
+    # load the detector
+    detector = dlib.get_frontal_face_detector()
+
+    # convert the image from bytes to a cvs::Umat
+    img = cv2.imdecode(raw_image, cv2.IMREAD_COLOR)
+
+    # Convert image into grayscale
+    grayscale_image = cv2.cvtColor(src=img, code=cv2.COLOR_BGR2GRAY)
+
+    # Use detector to find landmarks
+    faces = detector(grayscale_image)
+
+    # check there is only 1 face in the imagea
+    if (len(faces) < 1):
+        print("NO FACE")
+        return "None", [0], [0]
+    elif (len(faces) > 1):
+        print("MULTI FACE")
+        return "Multi", [0], [0]
 
     face = faces[0]
     # create the landmark object
-    landmarks = predictor(image=gray, box=face)
+    landmarks = predictor(image=grayscale_image, box=face)
 
     # loop through all the points
     for n in range(0, 68):
@@ -56,8 +52,8 @@ def featureExtraction (faces, gray):
         x_coords = np.append(x_coords, x)
         y_coords = np.append(y_coords, y)
 
-    return x_coords,y_coords
-
+    return "SUCCESS", x_coords,y_coords
+   
 
 def calculateFeatureArea(x,y):
     feature = Polygon(zip(x,y))
@@ -69,14 +65,13 @@ def calculateSlope(leftCorner, rightCorner):
 
 
 def getCalculations(raw_image):
-    face, grayscale_image = faceDetection(raw_image)
+    status, x, y = featureExtraction(raw_image)
 
-    if (face == "None"):
-        return ["ERROR", "No face detected",  422]
-    elif (face == "Multi"):
-        return ["ERROR", "Multiple faces detected", 422]
+    if (status == "None"):
+        return ["ERROR", "no face detected",  422]
+    elif (status == "Multi"):
+        return ["ERROR", "multiple faces detected", 422]
     else:
-        x,y = featureExtraction(raw_image, grayscale_image)
         rightEyeArea = calculateFeatureArea(x[36:42], y[36:42])
         leftEyeArea = calculateFeatureArea(x[42:48], y[42:48])
         mouthSlope = calculateSlope([x[48], y[48]], [x[54], y[54]])
@@ -117,7 +112,7 @@ def ramat():
         if (image_calcs[0] == "ERROR"):
             return {"msg": image_calcs[1]}, image_calcs[2]
         elif (image_calcs[0] == "SUCCESS"):
-            prediction = model.predict([image_calcs])
-            return {"msg": prediction}, 200
+            prediction = model.predict([[image_calcs[1], image_calcs[2]]])
+            return {"msg": prediction[0]}, 200
 
 
