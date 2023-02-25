@@ -77,11 +77,12 @@ const LanreWebcamCapture = () => {
 	// Rounded to floats to ensure dimensions used here make sense, only issue I see right now - the videos will record in different format each time.
     const size = useWindowSize();
     console.log(size)
-    var cameraWidth = Math.round(size.width*0.98);
     var cameraHeight = Math.round(size.height*0.8);
+    var cameraWidth = Math.round(size.width);
 
-    console.log("Width:", cameraWidth)
     console.log("Height:",cameraHeight)
+    console.log("Width:", cameraWidth)
+    
     
     
     // This code attempts for the dimensions of the camera to be in a 1:1 aspect ratio, by taking the previous measurements of the size of the screen.
@@ -106,29 +107,35 @@ const LanreWebcamCapture = () => {
     
 
     var cameraConstraints;
+
     if (frontFacing){
       var x = "user";
+      console.log("Size.height:",size.height)
+      console.log("Size.width:",size.width)
+
       cameraConstraints = {
+        // height: size.height,
+        // width: cameraWidth,
         width: {
-          min: cameraWidth,
-          max: cameraWidth
+          // min: cameraWidth,
+          // max: cameraWidth
         },
-        height: {
-          min: cameraHeight,
-          max: cameraHeight
-        },
+        // height: {
+        //   min: cameraHeight,
+        //   max: cameraHeight
+        // },
         facingMode: {x}
       };
     }else{
       cameraConstraints = {
         width: {
-          min: cameraWidth,
-          max: cameraWidth
+          // min: cameraWidth,
+          // max: cameraWidth
         },
-        height: {
-          min: cameraHeight,
-          max: cameraHeight
-        },
+        // height: {
+        //   min: cameraHeight,
+        //   max: cameraHeight
+        // },
         facingMode: {exact: "environment"}
       };
     }
@@ -140,13 +147,14 @@ const LanreWebcamCapture = () => {
       <div className="camera-container">
         <div className="overlay-ancestor">
           {flash && <div className="camera-overlay" />}
-          <Webcam className="webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"10px"} screenshotQuality="1" />
+          <Webcam className="lanre-webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"10px"} screenshotQuality="1" />
         </div>
       </div>
       
-      <div style={{width:"100%"}}>
+      {/* <div style={{width:"100%"}}> */}
+      <div>
         <button onClick={handleTakePicture}>Take Picture</button>
-        <button onClick={handleTakePictureWithFlash}>Take Picture With Flash</button>
+        <button onClick={handleTakePictureWithFlash}>Show overlay</button>
         <button onClick={switchCameraFacing}>Change Camera</button>
         <button onClick={handleSubmit}>Submit Image</button>
       </div>
