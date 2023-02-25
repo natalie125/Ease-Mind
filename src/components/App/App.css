@@ -1,87 +1,85 @@
 /* RESETTING DEFAULT CSS */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 html {
-    width: 100%;
-    height: 100%;
+	width: 100%;
+	height: 100%;
 }
 
 body {
-    width: 100%;
-    height: 100%;
-    /* background-color: red; */
-    /* border: 3px dashed black */
+	width: 100%;
+	height: 100%;
+	/* background-color: red; */
+	/* border: 3px dashed black */
 }
 
 .App {
-    text-align: center;
-    background-color: #FFFFFF;
-    min-height: 100%;
-    /* border: 1px solid green; */
-    /* min-height: 100vh; */
+	text-align: center;
+	background-color: #ffffff;
+	min-height: 100%;
+	/* border: 1px solid green; */
+	/* min-height: 100vh; */
 }
 
 /***********************
 ** TOP BLUE NAV BAR STYLES
 *************************/
 .App-header-primary {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: #005eb8;
-    color: white;
-    height: 70px;
-    /* font-size: calc(10px + 2vmin); */
-    font-size: 16px;
-    /* margin-top: clamp(15px, 7%, 40px); */
-    /* margin-bottom: clamp(15px, 7%, 40px); */
-    /* padding: 20px; */
-    /* border: 1px solid red; */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background: #005eb8;
+	color: white;
+	height: 70px;
+	/* font-size: calc(10px + 2vmin); */
+	font-size: 16px;
+	/* margin-top: clamp(15px, 7%, 40px); */
+	/* margin-bottom: clamp(15px, 7%, 40px); */
+	/* padding: 20px; */
+	/* border: 1px solid red; */
 }
 
 #header_name {
-    position: absolute;
-    left: 0;
-    padding-left: 2%;
+	position: absolute;
+	left: 0;
+	padding-left: 2%;
 }
 
 #header_buttons {
-    position: absolute;
-    right: 0;
-    padding: 2%;
-
+	position: absolute;
+	right: 0;
+	padding: 2%;
 }
 
 .logout-button {
-    border: 1px solid #004585;
-    width: 90px;
-    height: 30px;
-    background-color: white;
-    border-radius: 30px;
-    color: #005eb8;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 16px;
+	border: 1px solid #004585;
+	width: 90px;
+	height: 30px;
+	background-color: white;
+	border-radius: 30px;
+	color: #005eb8;
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 16px;
 }
 
 .logout-button:hover {
-
-    border: 2px solid #004585;
+	border: 2px solid #004585;
 }
 
 .App-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(6px + 2vmin);
-    color: white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(6px + 2vmin);
+	color: white;
 }
 
 /***********************
@@ -89,127 +87,126 @@ body {
 *************************/
 
 .authentication-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #005eb8;
-    min-height: 100vh;
-    min-width: 320px;
-    /* border: 2px solid pink; */
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #005eb8;
+	min-height: 100vh;
+	min-width: 320px;
+	/* border: 2px solid pink; */
 }
 
 .authentication-background {
-    max-width: 390px;
-    /* border: 1px solid red; */
-    /* min-height: 80vh; */
-    border-radius: 20px;
-    background-color: white;
-    margin: 20px;
+	max-width: 390px;
+	/* border: 1px solid red; */
+	/* min-height: 80vh; */
+	border-radius: 20px;
+	background-color: white;
+	margin: 20px;
 }
 
 .authentication-header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-    width: 100%;
-    /* border: 1px solid green; */
-
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100px;
+	width: 100%;
+	/* border: 1px solid green; */
 }
 
 .authentication-page-title {
-    color: #005eb8;
+	color: #005eb8;
 }
 
 .signup-form,
 .login-form {
-    margin: 0 auto;
-    overflow: hidden;
-    padding: 30px;
+	margin: 0 auto;
+	overflow: hidden;
+	padding: 30px;
 }
 
 .signup-title,
 .login-title {
-    font-size: 40px;
-    color: #005eb8;
-    margin: 0px 0px 10px 0px;
-    text-align: center;
+	font-size: 40px;
+	color: #005eb8;
+	margin: 0px 0px 10px 0px;
+	text-align: center;
 }
 
 .signup-subtitle,
 .login-subtitle {
-    margin-bottom: 20px;
-    text-align: center;
-    color: #53585F;
-    font-size: 18px;
+	margin-bottom: 20px;
+	text-align: center;
+	color: #53585f;
+	font-size: 18px;
 }
 
 .form-labels {
-    color: black;
-    text-align: left;
+	color: black;
+	text-align: left;
 }
 
 .authentication-form-input {
-    width: 100%;
-    margin: 10px 0px;
-    padding: 10px;
-    padding: 10px 10px 10px 16px;
-    border-radius: 20px;
-    border: 1px solid #eeeeee;
-    background: #eeeeee;
-    outline: none;
-    transition: border-color 0.5s;
-    height: 45px;
-    font-size: 16px;
+	width: 100%;
+	margin: 10px 0px;
+	padding: 10px;
+	padding: 10px 10px 10px 16px;
+	border-radius: 20px;
+	border: 1px solid #eeeeee;
+	background: #eeeeee;
+	outline: none;
+	transition: border-color 0.5s;
+	height: 45px;
+	font-size: 16px;
 }
 
 .authentication-form-input:focus {
-    border-color: #005eb8;
+	border-color: #005eb8;
 }
 
 .authentication-button {
-    padding: 10px;
-    color: #ffffff;
-    font-weight: bold;
-    background: #005eb8;
-    width: 100%;
-    height: 45px;
-    border: 1px solid #005eb8;
-    border-radius: 40px;
-    cursor: pointer;
-    margin: 30px 0px;
-    font-size: 16px;
+	padding: 10px;
+	color: #ffffff;
+	font-weight: bold;
+	background: #005eb8;
+	width: 100%;
+	height: 45px;
+	border: 1px solid #005eb8;
+	border-radius: 40px;
+	cursor: pointer;
+	margin: 30px 0px;
+	font-size: 16px;
 }
 
 .authentication-button:hover {
-    border: 2px solid #005eb8;
-    background-color: white;
-    color: #005eb8;
-    font-weight: bold;
+	border: 2px solid #005eb8;
+	background-color: white;
+	color: #005eb8;
+	font-weight: bold;
 }
 
 .login-link-container,
 .signup-link-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    /* border:1px solid red; */
+	display: flex;
+	flex-direction: column;
+	justify-content: end;
+	/* border:1px solid red; */
 }
 
 .login-link,
 .sigup-link {
-    font-size: 15px;
-    text-align: center;
-    color: #53585F;
-    margin: 20px 0px 0px 0px;
+	font-size: 15px;
+	text-align: center;
+	color: #53585f;
+	margin: 20px 0px 0px 0px;
 }
 
 .error-message {
-    color: #A40000;
-    font-size: calc(5px + 2vmin);
-    text-align: center;
+	color: #a40000;
+	font-size: calc(5px + 2vmin);
+	text-align: center;
 }
 
 /***********************
@@ -217,211 +214,212 @@ body {
 *************************/
 
 .homepage-title {
-    color: #005eb8;
-    margin: 10px 0px;
+	color: #005eb8;
+	margin: 10px 0px;
 }
 
 .btn-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    /* border: 1px solid blue; */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	/* border: 1px solid blue; */
 }
 
 .btn-row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: 90%;
-    max-width: 390px;
-    flex-wrap: wrap;
-
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 90%;
+	max-width: 390px;
+	flex-wrap: wrap;
 }
 
 .link {
-    display: flex;
-    width: fit-content;
-    margin: 16px 16px;
-    max-width: 150px;
-    /* border: 1px solid red; */
+	display: flex;
+	width: fit-content;
+	margin: 16px 16px;
+	max-width: 150px;
+	/* border: 1px solid red; */
 }
 
 .homepage-button {
-    /* background-position: center; */
-    max-width: 130px;
-    font-size: 16px;
-    transition: 0.3s;
-    cursor: pointer;
-    border-radius: 20px;
-    border: 1px solid rgb(204, 204, 204);
-    /* border: 1px solid red; */
+	/* background-position: center; */
+	max-width: 130px;
+	font-size: 16px;
+	transition: 0.3s;
+	cursor: pointer;
+	border-radius: 20px;
+	border: 1px solid rgb(204, 204, 204);
+	/* border: 1px solid red; */
 }
 
 .logo-image {
-    background-size: cover;
-    height: 100px;
-    width: 100px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+	background-size: cover;
+	height: 100px;
+	width: 100px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
-
-
 
 @media screen and (max-height: 500px) {
-    .btn-row {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        min-width: 100%;
-        min-height: 100%;
-        /* max-width: 100%; */
+	.btn-row {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		min-width: 100%;
+		min-height: 100%;
+		/* max-width: 100%; */
 
-        flex-wrap: wrap;
+		flex-wrap: wrap;
+	}
 
-    }
+	.link {
+		display: flex;
+		width: fit-content;
+		margin: 16px 16px;
+		width: 100px;
+		height: 100px;
+		/* border: 1px solid red; */
+	}
 
+	.logo-image {
+		background-size: cover;
+		height: clamp(60px, 75px, 90px);
+		width: clamp(60px, 75px, 90px);
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
 
-    .link {
-        display: flex;
-        width: fit-content;
-        margin: 16px 16px;
-        width: 100px;
-        height: 100px;
-        /* border: 1px solid red; */
-    }
-
-
-    .logo-image {
-        background-size: cover;
-        height: clamp(60px, 75px, 90px);
-        width: clamp(60px, 75px, 90px);
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .btn-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-
-    }
-
+	.btn-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
 }
-
 
 /***********************
 ** WEBCAM STYLES
 *************************/
 /* Right now webcam is using the whole page size for resizing, not the element that it is within */
 .webcam {
-    width: fit-content;
-    height: fit-content;
-    border-radius: 5px;
+	width: fit-content;
+	height: fit-content;
+	border-radius: 5px;
 }
 
 .webcam-capture-holder {
-    margin: 0 auto;
-    border-radius: 5px;
-    width: 100%;
+	margin: 0 auto;
+	border-radius: 5px;
+	width: 100%;
 }
 
 .flash {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    z-index: 2;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	z-index: 2;
 }
 
 .tons-page-container {
-    max-width: 70%;
-    margin: 0 auto;
-    text-align: left;
-    padding-bottom: 20px;
+	max-width: 70%;
+	margin: 0 auto;
+	text-align: left;
+	padding-bottom: 20px;
 }
 
 .tons-page-camera-container {
-    max-width: 70%;
-    margin: 0 auto;
-    text-align: center;
-    padding-bottom: 20px;
+	max-width: 70%;
+	margin: 0 auto;
+	text-align: center;
+	padding-bottom: 20px;
 }
 
-
 .bullet-point {
-    text-align: left;
-    margin-bottom: 20px;
+	text-align: left;
+	margin-bottom: 20px;
 }
 
 .bullet-point-container {
-    margin-bottom: 30px;
+	margin-bottom: 30px;
 }
 
 .image-container {
-    width: 80%;
-    margin: 0 auto;
-    margin-bottom: 20px;
+	width: 80%;
+	margin: 0 auto;
+	margin-bottom: 20px;
 }
 
 .image-container img {
-    display: block;
-    /* make the image a block element */
-    width: 100%;
-    /* set the width of the image to 100% */
-    height: auto;
-    /* set the height of the image to auto */
-    /* add other styles as needed */
-    border-radius: 5px;
+	display: block;
+	/* make the image a block element */
+	width: 100%;
+	/* set the width of the image to 100% */
+	height: auto;
+	/* set the height of the image to auto */
+	/* add other styles as needed */
+	border-radius: 5px;
 }
 
 .tons-page-button {
-    border: 1px solid #004585;
-    padding: 5px;
-    height: 30px;
-    background-color: #005eb8;
-    border-radius: 30px;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 16px;
+	border: 1px solid #004585;
+	padding: 5px;
+	height: 30px;
+	background-color: #005eb8;
+	border-radius: 30px;
+	color: white;
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 16px;
 }
 
 .tons-page-header {
-    padding-bottom: 20px;
-    padding-top: 20px;
+	padding-bottom: 20px;
+	padding-top: 20px;
 }
 
 .tons-page-subheader {
-    padding-bottom: 10px;
+	padding-bottom: 10px;
 }
 
 .cam-horizontal-container {
-    display: flex;
-    width: 100%;
-    padding-bottom: 20px;
+	display: flex;
+	width: 100%;
+	padding-bottom: 20px;
 }
 
 .cam-button {
-    background-color: #005eb8;
-    color: white;
-    border-radius: 5px;
-    border: none;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    margin: 4px 2px;
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-    font-weight: bold;
-    font-size: 10px;
+	background-color: #005eb8;
+	color: white;
+	border-radius: 5px;
+	border: none;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	margin: 4px 2px;
+	cursor: pointer;
+	width: 100%;
+	height: 100%;
+	font-weight: bold;
+	font-size: 10px;
+}
+
+/***********************
+** PERSONAL APP PAGE STYLES
+*************************/
+.App-body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(6px + 2vmin);
+	color: black;
 }

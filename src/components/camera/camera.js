@@ -29,21 +29,20 @@ const WebcamCapture = (props) => {
 		e.preventDefault();
 		const formData = new FormData();
 		formData.append("image", imageSrc);
-		const response = await axios(BASEURL + props.url, {
-			method: "post",
-			data: formData,
-			headers: {
-				"Access-Control-Allow-Origin": "*",
-				"Content-Type": "multipart/form-data",
-			},
-		})
-			.then((response) => {
-				console.log(response);
-			})
-			.catch((error) => {
-				console.error(error);
+		try {
+			const response = await axios(BASEURL + props.context, {
+				method: "post",
+				data: formData,
+				headers: {
+					"Access-Control-Allow-Origin": "*",
+					"Content-Type": "multipart/form-data",
+				},
 			});
-		console.log(response);
+			console.log(response);
+			props.returnResponse(response);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	//takes pictures without flash
@@ -72,51 +71,6 @@ const WebcamCapture = (props) => {
 			setFrontFacing(true);
 		}
 	}, [frontFacing]);
-
-	// Trying to do the dimensions stuff.
-	// Rounded to floats to ensure dimensions used here make sense, only issue I see right now - the videos will record in different format each time.
-	const size = useWindowSize();
-	var cameraWidth = Math.round(size.width * 0.8);
-	var cameraHeight = Math.round(size.height * 0.5);
-
-	// This code attempts for the dimensions of the camera to be in a 1:1 aspect ratio, by taking the previous measurements of the size of the screen.
-	// Takes the smaller of the two calcs of width and height, to ensure it will fit on the screen.
-	var minValue = cameraWidth;
-
-	if (cameraHeight < minValue) {
-		minValue = cameraHeight;
-		cameraWidth = minValue;
-	} else {
-		cameraHeight = minValue;
-	}
-
-	var cameraConstraints;
-	if (frontFacing) {
-		var x = "user";
-		cameraConstraints = {
-			width: {
-				min: cameraWidth,
-				max: cameraWidth,
-			},
-			height: {
-				min: cameraHeight,
-				max: cameraHeight,
-			},
-			facingMode: { x },
-		};
-	} else {
-		cameraConstraints = {
-			width: {
-				min: cameraWidth,
-				max: cameraWidth,
-			},
-			height: {
-				min: cameraHeight,
-				max: cameraHeight,
-			},
-			facingMode: { exact: "environment" },
-		};
-	}
 
 	// Trying to do the dimensions stuff.
 	// Rounded to floats to ensure dimensions used here make sense, only issue I see right now - the videos will record in different format each time.
