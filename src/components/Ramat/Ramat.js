@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import WebcamCapture from "../camera/camera";
+import AudioRecorder from "../AudioRecorder";
 
 // import WebcamStreamCapture from "../Webcam";
 
@@ -20,16 +21,8 @@ class Ramat extends Component {
 			responseMessage: response.data.msg,
 			responseStatus: response.status,
 		});
-		console.log("Aaggg");
-		console.log(this.state.responseMessage);
-		console.log(this.state.responseStatus);
 	};
 
-	clickButton = () => {
-		console.log("hit me");
-		console.log(this.state.responseMessage);
-		console.log(this.state.responseStatus);
-	};
 	render() {
 		return (
 			<div className="Ramat">
@@ -43,9 +36,9 @@ class Ramat extends Component {
 							</p>
 							<WebcamCapture context="ramat" returnResponse={this.getResponse} />
 						</div>
-						<button onClick={this.clickButton}>Hit me baby one more time</button>
 					</div>
 					<p>response message: {this.state.responseMessage}</p>
+					<AudioRecorder />
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
