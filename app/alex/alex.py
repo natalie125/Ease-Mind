@@ -586,7 +586,7 @@ def get_patient_trees(mode):
             node_of_json = {
                 'ids': [],
                 'names': [],
-                'owners': []
+                'owner': []
             }
             for tree in patient.node_of:
                 node_of_json.get('ids').append(tree.id)
