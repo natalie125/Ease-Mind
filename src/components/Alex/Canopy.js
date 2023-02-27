@@ -30,7 +30,7 @@ class Canopy extends Component {
 				console.log(error);
 			});
 	};
-	
+
 	render() {
 		return (
 			<div className="App">
@@ -70,6 +70,12 @@ class Canopy extends Component {
 
 						<Link to="/canopy/canopy_edit_condition">
 							<button> Go to edit condition </button>
+						</Link>
+					</div>
+
+					<div>
+						<Link to="/canopy/canopy_show_trees">
+							<button> Go to show trees </button>
 						</Link>
 					</div>
 
