@@ -56,27 +56,46 @@ class Canopy_Show_Trees extends Component {
 
 	// function for generating a table from the JSON response
 	generateTable = (response) => {
-
 		let table = []
-
+		let rows = []
+		
 		// Outer loop to create rows (one row for each id + 1 for the headers)
 		for (let i = -1; i < response.ids.length; i++) {
 			let columns = []
 
 			// Inner loop to create columns (one column for each unique key in the table)
-			for (let j = 0; j < Object.keys(response).length; j++) {
+			for (let j = 0; j <= Object.keys(response).length; j++) {
 				// if we're on the first row (headers)
 				if(i == -1) {
-					columns.push(<td>{Object.keys(response)[j]}</td>)
+					// we're not on the last column (button column)
+					if(j < Object.keys(response).length) {
+						columns.push(<td>{Object.keys(response)[j]}</td>)
+					}
+					else {
+						columns.push(<td></td>)
+					}
 				}
 				else {
-					columns.push(<td>{response[Object.keys(response)[j]][i]}</td>)
+					// we're not on the last column (button column)
+					if(j < Object.keys(response).length) {
+						columns.push(<td>{response[Object.keys(response)[j]][i]}</td>)
+					}
+					else {
+						columns.push(<td>
+										<Link to='/canopy/canopy_edit_tree/' 
+										state={{ id: response[Object.keys(response)[0]][i] }}>
+													<button> Edit </button>
+										</Link>
+									</td>)
+					}
 				}
 			}
 
 			// Create the parent and add the children
-			table.push(<tr>{columns}</tr>)
+			rows.push(<tr>{columns}</tr>)
 		}
+
+		table.push(<tbody>{rows}</tbody>)
 
 		return table
 	}

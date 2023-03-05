@@ -15,6 +15,7 @@ import Canopy_Edit_Patient from "./components/Alex/Canopy_Edit_Patient";
 import Canopy_View_Condition from "./components/Alex/Canopy_View_Condition";
 import Canopy_Edit_Condition from "./components/Alex/Canopy_Edit_Condition";
 import Canopy_Show_Trees from "./components/Alex/Canopy_Show_Trees";
+import Canopy_Edit_Node from "./components/Alex/Canopy_Edit_Node";
 import Ramat from "./components/Ramat/Ramat";
 import Kevin from "./components/Kevin/Kevin";
 import Shreyas from "./components/Shreyas/Shreyas";
@@ -44,6 +45,7 @@ const Main = () => {
 			<Route exact path="/canopy/canopy_view_condition" element={<Canopy_View_Condition />}></Route>
 			<Route exact path="/canopy/canopy_edit_condition" element={<Canopy_Edit_Condition />}></Route>
 			<Route exact path="/canopy/canopy_show_trees" element={<Canopy_Show_Trees />}></Route>
+			<Route exact path="/canopy/canopy_edit_node" element={<Canopy_Edit_Node />}></Route>
 			<Route exact path="/ramat" element={<Ramat />}></Route>
 			<Route exact path="/kevin" element={<Kevin />}></Route>
 			<Route exact path="/shreyas" element={<Shreyas />}></Route>
