@@ -247,7 +247,7 @@ def query_patient(mode):
             for query in patient_query:
                 query_parameters.get('ids').append(query.id)
                 query_parameters.get('names').append(query.name)
-                query_parameters.get('dobs').append(query.dob)
+                query_parameters.get('dobs').append(str(query.dob.date()))
                 query_parameters.get('ethnicities').append(query.ethnicity)
             return jsonify(query_parameters)
         if request.method == 'POST':
@@ -327,7 +327,7 @@ def query_patient(mode):
             for query in patient_query:
                 query_parameters.get('ids').append(query.id)
                 query_parameters.get('names').append(query.name)
-                query_parameters.get('dobs').append(query.dob)
+                query_parameters.get('dobs').append(str(query.dob.date()))
                 query_parameters.get('ethnicities').append(query.ethnicity)
             return jsonify(query_parameters)
         if request.method == 'POST':
@@ -534,7 +534,7 @@ def get_tree_nodes(mode):
             for node in tree.nodes:
                 nodes_json.get('ids').append(node.id)
                 nodes_json.get('names').append(node.name)
-                nodes_json.get('dobs').append(node.dob)
+                nodes_json.get('dobs').append(str(node.dob.date()))
                 nodes_json.get('ethnicities').append(node.ethnicity)
             return jsonify(nodes_json)
         else:
@@ -552,7 +552,7 @@ def get_tree_nodes(mode):
             for node in tree.nodes:
                 nodes_json.get('ids').append(node.id)
                 nodes_json.get('names').append(node.name)
-                nodes_json.get('dobs').append(node.dob)
+                nodes_json.get('dobs').append(str(node.dob.date()))
                 nodes_json.get('ethnicities').append(node.ethnicity)
             return jsonify(nodes_json)
         else:
@@ -572,11 +572,14 @@ def get_patient_trees(mode):
                 'names': [],
                 'owners': []
             }
-            for tree in patient.node_of:
-                node_of_json.get('ids').append(tree.id)
-                node_of_json.get('names').append(tree.name)
-                node_of_json.get('owners').append(tree.owner)
-            return jsonify(node_of_json)
+            if patient.node_of != None:
+                for tree in patient.node_of:
+                    node_of_json.get('ids').append(tree.id)
+                    node_of_json.get('names').append(tree.name)
+                    node_of_json.get('owners').append(tree.owner)
+                return jsonify(node_of_json)
+            else:
+                return "error, patient not part of any trees: " + str(patient_id)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
     # we are in production mode
@@ -586,13 +589,16 @@ def get_patient_trees(mode):
             node_of_json = {
                 'ids': [],
                 'names': [],
-                'owner': []
+                'owners': []
             }
-            for tree in patient.node_of:
-                node_of_json.get('ids').append(tree.id)
-                node_of_json.get('names').append(tree.name)
-                node_of_json.get('owners').append(tree.owner)
-            return jsonify(node_of_json)
+            if patient.node_of != None:
+                for tree in patient.node_of:
+                    node_of_json.get('ids').append(tree.id)
+                    node_of_json.get('names').append(tree.name)
+                    node_of_json.get('owners').append(tree.owner)
+                return jsonify(node_of_json)
+            else:
+                return "error, patient not part of any trees: " + str(patient_id)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
 
@@ -614,7 +620,7 @@ def get_parent_children(mode):
             for child in patient.children:
                 children_json.get('ids').append(child.id)
                 children_json.get('names').append(child.name)
-                children_json.get('dobs').append(child.dob)
+                children_json.get('dobs').append(str(child.dob.date()))
                 children_json.get('ethnicities').append(child.ethnicity)
             return jsonify(children_json)
         else:
@@ -632,7 +638,7 @@ def get_parent_children(mode):
             for child in patient.children:
                 children_json.get('ids').append(child.id)
                 children_json.get('names').append(child.name)
-                children_json.get('dobs').append(child.dob)
+                children_json.get('dobs').append(str(child.dob.date()))
                 children_json.get('ethnicities').append(child.ethnicity)
             return jsonify(children_json)
         else:
@@ -656,7 +662,7 @@ def get_child_parents(mode):
             for parent in patient.parents:
                 parents_json.get('ids').append(parent.id)
                 parents_json.get('names').append(parent.name)
-                parents_json.get('dobs').append(parent.dob)
+                parents_json.get('dobs').append(str(parent.dob.date()))
                 parents_json.get('ethnicities').append(parent.ethnicity)
             return jsonify(parents_json)
         else:
@@ -674,7 +680,7 @@ def get_child_parents(mode):
             for parent in patient.parents:
                 parents_json.get('ids').append(parent.id)
                 parents_json.get('names').append(parent.name)
-                parents_json.get('dobs').append(parent.dob)
+                parents_json.get('dobs').append(str(parent.dob.date()))
                 parents_json.get('ethnicities').append(parent.ethnicity)
             return jsonify(parents_json)
         else:
@@ -736,7 +742,7 @@ def get_condition_patients(mode):
             for patient in condition.condition_of:
                 condition_of_json.get('ids').append(patient.id)
                 condition_of_json.get('names').append(patient.name)
-                condition_of_json.get('dobs').append(patient.dob)
+                condition_of_json.get('dobs').append(str(patient.dob.date()))
                 condition_of_json.get('ethnicities').append(patient.ethnicity)
             return jsonify(condition_of_json)
         else:
@@ -754,7 +760,7 @@ def get_condition_patients(mode):
             for patient in condition.condition_of:
                 condition_of_json.get('ids').append(patient.id)
                 condition_of_json.get('names').append(patient.name)
-                condition_of_json.get('dobs').append(patient.dob)
+                condition_of_json.get('dobs').append(str(patient.dob.date()))
                 condition_of_json.get('ethnicities').append(patient.ethnicity)
             return jsonify(condition_of_json)
         else:
