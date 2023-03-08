@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCamera, faArrowsRotate, faPaperPlane, faUpload } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from "react-router-dom";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
@@ -16,7 +18,7 @@ const LanreWebcamCapture = () => {
   const [imageSrc, setImageSrc] = useState(null);
   const [flash, setFlash] = useState(false);
   const [frontFacing, setFrontFacing] = React.useState(true);
-	
+	let navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,6 +34,10 @@ const LanreWebcamCapture = () => {
     })
     .then(response => {
       console.log(response);
+
+      if(response != null) {
+        navigate("/dipstik-home/dipstik-timer/dipstik-camera/dipstik-results")
+      }
     })
     .catch(error=> {
       console.error(error);
@@ -126,6 +132,9 @@ const LanreWebcamCapture = () => {
           // min: cameraWidth,
           // max: cameraWidth
         },
+        height: {
+          // max: 600,
+        },
 
         facingMode: {exact: "environment"}
       };
@@ -144,9 +153,9 @@ const LanreWebcamCapture = () => {
       
       {/* <div style={{width:"100%"}}> */}
       <div className="lanre-camera-buttons-container">
-        <button onClick={handleTakePicture}>Take Picture</button>
-        <button onClick={switchCameraFacing}>Change Camera</button>
-        <button onClick={handleSubmit}>Submit Image</button>
+      <button onClick={switchCameraFacing} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
+        <button onClick={handleTakePicture} className="camera-button"><FontAwesomeIcon icon={faCamera} className="camera-icon"/></button>
+        <button onClick={handleSubmit} className="camera-button"><FontAwesomeIcon icon={faPaperPlane} className="camera-icon"/></button>
       </div>
       <div>
         {/* {flash && <div className="camera-overlay" />} */}
@@ -177,8 +186,6 @@ function useWindowSize() {
 		setWindowSize({
 		  width: window.innerWidth,
 		  height: window.innerHeight,
-
-		  
 		});
 	  }
 	  // Add event listener
