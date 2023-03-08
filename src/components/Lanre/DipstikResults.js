@@ -15,6 +15,47 @@ class DipstikResults extends Component {
 					<div className="webcam-capture-holder">
 						<p>Webcam capture below (to use flash please brighten your screen)</p>
 					</div>
+					<div>
+						<p>Leukocytes</p>
+						<p> RESULT e.g. negative</p>
+					</div>
+					<div>
+						<p>Nitrite</p>
+						<p> RESULT e.g. Trace</p>
+					</div>
+					<div>
+						<p>Urobilinogen</p>
+						<p> RESULT</p>
+					</div>
+					<div>
+						<p>Protein</p>
+						<p>RESULT</p>
+					</div>
+					<div>
+						<p>pH</p>
+						<p> RESULT</p>
+					</div>
+					<div>
+						<p>Blood</p>
+						<p> RESULT</p>
+					</div>
+					<div>
+						<p>Specific Gravity</p>
+						<p> RESULT</p>
+					</div>
+					<div>
+						<p>Ketones</p>
+						<p> RESULT</p>
+					</div>
+					<div>
+						<p>Bilirubin</p>
+						<p> RESULT</p>
+					</div>
+					<div>
+						<p>Glucose</p>
+						<p> RESULT</p>
+					</div>
+					
 
 					<Link to="/dipstik-home/dipstik-timer/dipstik-camera">
 						<button> Back </button>
