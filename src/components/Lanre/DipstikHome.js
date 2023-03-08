@@ -19,6 +19,11 @@ class DipstikInstructions extends Component {
                                 All advice or diagnosis given in this app should not be taken as medical advice. <br />
                                 If you are concerned about any part of your health, please get in contact with
                                 your GP or a qualified medical professional for further advice.
+                                This app is not intended to treat, diagnose, or cur any conditions. 
+                                {/* From Urinox app */}
+                                The app material is provided for informational and educational purposes alone. Please 
+                                seek your doctor's advice before making any clinical inference or decision. 
+                                Use this app as a reference to record your activity.
                             </p>
                         </div>
 

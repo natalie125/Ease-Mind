@@ -10,13 +10,9 @@ class DipstikCamera extends Component {
 	render() {
 		return (
 			<div className="Lanre">
-				<Header />
-				<h1>Lanre's app</h1>
 				<div>
 					<div className="webcam-capture-holder">
-						<p>Webcam capture below (to use flash please brighten your screen)</p>
 						<LanreWebcamCapture />
-						
 					</div>
 					<Link to="/dipstik-home/dipstik-timer">
 						<button> Back </button>
