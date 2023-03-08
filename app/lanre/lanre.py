@@ -14,9 +14,6 @@ from rembg import remove
 from matplotlib.figure import Figure
 
 from io import BytesIO
-import scipy.misc
-import matplotlib
-matplotlib.use('Agg')
 # instructions
 # add opencv to flask - pip install opencv-python 
 # add rembg to flask - pip install rembg
@@ -84,37 +81,11 @@ def dipstick_image_upload():
     save_image_to_file(resized_image)
     print("Rectangles drawn and colors extracted!")
 
+    # check diagnoses
+    diagnoses = check_dipstick(extracted_colours, reference_chart)
+    print(diagnoses)
 
-
-    return {"msg": "image successfully saved in server!"}, 200
-
-
-@app.route('/dipstik/model', methods=['POST'])
-def dipstick_model():
-    image = request.form['image']
-    # if frontend sends no image return error
-    if image == "null":
-        return {"msg": "No image sent!"}, 415
-
-    # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
-    image = image[22:]
-    image_decoded = base64.b64decode(image)
-
-    # gets string of curr time and names file that
-    timestamp = str(int(time.time()))
-    filename = timestamp+".png"
-
-    # saves decoded base 64 string to that image
-    with open(os.path.join("shots", filename), "wb") as f:
-        f.write(image_decoded)
-    return {"msg": "image successfully saved in server!"}, 200
-
-# variables
-shots = '/Users/lanresodeinde/Desktop/final_year_app/backend/app/lanre/shots/'
-
-# read in image
-# image_path = shots + '1677405924' + '.png'
-# img = cv2.imread(image_path)
+    return jsonify(diagnoses), 200
 
 # TODO: For debugging purposed - Remove later
 def save_image_to_file(image):
@@ -366,48 +337,48 @@ def eucledian_distance(extracted, reference):
     ed = (extracted[0] - reference[0])**2  + (extracted[1] - reference[1])**2 + (extracted[2] - reference[2])**2
     return ed 
 
-# # this function takes the colour on one pad and the dictionary containing the reference colour for that pad and returns closest match
-# def check_parameter(colour_on_pad, reference_colours_for_pad):
-#     # define the variables
-#     ed = 0 # keep tract of eucledian disances
-#     lowest = '' # keeps track of lowest eucledian distance
-#     closest_match = '' # used to return the closest match
+# this function takes the colour on one pad and the dictionary containing the reference colour for that pad and returns closest match
+def check_parameter(colour_on_pad, reference_colours_for_pad):
+    # define the variables
+    ed = 0 # keep tract of eucledian disances
+    lowest = '' # keeps track of lowest eucledian distance
+    closest_match = '' # used to return the closest match
 
-#     # loop through the colours in the reference pads
-#     for parameter_name in reference_colours_for_pad:
-#         # get the reference colour for a particular pad
-#         colour = reference_colours_for_pad.get(parameter_name)
+    # loop through the colours in the reference pads
+    for parameter_name in reference_colours_for_pad:
+        # get the reference colour for a particular pad
+        colour = reference_colours_for_pad.get(parameter_name)
 
-#         # calculate eucledian distance between colour on pad and reference colour
-#         ed = eucledian_distance(colour_on_pad, colour)
+        # calculate eucledian distance between colour on pad and reference colour
+        ed = eucledian_distance(colour_on_pad, colour)
 
-#         # find out which colour is the closest match
-#         # set lowest to the first comparison
-#         if lowest == '':
-#             lowest = ed
-#             closest_match = parameter_name
+        # find out which colour is the closest match
+        # set lowest to the first comparison
+        if lowest == '':
+            lowest = ed
+            closest_match = parameter_name
 
-#         # if a smaller value is found, update values
-#         if ed < lowest:
-#             lowest = ed
-#             closest_match = parameter_name
+        # if a smaller value is found, update values
+        if ed < lowest:
+            lowest = ed
+            closest_match = parameter_name
 
-#     # print(f'    Match: {closest_match}')
-#     return closest_match
+    # print(f'    Match: {closest_match}')
+    return closest_match
 
 
-# # check the whole dipstick
-# def check_dipstick(extracted_colours,reference_chart):
-#     diagnoses = {}
-#     # check each value in the dipstick
-#     for parameter_name in extracted_colours:
-#         # print(parameter_name)
-#         result = check_parameter(extracted_colours.get(parameter_name), reference_chart.get(parameter_name))
-#         diagnoses[parameter_name] = result
-#     # 
-#     return diagnoses
+# check the whole dipstick
+def check_dipstick(extracted_colours,reference_chart):
+    diagnoses = {}
+    # check each value in the dipstick
+    for parameter_name in extracted_colours:
+        # print(parameter_name)
+        result = check_parameter(extracted_colours.get(parameter_name), reference_chart.get(parameter_name))
+        diagnoses[parameter_name] = result
+    # 
+    return diagnoses
 
-# diagnoses = check_dipstick(extracted_colours, reference_chart)
+diagnoses = check_dipstick(extracted_colours, reference_chart)
 
 # # get diagnoses
 # print(diagnoses)
