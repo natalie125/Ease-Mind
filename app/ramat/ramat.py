@@ -10,6 +10,14 @@ import cv2
 import numpy as np
 import dlib
 import os
+import librosa
+import pandas as pd
+import tensorflow as tf
+from tensorflow.keras.models import load_model
+import base64
+from urllib.parse import urljoin
+import soundfile as sf
+
 
 
 def featureExtraction (raw_image):
@@ -79,18 +87,42 @@ def getCalculations(raw_image):
         eyeRatio = abs(leftEyeArea/rightEyeArea)
 
         return ["SUCCESS", eyeRatio, mouthSlope]
+    
+
+def voiceFeatureExtraction(raw_voice):
+    directory = os.getcwd()
+    voice_path =  os.path.join(directory,"app/ramat/temp.wav")
+
+    print("-------------------------------------")
+    print(type(directory))
+    print(directory)
+    print(voice_path)
+    print("=====================================s")
+
+    f = open(voice_path, "r")
+
+
+    data, samplerate = sf.read(voice_path)
+
+
+    x , sr = librosa.load(voice_path)
+    mean_mfcc = np.mean(librosa.feature.mfcc(y=x, sr=sr, n_mfcc=128),axis=1)
+
+    mfcc_coeffs = pd.DataFrame(mean_mfcc)
+    print(data)
+
 
 
 #############################################################
 # ROUTE FOR RAMAT'S APP
 # ^^^^^^^^^^^^^^^^^^^^^^^
-@app.route('/ramat', methods=['GET', 'POST'])
-def ramat():
+@app.route('/ramat/image', methods=['GET', 'POST'])
+def image():
     if request.method == 'GET':
         return "Ramat's App has been Requested"
     elif request.method == 'POST':
 
-        model = pickle.load(open("app/ramat/droop_model.sav", 'rb'))
+        face_model = pickle.load(open("app/ramat/droop_model.sav", 'rb'))
 
         image = request.form['image']
 
@@ -105,14 +137,37 @@ def ramat():
         #convert image string to array of bytes
         imageBytes = np.fromstring(imageStr, np.uint8)
         
-        # get the calculations for the inputted image
+        # get the calculations fo-r the inputted image
         image_calcs = getCalculations(imageBytes)
 
         # check the status of the calculations before generating a prediction
         if (image_calcs[0] == "ERROR"):
             return {"msg": image_calcs[1]}, image_calcs[2]
         elif (image_calcs[0] == "SUCCESS"):
-            prediction = model.predict([[image_calcs[1], image_calcs[2]]])
+            prediction = face_model.predict([[image_calcs[1], image_calcs[2]]])
             return {"msg": prediction[0]}, 200
+
+@app.route('/ramat/audio', methods=['GET', 'POST'])
+def audio():
+    if request.method == 'GET':
+        return "Ramat's App has been Requested"
+    elif request.method == 'POST':
+
+        voice_model = load_model('app/ramat/model.h5')
+
+        voice = request.form['audio']
+        voice = voice[22:]
+
+        wav_file = open("app/ramat/temp.wav", "wb")
+        decode_string = base64.b64decode(voice)
+        wav_file.write(decode_string)
+
+        # if frontend sends no audio return error
+        if voice == "null":
+            return {"msg": "No audio sent!"}, 415
+
+        voiceFeatureExtraction(voice)
+        return {"msg": "hello"}, 200
+
 
 
