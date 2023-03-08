@@ -200,6 +200,9 @@ def query_patient(mode):
     new_ethnicity = request.args.get('new_ethnicity')
     if new_ethnicity == "":
         new_ethnicity = None
+    tree_id = request.args.get('tree_id')
+    if tree_id == "":
+        tree_id = None
 
     # testing mode, bind to canopy test databases
     if mode == "test":
@@ -255,8 +258,11 @@ def query_patient(mode):
             if name != None and ethnicity != None:
                 new_patient = models.Pedigree_Patient_Test(name=name, dob=dob, ethnicity=ethnicity)
                 db.session.add(new_patient)
+                if tree_id != None:
+                    tree = models.Pedigree_Tree_Test.query.filter_by(id=tree_id).first()
+                    tree.nodes.append(new_patient)
                 db.session.commit()
-                return str(new_patient) + "\nid= " + str(new_patient.id) + "\nname= " + str(new_patient.name) + "\ndob= " + str(new_patient.dob) + "\nethnicity= " + str(ethnicity)
+                return str(new_patient.id)
             else:
                 return "Not enough information provided to create a new patient" + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
         if request.method == 'PUT':
@@ -335,8 +341,11 @@ def query_patient(mode):
             if name != None and ethnicity != None:
                 new_patient = models.Pedigree_Patient(name=name, dob=dob, ethnicity=ethnicity)
                 db.session.add(new_patient)
+                if tree_id != None:
+                    tree = models.Pedigree_Tree.query.filter_by(id=tree_id).first()
+                    tree.nodes.append(new_patient)
                 db.session.commit()
-                return str(new_patient) + "\nid= " + str(new_patient.id) + "\nname= " + str(new_patient.name) + "\ndob= " + str(new_patient.dob) + "\nethnicity= " + str(ethnicity)
+                return str(new_patient.id)
             else:
                 return "Not enough information provided to create a new patient" + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
         if request.method == 'PUT':
@@ -690,6 +699,8 @@ def get_child_parents(mode):
 @app.route('/canopy/patient_conditions/<string:mode>', methods=['GET'])
 def get_patient_conditions(mode):
     patient_id = request.args.get('id')
+    if patient_id == "":
+        patient_id = None
 
     # check for testing mode
     if mode == "test":
@@ -790,41 +801,126 @@ def link_tree_patient(mode):
 # function for linking a parent and child
 @app.route('/canopy/parent_child/<string:mode>', methods=['PUT'])
 def link_parent_child(mode):
-    parent_id = request.args.get('parent_id')
-    child_id = request.args.get('child_id')
-
-    # check for testing mode
-    if mode == "test":
-        parent = models.Pedigree_Patient_Test.query.filter_by(id=parent_id).first()
-        child = models.Pedigree_Patient_Test.query.filter_by(id=child_id).first()
-        parent.children.append(child)
-        db.session.commit()
-        return "parent.children: " + str(parent.children) + "\nparent_id: " + parent_id + "\nchild_id: " + child_id
-    # we are in production mode
-    else:
-        parent = models.Pedigree_Patient.query.filter_by(id=parent_id).first()
-        child = models.Pedigree_Patient.query.filter_by(id=child_id).first()
-        parent.children.append(child)
-        db.session.commit()
-        return "parent.children: " + str(parent.children) + "\nparent_id: " + parent_id + "\nchild_id: " + child_id
-
-# function for linking a patient and a health condition
-@app.route('/canopy/patient_condition/<string:mode>', methods=['PUT'])
-def link_patient_condition(mode):
-    patient_id = request.args.get('patient_id')
-    condition_id = request.args.get('condition_id')
+    request_data = request.get_json()
+    patient_id = request_data['patient_id']
+    if patient_id == "":
+        patient_id = None
+    parents = request_data['parents']  # in the form of an array of dictionaries like { id: 2, label: "patient 2" }
+    if parents == "" or parents == []:
+        parents = None
+    children = request_data['children']  # in the form of an array of dictionaries like { id: 2, label: "patient 2" }
+    if children == "" or children == []:
+        children = None
+    clear_parents = request_data['clear_parents']
+    if clear_parents == "":
+        clear_parents = None
+    clear_children = request_data['clear_children']
+    if clear_children == "":
+        clear_children = None
+    parent_id = request_data['parent_id']
+    if parent_id == "":
+        parent_id = None
+    child_id = request_data['child_id']
+    if child_id == "":
+        child_id = None
 
     # check for testing mode
     if mode == "test":
         patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
-        condition = models.Pedigree_Health_Condition_Test.query.filter_by(id=condition_id).first()
-        patient.conditions.append(condition)
+        # clear arrays
+        if clear_parents:
+            patient.parents = []
+        if clear_children:
+            patient.children = []
+        # if singleton IDs were provided
+        if parent_id != None and child_id != None:
+            parent = models.Pedigree_Patient_Test.query.filter_by(id=parent_id).first()
+            child = models.Pedigree_Patient_Test.query.filter_by(id=child_id).first()
+            parent.children.append(child)
+        # if array of parents and children are to be used
+        if parents != None:
+            for parent_entry in parents:
+                parent_query = models.Pedigree_Patient_Test.query.filter_by(id=parent_entry.get("id")).first()
+                patient.parents.append(parent_query)
+        if children != None:
+            for child_entry in children:
+                child_query = models.Pedigree_Patient_Test.query.filter_by(id=child_entry.get("id")).first()
+                patient.children.append(child_query)
         db.session.commit()
-        return "patient.conditions: " + str(patient.conditions) + "\npatient_id: " + patient_id + "\ncondition_id: " + condition_id
+
+        return "patient.children: " + str(patient.children) + "\nparent_id: " + str(parent_id) + "\nchild_id: " + str(
+            child_id) + "\nparents: " + str(parents) + "\nchildren: " + str(children) + "\nclear_parents: " + str(
+            clear_parents) + "\nclear_children: " + str(clear_children)
     # we are in production mode
     else:
         patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
-        condition = models.Pedigree_Health_Condition.query.filter_by(id=condition_id).first()
-        patient.conditions.append(condition)
+        # clear arrays
+        if clear_parents:
+            patient.parents = []
+        if clear_children:
+            patient.children = []
+        # if singleton IDs were provided
+        if parent_id != None and child_id != None:
+            parent = models.Pedigree_Patient.query.filter_by(id=parent_id).first()
+            child = models.Pedigree_Patient.query.filter_by(id=child_id).first()
+            parent.children.append(child)
+        # if array of parents and children are to be used
+        if parents != None:
+            for parent_entry in parents:
+                parent_query = models.Pedigree_Patient.query.filter_by(id=parent_entry.get("id")).first()
+                patient.parents.append(parent_query)
+        if children != None:
+            for child_entry in children:
+                child_query = models.Pedigree_Patient.query.filter_by(id=child_entry.get("id")).first()
+                patient.children.append(child_query)
         db.session.commit()
-        return "patient.conditions: " + str(patient.conditions) + "\npatient_id: " + patient_id + "\ncondition_id: " + condition_id
+
+        return "patient.children: " + str(patient.children) + "\nparent_id: " + str(parent_id) + "\nchild_id: " + str(
+            child_id) + "\nparents: " + str(parents) + "\nchildren: " + str(children) + "\nclear_parents: " + str(
+            clear_parents) + "\nclear_children: " + str(clear_children)
+
+# function for linking a patient and a health condition
+@app.route('/canopy/patient_condition/<string:mode>', methods=['PUT'])
+def link_patient_condition(mode):
+    request_data = request.get_json()
+    patient_id = request_data['patient_id']
+    if patient_id == "":
+        patient_id = None
+    condition_id = request_data['condition_id']
+    if condition_id == "":
+        condition_id = None
+    conditions = request_data['conditions'] # in the form of an array of dictionaries like { id: 2, label: "condition 2" }
+    if conditions == "" or conditions == []:
+        conditions = None
+    clear_conditions = request_data['clear_conditions']
+    if clear_conditions == "":
+        clear_conditions = None
+
+    # check for testing mode
+    if mode == "test":
+        patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
+        if clear_conditions:
+            patient.conditions = []
+        if condition_id != None:
+            condition = models.Pedigree_Health_Condition_Test.query.filter_by(id=condition_id).first()
+            patient.conditions.append(condition)
+        if conditions != None:
+            for condition in conditions:
+                condition_query = models.Pedigree_Health_Condition_Test.query.filter_by(id=condition.get("id")).first()
+                patient.conditions.append(condition_query)
+        db.session.commit()
+        return "patient.conditions: " + str(patient.conditions) + "\npatient_id: " + str(patient_id) + "\ncondition_id: " + str(condition_id) + "\nconditions: " + str(conditions) + "\nclear_conditions: " + str(clear_conditions)
+    # we are in production mode
+    else:
+        patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
+        if clear_conditions:
+            patient.conditions = []
+        if condition_id != None:
+            condition = models.Pedigree_Health_Condition.query.filter_by(id=condition_id).first()
+            patient.conditions.append(condition)
+        if conditions != None:
+            for condition in conditions:
+                condition_query = models.Pedigree_Health_Condition.query.filter_by(id=condition.get("id")).first()
+                patient.conditions.append(condition_query)
+        db.session.commit()
+        return "patient.conditions: " + str(patient.conditions) + "\npatient_id: " + str(patient_id) + "\ncondition_id: " + str(condition_id) + "\nconditions: " + str(conditions) + "\nclear_conditions: " + str(clear_conditions)

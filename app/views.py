@@ -104,7 +104,8 @@ def login():
                 access_token = create_access_token(
                     identity=data['credentials']['email'])
                 print(access_token)
-                response = {"token": access_token}
+                response = {"token": access_token,
+                            "email": u.email}   # added by Alex in order to track the email of the logged in user
                 return jsonify(response), 200
             else:
                 print("Wrong Password")
