@@ -137,7 +137,7 @@ def image():
         #convert image string to array of bytes
         imageBytes = np.fromstring(imageStr, np.uint8)
         
-        # get the calculations fo-r the inputted image
+        # get the calculations for the inputted image
         image_calcs = getCalculations(imageBytes)
 
         # check the status of the calculations before generating a prediction
@@ -156,15 +156,18 @@ def audio():
         voice_model = load_model('app/ramat/model.h5')
 
         voice = request.form['audio']
-        voice = voice[22:]
-
-        wav_file = open("app/ramat/temp.wav", "wb")
-        decode_string = base64.b64decode(voice)
-        wav_file.write(decode_string)
-
+        
         # if frontend sends no audio return error
         if voice == "null":
             return {"msg": "No audio sent!"}, 415
+
+         # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
+        voice = voice[22:]
+        voice_str = base64.b64encode(base64.b64decode(voice))
+
+        voice_arr =  np.frombuffer(voice, dtype=np.int16)
+
+        sf.write("app/ramat/temp.wav", voice_arr, 22050)
 
         voiceFeatureExtraction(voice)
         return {"msg": "hello"}, 200
