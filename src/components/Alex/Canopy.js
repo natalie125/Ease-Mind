@@ -35,44 +35,8 @@ class Canopy extends Component {
 		return (
 			<div className="App">
 				<Header />
-				<h1>Canopy</h1>
+				<h1>Welcome To Canopy!</h1>
 				<div>
-					<div>
-						<Link to="/canopy/canopy2">
-							<button> Go to second page </button>
-						</Link>
-					</div>
-
-					<div>
-						<Link to="/canopy/canopy_view_tree">
-							<button> Go to view tree </button>
-						</Link>
-
-						<Link to="/canopy/canopy_edit_tree">
-							<button> Go to edit tree </button>
-						</Link>
-					</div>
-
-					<div>
-						<Link to="/canopy/canopy_view_patient">
-							<button> Go to view patient </button>
-						</Link>
-
-						<Link to="/canopy/canopy_edit_patient">
-							<button> Go to edit patient </button>
-						</Link>
-					</div>
-
-					<div>
-						<Link to="/canopy/canopy_view_condition">
-							<button> Go to view condition </button>
-						</Link>
-
-						<Link to="/canopy/canopy_edit_condition">
-							<button> Go to edit condition </button>
-						</Link>
-					</div>
-
 					<div>
 						<Link to="/canopy/canopy_show_trees">
 							<button> Go to show trees </button>

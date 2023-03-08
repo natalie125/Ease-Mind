@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import "../App/App.css";
@@ -12,78 +12,81 @@ var baseurl = "http://localhost:5000/canopy/";
 		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
 	}
 
-class Canopy_Show_Trees extends Component {
-	// form methods
-	constructor(props) {
-		super(props);
-		this.state = {
-		  owner: "new@gmail.com",
-		  owned_trees: {
-				ids: [],
-				names: [],
-				owners: []
-			}
-		};
-		
-		this.getTree(baseurl + "tree/prod", {owner: this.state.owner})
-		this.handleInputChange = this.handleInputChange.bind(this);
-	}
-	
-	handleInputChange(event) {
-		const target = event.target;	
-		const value = target.value;
-		const name = target.name;
+function Canopy_Show_Trees(props) {
+	const navigate = useNavigate();
+	const location = useLocation();
+	const user_email = sessionStorage.getItem("email").substring(1, sessionStorage.getItem("email").length - 1);
 
-		this.setState({
-			[name]: value
-		});
-	}
+	const [owner, setOwner] = useState(user_email);
+	const [owned_trees, setOwnedTrees] = useState({
+													ids: [],
+													names: [],
+													owners:[]
+												});
 
 	// methods for receiving data from the Flask app
 	// get data from the tree table
-	getTree = (url_input, tree_data) => {
-		axios.get(url_input, {params: tree_data})
-		.then(response => {
-			// alert(JSON.stringify(response.data));
-			this.setState({
-				owned_trees: response.data
-			});
-		})
-		.catch(function (error) {
-			alert(error);
-		}) 
+	const getTree = async (url_input, tree_data) => {
+		// check if email is admin@gmail.com, if so pull ALL TREES
+		let data = {
+			ids: [],
+			names: [],
+			owners:[]
+		};
+		if (user_email == "admin@gmail.com") {
+			data = await axios.get(url_input, {params: {}});
+		}
+		else {
+			data = await axios.get(url_input, {params: tree_data});
+		}
+		setOwnedTrees(data.data);
 	}
 
 	// function for generating a table from the JSON response
-	generateTable = (response) => {
+	const generateTable = (response) => {
 		let table = []
 		let rows = []
 		
+		if(response.ids == undefined) {
+			return;
+		}
 		// Outer loop to create rows (one row for each id + 1 for the headers)
 		for (let i = -1; i < response.ids.length; i++) {
 			let columns = []
 
 			// Inner loop to create columns (one column for each unique key in the table)
-			for (let j = 0; j <= Object.keys(response).length; j++) {
+			for (let j = -1; j <= Object.keys(response).length; j++) {
 				// if we're on the first row (headers)
 				if(i == -1) {
-					// we're not on the last column (button column)
-					if(j < Object.keys(response).length) {
-						columns.push(<td>{Object.keys(response)[j]}</td>)
+					if(j == -1) {
+						// we're on the first column
+						columns.push(<td>{"IDs"}</td>)
+					}
+					else if(j < Object.keys(response).length) {
+						if(Object.keys(response)[j] != "ids") {
+							columns.push(<td>{Object.keys(response)[j]}</td>)
+						}
 					}
 					else {
+						// on the last column, empty cell
 						columns.push(<td></td>)
 					}
 				}
 				else {
-					// we're not on the last column (button column)
-					if(j < Object.keys(response).length) {
-						columns.push(<td>{response[Object.keys(response)[j]][i]}</td>)
+					if(j == -1) {
+						// we're on the first column
+						columns.push(<td>{response.ids[i]}</td>)
+					}
+					else if(j < Object.keys(response).length) {
+						// we're not on the first or last column
+						if(Object.keys(response)[j] != "ids") {
+							columns.push(<td>{response[Object.keys(response)[j]][i]}</td>)
+						}
 					}
 					else {
 						columns.push(<td>
 										<Link to='/canopy/canopy_edit_tree/' 
-										state={{ id: response[Object.keys(response)[0]][i] }}>
+										state={{ id: response.ids[i] }}>
 													<button> Edit </button>
 										</Link>
 									</td>)
@@ -100,29 +103,39 @@ class Canopy_Show_Trees extends Component {
 		return table
 	}
 
-	render() {
-		console.log(this.state)
-		
-		return (
-			<div className="App">
-				<header className="App-header-primary">
-					<h1>Trees Owned by: {this.state.owner}</h1>
-				</header>
+	useEffect(() => {
+		getTree(baseurl + "tree/prod", {owner: owner})
+	}, []);
 
-				<p>Owned Trees:</p>
+	return (
+		<div className="App">
+			<header className="App-header-primary">
+				<h1>Trees Owned by: {owner}</h1>
+			</header>
 
-				<table border="1">
-					{this.generateTable(this.state.owned_trees)}
-				</table>
+			<p>Owned Trees:</p>
 
-				<div>
-					<Link to="/canopy">
-						<button> Back </button>
-					</Link>
-				</div>
-			</div>
-		);
-	}
+			<table border="1">
+				{generateTable(owned_trees)}
+			</table>
+
+			<br/>
+
+			<Link to="/canopy/canopy_new_tree/">
+				<button>
+					Add New Tree
+				</button>
+			</Link>
+
+			<br/><br/>
+
+			<button onClick={() => {
+				navigate(-1);
+			}}> 
+				Back 
+			</button>
+		</div>
+	);
 }
 
 export default Canopy_Show_Trees;
