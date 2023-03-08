@@ -76,8 +76,13 @@ def dipstick_image_upload():
 
     # resize image
     resized_image = resize_image_dimensions(sliced_image)
-    resized_image = resize_image_dimensions(sliced_image)
+    save_image_to_file(resized_image)
+    print("Resized Image saved!")
 
+    # draw rectangles and extract colour
+    draw_rectangles_and_extract_colours(resized_image)
+    save_image_to_file(resized_image)
+    print("Rectangles drawn and colors extracted!")
 
 
 
@@ -171,195 +176,195 @@ def resize_image_dimensions(image):
 # resized_image = resize_image_dimensions(sliced_image)
 
 
-# # extract colours from pad
-# parameter_names = ['leukocytes', 'nitrite', 'urobilinogen', 'protein', 'ph', 'blood', 'specific_gravity', 'ketones', 'bilirubin', 'glucose']
+# extract colours from pad
+parameter_names = ['leukocytes', 'nitrite', 'urobilinogen', 'protein', 'ph', 'blood', 'specific_gravity', 'ketones', 'bilirubin', 'glucose']
 
-# # variable to save the colours extracted on the pad
-# extracted_colours = {}
+# variable to save the colours extracted on the pad
+extracted_colours = {}
 
-# # fucntion for extracting colour from a specific point on the pad
-# def extract_colour(image, x1, y1, x2, y2):
-#     # extract colour from the middle of the square that is drawn on the pad
-#     midpoint_x = round((x1+x2)/ 2)
-#     midpoint_y = round((y1+y2) / 2)
-#     colour_on_pad = image[midpoint_y,midpoint_x]
-#     print(colour_on_pad)
-#     return colour_on_pad
+# fucntion for extracting colour from a specific point on the pad
+def extract_colour(image, x1, y1, x2, y2):
+    # extract colour from the middle of the square that is drawn on the pad
+    midpoint_x = round((x1+x2)/ 2)
+    midpoint_y = round((y1+y2) / 2)
+    colour_on_pad = image[midpoint_y,midpoint_x]
+    print(colour_on_pad)
+    return colour_on_pad
 
 
-# # function for drawing the rectangles and extracting colours
-# def draw_rectangles_and_extract_colours(image):
-#     # variable of keeping track of the values we have added to the dictionary
-#     # increment after drawing on each pad
-#     index = 0
+# function for drawing the rectangles and extracting colours
+def draw_rectangles_and_extract_colours(image):
+    # variable of keeping track of the values we have added to the dictionary
+    # increment after drawing on each pad
+    index = 0
 
-#     # draw_rectangle on the first pad
-#     x1,y1 = 10,10
-#     x2,y2 = x1+10, y1+10
-#     rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
-#     colour = extract_colour(image, x1, y1, x2, y2)
-#     extracted_colours[parameter_names[index]] = colour
-#     index+=1
+    # draw_rectangle on the first pad
+    x1,y1 = 10,10
+    x2,y2 = x1+10, y1+10
+    rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    colour = extract_colour(image, x1, y1, x2, y2)
+    extracted_colours[parameter_names[index]] = colour
+    index+=1
 
-#     # draw_rectangle on the second pad
-#     x1,y1 = 10,40
-#     x2,y2 = x1+10, y1+10
-#     rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
-#     colour = extract_colour(image, x1, y1, x2, y2)
-#     extracted_colours[parameter_names[index]] = colour
-#     index+=1
+    # draw_rectangle on the second pad
+    x1,y1 = 10,40
+    x2,y2 = x1+10, y1+10
+    rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    colour = extract_colour(image, x1, y1, x2, y2)
+    extracted_colours[parameter_names[index]] = colour
+    index+=1
 
-#     # draw_rectangle on the third pad
-#     x1,y1 = 10,75
-#     x2,y2 = x1+10, y1+10
-#     rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
-#     colour = extract_colour(image, x1, y1, x2, y2)
-#     extracted_colours[parameter_names[index]] = colour
-#     index+=1
+    # draw_rectangle on the third pad
+    x1,y1 = 10,75
+    x2,y2 = x1+10, y1+10
+    rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    colour = extract_colour(image, x1, y1, x2, y2)
+    extracted_colours[parameter_names[index]] = colour
+    index+=1
 
-#     # draw_rectangle on the fourth pad
-#     x1,y1 = 10,105
-#     x2,y2 = x1+10, y1+10
-#     rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
-#     colour = extract_colour(image, x1, y1, x2, y2)
-#     extracted_colours[parameter_names[index]] = colour
-#     index+=1
+    # draw_rectangle on the fourth pad
+    x1,y1 = 10,105
+    x2,y2 = x1+10, y1+10
+    rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    colour = extract_colour(image, x1, y1, x2, y2)
+    extracted_colours[parameter_names[index]] = colour
+    index+=1
 
-#     # draw_rectangle on the fifth pad
-#     x1,y1 = 10,140
-#     x2,y2 = x1+10, y1+10
-#     rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
-#     colour = extract_colour(image, x1, y1, x2, y2)
-#     extracted_colours[parameter_names[index]] = colour
-#     index+=1
+    # draw_rectangle on the fifth pad
+    x1,y1 = 10,140
+    x2,y2 = x1+10, y1+10
+    rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    colour = extract_colour(image, x1, y1, x2, y2)
+    extracted_colours[parameter_names[index]] = colour
+    index+=1
     
-#     # draw_rectangle on the sixth pad
-#     x1,y1 = 10,170
-#     x2,y2 = x1+10, y1+10
-#     rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
-#     colour = extract_colour(image, x1, y1, x2, y2)
-#     extracted_colours[parameter_names[index]] = colour
-#     index+=1
+    # draw_rectangle on the sixth pad
+    x1,y1 = 10,170
+    x2,y2 = x1+10, y1+10
+    rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    colour = extract_colour(image, x1, y1, x2, y2)
+    extracted_colours[parameter_names[index]] = colour
+    index+=1
 
-#     # draw_rectangle on the seventh pad
-#     x1,y1 = 10,205
-#     x2,y2 = x1+10, y1+10
-#     rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
-#     colour = extract_colour(image, x1, y1, x2, y2)
-#     extracted_colours[parameter_names[index]] = colour
-#     index+=1
+    # draw_rectangle on the seventh pad
+    x1,y1 = 10,205
+    x2,y2 = x1+10, y1+10
+    rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    colour = extract_colour(image, x1, y1, x2, y2)
+    extracted_colours[parameter_names[index]] = colour
+    index+=1
 
-#     # draw_rectangle on the eighth pad
-#     x1,y1 = 10,235
-#     x2,y2 = x1+10, y1+10
-#     rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
-#     colour = extract_colour(image, x1, y1, x2, y2)
-#     extracted_colours[parameter_names[index]] = colour
-#     index+=1
+    # draw_rectangle on the eighth pad
+    x1,y1 = 10,235
+    x2,y2 = x1+10, y1+10
+    rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    colour = extract_colour(image, x1, y1, x2, y2)
+    extracted_colours[parameter_names[index]] = colour
+    index+=1
 
-#     # draw_rectangle on the ninth pad
-#     x1,y1 = 10,270
-#     x2,y2 = x1+10, y1+10
-#     rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
-#     colour = extract_colour(image, x1, y1, x2, y2)
-#     extracted_colours[parameter_names[index]] = colour
-#     index+=1
+    # draw_rectangle on the ninth pad
+    x1,y1 = 10,270
+    x2,y2 = x1+10, y1+10
+    rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    colour = extract_colour(image, x1, y1, x2, y2)
+    extracted_colours[parameter_names[index]] = colour
+    index+=1
 
-#     # draw_rectangle on the tenth pad
-#     x1,y1 = 10,300
-#     x2,y2 = x1+10, y1+10
-#     rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
-#     colour = extract_colour(image, x1, y1, x2, y2)
-#     extracted_colours[parameter_names[index]] = colour
-#     index+=1
+    # draw_rectangle on the tenth pad
+    x1,y1 = 10,300
+    x2,y2 = x1+10, y1+10
+    rectangle = cv2.rectangle(image, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    colour = extract_colour(image, x1, y1, x2, y2)
+    extracted_colours[parameter_names[index]] = colour
+    index+=1
 
-#     fig = plt.figure()
-#     fig.add_subplot(1,1,1)
-#     plt.imshow(rectangle)
+    fig = plt.figure()
+    fig.add_subplot(1,1,1)
+    plt.imshow(rectangle)
 
 # draw_rectangles_and_extract_colours(resized_image)
 
 
-# # compare colours to reference chart
-# reference_chart = {
-#     'nitrite' : {
-#     'neg': [254, 246, 219],
-#     'trace': [252, 237, 237],
-#     'pos': [198,  47, 120],
-#     },
-#     'leukocytes' : {
-#         'neg': [253, 241, 221],
-#         'trace': [252, 225, 188],
-#         '+70': [251, 235, 235],
-#         '++125':[234, 189, 208],
-#         '+++500': [182, 130, 169],
-#     },
-#     'urobilinogen': {
-#         '0.1'  : [247, 199,135],
-#         '1' : [244, 189, 163],
-#         '2' : [240, 170, 153],
-#         '4' : [231, 123, 104],
-#         '8' : [227,  89, 100],
-#     },
-#     'protein' :{
-#         'neg': [243, 224, 118],
-#         'trace': [225, 209, 81],
-#         '+30': [198, 206, 129],
-#         '++100':[182, 193, 101],
-#         '+++300': [144, 189, 121],
-#         '++++1000': [ 90, 174, 150],
-#     },
-#     'ph' : {
-#         '5'  : [226, 142, 61],
-#         '6': [234, 170, 54],
-#         '6.5' : [225, 182, 42],
-#         '7' : [204, 188, 15],
-#         '7.5' : [146, 155, 37],
-#         '8' : [67, 138,  65],
-#         '8.5' : [23, 116, 124],
-#     },
-#     'blood' : {
-#         'neg': [239, 177, 9],
-#         'trace': [225, 180, 11],
-#         '+25': [158, 151,  58],
-#         '++80':[142, 158,  83],
-#         '++200':[30, 95, 78],
-#         'non_hemolysis+10': [234, 215, 130],
-#         '++80_rbc': [211, 204, 120],
-#     },
-#     'specific_gravity' :{
-#         '1.030': [237, 176, 8],
-#         '1.020':[163, 144, 35],
-#         '1.025' : [203, 162, 16],
-#     },
-#     'ketones' : {
-#         'neg'  : [245, 224, 202],
-#         '+5': [231,184, 164],
-#         '+15' : [212, 155, 153],
-#         '++40' : [158,  78,  99],
-#         '+++80' : [128,  45,  78],
-#         '++++160' : [111,  48,  72],
-#     },
-#     'bilirubin' : {
-#         'neg'  : [245, 229, 192],
-#         '+': [245, 229, 192],
-#         '++' : [229, 190, 154],
-#         '+++' : [203, 148, 129],
-#     },
-#     'glucose': {
-#         'neg'  : [103, 180 ,161],
-#         '+100': [203, 148, 129],
-#         '+250' : [156, 176,  79],
-#         '++500' : [153, 135,  43],
-#         '+++1000' : [134,  88,  48],
-#         '++++2000' :[108,  63,  47],
-#     },
-# }
+# compare colours to reference chart
+reference_chart = {
+    'nitrite' : {
+    'neg': [254, 246, 219],
+    'trace': [252, 237, 237],
+    'pos': [198,  47, 120],
+    },
+    'leukocytes' : {
+        'neg': [253, 241, 221],
+        'trace': [252, 225, 188],
+        '+70': [251, 235, 235],
+        '++125':[234, 189, 208],
+        '+++500': [182, 130, 169],
+    },
+    'urobilinogen': {
+        '0.1'  : [247, 199,135],
+        '1' : [244, 189, 163],
+        '2' : [240, 170, 153],
+        '4' : [231, 123, 104],
+        '8' : [227,  89, 100],
+    },
+    'protein' :{
+        'neg': [243, 224, 118],
+        'trace': [225, 209, 81],
+        '+30': [198, 206, 129],
+        '++100':[182, 193, 101],
+        '+++300': [144, 189, 121],
+        '++++1000': [ 90, 174, 150],
+    },
+    'ph' : {
+        '5'  : [226, 142, 61],
+        '6': [234, 170, 54],
+        '6.5' : [225, 182, 42],
+        '7' : [204, 188, 15],
+        '7.5' : [146, 155, 37],
+        '8' : [67, 138,  65],
+        '8.5' : [23, 116, 124],
+    },
+    'blood' : {
+        'neg': [239, 177, 9],
+        'trace': [225, 180, 11],
+        '+25': [158, 151,  58],
+        '++80':[142, 158,  83],
+        '++200':[30, 95, 78],
+        'non_hemolysis+10': [234, 215, 130],
+        '++80_rbc': [211, 204, 120],
+    },
+    'specific_gravity' :{
+        '1.030': [237, 176, 8],
+        '1.020':[163, 144, 35],
+        '1.025' : [203, 162, 16],
+    },
+    'ketones' : {
+        'neg'  : [245, 224, 202],
+        '+5': [231,184, 164],
+        '+15' : [212, 155, 153],
+        '++40' : [158,  78,  99],
+        '+++80' : [128,  45,  78],
+        '++++160' : [111,  48,  72],
+    },
+    'bilirubin' : {
+        'neg'  : [245, 229, 192],
+        '+': [245, 229, 192],
+        '++' : [229, 190, 154],
+        '+++' : [203, 148, 129],
+    },
+    'glucose': {
+        'neg'  : [103, 180 ,161],
+        '+100': [203, 148, 129],
+        '+250' : [156, 176,  79],
+        '++500' : [153, 135,  43],
+        '+++1000' : [134,  88,  48],
+        '++++2000' :[108,  63,  47],
+    },
+}
 
 # # function for calculting the distance between the two colours
-# def eucledian_distance(extracted, reference):
-#     ed = (extracted[0] - reference[0])**2  + (extracted[1] - reference[1])**2 + (extracted[2] - reference[2])**2
-#     return ed 
+def eucledian_distance(extracted, reference):
+    ed = (extracted[0] - reference[0])**2  + (extracted[1] - reference[1])**2 + (extracted[2] - reference[2])**2
+    return ed 
 
 # # this function takes the colour on one pad and the dictionary containing the reference colour for that pad and returns closest match
 # def check_parameter(colour_on_pad, reference_colours_for_pad):
