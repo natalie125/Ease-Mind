@@ -98,6 +98,8 @@ def query_tree(mode):
         if request.method == 'DELETE':
             # should only be allowed to delete using the tree's id as name and owner are not unique
             if id != None:
+                tree_query = models.Pedigree_Tree.query.filter_by(id=id).first()
+                tree_query.nodes = []
                 models.Pedigree_Tree_Test.query.filter_by(id=id).delete()
                 db.session.commit()
                 return "id= " + str(id) + "\nname= " + str(name) + "\nowner= " + str(owner)
@@ -158,6 +160,8 @@ def query_tree(mode):
         if request.method == 'DELETE':
             # should only be allowed to delete using the tree's id as name and owner are not unique
             if id != None:
+                tree_query = models.Pedigree_Tree.query.filter_by(id=id).first()
+                tree_query.nodes = []
                 models.Pedigree_Tree.query.filter_by(id=id).delete()
                 db.session.commit()
                 return "id= " + str(id) + "\nname= " + str(name) + "\nowner= " + str(owner)
@@ -280,8 +284,13 @@ def query_patient(mode):
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
         if request.method == 'DELETE':
-            # should only be allowed to delete using the tree's id as name and owner are not unique
+            # should only be allowed to delete using the patient's id as name and owner are not unique
             if id != None:
+                patient_query = models.Pedigree_Patient.query.filter_by(id=id).first()
+                patient_query.parents = []
+                patient_query.children = []
+                patient_query.conditions = []
+                patient_query.node_of = []
                 models.Pedigree_Patient_Test.query.filter_by(id=id).delete()
                 db.session.commit()
                 return "id= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
@@ -363,8 +372,13 @@ def query_patient(mode):
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
         if request.method == 'DELETE':
-            # should only be allowed to delete using the tree's id as name and owner are not unique
+            # should only be allowed to delete using the patient's id as name and owner are not unique
             if id != None:
+                patient_query = models.Pedigree_Patient.query.filter_by(id=id).first()
+                patient_query.parents = []
+                patient_query.children = []
+                patient_query.conditions = []
+                patient_query.node_of = []
                 models.Pedigree_Patient.query.filter_by(id=id).delete()
                 db.session.commit()
                 return "id= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
@@ -453,7 +467,9 @@ def query_condition(mode):
         if request.method == 'DELETE':
             # should only be allowed to delete using the tree's id as name and owner are not unique
             if id != None:
-                models.Pedigree_Health_Condition_Test.query.filter_by(id=id).delete()
+                condition_query = models.Pedigree_Health_Condition.query.filter_by(id=id).first()
+                condition_query.condition_of = []
+                models.Pedigree_Health_Condition.query.filter_by(id=id).delete()
                 db.session.commit()
                 return "id= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
             else:
@@ -513,8 +529,10 @@ def query_condition(mode):
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
         if request.method == 'DELETE':
-            # should only be allowed to delete using the tree's id as name and owner are not unique
+            # should only be allowed to delete using the condition's id as name and owner are not unique
             if id != None:
+                condition_query = models.Pedigree_Health_Condition.query.filter_by(id=id).first()
+                condition_query.condition_of = []
                 models.Pedigree_Health_Condition.query.filter_by(id=id).delete()
                 db.session.commit()
                 return "id= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
