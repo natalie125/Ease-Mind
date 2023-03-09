@@ -109,7 +109,7 @@ function Canopy_Show_Conditions(props) {
 	return (
 		<div className="App">
 			<header className="App-header-primary">
-				<h1>Health Conditions</h1>
+				<h1>Show Health Conditions</h1>
 			</header>
 
 			<table border="1">
