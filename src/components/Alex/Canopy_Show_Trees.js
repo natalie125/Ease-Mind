@@ -115,14 +115,16 @@ function Canopy_Show_Trees(props) {
 
 			<p>Owned Trees:</p>
 
-			<table border="1">
-				{generateTable(owned_trees)}
-			</table>
+			<div>
+				<table border="1" className="canopy-table">
+					{generateTable(owned_trees)}
+				</table>
+			</div>
 
 			<br/>
 
 			<button onClick={() => {
-				navigate(-1);
+				navigate('/canopy/');
 			}}> 
 				Back 
 			</button>

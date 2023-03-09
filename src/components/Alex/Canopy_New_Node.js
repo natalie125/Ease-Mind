@@ -217,7 +217,7 @@ function Canopy_New_Node(props) {
 				<br />
 
 				<button onClick={() => {
-					navigate(-1);
+					navigate('/canopy/canopy_edit_tree/', {state:{ id: location.state?.tree_id }})
 				}}> 
 					Back 
 				</button>

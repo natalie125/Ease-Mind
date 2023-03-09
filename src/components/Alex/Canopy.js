@@ -4,6 +4,7 @@ import axios from "axios";
 
 import "../App/App.css";
 import Header from "../Header/Header";
+import "./Canopy.css"
 
 var baseurl = "http://localhost:5000/canopy/";
 	if(window.location.href.includes("localhost")) {

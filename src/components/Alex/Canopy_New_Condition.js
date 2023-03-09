@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import "../App/App.css";
+import "./Canopy.css"
 
 var baseurl = "http://localhost:5000/canopy/";
 	if(window.location.href.includes("localhost")) {

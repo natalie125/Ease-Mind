@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import "../App/App.css";
+import "./Canopy.css"
 
 var baseurl = "http://localhost:5000/canopy/";
 	if(window.location.href.includes("localhost")) {
@@ -112,9 +113,11 @@ function Canopy_Show_Conditions(props) {
 				<h1>Show Health Conditions</h1>
 			</header>
 
-			<table border="1">
-				{generateTable(conditions)}
-			</table>
+			<div>
+				<table border="1" className="canopy-table">
+					{generateTable(conditions)}
+				</table>
+			</div>
 
 			<br/>
 
@@ -127,7 +130,7 @@ function Canopy_Show_Conditions(props) {
 			<br/><br/>
 
 			<button onClick={() => {
-				navigate(-1);
+				navigate('/canopy/');
 			}}> 
 				Back 
 			</button>

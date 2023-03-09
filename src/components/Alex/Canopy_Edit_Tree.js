@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import "../App/App.css";
+import "./Canopy.css"
 
 var baseurl = "http://localhost:5000/canopy/";
 	if(window.location.href.includes("localhost")) {
@@ -180,11 +181,13 @@ function Canopy_Edit_Node(props) {
 					</button>
 				</div>
 
-				<br /><br />
+				<br />
 
-				<table border="1">
-					{generateTable(owned_nodes)}
-				</table>
+				<div>
+					<table border="1" className="canopy-table">
+						{generateTable(owned_nodes)}
+					</table>
+				</div>
 
 				<br />
 				
@@ -195,7 +198,7 @@ function Canopy_Edit_Node(props) {
 				<br /><br />
 
 				<button onClick={() => {
-					navigate(-1);
+					navigate('/canopy/canopy_show_trees/');
 				}}> 
 					Back 
 				</button>
