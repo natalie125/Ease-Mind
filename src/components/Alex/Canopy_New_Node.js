@@ -4,6 +4,7 @@ import axios from "axios";
 
 import "../App/App.css";
 import Dropdown from "./Dropdown";
+import "./Canopy.css"
 
 var baseurl = "http://localhost:5000/canopy/";
 	if(window.location.href.includes("localhost")) {
@@ -188,16 +189,14 @@ function Canopy_New_Node(props) {
 					<label>
 						Health Conditions:
 					</label>
-					<div>
-						<Dropdown
-							isSearchable
-							isMulti
-							placeHolder="Select..."
-							initialValues={selected_conditions}
-							options={conditions}
-							onChange={(value) => { setSelectedConditions(value) }}
-						/>
-					</div>
+					<Dropdown
+						isSearchable
+						isMulti
+						placeHolder="Select..."
+						initialValues={selected_conditions}
+						options={conditions}
+						onChange={(value) => { setSelectedConditions(value) }}
+					/>
 					<br /><br />
 				</form>
 
