@@ -34,11 +34,11 @@ class Ramat extends Component {
 							<p style={{ textAlign: "center", marginBottom: "20px" }}>
 								Webcam capture below (to use flash please brighten your screen)
 							</p>
-							<WebcamCapture context="ramat" returnResponse={this.getResponse} />
+							<WebcamCapture context="ramat/image" returnResponse={this.getResponse} />
 						</div>
 					</div>
 					<p>response message: {this.state.responseMessage}</p>
-					<AudioRecorder />
+					<AudioRecorder context="ramat/audio" />
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
