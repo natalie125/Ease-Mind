@@ -70,8 +70,6 @@ function Canopy_Edit_Node(props) {
 	const [new_name, setNewName] = useState("Patient's New Name");
 	const [new_dob, setNewDOB] = useState("YYYY-MM-DD");
 	const [new_ethnicity, setNewEthnicity] = useState("Patient's New Ethnicity");
-	const [parent_id, setParentID] = useState(1);
-	const [child_id, setChildID] = useState(2);
 	const [json_data, setJSONData] = useState({});
 	const [patients, setPatients] = useState([]);
 	const [potential_parents, setPotentialParents] = useState([]);
@@ -304,7 +302,7 @@ function Canopy_Edit_Node(props) {
 				<div>
 					<button onClick={() => {
 						deletePatient(baseurl + "patient/prod", {id: id, name: name, dob: dob, ethnicity: ethnicity})
-						alert("Patient Record ID: " + {id} + " Deleted!")
+						alert("Patient Record ID: " + id + " Deleted!")
 						navigate(-1);
 					}}>
 						Delete Patient Record

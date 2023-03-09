@@ -22,7 +22,7 @@ function Canopy_New_Tree(props) {
 
 	// create a new tree with the name, owner set under the logged in user
 	const postTree = async (url_input, tree_data) => {
-		const post_response = await axios.post(url_input, null, {params: tree_data});	// should return the patient's ID
+		const post_response = await axios.post(url_input, null, {params: tree_data});
 		console.log(JSON.stringify(post_response));
 	}
 

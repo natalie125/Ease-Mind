@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import "../App/App.css";
@@ -13,45 +13,50 @@ var baseurl = "http://localhost:5000/canopy/";
 		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
 	}
 
-class Canopy extends Component {
-	// for querying the backend
-	getBackend = (http_method, url_input, request_headers) => {
-		var config = {
-			method: http_method,
-			url: url_input,
-			headers: request_headers,
-		};
+function Canopy(props) {
+	const navigate = useNavigate();
+	const location = useLocation();
+	const user_email = sessionStorage.getItem("email").substring(1, sessionStorage.getItem("email").length - 1);
 
-		axios(config)
-			.then(function (response) {
-				alert(response.data);
-			})
-			.catch(function (error) {
-				console.log(error);
-			});
-	};
+	const generateShowCondition = () => {
+		let button = [];
+		if(user_email == "admin@gmail.com") {
+			button.push(<div>
+							<Link to="/canopy/canopy_show_conditions/">
+								<button>
+									Show Conditions
+								</button>
+							</Link>
+						</div>);
+			button.push(<br/>);
+		}
+		return button;
+	}
 
-	render() {
-		return (
-			<div className="App">
-				<Header />
-				<h1>Welcome To Canopy!</h1>
+	return (
+		<div className="App">
+			<Header />
+			<h1>Welcome To The Canopy App {user_email}!</h1>
+			<br/>
+			<div>
 				<div>
-					<div>
-						<Link to="/canopy/canopy_show_trees">
-							<button> Go to show trees </button>
-						</Link>
-					</div>
+					<Link to="/canopy/canopy_show_trees">
+						<button> Go to show trees </button>
+					</Link>
+				</div>
 
-					<div>
-						<Link to="/home">
-							<button> Back </button>
-						</Link>
-					</div>
+				<br/>
+
+				{generateShowCondition()}
+
+				<div>
+					<Link to="/home">
+						<button> Back </button>
+					</Link>
 				</div>
 			</div>
-		);
-	}
+		</div>
+	);
 }
 
 export default Canopy;

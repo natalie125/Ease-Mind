@@ -12,34 +12,28 @@ var baseurl = "http://localhost:5000/canopy/";
 		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
 	}
 
-function Canopy_Show_Trees(props) {
+function Canopy_Show_Conditions(props) {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const user_email = sessionStorage.getItem("email").substring(1, sessionStorage.getItem("email").length - 1);
 
-	const [owner, setOwner] = useState(user_email);
-	const [owned_trees, setOwnedTrees] = useState({
+	const [conditions, setConditions] = useState({
 													ids: [],
 													names: [],
-													owners:[]
+													'hereditary?':[]
 												});
 
 	// methods for receiving data from the Flask app
-	// get data from the tree table
-	const getTree = async (url_input, tree_data) => {
+	// get data from the conditions table
+	const getConditions = async (url_input, condition_data) => {
 		// check if email is admin@gmail.com, if so pull ALL TREES
 		let data = {
 			ids: [],
 			names: [],
-			owners:[]
+			'hereditary?':[]
 		};
-		if (user_email == "admin@gmail.com") {
-			data = await axios.get(url_input, {params: {}});
-		}
-		else {
-			data = await axios.get(url_input, {params: tree_data});
-		}
-		setOwnedTrees(data.data);
+		data = await axios.get(url_input, {params: {}});
+		// console.log(data);
+		setConditions(data.data);
 	}
 
 	// function for generating a table from the JSON response
@@ -64,7 +58,12 @@ function Canopy_Show_Trees(props) {
 					}
 					else if(j < Object.keys(response).length) {
 						if(Object.keys(response)[j] != "ids") {
-							columns.push(<td>{Object.keys(response)[j]}</td>)
+							if(Object.keys(response)[j] == "hereditarys") {	// catch when we're naming a column hereditarys in the 1st row
+								columns.push(<td>hereditary?</td>)	// name it hereditary? instetad
+							}
+							else {	// generic key name
+								columns.push(<td>{Object.keys(response)[j]}</td>)
+							}
 						}
 					}
 					else {
@@ -80,12 +79,12 @@ function Canopy_Show_Trees(props) {
 					else if(j < Object.keys(response).length) {
 						// we're not on the first or last column
 						if(Object.keys(response)[j] != "ids") {
-							columns.push(<td>{response[Object.keys(response)[j]][i]}</td>)
+							columns.push(<td>{String(response[Object.keys(response)[j]][i])}</td>)
 						}
 					}
 					else {
 						columns.push(<td>
-										<Link to='/canopy/canopy_edit_tree/' 
+										<Link to='/canopy/canopy_edit_condition/' 
 										state={{ id: response.ids[i] }}>
 													<button> Edit </button>
 										</Link>
@@ -104,22 +103,28 @@ function Canopy_Show_Trees(props) {
 	}
 
 	useEffect(() => {
-		getTree(baseurl + "tree/prod", {owner: owner})
+		getConditions(baseurl + "condition/prod", {})
 	}, []);
 
 	return (
 		<div className="App">
 			<header className="App-header-primary">
-				<h1>Trees Owned by: {owner}</h1>
+				<h1>Health Conditions</h1>
 			</header>
 
-			<p>Owned Trees:</p>
-
 			<table border="1">
-				{generateTable(owned_trees)}
+				{generateTable(conditions)}
 			</table>
 
 			<br/>
+
+			<Link to="/canopy/canopy_new_condition/">
+				<button>
+					Add New Condition
+				</button>
+			</Link>
+
+			<br/><br/>
 
 			<button onClick={() => {
 				navigate(-1);
@@ -130,4 +135,4 @@ function Canopy_Show_Trees(props) {
 	);
 }
 
-export default Canopy_Show_Trees;
+export default Canopy_Show_Conditions;

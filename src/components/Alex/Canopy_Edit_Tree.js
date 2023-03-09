@@ -17,10 +17,10 @@ var baseurl = "http://localhost:5000/canopy/";
 function putTree(url_input, tree_data) {
 	axios.put(url_input, null, {params: tree_data})
 	.then(function (response) {
-		alert(response.data)
+		console.log(response.data)
 	})
 	.catch(function (error) {
-		alert(error);
+		console.log(error);
 	}) 
 }
 
@@ -29,10 +29,10 @@ function putTree(url_input, tree_data) {
 function deleteTree(url_input, tree_data) {
 	axios.delete(url_input, {params: tree_data})
 	.then(function (response) {
-		alert(response.data)
+		console.log(response.data)
 	})
 	.catch(function (error) {
-		alert(error);
+		console.log(error);
 	}) 
 }
 
@@ -161,8 +161,9 @@ function Canopy_Edit_Node(props) {
 
 				<div>
 					<button onClick={() => {
-						putTree(baseurl + "tree/prod", {id: id, name: name, owner: owner, new_name: new_name}
-					)}}>
+						putTree(baseurl + "tree/prod", {id: id, name: name, owner: owner, new_name: new_name})
+						alert("Tree Record ID: " + id + " Saved!")
+					}}>
 						Save Tree Details
 					</button>
 				</div>
@@ -172,6 +173,8 @@ function Canopy_Edit_Node(props) {
 				<div>
 					<button onClick={() => {
 						deleteTree(baseurl + "tree/prod", {id: id, name: name, owner: owner})
+						alert("Tree Record ID: " + id + " Deleted!")
+						navigate(-1)
 					}}>
 						Delete Tree ID: {id}
 					</button>
