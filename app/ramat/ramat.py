@@ -91,7 +91,7 @@ def getCalculations(raw_image):
 
 def voiceFeatureExtraction(raw_voice):
     directory = os.getcwd()
-    voice_path =  os.path.join(directory,"app/ramat/temp.wav")
+    voice_path =  os.path.join(directory,"app/ramat/temp2.wav")
 
     print("-------------------------------------")
     print(type(directory))
@@ -165,9 +165,9 @@ def audio():
         voice = voice[22:]
         voice_str = base64.b64encode(base64.b64decode(voice))
 
-        voice_arr =  np.frombuffer(voice, dtype=np.int16)
+        voice_arr =  np.frombuffer(voice_str, dtype=np.int16)
 
-        sf.write("app/ramat/temp.wav", voice_arr, 22050)
+        sf.write("app/ramat/temp2.wav", voice_arr, 22050)
 
         voiceFeatureExtraction(voice)
         return {"msg": "hello"}, 200
