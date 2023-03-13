@@ -2,6 +2,7 @@ import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CantinaBand3 from "./CantinaBand3.wav";
+import * as FFmpeg from "@ffmpeg/ffmpeg";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
@@ -14,10 +15,12 @@ const VoiceRecorder = (props) => {
 	const recorderControls = useAudioRecorder();
 
 	const addAudioElement = async (blob) => {
+		// remove existing audio component
 		if (document.body.contains(document.getElementById("recording"))) {
 			document.body.removeChild(document.getElementById("recording"));
 		}
 
+		// convert webm blob to wav blob
 		const wavBlob = new Blob([blob], { type: "audio/wav" });
 
 		const url = URL.createObjectURL(wavBlob);
@@ -28,7 +31,12 @@ const VoiceRecorder = (props) => {
 		audio.controls = true;
 
 		setVoiceRecording(wavBlob);
+		console.log("Types");
 		console.log(wavBlob.type);
+		console.log(typeof wavBlob);
+		console.log(blob.type);
+		console.log(typeof blob);
+		console.log("-------------");
 		document.body.appendChild(audio);
 	};
 
@@ -38,8 +46,6 @@ const VoiceRecorder = (props) => {
 		let metadata = {
 			type: voiceRecording.type,
 		};
-		let cantinaFile = new File(CantinaBand3, "whoo.wav");
-
 		let file = new File([voiceRecording], "test.wav", metadata);
 
 		// var reader = new FileReader();
@@ -63,7 +69,7 @@ const VoiceRecorder = (props) => {
 		// reader.readAsDataURL(file);
 
 		var formData = new FormData();
-		formData.append("audio", cantinaFile);
+		formData.append("audio", file);
 		try {
 			const response = await axios.post(BASEURL + props.context, formData, {
 				headers: {
