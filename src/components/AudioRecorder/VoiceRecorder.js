@@ -2,7 +2,7 @@ import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CantinaBand3 from "./CantinaBand3.wav";
-import * as FFmpeg from "@ffmpeg/ffmpeg";
+import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
@@ -13,6 +13,22 @@ const VoiceRecorder = (props) => {
 	const [voiceRecording, setVoiceRecording] = useState(null);
 
 	const recorderControls = useAudioRecorder();
+	const convertWebmToMp3 = async (blob) => {
+		const ffmpeg = createFFmpeg({ log: false });
+		await ffmpeg.load();
+
+		const inputName = "input.webm";
+		const outputName = "audio.wav";
+
+		ffmpeg.FS("writeFile", inputName, await fetch(blob).then((res) => res.arrayBuffer()));
+
+		await ffmpeg.run("-i", inputName, outputName);
+
+		const outputData = ffmpeg.FS("readFile", outputName);
+		const outputBlob = new Blob([outputData.buffer], { type: "audio/wav" });
+
+		return outputBlob;
+	};
 
 	const addAudioElement = async (blob) => {
 		// remove existing audio component
@@ -21,8 +37,9 @@ const VoiceRecorder = (props) => {
 		}
 
 		// convert webm blob to wav blob
-		const wavBlob = new Blob([blob], { type: "audio/wav" });
+		const wavBlob = await convertWebmToMp3(blob);
 
+		// create new audio component
 		const url = URL.createObjectURL(wavBlob);
 		const audio = document.createElement("audio");
 
