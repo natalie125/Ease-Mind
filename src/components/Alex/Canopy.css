@@ -4,3 +4,29 @@
     text-align:center;
     width: 70%;
 }
+
+.root {
+    display: flex;
+    flex-direction: column;
+    background: #eee;
+    height: 100%;
+}
+
+.tree {
+    background: #fff;
+    border: 3px solid #ddd;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+.details {
+position: absolute;
+left: 10px;
+top: 60px;
+}
+
+.i {
+    width: 10px;
+}

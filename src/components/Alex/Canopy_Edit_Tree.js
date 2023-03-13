@@ -1,6 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useEffect, useState, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import ReactFamilyTree from "react-family-tree";
+import { FamilyNode } from "./FamilyNode.tsx";
+import { NodeDetails } from "./NodeDetails.tsx";
+import { NODE_WIDTH, NODE_HEIGHT } from "./const.ts";
+import { getNodeStyle } from "./utils.ts";
 
 import "../App/App.css";
 import "./Canopy.css"
@@ -48,6 +53,62 @@ function Canopy_Edit_Node(props) {
 	const [new_name, setNewName] = useState("Tree's New Name");
 	const [json_data, setJSONData] = useState({});
 	const [owned_nodes, setOwnedNodes] = useState({ids:[], names:[], dobs:[], ethnicities:[], conditions:[]});
+	const [tree_nodes, setTreeNodes] = useState([
+		{
+		  "id": "dyTpfj6sr",
+		  "gender": "male",
+		  "spouses": [],
+		  "siblings": [],
+		  "parents": [],
+		  "children": [
+			{
+			  "id": "ahfR5lR2s",
+			  "type": "blood"
+			},
+			{
+			  "id": "aoF9dn5Ew",
+			  "type": "blood"
+			}
+		  ]
+		},
+		{
+		  "id": "ahfR5lR2s",
+		  "gender": "female",
+		  "spouses": [],
+		  "siblings": [],
+		  "parents": [
+			{
+			  "id": "dyTpfj6sr",
+			  "type": "blood"
+			}
+		  ],
+		  "children": []
+		},
+		{
+		  "id": "aoF9dn5Ew",
+		  "gender": "male",
+		  "spouses": [],
+		  "siblings": [],
+		  "parents": [
+			{
+			  "id": "dyTpfj6sr",
+			  "type": "blood"
+			}
+		  ],
+		  "children": []
+		}
+	  ]
+	)
+	const firstNodeId = useMemo(() => tree_nodes[0].id, [tree_nodes]);
+	const [rootId, setRootId] = useState(firstNodeId);
+  
+	const [selectId, setSelectId] = useState(undefined);
+	const [hoverId, setHoverId] = useState(undefined);
+  
+	const selected = useMemo(() => tree_nodes.find((item) => item.id === selectId), [
+	  tree_nodes,
+	  selectId
+	]);
 
 	// get data from the tree table
 	const getTree = async (url_input, tree_data) => {
@@ -134,7 +195,7 @@ function Canopy_Edit_Node(props) {
 			<header className="App-header-primary">
 				<h1>Edit Tree Information</h1>
 			</header>
-			<div>
+			<div className="root">
 				<form>
 					<h3>
 						Tree ID: { id }
@@ -188,6 +249,37 @@ function Canopy_Edit_Node(props) {
 						{generateTable(owned_nodes)}
 					</table>
 				</div>
+
+				<h1>Test Family Tree</h1>
+				{tree_nodes.length > 0 && (
+					<ReactFamilyTree
+						nodes={tree_nodes}
+						rootId={rootId}
+						width={NODE_WIDTH}
+						height={NODE_HEIGHT}
+						className="tree"
+						renderNode={(node) => (
+							<FamilyNode
+								key={node.id}
+								node={node}
+								isRoot={node.id === rootId}
+								isHover={node.id === hoverId}
+								onClick={setSelectId}
+								onSubClick={setRootId}
+								style={getNodeStyle(node)}
+							/>
+						)}
+					/>
+				)}
+				{selected && (
+					<NodeDetails
+					node={selected}
+					className="details"
+					onSelect={setSelectId}
+					onHover={setHoverId}
+					onClear={() => setHoverId(undefined)}
+					/>
+				)}
 
 				<br />
 				
