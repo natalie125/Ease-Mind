@@ -1,6 +1,7 @@
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import CantinaBand3 from "./CantinaBand3.wav";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
@@ -17,14 +18,14 @@ const VoiceRecorder = (props) => {
 			document.body.removeChild(document.getElementById("recording"));
 		}
 
-		const url = URL.createObjectURL(blob);
+		const wavBlob = new Blob([blob], { type: "audio/wav" });
+
+		const url = URL.createObjectURL(wavBlob);
 		const audio = document.createElement("audio");
 
 		audio.setAttribute("id", "recording");
 		audio.src = url;
 		audio.controls = true;
-
-		const wavBlob = new Blob([blob], { type: "audio/wav" });
 
 		setVoiceRecording(wavBlob);
 		console.log(wavBlob.type);
@@ -33,43 +34,47 @@ const VoiceRecorder = (props) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		var reader = new FileReader();
 
-		console.log(typeof voiceRecording);
-
-		reader.onload = async function (event) {
-			var fd = {};
-			fd["audio"] = event.target.result;
-			try {
-				const response = await axios(BASEURL + props.context, {
-					method: "post",
-					data: fd,
-					headers: {
-						"Access-Control-Allow-Origin": "*",
-						"Content-Type": "multipart/form-data",
-					},
-				});
-				console.log(response);
-			} catch (error) {
-				console.error(error);
-			}
+		let metadata = {
+			type: voiceRecording.type,
 		};
-		reader.readAsDataURL(voiceRecording);
+		let cantinaFile = new File(CantinaBand3, "whoo.wav");
 
-		// formData.append("image", blob);
-		// try {
-		// 	const response = await axios(BASEURL + props.context, {
-		// 		method: "post",
-		// 		data: formData,
-		// 		headers: {
-		// 			"Access-Control-Allow-Origin": "*",
-		// 			"Content-Type": "audio/wav",
-		// 		},
-		// 	});
-		// 	console.log(response);
-		// } catch (error) {
-		// 	console.error(error);
-		// }
+		let file = new File([voiceRecording], "test.wav", metadata);
+
+		// var reader = new FileReader();
+		// console.log(typeof voiceRecording);
+		// reader.onload = async function (event) {
+		// 	var fd = {};
+		// 	fd["audio"] = event.target.result;
+		// 	try {
+		// 		const response = await axios.postForm(BASEURL + props.context, {
+		// 			file: file,
+		// 			headers: {
+		// 				"Access-Control-Allow-Origin": "*",
+		// 				"Content-Type": "multipart/form-data",
+		// 			},
+		// 		});
+		// 		console.log(response);
+		// 	} catch (error) {
+		// 		console.error(error);
+		// 	}
+		// };
+		// reader.readAsDataURL(file);
+
+		var formData = new FormData();
+		formData.append("audio", cantinaFile);
+		try {
+			const response = await axios.post(BASEURL + props.context, formData, {
+				headers: {
+					"Access-Control-Allow-Origin": "*",
+					"Content-Type": "multipart/form-data",
+				},
+			});
+			console.log(response);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (
