@@ -123,11 +123,23 @@ function Canopy_Show_Trees(props) {
 
 			<br/>
 
-			<button onClick={() => {
-				navigate('/canopy/');
-			}}> 
-				Back 
-			</button>
+			<div>
+				<button onClick={() => {
+					navigate('/canopy/canopy_new_tree');
+				}}> 
+					Add New Tree
+				</button>
+			</div>
+
+			<br/>
+
+			<div>
+				<button onClick={() => {
+					navigate('/canopy/');
+				}}> 
+					Back 
+				</button>
+			</div>
 		</div>
 	);
 }

@@ -42,7 +42,7 @@ function Canopy(props) {
 			<div>
 				<div>
 					<Link to="/canopy/canopy_show_trees">
-						<button> Go to show trees </button>
+						<button>Show Trees</button>
 					</Link>
 				</div>
 
@@ -52,7 +52,7 @@ function Canopy(props) {
 
 				<div>
 					<Link to="/home">
-						<button> Back </button>
+						<button>Back</button>
 					</Link>
 				</div>
 			</div>

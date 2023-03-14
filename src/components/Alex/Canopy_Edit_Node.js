@@ -392,6 +392,7 @@ function Canopy_Edit_Node(props) {
 							linkPatientCondition(baseurl + "patient_condition/prod", {patient_id: id, condition_id: "", conditions: selected_conditions, clear_conditions: true})
 							linkParentChild(baseurl + "parent_child/prod", {patient_id: id, parent_id: "", child_id: "", parents: selected_parents, children: selected_children, clear_parents: true, clear_children: true})
 							alert("Patient Details Saved!")
+							navigate(0)
 						}
 						else {
 							alert("DOB is in an invalid format!")

@@ -167,7 +167,7 @@ function Canopy_New_Node(props) {
 					<br /><br />
 
 					<label>
-						DOB:
+						DOB (Format:YYYY-MM-DD): {} 
 						<input
 						name="dob"
 						type="text"

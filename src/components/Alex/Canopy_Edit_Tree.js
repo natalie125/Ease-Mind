@@ -53,10 +53,10 @@ function Canopy_Edit_Node(props) {
 	const [new_name, setNewName] = useState("Tree's New Name");
 	const [json_data, setJSONData] = useState({});
 	const [owned_nodes, setOwnedNodes] = useState({ids:[], names:[], dobs:[], ethnicities:[], conditions:[]});
+	const [loading, setLoading] = useState(true);
+
 	const [tree_nodes, setTreeNodes] = useState([]);
-	
 	const [rootId, setRootId] = useState(undefined);
-  
 	const [selectId, setSelectId] = useState(undefined);
 	const [hoverId, setHoverId] = useState(undefined);
   
@@ -80,6 +80,11 @@ function Canopy_Edit_Node(props) {
 		const {data} = await axios.get(url_input, {params: tree_data});
 		// console.log(data);
 		setOwnedNodes(data);
+		if(data.ids.length == 0) {
+			// console.log("break out of getTreeNodes");
+			setLoading(false);
+			return;
+		}
 		let new_tree_nodes = [];
 		// for each node in the above data, we want to get it's parents and children
 		for(let i = 0; i < data.ids.length; i++) {
@@ -111,8 +116,9 @@ function Canopy_Edit_Node(props) {
 			new_tree_nodes.push(family_node);
 		}
 		// console.log(new_tree_nodes);
-		setRootId(new_tree_nodes[0].id)
+		setRootId(new_tree_nodes[0].id);
 		setTreeNodes(new_tree_nodes);
+		setLoading(false);
 	}
 
 	// function for generating a table from the JSON response
@@ -176,7 +182,7 @@ function Canopy_Edit_Node(props) {
 	useEffect(() => {
 		getTree(baseurl + "tree/prod", { id:location.state?.id });
 		getTreeNodes(baseurl + "tree_nodes/prod", { id:location.state?.id })
-	}, []);
+	}, [loading]);
 	
 	return (
 		<div className="App">
@@ -213,6 +219,7 @@ function Canopy_Edit_Node(props) {
 					<button onClick={() => {
 						putTree(baseurl + "tree/prod", {id: id, name: name, owner: owner, new_name: new_name})
 						alert("Tree Record ID: " + id + " Saved!")
+						navigate(0)
 					}}>
 						Save Tree Details
 					</button>
@@ -233,8 +240,11 @@ function Canopy_Edit_Node(props) {
 				<br />
 
 				<h2>Test Family Tree</h2>
-				{tree_nodes.length < 1 && (
+				{tree_nodes.length < 1 && loading && (
 					<h3>Tree information is loading...</h3>
+				)}
+				{tree_nodes.length < 1 && !loading && (
+					<h3>Tree is empty...</h3>
 				)}
 				{selected && (
 					<NodeDetails
@@ -277,7 +287,7 @@ function Canopy_Edit_Node(props) {
 				<br />
 				
 				<Link to="/canopy/canopy_new_node" state={{ tree_id: location.state?.id }}>
-					<button> Add a New Patient to This Tree </button>
+					<button>Add a New Patient to This Tree</button>
 				</Link>
 
 				<br />
