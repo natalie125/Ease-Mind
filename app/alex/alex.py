@@ -98,7 +98,14 @@ def query_tree(mode):
         if request.method == 'DELETE':
             # should only be allowed to delete using the tree's id as name and owner are not unique
             if id != None:
-                tree_query = models.Pedigree_Tree.query.filter_by(id=id).first()
+                tree_query = models.Pedigree_Tree_Test.query.filter_by(id=id).first()
+                # make sure to clean the relationships of the tree's nodes (conditions, parents, children)
+                for node in tree_query.nodes:
+                    node.conditions = []
+                    node.parents = []
+                    node.children = []
+                    node.spouses = []
+                    node.spouse_of = []
                 tree_query.nodes = []
                 models.Pedigree_Tree_Test.query.filter_by(id=id).delete()
                 db.session.commit()
@@ -161,6 +168,13 @@ def query_tree(mode):
             # should only be allowed to delete using the tree's id as name and owner are not unique
             if id != None:
                 tree_query = models.Pedigree_Tree.query.filter_by(id=id).first()
+                # make sure to clean the relationships of the tree's nodes (conditions, parents, children)
+                for node in tree_query.nodes:
+                    node.conditions = []
+                    node.parents = []
+                    node.children = []
+                    node.spouses = []
+                    node.spouse_of = []
                 tree_query.nodes = []
                 models.Pedigree_Tree.query.filter_by(id=id).delete()
                 db.session.commit()
@@ -286,11 +300,13 @@ def query_patient(mode):
         if request.method == 'DELETE':
             # should only be allowed to delete using the patient's id as name and owner are not unique
             if id != None:
-                patient_query = models.Pedigree_Patient.query.filter_by(id=id).first()
+                patient_query = models.Pedigree_Patient_Test.query.filter_by(id=id).first()
                 patient_query.parents = []
                 patient_query.children = []
                 patient_query.conditions = []
                 patient_query.node_of = []
+                patient_query.spouses = []
+                patient_query.spouse_of = []
                 models.Pedigree_Patient_Test.query.filter_by(id=id).delete()
                 db.session.commit()
                 return "id= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
@@ -379,6 +395,8 @@ def query_patient(mode):
                 patient_query.children = []
                 patient_query.conditions = []
                 patient_query.node_of = []
+                patient_query.spouses = []
+                patient_query.spouse_of = []
                 models.Pedigree_Patient.query.filter_by(id=id).delete()
                 db.session.commit()
                 return "id= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
@@ -467,9 +485,9 @@ def query_condition(mode):
         if request.method == 'DELETE':
             # should only be allowed to delete using the tree's id as name and owner are not unique
             if id != None:
-                condition_query = models.Pedigree_Health_Condition.query.filter_by(id=id).first()
+                condition_query = models.Pedigree_Health_Condition_Test.query.filter_by(id=id).first()
                 condition_query.condition_of = []
-                models.Pedigree_Health_Condition.query.filter_by(id=id).delete()
+                models.Pedigree_Health_Condition_Test.query.filter_by(id=id).delete()
                 db.session.commit()
                 return "id= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
             else:
@@ -713,6 +731,90 @@ def get_child_parents(mode):
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
 
+# function for getting spouses of a patient
+@app.route('/canopy/patient_spouses/<string:mode>', methods=['GET'])
+def get_patient_spouses(mode):
+    patient_id = request.args.get('id')
+
+    # check for testing mode
+    if mode == "test":
+        patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
+        if patient != None:
+            spouses_json = {
+                'ids': [],
+                'names': [],
+                'dobs': [],
+                'ethnicities': []
+            }
+            for spouse in patient.spouses:
+                spouses_json.get('ids').append(spouse.id)
+                spouses_json.get('names').append(spouse.name)
+                spouses_json.get('dobs').append(str(spouse.dob.date()))
+                spouses_json.get('ethnicities').append(spouse.ethnicity)
+            return jsonify(spouses_json)
+        else:
+            return "error, patient not found at patient_id: " + str(patient_id)
+    # we are in production mode
+    else:
+        patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
+        if patient != None:
+            spouses_json = {
+                'ids': [],
+                'names': [],
+                'dobs': [],
+                'ethnicities': []
+            }
+            for spouse in patient.spouses:
+                spouses_json.get('ids').append(spouse.id)
+                spouses_json.get('names').append(spouse.name)
+                spouses_json.get('dobs').append(str(spouse.dob.date()))
+                spouses_json.get('ethnicities').append(spouse.ethnicity)
+            return jsonify(spouses_json)
+        else:
+            return "error, patient not found at patient_id: " + str(patient_id)
+
+# function for getting spouse_ofs a patient
+@app.route('/canopy/spouse_of_patients/<string:mode>', methods=['GET'])
+def get_spouse_of_patients(mode):
+    patient_id = request.args.get('id')
+
+    # check for testing mode
+    if mode == "test":
+        patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
+        if patient != None:
+            patients_json = {
+                'ids': [],
+                'names': [],
+                'dobs': [],
+                'ethnicities': []
+            }
+            for spouse_of in patient.spouses:
+                patients_json.get('ids').append(patient.id)
+                patients_json.get('names').append(patient.name)
+                patients_json.get('dobs').append(str(patient.dob.date()))
+                patients_json.get('ethnicities').append(patient.ethnicity)
+            return jsonify(patients_json)
+        else:
+            return "error, patient not found at patient_id: " + str(patient_id)
+    # we are in production mode
+    else:
+        patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
+        if patient != None:
+            patients_json = {
+                'ids': [],
+                'names': [],
+                'dobs': [],
+                'ethnicities': []
+            }
+            for spouse_of in patient.spouses:
+                patients_json.get('ids').append(patient.id)
+                patients_json.get('names').append(patient.name)
+                patients_json.get('dobs').append(str(patient.dob.date()))
+                patients_json.get('ethnicities').append(patient.ethnicity)
+            return jsonify(patients_json)
+        else:
+            return "error, patient not found at patient_id: " + str(patient_id)
+
 # function for getting conditions of a patient
 @app.route('/canopy/patient_conditions/<string:mode>', methods=['GET'])
 def get_patient_conditions(mode):
@@ -896,6 +998,87 @@ def link_parent_child(mode):
         return "patient.children: " + str(patient.children) + "\nparent_id: " + str(parent_id) + "\nchild_id: " + str(
             child_id) + "\nparents: " + str(parents) + "\nchildren: " + str(children) + "\nclear_parents: " + str(
             clear_parents) + "\nclear_children: " + str(clear_children)
+
+# function for linking a spouse and spouse_of
+@app.route('/canopy/parent_child/<string:mode>', methods=['PUT'])
+def link_patient_spouse(mode):
+    request_data = request.get_json()
+    patient_id = request_data['patient_id']
+    if patient_id == "":
+        patient_id = None
+    spouses = request_data['spouses']  # in the form of an array of dictionaries like { id: 2, label: "patient 2" }
+    if spouses == "" or spouses == []:
+        spouses = None
+    spouse_of = request_data['spouse_of']  # in the form of an array of dictionaries like { id: 2, label: "patient 2" }
+    if spouse_of == "" or spouse_of == []:
+        spouse_of = None
+    clear_spouses = request_data['clear_spouses']
+    if clear_spouses == "":
+        clear_spouses = None
+    clear_spouse_of = request_data['clear_spouse_of']
+    if clear_spouse_of == "":
+        clear_spouse_of = None
+    spouse_id = request_data['spouse_id']
+    if spouse_id == "":
+        spouse_id = None
+    spouse_of_id = request_data['spouse_of_id']
+    if spouse_of_id == "":
+        spouse_of_id = None
+
+    # check for testing mode
+    if mode == "test":
+        patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
+        # clear arrays
+        if clear_spouses and patient.spouses != None:
+            patient.parents = []
+        if clear_spouse_of and patient.spouse_of != None:
+            patient.children = []
+        # if singleton IDs were provided
+        if spouse_id != None and spouse_id != None:
+            spouse = models.Pedigree_Patient_Test.query.filter_by(id=spouse_id).first()
+            spouse_of = models.Pedigree_Patient_Test.query.filter_by(id=spouse_of_id).first()
+            spouse.spouses.append(spouse_of)
+        # if array of parents and children are to be used
+        if spouses != None:
+            for spouse_entry in spouses:
+                spouse_query = models.Pedigree_Patient_Test.query.filter_by(id=spouse_entry.get("id")).first()
+                patient.spouses.append(spouse_query)
+        if spouse_of != None:
+            for spouse_of_entry in spouse_of:
+                spouse_of_query = models.Pedigree_Patient_Test.query.filter_by(id=spouse_of_entry.get("id")).first()
+                patient.children.append(spouse_of_query)
+        db.session.commit()
+
+        return "patient.spouses: " + str(patient.spouses) + "\nspouse_id: " + str(spouse_id) + "\nspouse_of_id: " + str(
+            spouse_of_id) + "\nspouses: " + str(spouses) + "\nspouse_of: " + str(spouse_of) + "\nclear_spouses: " + str(
+            clear_spouses) + "\nclear_spouse_of: " + str(clear_spouse_of)
+    # we are in production mode
+    else:
+        patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
+        # clear arrays
+        if clear_spouses and patient.spouses != None:
+            patient.parents = []
+        if clear_spouse_of and patient.spouse_of != None:
+            patient.children = []
+        # if singleton IDs were provided
+        if spouse_id != None and spouse_id != None:
+            spouse = models.Pedigree_Patient.query.filter_by(id=spouse_id).first()
+            spouse_of = models.Pedigree_Patient.query.filter_by(id=spouse_of_id).first()
+            spouse.spouses.append(spouse_of)
+        # if array of parents and children are to be used
+        if spouses != None:
+            for spouse_entry in spouses:
+                spouse_query = models.Pedigree_Patient.query.filter_by(id=spouse_entry.get("id")).first()
+                patient.spouses.append(spouse_query)
+        if spouse_of != None:
+            for spouse_of_entry in spouse_of:
+                spouse_of_query = models.Pedigree_Patient.query.filter_by(id=spouse_of_entry.get("id")).first()
+                patient.children.append(spouse_of_query)
+        db.session.commit()
+
+        return "patient.spouses: " + str(patient.spouses) + "\nspouse_id: " + str(spouse_id) + "\nspouse_of_id: " + str(
+            spouse_of_id) + "\nspouses: " + str(spouses) + "\nspouse_of: " + str(spouse_of) + "\nclear_spouses: " + str(
+            clear_spouses) + "\nclear_spouse_of: " + str(clear_spouse_of)
 
 # function for linking a patient and a health condition
 @app.route('/canopy/patient_condition/<string:mode>', methods=['PUT'])

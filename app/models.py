@@ -89,6 +89,13 @@ patient_condition = db.Table('patient_condition',
     bind_key='canopy'
 )
 
+# join table for the relationship of "a patient has these spouses" or "this patient is a spouse of this patient"
+patient_spouse = db.Table('patient_spouse',
+    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
+    db.Column('spouse_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
+    bind_key='canopy'
+)
+
 # table for family trees
 class Pedigree_Tree(db.Model):
     __bind_key__ = 'canopy'
@@ -114,6 +121,7 @@ class Pedigree_Patient(db.Model):
 
     # relationships
     children = db.relationship('Pedigree_Patient', secondary=parent_child, primaryjoin=id==parent_child.c.parent_id, secondaryjoin=id==parent_child.c.child_id, backref=db.backref('parents'))
+    spouses = db.relationship('Pedigree_Patient', secondary=patient_spouse, primaryjoin=id==patient_spouse.c.spouse_id, secondaryjoin=id==patient_spouse.c.patient_id, backref=db.backref('spouse_of'))
     conditions = db.relationship('Pedigree_Health_Condition', secondary=patient_condition, backref=db.backref('condition_of'))
 
     def __repr__(self):
@@ -152,6 +160,13 @@ patient_condition_test = db.Table('patient_condition_test',
     bind_key='canopy_test'
 )
 
+# join table for the relationship of "a patient has these spouses" or "this patient is a spouse of this patient"
+patient_spouse_test = db.Table('patient_spouse_test',
+    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
+    db.Column('spouse_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
+    bind_key='canopy'
+)
+
 # table for family trees
 class Pedigree_Tree_Test(db.Model):
     __bind_key__ = 'canopy_test'
@@ -177,6 +192,9 @@ class Pedigree_Patient_Test(db.Model):
 
     # relationships
     children = db.relationship('Pedigree_Patient_Test', secondary=parent_child_test, primaryjoin=id==parent_child_test.c.parent_id, secondaryjoin=id==parent_child_test.c.child_id, backref=db.backref('parents'))
+    spouses = db.relationship('Pedigree_Patient_Test', secondary=patient_spouse,
+                              primaryjoin=id == patient_spouse_test.c.spouse_id,
+                              secondaryjoin=id == patient_spouse_test.c.patient_id, backref=db.backref('spouse_of'))
     conditions = db.relationship('Pedigree_Health_Condition_Test', secondary=patient_condition_test, backref=db.backref('condition_of'))
 
     def __repr__(self):
