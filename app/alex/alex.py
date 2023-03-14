@@ -846,9 +846,9 @@ def link_parent_child(mode):
     if mode == "test":
         patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
         # clear arrays
-        if clear_parents:
+        if clear_parents and patient.parents != None:
             patient.parents = []
-        if clear_children:
+        if clear_children and patient.children != None:
             patient.children = []
         # if singleton IDs were provided
         if parent_id != None and child_id != None:
