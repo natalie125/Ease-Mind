@@ -91,6 +91,7 @@ function Canopy_New_Node_2(props) {
 	const postPatient = async (url_input, patient_data) => {
 		const post_response = await axios.post(url_input, null, {params: patient_data});	// should return the patient's ID
 		const new_patient_id = post_response.data;
+		console.log(new_patient_id);
 		linkPatientCondition(baseurl + "patient_condition/prod", {patient_id: new_patient_id, condition_id: "", conditions: selected_conditions, clear_conditions: true});
 		linkParentChild(baseurl + "parent_child/prod", {patient_id: new_patient_id, parent_id: "", child_id: "", parents: selected_parents, children: selected_children, clear_parents: true, clear_children: true});
 	}

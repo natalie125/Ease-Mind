@@ -23,10 +23,10 @@ var baseurl = "http://localhost:5000/canopy/";
 function putTree(url_input, tree_data) {
 	axios.put(url_input, null, {params: tree_data})
 	.then(function (response) {
-		console.log(response.data)
+		// console.log(response.data)
 	})
 	.catch(function (error) {
-		console.log(error);
+		// console.log(error);
 	}) 
 }
 
@@ -35,10 +35,10 @@ function putTree(url_input, tree_data) {
 function deleteTree(url_input, tree_data) {
 	axios.delete(url_input, {params: tree_data})
 	.then(function (response) {
-		console.log(response.data)
+		// console.log(response.data)
 	})
 	.catch(function (error) {
-		console.log(error);
+		// console.log(error);
 	}) 
 }
 
@@ -53,54 +53,9 @@ function Canopy_Edit_Node(props) {
 	const [new_name, setNewName] = useState("Tree's New Name");
 	const [json_data, setJSONData] = useState({});
 	const [owned_nodes, setOwnedNodes] = useState({ids:[], names:[], dobs:[], ethnicities:[], conditions:[]});
-	const [tree_nodes, setTreeNodes] = useState([
-		{
-		  "id": "dyTpfj6sr",
-		  "gender": "male",
-		  "spouses": [],
-		  "siblings": [],
-		  "parents": [],
-		  "children": [
-			{
-			  "id": "ahfR5lR2s",
-			  "type": "blood"
-			},
-			{
-			  "id": "aoF9dn5Ew",
-			  "type": "blood"
-			}
-		  ]
-		},
-		{
-		  "id": "ahfR5lR2s",
-		  "gender": "female",
-		  "spouses": [],
-		  "siblings": [],
-		  "parents": [
-			{
-			  "id": "dyTpfj6sr",
-			  "type": "blood"
-			}
-		  ],
-		  "children": []
-		},
-		{
-		  "id": "aoF9dn5Ew",
-		  "gender": "male",
-		  "spouses": [],
-		  "siblings": [],
-		  "parents": [
-			{
-			  "id": "dyTpfj6sr",
-			  "type": "blood"
-			}
-		  ],
-		  "children": []
-		}
-	  ]
-	)
-	const firstNodeId = useMemo(() => tree_nodes[0].id, [tree_nodes]);
-	const [rootId, setRootId] = useState(firstNodeId);
+	const [tree_nodes, setTreeNodes] = useState([]);
+	
+	const [rootId, setRootId] = useState(undefined);
   
 	const [selectId, setSelectId] = useState(undefined);
 	const [hoverId, setHoverId] = useState(undefined);
@@ -123,8 +78,41 @@ function Canopy_Edit_Node(props) {
 	// get data of the tree's nodes
 	const getTreeNodes = async (url_input, tree_data) => {
 		const {data} = await axios.get(url_input, {params: tree_data});
-		// alert(JSON.stringify(data));
+		// console.log(data);
 		setOwnedNodes(data);
+		let new_tree_nodes = [];
+		// for each node in the above data, we want to get it's parents and children
+		for(let i = 0; i < data.ids.length; i++) {
+			const children_get = await axios.get(baseurl + "parent_children/prod", {params: {id: data.ids[i]}});
+			// console.log("patient " + data.ids[i] + "'s children");
+			// console.log(children_get.data);
+			let children_array = []
+			for(let j = 0; j < children_get.data.names.length; j++) {
+				children_array.push({id: children_get.data.names[j], type: "blood"});
+			}
+			// console.log(children_array);
+			const parents_get = await axios.get(baseurl + "child_parents/prod", {params: {id: data.ids[i]}});
+			// console.log("patient " + data.ids[i] + "'s parents");
+			// console.log(parents_get.data);
+			let parents_array = []
+			for(let j = 0; j < parents_get.data.names.length; j++) {
+				parents_array.push({id: parents_get.data.names[j], type: "blood"});
+			}
+			// console.log(parents_array);
+			const family_node = {
+				"id": data.names[i],
+				"gender": "male",
+				"spouses": [],
+				"siblings": [],
+				"parents": parents_array,
+				"children": children_array
+			}
+			// console.log(family_node);
+			new_tree_nodes.push(family_node);
+		}
+		// console.log(new_tree_nodes);
+		setRootId(new_tree_nodes[0].id)
+		setTreeNodes(new_tree_nodes);
 	}
 
 	// function for generating a table from the JSON response
@@ -244,13 +232,19 @@ function Canopy_Edit_Node(props) {
 
 				<br />
 
-				<div>
-					<table border="1" className="canopy-table">
-						{generateTable(owned_nodes)}
-					</table>
-				</div>
-
-				<h1>Test Family Tree</h1>
+				<h2>Test Family Tree</h2>
+				{tree_nodes.length < 1 && (
+					<h3>Tree information is loading...</h3>
+				)}
+				{selected && (
+					<NodeDetails
+					node={selected}
+					className="details"
+					onSelect={setSelectId}
+					onHover={setHoverId}
+					onClear={() => setHoverId(undefined)}
+					/>
+				)}
 				{tree_nodes.length > 0 && (
 					<ReactFamilyTree
 						nodes={tree_nodes}
@@ -271,15 +265,14 @@ function Canopy_Edit_Node(props) {
 						)}
 					/>
 				)}
-				{selected && (
-					<NodeDetails
-					node={selected}
-					className="details"
-					onSelect={setSelectId}
-					onHover={setHoverId}
-					onClear={() => setHoverId(undefined)}
-					/>
-				)}
+
+				<br />
+
+				<div>
+					<table border="1" className="canopy-table">
+						{generateTable(owned_nodes)}
+					</table>
+				</div>
 
 				<br />
 				
@@ -287,13 +280,17 @@ function Canopy_Edit_Node(props) {
 					<button> Add a New Patient to This Tree </button>
 				</Link>
 
-				<br /><br />
+				<br />
 
-				<button onClick={() => {
-					navigate('/canopy/canopy_show_trees/');
-				}}> 
-					Back 
-				</button>
+				<div>
+					<button onClick={() => {
+						navigate('/canopy/canopy_show_trees/');
+					}}> 
+						Back 
+					</button>
+				</div>
+
+				<br />
 			</div>
 		</div>
 	);

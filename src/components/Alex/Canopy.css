@@ -16,17 +16,17 @@
     background: #fff;
     border: 3px solid #ddd;
     border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     margin-left: auto;
     margin-right: auto;
     text-align: left;
 }
 
 .details {
-position: absolute;
-left: 10px;
-top: 60px;
-}
-
-.i {
-    width: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
 }

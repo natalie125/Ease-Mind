@@ -9,5 +9,5 @@ import testTreeN1 from 'relatives-tree/samples/test-tree-n1.json';
 import testTreeN2 from 'relatives-tree/samples/test-tree-n2.json';
 import type { Node } from 'relatives-tree/lib/types';
 
-export const NODE_WIDTH = 70;
-export const NODE_HEIGHT = 80;
+export const NODE_WIDTH = 100;
+export const NODE_HEIGHT = 70;

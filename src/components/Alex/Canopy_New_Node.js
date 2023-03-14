@@ -45,12 +45,12 @@ function Canopy_New_Node(props) {
 			console.log("date wrong length");
 			return false;
 		}
-		if(input.charAt(4) != '-' && input.charAt(4) != '/') {
+		if(input.charAt(4) != '-') {
 			// checks the 5th character for a '-' or '/' character
 			console.log("missing - or / on 5th character");
 			return false;
 		}
-		if(input.charAt(7) != '-' && input.chartAt(7) != '/') {
+		if(input.charAt(7) != '-') {
 			// checks the 8th character for a '-' or '/'
 			console.log("missing - or / on 8th character");
 			return false;
