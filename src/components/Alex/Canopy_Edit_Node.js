@@ -47,6 +47,17 @@ function linkParentChild(url_input, parent_child_data) {
 	}) 
 }
 
+// link patient with spouses
+function linkPatientSpouse(url_input, patient_spouse_data) {
+	axios.put(url_input, JSON.stringify(patient_spouse_data), {headers: {'Content-Type': 'application/json'}})
+	.then(function (response) {
+		console.log(response.data)
+	})
+	.catch(function (error) {
+		console.log(error)
+	}) 
+}
+
 // link patient with health condition
 function linkPatientCondition(url_input, patient_condition_data) {
 	axios.put(url_input, JSON.stringify(patient_condition_data), {headers: {'Content-Type': 'application/json'}})
@@ -77,6 +88,8 @@ function Canopy_Edit_Node(props) {
 	const [selected_parents, setSelectedParents] = useState([]);
 	const [potential_children, setPotentialChildren] = useState([]);
 	const [selected_children, setSelectedChildren] = useState([]);
+	const [potential_spouses, setPotentialSpouses] = useState([]);
+	const [selected_spouses, setSelectedSpouses] = useState([]);
 	const [conditions, setConditions] = useState([]);
 	const [selected_conditions, setSelectedConditions] = useState([]);
 
@@ -209,6 +222,7 @@ function Canopy_Edit_Node(props) {
 		// create potential parents and children
 		const new_potential_parents = [];
 		const new_potential_children = [];
+		const new_potential_spouses = [];
 		// create NaN value for parent
 		for(let i = 0; i < data.ids.length; i++) {
 			// run the loop for every single node returned
@@ -216,14 +230,17 @@ function Canopy_Edit_Node(props) {
 			// check if the DOB is less than the DOB of the current patient
 			if(convertDateToInt(data.dobs[i]) < convertDateToInt(dob)) {
 				new_potential_parents.push(patient_entry);
+				new_potential_spouses.push(patient_entry);
 			}
 			// else it would make them a child
 			else if(convertDateToInt(data.dobs[i]) > convertDateToInt(dob)){
 				new_potential_children.push(patient_entry);
+				new_potential_spouses.push(patient_entry);
 			}
 		}
 		setPotentialParents(new_potential_parents);
 		setPotentialChildren(new_potential_children);
+		setPotentialSpouses(new_potential_spouses);
 	}
 
 	// get the initial parents of the patient
@@ -250,6 +267,19 @@ function Canopy_Edit_Node(props) {
 			initial_children.push(child_entry);
 		}
 		setSelectedChildren(initial_children);
+	}
+
+	// get the initial spouses of the patient
+	const getPatientSpouses = async (url_input, patient_data) => {
+		const {data} = await axios.get(url_input, {params: patient_data})
+		// alert(JSON.stringify(data));
+		const initial_spouses = [];
+		for(let i = 0; i < data.ids.length; i++) {
+			// run the loop once for every id in the ids array
+			const spouse_entry = {id: data.ids[i], label: data.names[i]};
+			initial_spouses.push(spouse_entry);
+		}
+		setSelectedSpouses(initial_spouses);
 	}
 
 	// get all conditions from the health condition table
@@ -285,6 +315,7 @@ function Canopy_Edit_Node(props) {
 		getPatientConditions(baseurl + "patient_conditions/prod", { id: location.state?.id });
 		getPatientParents(baseurl + "child_parents/prod", { id: location.state?.id });
 		getPatientChildren(baseurl + "parent_children/prod", { id: location.state?.id });
+		getPatientSpouses(baseurl + "patient_spouses/prod", { id: location.state?.id });
 	}, [dob]);
 	// array at the end are state variables that these async methods change and NEED TO BE RERENDERED FOR when they eventually complete
 	
@@ -368,6 +399,21 @@ function Canopy_Edit_Node(props) {
 						/>
 					</div>
 					<br /><br />
+
+					<label>
+						Spouses:
+					</label>
+					<div>
+						<Dropdown
+							isSearchable
+							isMulti
+							placeHolder="Select..."
+							initialValues={selected_spouses}
+							options={potential_spouses}
+							onChange={(value) => { setSelectedSpouses(value) }}
+						/>
+					</div>
+					<br /><br />
 					
 					<label>
 						Health Conditions:
@@ -391,6 +437,7 @@ function Canopy_Edit_Node(props) {
 							putPatient(baseurl + "patient/prod", {id: id, name: name, dob: dob, ethnicity: ethnicity, new_name: new_name, new_dob: new_dob, new_ethnicity: new_ethnicity})
 							linkPatientCondition(baseurl + "patient_condition/prod", {patient_id: id, condition_id: "", conditions: selected_conditions, clear_conditions: true})
 							linkParentChild(baseurl + "parent_child/prod", {patient_id: id, parent_id: "", child_id: "", parents: selected_parents, children: selected_children, clear_parents: true, clear_children: true})
+							linkPatientSpouse(baseurl + "patient_spouse/prod", {patient_id: id, spouse_id: "", spouse_of_id: "", spouses: selected_spouses, spouse_of: [], clear_spouses: true, clear_spouse_of: true})
 							alert("Patient Details Saved!")
 							navigate(0)
 						}

@@ -104,10 +104,18 @@ function Canopy_Edit_Node(props) {
 				parents_array.push({id: parents_get.data.names[j], type: "blood"});
 			}
 			// console.log(parents_array);
+			const spouses_get = await axios.get(baseurl + "patient_spouses/prod", {params: {id: data.ids[i]}});
+			// console.log("patient " + data.ids[i] + "'s spouses");
+			// console.log(spouses_get.data);
+			let spouses_array = []
+			for(let j = 0; j < spouses_get.data.names.length; j++) {
+				spouses_array.push({id: spouses_get.data.names[j], type: "married"});
+			}
+			// console.log(spouses_array);
 			const family_node = {
 				"id": data.names[i],
 				"gender": "male",
-				"spouses": [],
+				"spouses": spouses_array,
 				"siblings": [],
 				"parents": parents_array,
 				"children": children_array

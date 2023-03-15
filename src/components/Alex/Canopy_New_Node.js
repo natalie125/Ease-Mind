@@ -209,7 +209,7 @@ function Canopy_New_Node(props) {
 							alert("DOB format invalid!")
 						}
 					}}>
-						Proceed to Choosing Parents and Children
+						Proceed to Choosing Parents, Children, and Spouses
 					</button>
 				</div>
 

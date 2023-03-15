@@ -25,6 +25,17 @@ function linkParentChild(url_input, parent_child_data) {
 	}) 
 }
 
+// link patient with spouses
+function linkPatientSpouse(url_input, patient_spouse_data) {
+	axios.put(url_input, JSON.stringify(patient_spouse_data), {headers: {'Content-Type': 'application/json'}})
+	.then(function (response) {
+		console.log(response.data)
+	})
+	.catch(function (error) {
+		console.log(error)
+	}) 
+}
+
 // link patient with health condition
 function linkPatientCondition(url_input, patient_condition_data) {
 	axios.put(url_input, JSON.stringify(patient_condition_data), {headers: {'Content-Type': 'application/json'}})
@@ -51,6 +62,8 @@ function Canopy_New_Node_2(props) {
 	const [selected_parents, setSelectedParents] = useState([]);
 	const [potential_children, setPotentialChildren] = useState([]);
 	const [selected_children, setSelectedChildren] = useState([]);
+	const [potential_spouses, setPotentialSpouses] = useState([]);
+	const [selected_spouses, setSelectedSpouses] = useState([]);
 	const [selected_conditions, setSelectedConditions] = useState(location.state?.selected_conditions);
 
 	// convert YYYY-MM-DD to int
@@ -70,6 +83,7 @@ function Canopy_New_Node_2(props) {
 		// create potential parents and children
 		const new_potential_parents = [];
 		const new_potential_children = [];
+		const new_potential_spouses = [];
 		// create NaN value for parent
 		for(let i = 0; i < data.ids.length; i++) {
 			// run the loop for every single node returned
@@ -77,14 +91,17 @@ function Canopy_New_Node_2(props) {
 			// check if the DOB is less than the DOB of the current patient
 			if(convertDateToInt(data.dobs[i]) < convertDateToInt(dob)) {
 				new_potential_parents.push(patient_entry);
+				new_potential_spouses.push(patient_entry);
 			}
 			// else it would make them a child
 			else if(convertDateToInt(data.dobs[i]) > convertDateToInt(dob)){
 				new_potential_children.push(patient_entry);
+				new_potential_spouses.push(patient_entry);
 			}
 		}
 		setPotentialParents(new_potential_parents);
 		setPotentialChildren(new_potential_children);
+		setPotentialSpouses(new_potential_spouses);
 	}
 
 	// create a new patient with name, dob, ethnicity, parents, children, and conditions
@@ -94,6 +111,7 @@ function Canopy_New_Node_2(props) {
 		console.log(new_patient_id);
 		linkPatientCondition(baseurl + "patient_condition/prod", {patient_id: new_patient_id, condition_id: "", conditions: selected_conditions, clear_conditions: true});
 		linkParentChild(baseurl + "parent_child/prod", {patient_id: new_patient_id, parent_id: "", child_id: "", parents: selected_parents, children: selected_children, clear_parents: true, clear_children: true});
+		linkPatientSpouse(baseurl + "patient_spouse/prod", {patient_id: new_patient_id, spouse_id: "", spouse_of_id: "", spouses: selected_spouses, spouse_of: [], clear_spouses: true, clear_spouse_of: true});
 	}
 
 	useEffect(() => {
@@ -148,6 +166,21 @@ function Canopy_New_Node_2(props) {
 							initialValues={selected_children}
 							options={potential_children}
 							onChange={(value) => { setSelectedChildren(value) }}
+						/>
+					</div>
+					<br /><br />
+
+					<label>
+						Spouses:
+					</label>
+					<div>
+						<Dropdown
+							isSearchable
+							isMulti
+							placeHolder="Select..."
+							initialValues={selected_spouses}
+							options={potential_spouses}
+							onChange={(value) => { setSelectedSpouses(value) }}
 						/>
 					</div>
 					<br /><br />
