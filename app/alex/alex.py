@@ -1030,23 +1030,25 @@ def link_patient_spouse(mode):
         patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
         # clear arrays
         if clear_spouses and patient.spouses != None:
-            patient.parents = []
+            patient.spouses = []
         if clear_spouse_of and patient.spouse_of != None:
-            patient.children = []
+            patient.spouse_of = []
         # if singleton IDs were provided
         if spouse_id != None and spouse_id != None:
             spouse = models.Pedigree_Patient_Test.query.filter_by(id=spouse_id).first()
             spouse_of = models.Pedigree_Patient_Test.query.filter_by(id=spouse_of_id).first()
             spouse.spouses.append(spouse_of)
-        # if array of parents and children are to be used
+        # if array of spouses and spouse_of are to be used
         if spouses != None:
             for spouse_entry in spouses:
                 spouse_query = models.Pedigree_Patient_Test.query.filter_by(id=spouse_entry.get("id")).first()
                 patient.spouses.append(spouse_query)
+                spouse_query.spouses.append(patient)
         if spouse_of != None:
             for spouse_of_entry in spouse_of:
                 spouse_of_query = models.Pedigree_Patient_Test.query.filter_by(id=spouse_of_entry.get("id")).first()
-                patient.children.append(spouse_of_query)
+                patient.spouse_of.append(spouse_of_query)
+                spouse_query.spouse_of.append(patient)
         db.session.commit()
 
         return "patient.spouses: " + str(patient.spouses) + "\nspouse_id: " + str(spouse_id) + "\nspouse_of_id: " + str(
@@ -1057,23 +1059,25 @@ def link_patient_spouse(mode):
         patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
         # clear arrays
         if clear_spouses and patient.spouses != None:
-            patient.parents = []
+            patient.spouses = []
         if clear_spouse_of and patient.spouse_of != None:
-            patient.children = []
+            patient.spouse_of = []
         # if singleton IDs were provided
         if spouse_id != None and spouse_id != None:
             spouse = models.Pedigree_Patient.query.filter_by(id=spouse_id).first()
             spouse_of = models.Pedigree_Patient.query.filter_by(id=spouse_of_id).first()
             spouse.spouses.append(spouse_of)
-        # if array of parents and children are to be used
+        # if array of spouses and spouse_of are to be used
         if spouses != None:
             for spouse_entry in spouses:
                 spouse_query = models.Pedigree_Patient.query.filter_by(id=spouse_entry.get("id")).first()
                 patient.spouses.append(spouse_query)
+                spouse_query.spouses.append(patient)
         if spouse_of != None:
             for spouse_of_entry in spouse_of:
                 spouse_of_query = models.Pedigree_Patient.query.filter_by(id=spouse_of_entry.get("id")).first()
-                patient.children.append(spouse_of_query)
+                patient.spouse_of.append(spouse_of_query)
+                spouse_query.spouse_of.append(patient)
         db.session.commit()
 
         return "patient.spouses: " + str(patient.spouses) + "\nspouse_id: " + str(spouse_id) + "\nspouse_of_id: " + str(
