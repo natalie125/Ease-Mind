@@ -162,9 +162,9 @@ patient_condition_test = db.Table('patient_condition_test',
 
 # join table for the relationship of "a patient has these spouses" or "this patient is a spouse of this patient"
 patient_spouse_test = db.Table('patient_spouse_test',
-    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
-    db.Column('spouse_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
-    bind_key='canopy'
+    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
+    db.Column('spouse_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
+    bind_key='canopy_test'
 )
 
 # table for family trees
@@ -192,7 +192,7 @@ class Pedigree_Patient_Test(db.Model):
 
     # relationships
     children = db.relationship('Pedigree_Patient_Test', secondary=parent_child_test, primaryjoin=id==parent_child_test.c.parent_id, secondaryjoin=id==parent_child_test.c.child_id, backref=db.backref('parents'))
-    spouses = db.relationship('Pedigree_Patient_Test', secondary=patient_spouse,
+    spouses = db.relationship('Pedigree_Patient_Test', secondary=patient_spouse_test,
                               primaryjoin=id == patient_spouse_test.c.spouse_id,
                               secondaryjoin=id == patient_spouse_test.c.patient_id, backref=db.backref('spouse_of'))
     conditions = db.relationship('Pedigree_Health_Condition_Test', secondary=patient_condition_test, backref=db.backref('condition_of'))

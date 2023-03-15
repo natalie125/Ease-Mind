@@ -1000,7 +1000,7 @@ def link_parent_child(mode):
             clear_parents) + "\nclear_children: " + str(clear_children)
 
 # function for linking a spouse and spouse_of
-@app.route('/canopy/parent_child/<string:mode>', methods=['PUT'])
+@app.route('/canopy/patient_spouse/<string:mode>', methods=['PUT'])
 def link_patient_spouse(mode):
     request_data = request.get_json()
     patient_id = request_data['patient_id']
