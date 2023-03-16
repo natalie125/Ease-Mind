@@ -5,6 +5,8 @@ from app import app, models, bcrypt, db
 import pickle
 import base64
 from shapely.geometry import Polygon
+import moviepy.editor as moviepy
+
 
 import cv2
 import numpy as np
@@ -15,8 +17,9 @@ import pandas as pd
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 import base64
-from urllib.parse import urljoin
 import soundfile as sf
+from scipy.io.wavfile import read as read_wav
+
 
 
 
@@ -89,9 +92,9 @@ def getCalculations(raw_image):
         return ["SUCCESS", eyeRatio, mouthSlope]
     
 
-def voiceFeatureExtraction(raw_voice):
+def voiceFeatureExtraction():
     directory = os.getcwd()
-    voice_path =  os.path.join(directory,"app/ramat/temp2.wav")
+    voice_path =  os.path.join(directory,"app/ramat/temp.wav")
 
     print("-------------------------------------")
     print(type(directory))
@@ -99,17 +102,16 @@ def voiceFeatureExtraction(raw_voice):
     print(voice_path)
     print("=====================================s")
 
-    f = open(voice_path, "r")
-
-
-    data, samplerate = sf.read(voice_path)
-
 
     x , sr = librosa.load(voice_path)
     mean_mfcc = np.mean(librosa.feature.mfcc(y=x, sr=sr, n_mfcc=128),axis=1)
+    print(mean_mfcc)
+    mfcc_coeffs = pd.DataFrame([mean_mfcc])
+    print(mfcc_coeffs.to_numpy().shape)
+    print(mfcc_coeffs.to_numpy())
 
-    mfcc_coeffs = pd.DataFrame(mean_mfcc)
-    print(data)
+
+    return mfcc_coeffs.to_numpy().reshape(-1,16,8,1)
 
 
 
@@ -137,10 +139,10 @@ def image():
         #convert image string to array of bytes
         imageBytes = np.fromstring(imageStr, np.uint8)
         
-        # get the calculations for the inputted image
+        # get the calculations fo-r the inputted image
         image_calcs = getCalculations(imageBytes)
 
-        # check the status of the calculations before generating a prediction
+        # check the status of the calculations beftemore generating a prediction
         if (image_calcs[0] == "ERROR"):
             return {"msg": image_calcs[1]}, image_calcs[2]
         elif (image_calcs[0] == "SUCCESS"):
@@ -152,25 +154,28 @@ def audio():
     if request.method == 'GET':
         return "Ramat's App has been Requested"
     elif request.method == 'POST':
-
         voice_model = load_model('app/ramat/model.h5')
+        print(request)
+        print(request.files)
+        # print(request.files['audio'].read())
 
-        voice = request.form['audio']
-        
-        # if frontend sends no audio return error
-        if voice == "null":
+
+        print("-------------------------------------------------------")     
+
+        audio_file = request.files['audio']
+
+        if audio_file.filename != '':
+            request.files['audio'].save("app/ramat/temp.wav")
+        else:
+            # if frontend sends no file return error
             return {"msg": "No audio sent!"}, 415
 
-         # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
-        voice = voice[22:]
-        voice_str = base64.b64encode(base64.b64decode(voice))
+        features = voiceFeatureExtraction()
 
-        voice_arr =  np.frombuffer(voice_str, dtype=np.int16)
 
-        sf.write("app/ramat/temp2.wav", voice_arr, 22050)
-
-        voiceFeatureExtraction(voice)
-        return {"msg": "hello"}, 200
+        prediction = voice_model.predict(features)
+        print(prediction[0][0])
+        return {"msg": str(prediction[0][0])}, 200
 
 
 
