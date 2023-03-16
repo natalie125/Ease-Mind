@@ -1,4 +1,4 @@
-import Recorder from "recorder-js";
+import RecordRTC, { StereoAudioRecorder, invokeSaveAsDialog } from "recordrtc";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CantinaBand3 from "./CantinaBand3.wav";
@@ -9,50 +9,50 @@ process.env.NODE_ENV === "development"
 	: (BASEURL = process.env.REACT_APP_PROD);
 
 const VoiceRecorder = (props) => {
+	const [recorder, setRecorder] = useState(null);
 	const [isRecording, setIsRecording] = useState(false);
 	const [audioBlob, setAudioBlob] = useState(null);
 
-	const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+	const startRecording = async () => {
+		setIsRecording(true);
+		console.log("1");
+		console.log(recorder);
 
-	const recorder = new Recorder(
-		audioContext
-		// An array of 255 Numbers
-		// You can use this to visualize the audio stream
-		// If you use react, check out react-wave-stream
-		//onAnalysed: (data) => console.log(data),
-	);
-
-	navigator.mediaDevices
-		.getUserMedia({ audio: true })
-		.then((stream) => recorder.init(stream))
-		.catch((err) => console.log("Uh oh... unable to get stream...", err));
-
-	const startRecording = () => {
-		recorder
-			.start()
-			.then(() => {
-				setIsRecording(true);
-			})
-			.catch((e) => {
-				console.error(e);
+		try {
+			const stream = await navigator.mediaDevices.getUserMedia({
+				video: false,
+				audio: true,
 			});
+			setRecorder(
+				await RecordRTC(stream, {
+					type: "audio",
+					mimeType: "audio/wav",
+					recorderType: StereoAudioRecorder,
+				})
+			);
+			console.log("2");
+			console.log(recorder);
+
+			await recorder.startRecording();
+
+			console.log("3");
+			console.log(recorder);
+		} catch (error) {
+			console.log("Uh oh... unable to get stream...", error.stack);
+			console.trace();
+		}
 	};
 
 	const stopRecording = () => {
 		// buffer is an AudioBuffer
-		recorder
-			.stop()
-			.then(({ buffer, blob }) => {
-				console.log(blob);
-
-				setIsRecording(false);
-				setAudioBlob(blob);
-				console.log(buffer);
-				download();
-			})
-			.catch((e) => {
-				console.error(e);
-			});
+		recorder.stopRecording(() => {
+			let blob = recorder.getBlob();
+			recorder.invokeSaveAsDialog(blob);
+			setIsRecording(false);
+			setAudioBlob(blob);
+			console.log(blob);
+			download();
+		});
 	};
 
 	const download = () => {
