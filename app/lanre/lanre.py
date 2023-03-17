@@ -46,13 +46,13 @@ def dipstick_image_upload():
     filename = timestamp+".png"
     
     # saves decoded base 64 string to that image
-    with open(os.path.join("app/lanre/shots", "image.png"), "wb") as f:
+    with open(os.path.join("app/lanre/submitted_images", "image.png"), "wb") as f:
         f.write(image_decoded)
     print("Decoded")
 
     # variables
-    shots_folder = '/Users/lanresodeinde/Desktop/final_year_app/backend/app/lanre/shots/'
-    image_path = shots_folder + 'image.png'
+    submitted_folder = '/Users/lanresodeinde/Desktop/final_year_app/backend/app/lanre/submitted_images/'
+    image_path = submitted_folder+ 'image.png'
 
     # remove background
     pillow_image = remove_background(image_path)
@@ -245,9 +245,9 @@ def draw_rectangles_and_extract_colours(image):
     extracted_colours[parameter_names[index]] = colour
     index+=1
 
-    fig = plt.figure()
-    fig.add_subplot(1,1,1)
-    plt.imshow(rectangle)
+    # fig = plt.figure()
+    # fig.add_subplot(1,1,1)
+    # plt.imshow(rectangle)
 
 # draw_rectangles_and_extract_colours(resized_image)
 
