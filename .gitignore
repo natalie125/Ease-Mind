@@ -8,3 +8,4 @@ test.db-journal
 reference_chart/
 shots/
 ngrok
+model_versions/
