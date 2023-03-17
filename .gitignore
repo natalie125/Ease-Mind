@@ -5,3 +5,6 @@
 dist/
 larks_final_project.egg-info/
 test.db-journal
+reference_chart/
+shots/
+ngrok
