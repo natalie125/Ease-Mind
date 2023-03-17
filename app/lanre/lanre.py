@@ -87,7 +87,7 @@ def dipstick_image_upload():
 def save_image_to_file(image):
     # saves to directory decoded base 64 string to that image 
     im = Image.fromarray(image)
-    im.save("/Users/lanresodeinde/Desktop/final_year_app/backend/app/lanre/shots/output.png")
+    im.save("/Users/lanresodeinde/Desktop/final_year_app/backend/app/lanre/submitted_images/output.png")
     # with open(os.path.join("app/lanre/shots", "output.png"), "wb") as f:
     #     f.write(image)
 
