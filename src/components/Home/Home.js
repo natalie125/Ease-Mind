@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "../App/App.css";
 import canopy_logo from "../../images/canopy-logo.png";
 import dipstik_logo from "../../images/dipstik-logo.png";
-import stroke_logo from "../../images/stroke-logo.png";
+import paralysis_analysis_logo from "../../images/paralysis-analysis-logo.png";
 import tonsilitis_detector_logo from "../../images/tonsilitis-detector-logo.png";
 import skinscan_logo from "../../images/skinscan_logo.png";
 import Header from "../Header/Header";
@@ -31,7 +31,7 @@ class Home extends Component {
 		return (
 			// TODO: Need to create page that will present app options in nicer way.
 			// TODO: Need to create page that will present app options in nicer way.
-			
+
 			<div className="Home">
 				<Header />
 
@@ -51,16 +51,24 @@ class Home extends Component {
 						</Link>
 
 						<Link className="link" to="/ramat">
-							<img className="homepage-button" src={stroke_logo} alt="Stroke_App_Ramat" />
+							<img
+								className="homepage-button"
+								src={paralysis_analysis_logo}
+								alt="Stroke_App_Ramat"
+							/>
 						</Link>
 
-						<Link className="link" to="/shreyas">
-							<img className="homepage-button" src={tonsilitis_detector_logo} alt="Tonsilitis_App_Shreyas" />
+						<Link className="link" to="/shreyas/tonsillitis_instructions">
+							<img
+								className="homepage-button"
+								src={tonsilitis_detector_logo}
+								alt="Tonsilitis_App_Shreyas"
+							/>
 						</Link>
 						{/* <button onClick={this.getEC2}> Get EC2 </button> */}
 					</div>
 				</div>
-		</div>
+			</div>
 		);
 	}
 }
