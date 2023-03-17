@@ -15,7 +15,6 @@ import os
 import librosa
 import pandas as pd
 import tensorflow as tf
-from tensorflow.keras.models import load_model
 import base64
 import soundfile as sf
 from scipy.io.wavfile import read as read_wav
@@ -130,7 +129,7 @@ def image_and_audio():
 
 
         face_model = pickle.load(open("app/ramat/droop_model.sav", 'rb'))
-        voice_model = load_model('app/ramat/model.h5')
+        voice_model = tf.keras.models.load_model('app/ramat/model.h5')
 
         image = request.form['image']
         audio_file = request.files['audio']
