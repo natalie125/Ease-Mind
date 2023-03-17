@@ -164,7 +164,7 @@ def image_and_audio():
 
         # check the status of the calculations beftemore generating a prediction
         if (image_calcs[0] == "ERROR"):
-            return {"msg": image_calcs[1]}, image_calcs[2]
+            return {"msg": image_calcs[1]}, imagej_calcs[2]
         elif (image_calcs[0] == "SUCCESS"):
             prediction = face_model.predict([[image_calcs[1], image_calcs[2]]])
             return {"msg": {"face_prediction": prediction[0], "voice_prediction":str(audio_prediction[0][0])}}, 200
