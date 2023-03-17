@@ -11,44 +11,18 @@ process.env.NODE_ENV === "development"
 
 //This component is used to take pictures
 //pictures are stored in the imageSrc variable after taking it
-//Not sure what to do after picture is stored in the imageSrc variable
-const WebcamCapture = (props) => {
+const Camera = (props) => {
 	const webcamRef = useRef(null);
 	const [imageSrc, setImageSrc] = useState(null);
 	const [flash, setFlash] = useState(false);
 	const [frontFacing, setFrontFacing] = React.useState(true);
 	const [serverResponse, setServerResponse] = React.useState(null);
-	const navigate = useNavigate();
-	//pass endpoint in as a props to the component whichever endpoint you want to send the image to.
-	//if in doubt how to do that please refer to shreyas.js
-	//if no context is provided it will send to /upload endpoint
-	let context = props.context || "upload";
-	context = context.toString();
-
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		const formData = new FormData();
-		formData.append("image", imageSrc);
-		try {
-			const response = await axios(BASEURL + props.context, {
-				method: "post",
-				data: formData,
-				headers: {
-					"Access-Control-Allow-Origin": "*",
-					"Content-Type": "multipart/form-data",
-				},
-			});
-			console.log(response);
-			props.returnResponse(response);
-		} catch (error) {
-			console.error(error);
-		}
-	};
 
 	//takes pictures without flash
 	const handleTakePicture = () => {
 		const imageSrc = webcamRef.current.getScreenshot();
 		setImageSrc(imageSrc);
+		props.returnImage(imageSrc);
 	};
 
 	//takes pictures with flash
@@ -57,8 +31,19 @@ const WebcamCapture = (props) => {
 		setTimeout(() => {
 			const imageSrc = webcamRef.current.getScreenshot();
 			setImageSrc(imageSrc);
+			props.returnImage(imageSrc);
 			setFlash(false);
 		}, 1000);
+	};
+
+	//takes pictures without flash
+	const handleRetakePicture = () => {
+		setImageSrc(null);
+	};
+
+	//takes pictures without flash
+	const handleNext = () => {
+		props.returnFinished(true);
 	};
 
 	// Using button to change what camera is being used
@@ -117,56 +102,50 @@ const WebcamCapture = (props) => {
 		};
 	}
 
-	const tons_outcome = (serverResponse) => {
-		if (serverResponse === 0) navigate("/shreyas/tonsillitis_outcome_1", { replace: true });
-		else navigate("/shreyas/tonsillitis_outcome_2", { replace: true });
-	};
-
 	//two buttons, one for taking pictures with flash and one for without
 	return (
 		<>
 			<div className="cam-horizontal-container">
-				<div style={{ width: "80%", paddingRight: "5px" }}>
-					<Webcam
-						className="webcam"
-						videoConstraints={cameraConstraints}
-						ref={webcamRef}
-						style={{ width: "100%" }}
-					/>
-				</div>
-				<div
-					style={{
-						width: "20%",
-						paddingLeft: "5px",
-						display: "flex",
-						flexDirection: "column",
-						justifyContent: "space-between",
-					}}
-				>
-					<button className="cam-button" onClick={handleTakePicture}>
-						Take Picture
-					</button>
-					<button className="cam-button" onClick={handleTakePictureWithFlash}>
-						Take Picture With Flash
-					</button>
-					<button className="cam-button" onClick={switchCameraFacing}>
-						Change Camera
-					</button>
-					<button className="cam-button" onClick={handleSubmit}>
-						Submit Image
-					</button>
-				</div>
-			</div>
-			<div>
-				{flash && <div className="flash" />}
+				{!imageSrc && (
+					<>
+						<div style={{ width: "80%", paddingRight: "5px" }}>
+							<Webcam
+								className="webcam"
+								videoConstraints={cameraConstraints}
+								ref={webcamRef}
+								style={{ width: "100%" }}
+							/>
+						</div>
+						<div className="cam-button-container">
+							<button className="cam-button" onClick={handleTakePicture}>
+								Take Picture
+							</button>
+							<button className="cam-button" onClick={handleTakePictureWithFlash}>
+								Take Picture With Flash
+							</button>
+							<button className="cam-button" onClick={switchCameraFacing}>
+								Change Camera
+							</button>
+						</div>
+					</>
+				)}
 				{imageSrc && (
-					<img src={imageSrc} style={{ width: "100%", borderRadius: "5px" }} alt="Captured photo" />
+					<>
+						<div style={{ width: "80%", paddingRight: "5px" }}>
+							<img src={imageSrc} style={{ width: "100%", borderRadius: "5px" }} alt="Captured" />
+						</div>
+						<div className="cam-button-container">
+							<button className="cam-button" onClick={handleRetakePicture}>
+								Retake Picture
+							</button>
+							<button className="cam-button" onClick={handleNext}>
+								Next
+							</button>
+						</div>
+					</>
 				)}
 			</div>
-			<div>
-				{context === "shreyas" && serverResponse === 0 && tons_outcome(serverResponse)}
-				{context === "shreyas" && serverResponse === 1 && tons_outcome(serverResponse)}
-			</div>
+			<div>{flash && <div className="flash" />}</div>
 		</>
 	);
 };
@@ -199,4 +178,4 @@ function useWindowSize() {
 	return windowSize;
 }
 
-export default WebcamCapture;
+export default Camera;
