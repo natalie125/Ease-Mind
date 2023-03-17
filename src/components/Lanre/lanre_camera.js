@@ -16,7 +16,6 @@ process.env.NODE_ENV === "development"
 const LanreWebcamCapture = () => {
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
-  const [flash, setFlash] = useState(false);
   const [frontFacing, setFrontFacing] = React.useState(true);
 	let navigate = useNavigate();
 
@@ -46,7 +45,6 @@ const LanreWebcamCapture = () => {
   }
 
 
-
 //takes pictures without flash
   const handleTakePicture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -58,16 +56,6 @@ const handleRetakePicture = () => {
   setImageSrc(null);
 };
 
-
-//takes pictures with flash
-  const handleTakePictureWithFlash = () => {
-    setFlash(true);
-    // setTimeout(() => {
-    //     const imageSrc = webcamRef.current.getScreenshot();
-    //     setImageSrc(imageSrc);
-    //     setFlash(false);
-    // }, 1000);
-  };
 
 
   // Using button to change what camera is being used
