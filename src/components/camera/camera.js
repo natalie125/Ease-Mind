@@ -39,7 +39,6 @@ const WebcamCapture = (props) => {
 				},
 			});
 			console.log(response);
-			props.returnResponse(response);
 		} catch (error) {
 			console.error(error);
 		}
