@@ -113,6 +113,14 @@ def make_tensorflow_compatible(np_img):
     return np_img
 
 
+def decode_image_json(image):
+    # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
+    image = image[22:]
+    image_decoded = base64.b64decode(image)
+    img = Image.open(io.BytesIO(image_decoded))
+    return img
+
+
 @app.route('/shreyas', methods=['GET', 'POST'])
 def shreyas():
     if request.method == 'POST':
@@ -120,11 +128,7 @@ def shreyas():
         # if frontend sends no image return error
         if image == "null":
             return {"msg": "No image sent!"}, 415
-
-        # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
-        image = image[22:]
-        image_decoded = base64.b64decode(image)
-        img = Image.open(io.BytesIO(image_decoded))
+        img = decode_image_json(image)
         # Convert the PIL image object to a NumPy array with RGB channels
         np_rgb_img = convert_to_rgb_np(img)
         np_processed_img = pipeline(np_rgb_img)
