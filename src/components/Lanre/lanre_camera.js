@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCamera, faArrowsRotate, faPaperPlane, faUpload } from '@fortawesome/free-solid-svg-icons'
+import { faCamera, faArrowsRotate, faPaperPlane, faUpload, faCameraRotate, faCameraAlt, faCameraRetro, faVideoCamera, faPlaneArrival, faPlaneCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router-dom";
 
 let BASEURL = "";
@@ -156,15 +156,13 @@ const handleRetakePicture = () => {
       <div className="camera-container">
         <div className="overlay-ancestor">
           <div className="camera-overlay"></div>
-          <Webcam className="lanre-webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"10px"} screenshotQuality="1" />
+          <Webcam className="lanre-webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"0px"} screenshotQuality="1" />
+          <div className="lanre-camera-buttons-container">
+            {/* <button onClick={switchCameraFacing} className="camera-button"><FontAwesomeIcon icon={faCameraRotate} className="camera-icon"/></button> */}
+            {/* <button onClick={handleTakePicture} className="camera-button"><FontAwesomeIcon icon={faCamera} className="camera-icon"/></button> */}
+            <button onClick={handleTakePicture} className="camera-button"></button>
         </div>
-      </div>
-      
-      {/* <div style={{width:"100%"}}> */}
-      <div className="lanre-camera-buttons-container">
-      <button onClick={switchCameraFacing} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
-        <button onClick={handleTakePicture} className="camera-button"><FontAwesomeIcon icon={faCamera} className="camera-icon"/></button>
-        <button onClick={handleSubmit} className="camera-button"><FontAwesomeIcon icon={faPaperPlane} className="camera-icon"/></button>
+        </div>
       </div>
       </>
 		)}
@@ -174,8 +172,17 @@ const handleRetakePicture = () => {
 
         {imageSrc && (
           <>
-          <img src={imageSrc} width={minValue} alt="Captured photo" />
-          <button onClick={handleRetakePicture} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
+          <div className="taken-pic-container">
+            <img src={imageSrc} width={minValue} alt="Captured photo" />
+            <div className="taken-pic-buttons-overlay-container">
+            <button onClick={handleRetakePicture} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
+            <button onClick={handleSubmit} className="camera-button"><FontAwesomeIcon icon={faPaperPlane} className="camera-icon"/></button>
+          </div>
+          </div>
+          
+          {/* <button onClick={handleRetakePicture} className="camera-button">Retake</button> */}
+
+
           </>
         )}
       </div>
