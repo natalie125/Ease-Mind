@@ -53,6 +53,12 @@ const LanreWebcamCapture = () => {
     setImageSrc(imageSrc);
   };
 
+//resets picture source and retakes picture
+const handleRetakePicture = () => {
+  setImageSrc(null);
+};
+
+
 //takes pictures with flash
   const handleTakePictureWithFlash = () => {
     setFlash(true);
@@ -144,6 +150,9 @@ const LanreWebcamCapture = () => {
 //two buttons, one for taking pictures with flash and one for without
   return (
     <>
+    <div>
+    {!imageSrc && (
+					<>
       <div className="camera-container">
         <div className="overlay-ancestor">
           <div className="camera-overlay"></div>
@@ -157,11 +166,17 @@ const LanreWebcamCapture = () => {
         <button onClick={handleTakePicture} className="camera-button"><FontAwesomeIcon icon={faCamera} className="camera-icon"/></button>
         <button onClick={handleSubmit} className="camera-button"><FontAwesomeIcon icon={faPaperPlane} className="camera-icon"/></button>
       </div>
+      </>
+		)}
+    </div>
       <div>
         {/* {flash && <div className="camera-overlay" />} */}
 
         {imageSrc && (
+          <>
           <img src={imageSrc} width={minValue} alt="Captured photo" />
+          <button onClick={handleRetakePicture} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
+          </>
         )}
       </div>
     </>
