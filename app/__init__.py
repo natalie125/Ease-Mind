@@ -30,8 +30,8 @@ else:
 # define the database
 db = SQLAlchemy(app)
 
+# import these python files from /app directory
+from app import views, models
+
 # helps us handle migrations
 migrate = Migrate(app, db)
-
-# import these python files from /app directory
-from app import views, models  # noqa: E402, F401
