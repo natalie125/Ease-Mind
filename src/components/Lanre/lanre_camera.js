@@ -152,37 +152,31 @@ const handleRetakePicture = () => {
     <>
     <div>
     {!imageSrc && (
-					<>
-      <div className="camera-container">
-        <div className="overlay-ancestor">
-          <div className="camera-overlay"></div>
-          <Webcam className="lanre-webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"0px"} screenshotQuality="1" />
-          <div className="lanre-camera-buttons-container">
-            {/* <button onClick={switchCameraFacing} className="camera-button"><FontAwesomeIcon icon={faCameraRotate} className="camera-icon"/></button> */}
-            {/* <button onClick={handleTakePicture} className="camera-button"><FontAwesomeIcon icon={faCamera} className="camera-icon"/></button> */}
-            <button onClick={handleTakePicture} className="camera-button"></button>
+			<>
+        <div className="camera-container">
+          <div className="overlay-ancestor">
+            <div className="camera-overlay"></div>
+            <Webcam className="lanre-webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"0px"} screenshotQuality="1" />
+            <div className="camera-buttons-container">
+              {/* <button onClick={switchCameraFacing} className="camera-button"><FontAwesomeIcon icon={faCameraRotate} className="camera-icon"/></button> */}
+              {/* <button onClick={handleTakePicture} className="camera-button"><FontAwesomeIcon icon={faCamera} className="camera-icon"/></button> */}
+              <button onClick={handleTakePicture} className="camera-button"></button>
+            </div>
+          </div>
         </div>
-        </div>
-      </div>
       </>
 		)}
     </div>
       <div>
-        {/* {flash && <div className="camera-overlay" />} */}
-
         {imageSrc && (
           <>
-          <div className="taken-pic-container">
-            <img src={imageSrc} width={minValue} alt="Captured photo" />
-            <div className="taken-pic-buttons-overlay-container">
-            <button onClick={handleRetakePicture} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
-            <button onClick={handleSubmit} className="camera-button"><FontAwesomeIcon icon={faPaperPlane} className="camera-icon"/></button>
-          </div>
-          </div>
-          
-          {/* <button onClick={handleRetakePicture} className="camera-button">Retake</button> */}
-
-
+            <div className="taken-pic-container">
+              <img src={imageSrc} width={minValue} alt="Captured photo" />
+              <div className="taken-pic-buttons-overlay-container">
+                <button onClick={handleRetakePicture} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
+                <button onClick={handleSubmit} className="camera-button"><FontAwesomeIcon icon={faPaperPlane} className="camera-icon"/></button>
+              </div>
+            </div>
           </>
         )}
       </div>
