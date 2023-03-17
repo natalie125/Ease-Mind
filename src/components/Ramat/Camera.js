@@ -18,33 +18,6 @@ const Camera = (props) => {
 	const [frontFacing, setFrontFacing] = React.useState(true);
 	const [serverResponse, setServerResponse] = React.useState(null);
 
-	const navigate = useNavigate();
-	//pass endpoint in as a props to the component whichever endpoint you want to send the image to.
-	//if in doubt how to do that please refer to shreyas.js
-	//if no endpoint is provided it will send to /upload endpoint
-	let endpoint = props.endpoint || "upload";
-	endpoint = endpoint.toString();
-
-	// const handleSubmit = async (e) => {
-	// 	e.preventDefault();
-	// 	const formData = new FormData();
-	// 	formData.append("image", imageSrc);
-	// 	try {
-	// 		const response = await axios(BASEURL + props.context, {
-	// 			method: "post",
-	// 			data: formData,
-	// 			headers: {
-	// 				"Access-Control-Allow-Origin": "*",
-	// 				"Content-Type": "multipart/form-data",
-	// 			},
-	// 		});
-	// 		console.log(response);
-	// 		props.returnResponse(response);
-	// 	} catch (error) {
-	// 		console.error(error);
-	// 	}
-	// };
-
 	//takes pictures without flash
 	const handleTakePicture = () => {
 		const imageSrc = webcamRef.current.getScreenshot();

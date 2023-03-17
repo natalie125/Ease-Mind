@@ -16,13 +16,8 @@ const ImageAudio = (props) => {
 	const webcamRef = useRef(null);
 	const [image, setImage] = useState(null);
 	const [showAudio, setShowAudio] = useState(false);
-
-	const [audio, setAudio] = useState(null);
+	const [audio, setAudio] = useState(false);
 	const [serverResponse, setServerResponse] = React.useState(null);
-
-	const navigate = useNavigate();
-	let context = props.context || "upload";
-	context = context.toString();
 
 	const submitAll = async (blob) => {
 		setAudio(blob);
@@ -47,6 +42,13 @@ const ImageAudio = (props) => {
 		} catch (error) {
 			console.error(error);
 		}
+	};
+
+	const restart = () => {
+		setServerResponse(null);
+		setImage(null);
+		setShowAudio(false);
+		setAudio(null);
 	};
 
 	return (
@@ -75,10 +77,11 @@ const ImageAudio = (props) => {
 						</div>
 					</>
 				)}
-				{audio && image && (
+				{serverResponse && (
 					<>
 						<div className="tons-page-camera-container">
-							<p>Response: {serverResponse}</p>{" "}
+							<p>Response: {serverResponse}</p>
+							<button onClick={restart}>Restart</button>
 						</div>
 					</>
 				)}

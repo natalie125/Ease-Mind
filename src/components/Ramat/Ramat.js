@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import ImageAudio from "./ImageAudio";
-import AudioRecorder from "../AudioRecorder";
 
 // import WebcamStreamCapture from "../Webcam";
 
@@ -30,7 +29,6 @@ class Ramat extends Component {
 				<h1>Ramat's app</h1>
 				<div className="App-body">
 					<ImageAudio />
-					<p>response message: {this.state.responseMessage}</p>
 					<Link to="/home">
 						<button> Back </button>
 					</Link>

@@ -152,103 +152,6 @@ const VoiceRecorder = (props) => {
 		}
 	};
 
-	const btnDownloadRecording = () => {
-		if (!recorder || !recorder.getBlob()) return;
-
-		if (isSafari) {
-			recorder.getDataURL(function (dataURL) {
-				SaveToDisk(dataURL, getFileName("wav"));
-			});
-			return;
-		}
-
-		var blob = recorder.getBlob();
-		var file = new File([blob], getFileName("wav"), {
-			type: "audio/wav",
-		});
-		invokeSaveAsDialog(file);
-	};
-
-	function getRandomString() {
-		if (
-			window.crypto &&
-			window.crypto.getRandomValues &&
-			navigator.userAgent.indexOf("Safari") === -1
-		) {
-			var a = window.crypto.getRandomValues(new Uint32Array(3)),
-				token = "";
-			for (var i = 0, l = a.length; i < l; i++) {
-				token += a[i].toString(36);
-			}
-			return token;
-		} else {
-			return (Math.random() * new Date().getTime()).toString(36).replace(/\./g, "");
-		}
-	}
-
-	function getFileName(fileExtension) {
-		var d = new Date();
-		var year = d.getFullYear();
-		var month = d.getMonth();
-		var date = d.getDate();
-		return "RecordRTC-" + year + month + date + "-" + getRandomString() + "." + fileExtension;
-	}
-
-	function SaveToDisk(fileURL, fileName) {
-		// for non-IE
-		if (!window.ActiveXObject) {
-			var save = document.createElement("a");
-			save.href = fileURL;
-			save.download = fileName || "unknown";
-			save.style = "display:none;opacity:0;color:transparent;";
-			(document.body || document.documentElement).appendChild(save);
-
-			if (typeof save.click === "function") {
-				save.click();
-			} else {
-				save.target = "_blank";
-				var event = document.createEvent("Event");
-				event.initEvent("click", true, true);
-				save.dispatchEvent(event);
-			}
-
-			(window.URL || window.webkitURL).revokeObjectURL(save.href);
-		}
-
-		// for IE
-		else if (!!window.ActiveXObject && document.execCommand) {
-			var _window = window.open(fileURL, "_blank");
-			_window.document.close();
-			_window.document.execCommand("SaveAs", true, fileName || fileURL);
-			_window.close();
-		}
-	}
-
-	const sendTestAudio = async (e) => {
-		e.preventDefault();
-
-		const blob = recorder.getBlob();
-
-		let metadata = {
-			type: "audio/wav",
-		};
-		let file = new File([blob], "test.wav", metadata);
-
-		var formData = new FormData();
-		formData.append("audio", file);
-		try {
-			const response = await axios.post(BASEURL + "ramat/audio", formData, {
-				headers: {
-					"Access-Control-Allow-Origin": "*",
-					"Content-Type": "multipart/form-data",
-				},
-			});
-			console.log(response);
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
@@ -272,9 +175,6 @@ const VoiceRecorder = (props) => {
 			</button>
 			<button id="btn-submit" onClick={handleSubmit}>
 				Submit
-			</button>
-			<button id="btn-test" onClick={sendTestAudio}>
-				Test
 			</button>
 
 			<div>
