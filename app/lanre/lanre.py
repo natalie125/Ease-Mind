@@ -51,7 +51,8 @@ def dipstick_image_upload():
     print("Decoded")
 
     # variables
-    submitted_folder = '/Users/lanresodeinde/Desktop/final_year_app/backend/app/lanre/submitted_images/'
+    current_dir = os.getcwd()
+    submitted_folder = current_dir + '/app/lanre/submitted_images/'
     image_path = submitted_folder+ 'image.png'
 
     # remove background
