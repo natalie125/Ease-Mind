@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import WebcamCapture from "../camera/camera";
+import ImageAudio from "./ImageAudio";
 import AudioRecorder from "../AudioRecorder";
 
 // import WebcamStreamCapture from "../Webcam";
@@ -29,16 +29,8 @@ class Ramat extends Component {
 				<Header />
 				<h1>Ramat's app</h1>
 				<div className="App-body">
-					<div className="tons-page-camera-container">
-						<div className="webcam-capture-holder">
-							<p style={{ textAlign: "center", marginBottom: "20px" }}>
-								Webcam capture below (to use flash please brighten your screen)
-							</p>
-							<WebcamCapture context="ramat/image" returnResponse={this.getResponse} />
-						</div>
-					</div>
+					<ImageAudio />
 					<p>response message: {this.state.responseMessage}</p>
-					<AudioRecorder context="ramat/audio" />
 					<Link to="/home">
 						<button> Back </button>
 					</Link>

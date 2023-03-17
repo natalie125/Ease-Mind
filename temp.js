@@ -1,6 +1,129 @@
 import RecordRTC, { StereoAudioRecorder, invokeSaveAsDialog } from "recordrtc";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import CantinaBand3 from "./CantinaBand3.wav";
+
+let BASEURL = "";
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
+
+const VoiceRecorder = (props) => {
+	const [recorder, setRecorder] = useState(null);
+	const [isRecording, setIsRecording] = useState(false);
+	const [audioBlob, setAudioBlob] = useState(null);
+
+	const startRecording = async () => {
+		setIsRecording(true);
+		console.log("1");
+		console.log(recorder);
+
+		try {
+			const stream = await navigator.mediaDevices.getUserMedia({
+				video: false,
+				audio: true,
+			});
+			setRecorder(
+				await RecordRTC(stream, {
+					type: "audio",
+					mimeType: "audio/wav",
+					recorderType: StereoAudioRecorder,
+				})
+			);
+			console.log("2");
+			console.log(recorder);
+
+			await recorder.startRecording();
+
+			console.log("3");
+			console.log(recorder);
+		} catch (error) {
+			console.log("Uh oh... unable to get stream...", error.stack);
+			console.trace();
+		}
+	};
+
+	const stopRecording = () => {
+		// buffer is an AudioBuffer
+		recorder.stopRecording(() => {
+			let blob = recorder.getBlob();
+			recorder.invokeSaveAsDialog(blob);
+			setIsRecording(false);
+			setAudioBlob(blob);
+			console.log(blob);
+			download();
+		});
+	};
+
+	const download = () => {
+		addAudioElement();
+		//Recorder.download(audioBlob, "my-audio-file"); // downloads a .wav file
+	};
+
+	const addAudioElement = async () => {
+		// remove existing audio component
+		if (document.body.contains(document.getElementById("recording"))) {
+			document.body.removeChild(document.getElementById("recording"));
+		}
+
+		// create new audio component
+		const url = URL.createObjectURL(audioBlob);
+		const audio = document.createElement("audio");
+
+		audio.setAttribute("id", "recording");
+		audio.src = url;
+		audio.controls = true;
+
+		document.body.appendChild(audio);
+	};
+
+	const doWhatever = () => {
+		setAudioBlob(null);
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+
+		let metadata = {
+			type: audioBlob.type,
+		};
+		let file = new File([audioBlob], "test.wav", metadata);
+
+		var formData = new FormData();
+		formData.append("audio", file);
+		try {
+			const response = await axios.post(BASEURL + props.context, formData, {
+				headers: {
+					"Access-Control-Allow-Origin": "*",
+					"Content-Type": "multipart/form-data",
+				},
+			});
+			console.log(response);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	return (
+		<div>
+			<button onClick={startRecording}>Start recording</button>
+			<button onClick={stopRecording}>Stop recording</button>
+			<button onClick={doWhatever}>whatever</button>
+			<button onClick={handleSubmit}>Send recording</button>
+		</div>
+	);
+};
+
+export default VoiceRecorder;
+
+
+
+
+
+import RecordRTC, { StereoAudioRecorder, invokeSaveAsDialog } from "recordrtc";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import CantinaBand3 from "./CantinaBand3.wav";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
@@ -9,15 +132,6 @@ process.env.NODE_ENV === "development"
 
 const VoiceRecorder = (props) => {
 	var audio = document.querySelector("audio");
-	var audioBlob;
-
-	var isEdge =
-		navigator.userAgent.indexOf("Edge") !== -1 &&
-		(!!navigator.msSaveOrOpenBlob || !!navigator.msSaveBlob);
-	var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
-	var recorder;
-	var microphone;
 
 	const captureMicrophone = (callback) => {
 		if (microphone) {
@@ -51,7 +165,6 @@ const VoiceRecorder = (props) => {
 	};
 
 	const addAudioElement = (src) => {
-		audio = document.querySelector("audio");
 		var newAudio = document.createElement("audio");
 		newAudio.controls = true;
 
@@ -67,8 +180,11 @@ const VoiceRecorder = (props) => {
 	};
 
 	const stopRecordingCallback = () => {
+		console.log("callback");
 		addAudioElement(URL.createObjectURL(recorder.getBlob()));
-		audioBlob = recorder.getBlob();
+
+		btnStartRecording.disabled = false;
+
 		setTimeout(function () {
 			if (!audio.paused) return;
 
@@ -83,7 +199,15 @@ const VoiceRecorder = (props) => {
 		audio.play();
 	};
 
-	const initRecorder = () => {
+	var isEdge =
+		navigator.userAgent.indexOf("Edge") !== -1 &&
+		(!!navigator.msSaveOrOpenBlob || !!navigator.msSaveBlob);
+	var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+	var recorder; // globally accessible
+	var microphone;
+
+	const btnStartRecording = () => {
 		if (!microphone) {
 			captureMicrophone(function (mic) {
 				microphone = mic;
@@ -97,17 +221,12 @@ const VoiceRecorder = (props) => {
 					alert(
 						"Please click startRecording button again. First time we tried to access your microphone. Now we will record it."
 					);
+					return;
 				}
 			});
+			return;
 		}
-	};
 
-	initRecorder();
-
-	/////////////////////////////////////////////////
-	// Button functions
-
-	const startRecording = () => {
 		addAudioElement();
 
 		audio.muted = true;
@@ -116,7 +235,6 @@ const VoiceRecorder = (props) => {
 		var options = {
 			type: "audio",
 			mimeType: "audio/wav",
-			recorderType: StereoAudioRecorder,
 			numberOfAudioChannels: isEdge ? 1 : 2,
 			checkForInactiveTracks: true,
 			bufferSize: 16384,
@@ -124,6 +242,10 @@ const VoiceRecorder = (props) => {
 
 		if (isSafari || isEdge) {
 			options.recorderType = StereoAudioRecorder;
+		}
+
+		if (navigator.platform && navigator.platform.toString().toLowerCase().indexOf("win") === -1) {
+			options.sampleRate = 48000; // or 44100 or remove this line for default
 		}
 
 		if (isSafari) {
@@ -138,17 +260,23 @@ const VoiceRecorder = (props) => {
 		}
 
 		recorder = RecordRTC(microphone, options);
+
 		recorder.startRecording();
 	};
 
-	const stopRecording = () => {
+	const btnStopRecording = () => {
+		console.log("stop recording");
 		recorder.stopRecording(stopRecordingCallback);
 	};
 
-	const stopMicrophone = () => {
+	const btnReleaseMicrophone = () => {
 		if (microphone) {
 			microphone.stop();
 			microphone = null;
+		}
+
+		if (recorder) {
+			btnStopRecording();
 		}
 	};
 
@@ -157,14 +285,14 @@ const VoiceRecorder = (props) => {
 
 		if (isSafari) {
 			recorder.getDataURL(function (dataURL) {
-				SaveToDisk(dataURL, getFileName("wav"));
+				SaveToDisk(dataURL, getFileName("mp3"));
 			});
 			return;
 		}
 
 		var blob = recorder.getBlob();
-		var file = new File([blob], getFileName("wav"), {
-			type: "audio/wav",
+		var file = new File([blob], getFileName("mp3"), {
+			type: "audio/mp3",
 		});
 		invokeSaveAsDialog(file);
 	};
@@ -224,61 +352,29 @@ const VoiceRecorder = (props) => {
 		}
 	}
 
-	const sendTestAudio = async (e) => {
-		e.preventDefault();
-
-		const blob = recorder.getBlob();
-
-		let metadata = {
-			type: "audio/wav",
-		};
-		let file = new File([blob], "test.wav", metadata);
-
-		var formData = new FormData();
-		formData.append("audio", file);
-		try {
-			const response = await axios.post(BASEURL + "ramat/audio", formData, {
-				headers: {
-					"Access-Control-Allow-Origin": "*",
-					"Content-Type": "multipart/form-data",
-				},
-			});
-			console.log(response);
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
-	const handleSubmit = (e) => {
-		e.preventDefault();
-
-		//props.returnAudio();
-		props.returnFinished(recorder.getBlob());
-
-		stopMicrophone();
-	};
-
 	return (
 		<>
+			<title>Audio Recording | RecordRTC</title>
+			<h1>Simple Audio Recording using RecordRTC</h1>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
 
 			<br />
 
-			<button id="btn-start-recording" onClick={startRecording}>
+			<button id="btn-start-recording" onClick={btnStartRecording}>
 				Start Recording
 			</button>
-			<button id="btn-stop-recording" onClick={stopRecording}>
+			<button id="btn-stop-recording" onClick={btnStopRecording}>
 				Stop Recording
 			</button>
-			<button id="btn-submit" onClick={handleSubmit}>
-				Submit
+			<button id="btn-release-microphone" onClick={btnReleaseMicrophone}>
+				Release Microphone
 			</button>
-			<button id="btn-test" onClick={sendTestAudio}>
-				Test
+			<button id="btn-download-recording" onClick={btnDownloadRecording}>
+				Download
 			</button>
 
 			<div>
-				<audio controls autoPlay playsInline></audio>
+				<audio controls autoplay playsinline></audio>
 			</div>
 		</>
 	);

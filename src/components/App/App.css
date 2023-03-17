@@ -412,6 +412,14 @@ body {
 	font-size: 10px;
 }
 
+.cam-button-container {
+	width: 20%;
+	padding-left: 5px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
 /***********************
 ** PERSONAL APP PAGE STYLES
 *************************/
