@@ -30,6 +30,11 @@ import TonsillitisOutcome2 from "./components/Shreyas/TonsillitisOutcome2";
 import Error400 from "./Pages/Error400";
 import Error404 from "./Pages/Error404";
 
+import DipstikInstructions from "./components/Lanre/DipstikHome";
+import DipstikTimer from "./components/Lanre/DipstikTimer";
+import DipstikCamera from "./components/Lanre/DipstikCamera";
+import DipstikResults from "./components/Lanre/DipstikResults";
+
 const Main = () => {
 	// const [loggedIn, setLoggedIn] = React.useState(null);
 	// const loggedIn = sessionStorage.getItem("token");
@@ -66,6 +71,10 @@ const Main = () => {
 			<Route exact path="/shreyas/tonsillitis_outcome_1" element={<TonsillitisOutcome1 />}></Route>
 			<Route exact path="/shreyas/tonsillitis_outcome_2" element={<TonsillitisOutcome2 />}></Route>
 			<Route path="*" element={<Error404 />}></Route>
+			<Route exact path="/dipstik-home" element={<DipstikInstructions />}></Route>
+			<Route exact path="/dipstik-home/dipstik-timer" element={<DipstikTimer />}></Route>
+			<Route exact path="/dipstik-home/dipstik-timer/dipstik-camera" element={<DipstikCamera />}></Route>
+			<Route exact path="/dipstik-home/dipstik-timer/dipstik-camera/dipstik-results" element={<DipstikResults />}></Route>
 		</Routes>
 	);
 };

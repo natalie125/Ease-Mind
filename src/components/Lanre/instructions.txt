@@ -1,0 +1,10 @@
+
+Important Note: This application is only to be use as a proof of concept. All advice or diagnosis given in this app should not be taken as medical advice. 
+If you are concerned about any part of your health, please get in contact with your GP or a qualified medical professional for further advice.
+
+Instructions
+1. Make sure you have collected your urine sample.
+2. Dip your dipstick in the urine sample for 5 seconds
+3. Click the start timer button when you are ready
+4. When the timer is finished, take a picture of the dipstick
+5. Hit send and wait for your results
