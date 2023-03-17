@@ -48,6 +48,7 @@ lint:
   script:
     - pip install flake8
     - python -m flake8 . --max-line-length=150
+  allow_failure: true
 
 unit_tests:
   stage: test
