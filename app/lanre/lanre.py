@@ -6,17 +6,10 @@ import os
 import time
 import cv2
 import numpy as np
-import math
 from matplotlib import pyplot as plt
 import time
 from PIL import Image
 from rembg import remove
-from matplotlib.figure import Figure
-
-from io import BytesIO
-import scipy.misc
-import matplotlib
-matplotlib.use('Agg')
 # instructions
 # add opencv to flask - pip install opencv-python 
 # add rembg to flask - pip install rembg
