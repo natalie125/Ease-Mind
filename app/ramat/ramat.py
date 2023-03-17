@@ -1,11 +1,10 @@
 # flake8: noqa
 
-from flask import Flask, render_template, Response, request, flash, redirect, url_for, session, jsonify
-from app import app, models, bcrypt, db
+from flask import  request
+from app import app
 import pickle
 import base64
 from shapely.geometry import Polygon
-import moviepy.editor as moviepy
 
 
 import cv2
@@ -16,8 +15,6 @@ import librosa
 import pandas as pd
 import tensorflow as tf
 import base64
-import soundfile as sf
-from scipy.io.wavfile import read as read_wav
 
 
 
