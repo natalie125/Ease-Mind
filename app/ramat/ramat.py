@@ -14,9 +14,6 @@ import os
 import librosa
 import pandas as pd
 import tensorflow as tf
-import base64
-
-
 
 
 def featureExtraction (raw_image):
