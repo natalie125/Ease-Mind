@@ -24,6 +24,7 @@ const loginUser = async (credentials) => {
 				console.log("User logged in");
 				console.log(response);
 				sessionStorage.setItem("token", JSON.stringify(response.data.token));
+				sessionStorage.setItem("email", JSON.stringify(response.data.email)); // added by Alex to track email of logged in user
 			}
 			return response;
 		});
