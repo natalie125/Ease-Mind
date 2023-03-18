@@ -4,6 +4,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCamera, faArrowsRotate, faPaperPlane, faUpload, faCameraRotate, faCameraAlt, faCameraRetro, faVideoCamera, faPlaneArrival, faPlaneCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router-dom";
+import Header from "../Header/Header";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
@@ -16,6 +17,7 @@ process.env.NODE_ENV === "development"
 const LanreWebcamCapture = () => {
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
+  const [imageSent, setImageSent] = useState(false);
   const [frontFacing, setFrontFacing] = React.useState(true);
 	let navigate = useNavigate();
 
@@ -23,6 +25,7 @@ const LanreWebcamCapture = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("image", imageSrc);
+    setImageSent(true);
     const response = await axios(BASEURL+"dipstik/upload",{
       method: 'post',
       data: formData,
@@ -72,7 +75,7 @@ const handleRetakePicture = () => {
 	
 	},[frontFacing]);
 
-
+// Mine
 	// Trying to do the dimensions stuff.
 	// Rounded to floats to ensure dimensions used here make sense, only issue I see right now - the videos will record in different format each time.
     const size = useWindowSize();
@@ -107,7 +110,7 @@ const handleRetakePicture = () => {
     
 
     var cameraConstraints;
-
+   // show back camera first
     if (!frontFacing){
       var x = "user";
       console.log("Size.height:",size.height)
@@ -134,12 +137,73 @@ const handleRetakePicture = () => {
       };
     }
 
+  // // Theirs
+  // // 	Trying to do the dimensions stuff.
+	// // Rounded to floats to ensure dimensions used here make sense, only issue I see right now - the videos will record in different format each time.
+	// const size = useWindowSize();
+	// var cameraHeight = Math.round(size.height * 0.8);
+  // var cameraWidth = Math.round(size.width);
+
+	// // This code attempts for the dimensions of the camera to be in a 1:1 aspect ratio, by taking the previous measurements of the size of the screen.
+	// // Takes the smaller of the two calcs of width and height, to ensure it will fit on the screen.
+	// var minValue = cameraWidth;
+
+  // // horizontal position
+	// // if (cameraHeight < minValue) {
+	// // 	minValue = cameraHeight;
+	// // 	cameraWidth = minValue;
+	// // } else {
+	// // 	// cameraHeight = minValue;
+	// // }
+
+  // //*************** 
+  // // From Mine 
+  // if (cameraHeight < minValue){
+  //       minValue = cameraHeight;
+  //       cameraWidth = minValue;
+  //   }else{
+  //       cameraHeight = cameraHeight;
+  //       cameraWidth = cameraWidth * 0.9;
+  //   };
+  // // ***************
+
+
+	// var cameraConstraints;
+  // // show back camera first
+	// if (frontFacing) {
+	// 	var x = "user";
+	// 	cameraConstraints = {
+	// 		width: {
+	// 			min: cameraWidth,
+	// 			max: cameraWidth,
+	// 		},
+	// 		height: {
+	// 			min: cameraHeight,
+	// 			max: cameraHeight,
+	// 		},
+	// 		facingMode: { x },
+	// 	};
+	// } else {
+	// 	cameraConstraints = {
+	// 		width: {
+	// 			min: cameraWidth,
+	// 			max: cameraWidth,
+	// 		},
+	// 		height: {
+	// 			min: cameraHeight,
+	// 			max: cameraHeight,
+	// 		},
+	// 		facingMode: { exact: "environment" },
+	// 	};
+	// }
+
 
 //two buttons, one for taking pictures with flash and one for without
   return (
     <>
+    {/* Show camera */}
     <div>
-    {!imageSrc && (
+    {!imageSrc && imageSent == false &&  (
 			<>
         <div className="camera-container">
           <div className="overlay-ancestor">
@@ -155,8 +219,10 @@ const handleRetakePicture = () => {
       </>
 		)}
     </div>
+
+    {/* Show taken image */}
       <div>
-        {imageSrc && (
+        {imageSrc && imageSent == false && (
           <>
             <div className="taken-pic-container">
               <img src={imageSrc} width={minValue} alt="Captured photo" />
@@ -168,6 +234,25 @@ const handleRetakePicture = () => {
           </>
         )}
       </div>
+
+      {/* Show a message that results are being processed */}
+      <div>
+        {imageSrc && imageSent == true  && (
+          <>
+            
+              <Header />
+            <div >
+              <div className="loader-container">
+                <div className="spinner"></div>
+              </div>
+              <h1> Processing your results</h1>
+            </div>
+          </>
+        )}
+      </div>
+
+
+
     </>
   );
 };

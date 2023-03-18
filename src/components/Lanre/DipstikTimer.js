@@ -11,8 +11,8 @@ const getPadTime = (time) => time.toString().padStart(2,'0');
 
 // Working Timer
 export default function DipstikTimer() {
-    const [timeLeft, setTimeLeft] = useState(0) 
-    const [isCounting, setIsCounting] = useState(false) 
+    const [timeLeft, setTimeLeft] = useState(60) 
+    const [isCounting, setIsCounting] = useState(true) 
 
     const minutes = getPadTime(Math.floor(timeLeft / 60));
     const seconds = getPadTime(timeLeft - minutes * 60);
@@ -28,8 +28,8 @@ export default function DipstikTimer() {
     },[isCounting])
 
     const handleReset = () => {
-        setIsCounting(false);
-        setTimeLeft(0);
+        setIsCounting(true);
+        setTimeLeft(60);
     }
 
     const handle60s = () => {
@@ -58,7 +58,7 @@ export default function DipstikTimer() {
 
     return (
         <div>
-            <Header />
+            {/* <Header /> */}
 
             <div className="timer-container">
 
@@ -71,15 +71,12 @@ export default function DipstikTimer() {
                 </div>
 
                 <div className="buttons">
-                    <button className="timer-button" onClick={handle60s}>60s</button>
-                    <button className="timer-button" onClick={handle120s}>120s</button>
+                    {/* <button className="timer-button" onClick={handle60s}>60s</button> */}
+                    {/* <button className="timer-button" onClick={handle120s}>120s</button> */}
                     <button className="timer-button" onClick={handleReset}>Reset</button>
                     <button className="timer-button" onClick={skip}>Skip</button>
                 </div>
                 
-                <Link to="/dipstik-home">
-					<button> Back </button>
-				</Link>
             </div>
 
 
