@@ -163,19 +163,21 @@ const VoiceRecorder = (props) => {
 
 	return (
 		<>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+			<div className="paralysis-cam-container">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
 
-			<br />
+				<br />
 
-			<button id="btn-start-recording" onClick={startRecording}>
-				Start Recording
-			</button>
-			<button id="btn-stop-recording" onClick={stopRecording}>
-				Stop Recording
-			</button>
-			<button id="btn-submit" onClick={handleSubmit}>
-				Submit
-			</button>
+				<button id="btn-start-recording" className="paralysis-cam-button" onClick={startRecording}>
+					Start Recording
+				</button>
+				<button id="btn-stop-recording" className="paralysis-cam-button" onClick={stopRecording}>
+					Stop Recording
+				</button>
+				<button id="btn-submit" className="paralysis-cam-button" onClick={handleSubmit}>
+					Submit
+				</button>
+			</div>
 
 			<div>
 				<audio controls autoPlay playsInline></audio>

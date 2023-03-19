@@ -431,3 +431,40 @@ body {
 	font-size: calc(6px + 2vmin);
 	color: black;
 }
+
+.paralysis-cam-container {
+	width: 100%;
+	padding-bottom: 20px;
+}
+
+.paralysis-cam-button-container {
+	width: 100%;
+	padding-left: 5px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.paralysis-cam-button {
+	background-color: #17b978;
+	color: white;
+	border-radius: 5px;
+	border: none;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	margin: 4px 2px;
+	cursor: pointer;
+	width: 100%;
+	height: 100%;
+	font-weight: bold;
+	font-size: 10px;
+	font-size: 70%;
+	padding-bottom: 2%;
+	padding-top: 2%;
+}
+
+.paralysis-cam-button:hover {
+	background-color: #e6e6e6;
+	color: #118c5b;
+}

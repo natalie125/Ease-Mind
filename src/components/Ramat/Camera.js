@@ -105,10 +105,10 @@ const Camera = (props) => {
 	//two buttons, one for taking pictures with flash and one for without
 	return (
 		<>
-			<div className="cam-horizontal-container">
+			<div className="paralysis-cam-container">
 				{!imageSrc && (
 					<>
-						<div style={{ width: "80%", paddingRight: "5px" }}>
+						<div>
 							<Webcam
 								className="webcam"
 								videoConstraints={cameraConstraints}
@@ -116,14 +116,14 @@ const Camera = (props) => {
 								style={{ width: "100%" }}
 							/>
 						</div>
-						<div className="cam-button-container">
-							<button className="cam-button" onClick={handleTakePicture}>
+						<div className="paralysis-cam-button-container">
+							<button className="paralysis-cam-button" onClick={handleTakePicture}>
 								Take Picture
 							</button>
-							<button className="cam-button" onClick={handleTakePictureWithFlash}>
+							<button className="paralysis-cam-button" onClick={handleTakePictureWithFlash}>
 								Take Picture With Flash
 							</button>
-							<button className="cam-button" onClick={switchCameraFacing}>
+							<button className="paralysis-cam-button" onClick={switchCameraFacing}>
 								Change Camera
 							</button>
 						</div>
@@ -131,14 +131,14 @@ const Camera = (props) => {
 				)}
 				{imageSrc && (
 					<>
-						<div style={{ width: "80%", paddingRight: "5px" }}>
+						<div>
 							<img src={imageSrc} style={{ width: "100%", borderRadius: "5px" }} alt="Captured" />
 						</div>
-						<div className="cam-button-container">
-							<button className="cam-button" onClick={handleRetakePicture}>
+						<div className="paralysis-cam-button-container">
+							<button className="paralysis-cam-button" onClick={handleRetakePicture}>
 								Retake Picture
 							</button>
-							<button className="cam-button" onClick={handleNext}>
+							<button className="paralysis-cam-button" onClick={handleNext}>
 								Next
 							</button>
 						</div>
