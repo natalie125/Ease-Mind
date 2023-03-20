@@ -33,7 +33,6 @@ const ImageAudio = (props) => {
 		try {
 			const response = await axios.post(BASEURL + "ramat", formData, {
 				headers: {
-					"Access-Control-Allow-Origin": "*",
 					"Content-Type": "multipart/form-data",
 				},
 			});
@@ -53,21 +52,22 @@ const ImageAudio = (props) => {
 
 	return (
 		<div className="paralysis-container">
-			<h1>Welcome to Paralysis Analysis</h1>
-			<p>
-				Take a picture of yourself and a recording of your voice. Submit it and you'll get a
-				prediction on probability of stroke
-			</p>
+			<h2 style={{ marginBottom: "1%" }}>Welcome to Paralysis Analysis</h2>
+
 			{!showAudio && (
-				<>
-					<p style={{ textAlign: "center", marginBottom: "20px" }}>
-						Webcam capture below (to use flash please brighten your screen)
+				<div className="paralysis-split-container">
+					<p className="paralysis-text-container">
+						Straighten your head as best as you can, keep a neutral expresssion and take a picture.
 					</p>
 					<Camera endpoint="ramat/image" returnImage={setImage} returnFinished={setShowAudio} />
-				</>
+				</div>
 			)}
 			{showAudio && !audio && (
 				<>
+					<p>Record yourself saying the following prompt and submit when ready:</p>
+					<p>
+						<em>The quick brown fox jumps over the lazy dog</em>
+					</p>
 					<AudioRecorder returnAudio={setAudio} returnFinished={submitAll} />
 				</>
 			)}
