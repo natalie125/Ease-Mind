@@ -54,10 +54,14 @@ body {
 #header_buttons {
 	position: absolute;
 	right: 0;
-	padding: 2%;
+	padding-left: 2%;
+	padding-right: 1%;
+	min-width: 30%;
+	max-width: 40%;
+	text-align: right;
 }
 
-.logout-button {
+.header-button {
 	border: 1px solid #004585;
 	width: 90px;
 	height: 30px;
@@ -67,9 +71,10 @@ body {
 	cursor: pointer;
 	font-weight: bold;
 	font-size: 16px;
+	margin-left: 5%;
 }
 
-.logout-button:hover {
+.header-button:hover {
 	border: 2px solid #004585;
 }
 
@@ -304,6 +309,25 @@ body {
 }
 
 /***********************
+** APP BODY STYLES
+*************************/
+
+.home-button {
+	width: 50%;
+	height: 30px;
+	background-color: #005eb8;
+	border-radius: 30px;
+	color: white;
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.home-button:hover {
+	border: 2px solid #ffffff;
+}
+
+/***********************
 ** WEBCAM STYLES
 *************************/
 /* Right now webcam is using the whole page size for resizing, not the element that it is within */
@@ -418,16 +442,4 @@ body {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-}
-
-/***********************
-** PERSONAL APP PAGE STYLES
-*************************/
-.App-body {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	font-size: calc(6px + 2vmin);
-	color: black;
 }
