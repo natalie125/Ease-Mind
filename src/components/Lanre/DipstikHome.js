@@ -61,9 +61,9 @@ const DipstikInstructions = () =>  {
                         <button onClick={HandlePreviousInstructions}className="start-button"> Back </button>
                         <button onClick={HandleNextInstructions}className="start-button"> Next </button>
 
-                        <Link to="/dipstik-home/dipstik-timer">
+                        {/* <Link to="/dipstik-home/dipstik-timer">
                             <button className="start-button"> Start </button>
-                        </Link>
+                        </Link> */}
                     </div>
 
 				</div>
@@ -71,7 +71,7 @@ const DipstikInstructions = () =>  {
 
                 {instructions == 2 && (
                     <>
-                        <h3 className="instructions-title">Instructions 1</h3>
+                        <h3 className="instructions-title">Instructions</h3>
                         <div>
                             <p className="instructions">
                                 1. Make sure you have collected your urine sample. <br />
@@ -85,7 +85,7 @@ const DipstikInstructions = () =>  {
 
                 {instructions == 3 && (
                     <>
-                        <h3 className="instructions-title">Instructions 2</h3>
+                        <h3 className="instructions-title">Instructions</h3>
                         <p> 3. Wait</p>
                         <p> Hold the stick horizontally and wait 60 seconds</p>
                         <DipstikTimer />
@@ -93,7 +93,7 @@ const DipstikInstructions = () =>  {
                         
                         
                         <button onClick={HandlePreviousInstructions}className="start-button"> Back </button>
-                        <button onClick={HandleNextInstructions}className="start-button"> Next </button>
+                        {/* <button onClick={HandleNextInstructions}className="start-button"> Next </button> */}
                     </>
                 )}
 

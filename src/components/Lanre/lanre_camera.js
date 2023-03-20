@@ -36,6 +36,17 @@ const LanreWebcamCapture = () => {
     })
     .then(response => {
       console.log(response);
+      console.log(response.data);
+      sessionStorage.setItem("bilirubin",response.data.bilirubin);
+      sessionStorage.setItem("blood", response.data.blood);
+      sessionStorage.setItem("glucose", response.data.glucose);
+      sessionStorage.setItem("ketones", response.data.ketones);
+      sessionStorage.setItem("leukocytes", response.data.leukocytes);
+      sessionStorage.setItem("nitrite", response.data.nitrite);
+      sessionStorage.setItem("ph", response.data.ph);
+      sessionStorage.setItem("protein", response.data.protein);
+      sessionStorage.setItem("specific_gravity", response.data.specific_gravity);
+      sessionStorage.setItem("urobilinogen", response.data.urobilinogen);
 
       if(response != null) {
         navigate("/dipstik-home/dipstik-timer/dipstik-camera/dipstik-results")
@@ -44,7 +55,9 @@ const LanreWebcamCapture = () => {
     .catch(error=> {
       console.error(error);
     });
+
     console.log(response);
+
   }
 
 
@@ -137,6 +150,10 @@ const handleRetakePicture = () => {
       };
     }
 
+
+
+
+
   // // Theirs
   // // 	Trying to do the dimensions stuff.
 	// // Rounded to floats to ensure dimensions used here make sense, only issue I see right now - the videos will record in different format each time.
@@ -148,12 +165,12 @@ const handleRetakePicture = () => {
 	// // Takes the smaller of the two calcs of width and height, to ensure it will fit on the screen.
 	// var minValue = cameraWidth;
 
-  // // horizontal position
+  // // // horizontal position
 	// // if (cameraHeight < minValue) {
 	// // 	minValue = cameraHeight;
 	// // 	cameraWidth = minValue;
 	// // } else {
-	// // 	// cameraHeight = minValue;
+	// // 	cameraHeight = minValue;
 	// // }
 
   // //*************** 
@@ -190,8 +207,8 @@ const handleRetakePicture = () => {
 	// 			max: cameraWidth,
 	// 		},
 	// 		height: {
-	// 			min: cameraHeight,
-	// 			max: cameraHeight,
+	// 			// min: cameraHeight,
+	// 			// max: cameraHeight,
 	// 		},
 	// 		facingMode: { exact: "environment" },
 	// 	};
