@@ -24,16 +24,15 @@ class Ramat extends Component {
 
 	render() {
 		return (
-			<div className="Ramat">
+			<>
 				<Header />
-				<h1>Ramat's app</h1>
 				<div className="App-body">
 					<ImageAudio />
 					<Link to="/home">
 						<button> Back </button>
 					</Link>
 				</div>
-			</div>
+			</>
 		);
 	}
 }

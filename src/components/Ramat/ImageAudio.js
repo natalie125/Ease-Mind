@@ -52,41 +52,32 @@ const ImageAudio = (props) => {
 	};
 
 	return (
-		<>
-			<div className="cam-horizontal-container">
-				{!showAudio && (
-					<>
-						<div className="tons-page-camera-container">
-							<div className="webcam-capture-holder">
-								<p style={{ textAlign: "center", marginBottom: "20px" }}>
-									Webcam capture below (to use flash please brighten your screen)
-								</p>
-								<Camera
-									endpoint="ramat/image"
-									returnImage={setImage}
-									returnFinished={setShowAudio}
-								/>
-							</div>
-						</div>
-					</>
-				)}
-				{showAudio && !audio && (
-					<>
-						<div className="tons-page-camera-container">
-							<AudioRecorder returnAudio={setAudio} returnFinished={submitAll} />
-						</div>
-					</>
-				)}
-				{serverResponse && (
-					<>
-						<div className="tons-page-camera-container">
-							<p>Response: {serverResponse}</p>
-							<button onClick={restart}>Restart</button>
-						</div>
-					</>
-				)}
-			</div>
-		</>
+		<div className="paralysis-container">
+			<h1>Welcome to Paralysis Analysis</h1>
+			<p>
+				Take a picture of yourself and a recording of your voice. Submit it and you'll get a
+				prediction on probability of stroke
+			</p>
+			{!showAudio && (
+				<>
+					<p style={{ textAlign: "center", marginBottom: "20px" }}>
+						Webcam capture below (to use flash please brighten your screen)
+					</p>
+					<Camera endpoint="ramat/image" returnImage={setImage} returnFinished={setShowAudio} />
+				</>
+			)}
+			{showAudio && !audio && (
+				<>
+					<AudioRecorder returnAudio={setAudio} returnFinished={submitAll} />
+				</>
+			)}
+			{serverResponse && (
+				<>
+					<p>Response: {serverResponse}</p>
+					<button onClick={restart}>Restart</button>
+				</>
+			)}
+		</div>
 	);
 };
 

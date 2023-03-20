@@ -3,6 +3,7 @@ import Webcam from "react-webcam";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../App/App.css";
+import "./ParalysisAnalysis.css";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"

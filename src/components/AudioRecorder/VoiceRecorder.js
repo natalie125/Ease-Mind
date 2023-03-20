@@ -1,6 +1,9 @@
 import RecordRTC, { StereoAudioRecorder, invokeSaveAsDialog } from "recordrtc";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import axios from "axios";
+import { SpinnerRoundFilled } from "spinners-react";
+import mic from "../../images/mic.png";
+import "../Ramat/ParalysisAnalysis.css";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
@@ -9,15 +12,16 @@ process.env.NODE_ENV === "development"
 
 const VoiceRecorder = (props) => {
 	var audio = document.querySelector("audio");
-	var audioBlob;
 
 	var isEdge =
 		navigator.userAgent.indexOf("Edge") !== -1 &&
 		(!!navigator.msSaveOrOpenBlob || !!navigator.msSaveBlob);
 	var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-	var recorder;
-	var microphone;
+	let [hasMounted, setHasMounted] = useState(false);
+	let [microphone, setMicrophone] = useState(null);
+	let [recorder, setRecorder] = useState(null);
+	let [isRecording, setIsRecording] = useState(null);
 
 	const captureMicrophone = (callback) => {
 		if (microphone) {
@@ -68,7 +72,6 @@ const VoiceRecorder = (props) => {
 
 	const stopRecordingCallback = () => {
 		addAudioElement(URL.createObjectURL(recorder.getBlob()));
-		audioBlob = recorder.getBlob();
 		setTimeout(function () {
 			if (!audio.paused) return;
 
@@ -86,7 +89,7 @@ const VoiceRecorder = (props) => {
 	const initRecorder = () => {
 		if (!microphone) {
 			captureMicrophone(function (mic) {
-				microphone = mic;
+				setMicrophone(mic);
 
 				if (isSafari) {
 					addAudioElement();
@@ -102,14 +105,15 @@ const VoiceRecorder = (props) => {
 		}
 	};
 
-	initRecorder();
-
+	// initialise the microphone on the first render
+	useEffect(() => {
+		initRecorder();
+	}, []);
 	/////////////////////////////////////////////////
 	// Button functions
 
 	const startRecording = () => {
 		addAudioElement();
-
 		audio.muted = true;
 		audio.srcObject = microphone;
 
@@ -134,21 +138,31 @@ const VoiceRecorder = (props) => {
 
 		if (recorder) {
 			recorder.destroy();
-			recorder = null;
+			setRecorder(null);
 		}
 
-		recorder = RecordRTC(microphone, options);
-		recorder.startRecording();
+		setRecorder(new RecordRTC(microphone, options));
+		setIsRecording(true);
 	};
 
+	// start recording every time the state of the microphone changes
+	useEffect(() => {
+		if (hasMounted) {
+			recorder.startRecording();
+		} else {
+			setHasMounted(true);
+		}
+	}, [recorder]);
+
 	const stopRecording = () => {
+		setIsRecording(false);
 		recorder.stopRecording(stopRecordingCallback);
 	};
 
 	const stopMicrophone = () => {
 		if (microphone) {
 			microphone.stop();
-			microphone = null;
+			setMicrophone(null);
 		}
 	};
 
@@ -163,24 +177,55 @@ const VoiceRecorder = (props) => {
 
 	return (
 		<>
-			<div className="paralysis-cam-container">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+			<div className="paralysis-mic-container">
+				<div className="paralysis-mic-status-container">
+					<img src={mic} className="paralysis-mic-img" alt="Microphone" />
+					<div className="paralysis-mic-loader">
+						<SpinnerRoundFilled
+							color="#17b978"
+							size={"40vh"}
+							enabled={isRecording}
+							aria-label="Audio Spinner"
+							data-testid="loader"
+						/>
+					</div>
+				</div>
+				<div className="paralysis-mic-button-container">
+					<meta
+						name="viewport"
+						content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+					/>
 
-				<br />
+					<button
+						id="btn-start-recording"
+						className="paralysis-cam-button"
+						onClick={startRecording}
+						disabled={isRecording}
+					>
+						Start Recording
+					</button>
+					<button
+						id="btn-stop-recording"
+						className="paralysis-cam-button"
+						onClick={stopRecording}
+						disabled={!isRecording}
+					>
+						Stop Recording
+					</button>
 
-				<button id="btn-start-recording" className="paralysis-cam-button" onClick={startRecording}>
-					Start Recording
-				</button>
-				<button id="btn-stop-recording" className="paralysis-cam-button" onClick={stopRecording}>
-					Stop Recording
-				</button>
-				<button id="btn-submit" className="paralysis-cam-button" onClick={handleSubmit}>
-					Submit
-				</button>
-			</div>
+					<button
+						id="btn-submit"
+						className="paralysis-cam-button"
+						onClick={handleSubmit}
+						disabled={isRecording !== false}
+					>
+						Submit
+					</button>
+				</div>
 
-			<div>
-				<audio controls autoPlay playsInline></audio>
+				<div style={{ paddingTop: "10%" }}>
+					<audio controls autoPlay playsInline></audio>
+				</div>
 			</div>
 		</>
 	);
