@@ -183,7 +183,7 @@ const VoiceRecorder = (props) => {
 					<div className="paralysis-mic-loader">
 						<SpinnerRoundFilled
 							color="#17b978"
-							size={"40vh"}
+							size={"120%"}
 							enabled={isRecording}
 							aria-label="Audio Spinner"
 							data-testid="loader"
@@ -223,7 +223,7 @@ const VoiceRecorder = (props) => {
 					</button>
 				</div>
 
-				<div style={{ paddingTop: "10%" }}>
+				<div className="paralysis-audio">
 					<audio controls autoPlay playsInline></audio>
 				</div>
 			</div>

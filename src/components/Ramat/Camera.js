@@ -26,17 +26,6 @@ const Camera = (props) => {
 		props.returnImage(imageSrc);
 	};
 
-	//takes pictures with flash
-	const handleTakePictureWithFlash = () => {
-		setFlash(true);
-		setTimeout(() => {
-			const imageSrc = webcamRef.current.getScreenshot();
-			setImageSrc(imageSrc);
-			props.returnImage(imageSrc);
-			setFlash(false);
-		}, 1000);
-	};
-
 	//takes pictures without flash
 	const handleRetakePicture = () => {
 		setImageSrc(null);
@@ -47,9 +36,6 @@ const Camera = (props) => {
 		props.returnFinished(true);
 	};
 
-	// Using button to change what camera is being used
-	// Should work based on MDN documentation: https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints/facingMode
-	// But I cannot test properly as its running on a laptop.
 	const switchCameraFacing = React.useCallback(() => {
 		if (frontFacing) {
 			setFrontFacing(false);
@@ -121,9 +107,6 @@ const Camera = (props) => {
 							<button className="paralysis-cam-button" onClick={handleTakePicture}>
 								Take Picture
 							</button>
-							<button className="paralysis-cam-button" onClick={handleTakePictureWithFlash}>
-								Take Picture With Flash
-							</button>
 							<button className="paralysis-cam-button" onClick={switchCameraFacing}>
 								Change Camera
 							</button>
@@ -132,8 +115,8 @@ const Camera = (props) => {
 				)}
 				{imageSrc && (
 					<>
-						<div>
-							<img src={imageSrc} style={{ width: "100%", borderRadius: "5px" }} alt="Captured" />
+						<div className="webcam" style={{ width: "100%" }}>
+							<img src={imageSrc} style={{ borderRadius: "5px" }} alt="Captured" />
 						</div>
 						<div className="paralysis-cam-button-container">
 							<button className="paralysis-cam-button" onClick={handleRetakePicture}>

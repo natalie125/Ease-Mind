@@ -28,9 +28,6 @@ class Ramat extends Component {
 				<Header />
 				<div className="App-body">
 					<ImageAudio />
-					<Link to="/home">
-						<button> Back </button>
-					</Link>
 				</div>
 			</>
 		);

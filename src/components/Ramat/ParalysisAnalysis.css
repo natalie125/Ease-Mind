@@ -14,13 +14,38 @@
 
 .paralysis-container p {
 	font-size: medium;
+	margin-bottom: 2%;
+}
+
+paralysis-split-container {
+	text-align: center;
+	min-width: 100%;
+	max-height: 100vh;
+	width: 100%;
+	margin: 0px auto;
 }
 
 /***********************
 ** CAMERA PAGE STYLES
 *************************/
 .paralysis-cam-container {
-	width: 100%;
+	min-width: 57%;
+	max-width: 70%;
+	min-height: 70%;
+	max-height: 90%;
+	display: inline-block;
+	margin-left: 2%;
+	vertical-align: middle;
+}
+
+.paralysis-text-container {
+	margin: 5%;
+	width: 30%;
+	max-width: 40%;
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 70%;
 }
 
 .paralysis-cam-button-container {
@@ -57,6 +82,7 @@
 
 .paralysis-cam-button:disabled {
 	opacity: 50%;
+	cursor: default;
 }
 /***********************
 ** MICROPHONE PAGE STYLES
@@ -66,6 +92,7 @@
 	width: 100%;
 	min-height: 100%;
 	height: 100%;
+	align-items: center;
 }
 
 .paralysis-mic-status-container {
@@ -81,7 +108,7 @@
 .paralysis-mic-loader {
 	position: absolute;
 	top: 50%;
-	left: 50%;
+	left: 45%;
 	transform: translate(-50%, -50%);
 }
 
@@ -96,4 +123,12 @@
 
 .paralysis-mic-button-container {
 	width: 100%;
+	padding-left: 5px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.paralysis-audio {
+	padding-top: "10%";
 }
