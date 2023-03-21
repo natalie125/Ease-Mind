@@ -309,7 +309,7 @@ const DipstikResults = () => {
 			<h1>Dipstik Results</h1>
 
 			<div className="results-switcher-container">
-				<div className="results-button-container">
+				<div className="results-switcher-button-container">
 					<button onClick={handleSwitchToParameters} className={paramStyling}>By Parameters</button>
 					<button onClick={handleSwitchToHealthConditions} className={healthStyling}>By Health Conditions</button>
 				</div>
