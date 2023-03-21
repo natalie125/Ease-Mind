@@ -7,16 +7,22 @@ import DipstickTimer from "./DipstikTimer";
 
 const DipstikResults = () => {
 	const [view, setView] = useState(1);
-	
-	
+	const [paramStyling, setParamStyling] = useState("results-button selected");
+	const [healthStyling, setHealthStyling] = useState("results-button");
+
+
 	//Used to Switch the user's view to Parameters 
 	const handleSwitchToParameters = () => {
 		setView(1);
+		setParamStyling("results-button selected");
+		setHealthStyling("results-button");
 	};
 
 	//Used to switch the user's view to Health Conditions
 	const handleSwitchToHealthConditions = () => {
 		setView(2);
+		setParamStyling("results-button");
+		setHealthStyling("results-button selected");
 	};
 
 	//Gather results and make it explainable
@@ -303,8 +309,8 @@ const DipstikResults = () => {
 
 			<div className="results-switcher-container">
 				<div className="results-button-container">
-					<button onClick={handleSwitchToParameters} className="results-button">By Parameters</button>
-					<button onClick={handleSwitchToHealthConditions} className="results-button">By Health Conditions</button>
+					<button onClick={handleSwitchToParameters} className={paramStyling}>By Parameters</button>
+					<button onClick={handleSwitchToHealthConditions} className={healthStyling}>By Health Conditions</button>
 				</div>
 			</div>
 
@@ -387,8 +393,6 @@ const DipstikResults = () => {
 							</div>
 						</div>
 					)}
-
-
 
 
 					<Link to="/dipstik-home/dipstik-timer/dipstik-camera">

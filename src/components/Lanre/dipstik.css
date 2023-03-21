@@ -303,10 +303,9 @@
     margin: 0px 2px;
 }
 
-.results-button:hover {
+.selected {
     background-color: green;
     color: white;
-
 }
 
 
