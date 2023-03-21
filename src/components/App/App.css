@@ -49,6 +49,9 @@ body {
 	position: absolute;
 	left: 0;
 	padding-left: 2%;
+	color: white;
+	text-decoration: none;
+	
 }
 
 #header_buttons {
