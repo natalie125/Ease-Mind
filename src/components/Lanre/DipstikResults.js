@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState,Component } from "react";
 import { Link } from "react-router-dom";
 import "../App/App.css";
 
@@ -6,6 +6,19 @@ import Header from "../Header/Header";
 import DipstickTimer from "./DipstikTimer";
 
 const DipstikResults = () => {
+	const [view, setView] = useState(1);
+	
+	
+	//Used to Switch the user's view to Parameters 
+	const handleSwitchToParameters = () => {
+		setView(1);
+	};
+
+	//Used to switch the user's view to Health Conditions
+	const handleSwitchToHealthConditions = () => {
+		setView(2);
+	};
+
 	//Gather results and make it explainable
 	let bilirubin = sessionStorage.getItem("bilirubin");
 	switch(bilirubin) {
@@ -244,8 +257,15 @@ const DipstikResults = () => {
 
 
 	// Urinary Tract Infection
-		// Positive for nitrite or leukocytes or red blood cells
+		// Positive for nitrite or *leukocytes* or red blood cells
+		//A negative UTI does not rule out UTI but a positive one strongly suggests infections and a UTI
 
+	//White blood Cells
+		// Leukocyte esterase is a screening test used to detect a substance that suggests there are 
+		//white blood cells in the urine. This may mean you have a urinary tract infection. If this 
+		//test is positive, the urine should be examined under a microscope for white blood cells 
+		//and other signs that point to an infection.
+	
 	// Liver Health
 		//Bilirubin can be a early sign of liver damage
 		//https://medlineplus.gov/lab-tests/bilirubin-in-urine/
@@ -273,63 +293,112 @@ const DipstikResults = () => {
 		// nor- mal serum pH is 7.4, but the normal urinary pH ranges from 4.5 to 8. Because of normal metabolic activ- ity,
 		//the generally accepted normal pH of urine is about 5.5 to 6.5.
 
+	// Ketone - Uncontrolled Diabetes
+		//
+
 	return (
 		<div className="dipstik-results">
 			<Header />
 			<h1>Dipstik Results</h1>
 
-			<div>
-				<div className="results-container">
-					<div className="results-box">
-						<p><b>LEUKOCYTES (LEU):</b></p>
-						<p>{leukocytes}</p>
-					</div >
-					<div className="results-box">
-						<p><b>Nitrite (NIT):</b></p>
-						<p>{nitrite}</p>
-					</div>
-					<div className="results-box">
-						<p><b>Urobilinogen(URO):</b></p>
-						<p>{urobilinogen}</p>
-					</div >
-					<div className="results-box">
-						<p><b>Protein (PRO):</b></p>
-						<p>{protein}</p>
-					</div>
-					<div className="results-box">
-						<p><b>pH (pH):</b></p>
-						<p>{ph}</p>
-					</div>
-					<div className="results-box">
-						<p><b>Blood (BLO):</b></p>
-						<p>{blood}</p>
-					</div>
-					<div className="results-box">
-						<p><b>Specific Gravity (SG):</b></p>
-						<p>{specific_gravity}</p>
-					</div>
-					<div className="results-box">
-						<p><b>Ketones (KET):</b></p>
-						<p>{ketones}</p>
-					</div>
-					<div className="results-box">
-						<p><b>Bilirubin (BIL):</b></p>
-						<p>{bilirubin}</p>
-					</div>
-					<div className="results-box">
-						<p><b>Glucose (GLU):</b></p>
-						<p>{glucose}</p>
-					</div>
+			<div className="results-switcher-container">
+				<div className="results-button-container">
+					<button onClick={handleSwitchToParameters} className="results-button">By Parameters</button>
+					<button onClick={handleSwitchToHealthConditions} className="results-button">By Health Conditions</button>
 				</div>
-
-				<Link to="/dipstik-home/dipstik-timer/dipstik-camera">
-					<button> Back </button>
-				</Link>
-
-				<Link to="/dipstik/dipstik-home/dipstik-timer/dipstik-results">
-					<button> Results </button>
-				</Link>
 			</div>
+
+				<div>
+					{view == 1 && (
+					<div className="results-container">
+						<div className="results-box">
+							<p><b>LEUKOCYTES (LEU):</b></p>
+							<p>{leukocytes}</p>
+						</div >
+						<div className="results-box">
+							<p><b>Nitrite (NIT):</b></p>
+							<p>{nitrite}</p>
+						</div>
+						<div className="results-box">
+							<p><b>Urobilinogen(URO):</b></p>
+							<p>{urobilinogen}</p>
+						</div >
+						<div className="results-box">
+							<p><b>Protein (PRO):</b></p>
+							<p>{protein}</p>
+						</div>
+						<div className="results-box">
+							<p><b>pH (pH):</b></p>
+							<p>{ph}</p>
+						</div>
+						<div className="results-box">
+							<p><b>Blood (BLO):</b></p>
+							<p>{blood}</p>
+						</div>
+						<div className="results-box">
+							<p><b>Specific Gravity (SG):</b></p>
+							<p>{specific_gravity}</p>
+						</div>
+						<div className="results-box">
+							<p><b>Ketones (KET):</b></p>
+							<p>{ketones}</p>
+						</div>
+						<div className="results-box">
+							<p><b>Bilirubin (BIL):</b></p>
+							<p>{bilirubin}</p>
+						</div>
+						<div className="results-box">
+							<p><b>Glucose (GLU):</b></p>
+							<p>{glucose}</p>
+						</div>
+					</div>
+					)}
+
+					{view == 2 && (
+						<div className="results-container">
+							<div className="results-box">
+								<p><b>Urinary Tract Infection:</b></p>
+								<p>{leukocytes}</p>
+							</div >
+							<div className="results-box">
+								<p><b>White Blood Cells</b></p>
+								<p>{nitrite}</p>
+							</div>
+							<div className="results-box">
+								<p><b>Liver Health</b></p>
+								<p>{urobilinogen}</p>
+							</div >
+							<div className="results-box">
+								<p><b>Kidney Health</b></p>
+								<p>{protein}</p>
+							</div>
+							<div className="results-box">
+								<p><b>Hydration:</b></p>
+								<p>{blood}</p>
+							</div>
+							<div className="results-box">
+								<p><b>pH:</b></p>
+								<p>{ph}</p>
+							</div>
+							
+							<div className="results-box">
+								<p><b>Ketone:</b></p>
+								<p>{specific_gravity}</p>
+							</div>
+						</div>
+					)}
+
+
+
+
+					<Link to="/dipstik-home/dipstik-timer/dipstik-camera">
+						<button> Back </button>
+					</Link>
+
+					<Link to="/dipstik/dipstik-home/dipstik-timer/dipstik-results">
+						<button> Results </button>
+					</Link>
+				</div>
 		</div>
 	);
 }
