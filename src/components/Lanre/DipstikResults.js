@@ -44,6 +44,7 @@ const DipstikResults = () => {
 			bilirubin = "Error";
 	};
 
+
     let blood = sessionStorage.getItem("blood");
 	switch(blood) {
 		case "neg":
