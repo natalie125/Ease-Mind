@@ -19,17 +19,16 @@ const LanreWebcamCapture = () => {
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
   const [imageSent, setImageSent] = useState(false);
-  const [frontFacing, setFrontFacing] = useState(true);
-  const [dipstickDetected , setDipstickDetected ] = useState(false);
-
+  const [backFacing, setBackFacing] = React.useState(true);
+  const [dipstickDetected , setDipstickDetected ] = useState(0);
 	let navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("image", imageSrc);
-    // setImageSent(true);
-    const response = await axios(BASEURL+"dipstik/training_data",{
+    setImageSent(true);
+    const response = await axios(BASEURL+"dipstik/upload",{
       method: 'post',
       data: formData,
       headers: {
@@ -40,6 +39,8 @@ const LanreWebcamCapture = () => {
     .then(response => {
       console.log(response);
       console.log(response.data);
+      
+      // save results in session storage
       sessionStorage.setItem("bilirubin",response.data.bilirubin);
       sessionStorage.setItem("blood", response.data.blood);
       sessionStorage.setItem("glucose", response.data.glucose);
@@ -51,16 +52,14 @@ const LanreWebcamCapture = () => {
       sessionStorage.setItem("specific_gravity", response.data.specific_gravity);
       sessionStorage.setItem("urobilinogen", response.data.urobilinogen);
 
-      // if(response != null) {
-      //   navigate("/dipstik-home/dipstik-timer/dipstik-camera/dipstik-results")
-      // }
+      if(response != null) {
+        navigate("/dipstik/dipstik-results")
+      }
     })
     .catch(error=> {
       console.error(error);
     });
-
     console.log(response);
-
   }
 
 
@@ -75,6 +74,7 @@ const LanreWebcamCapture = () => {
 //resets picture source and retakes picture
 const handleRetakePicture = () => {
   setImageSrc(null);
+  setDipstickDetected(0);
 };
 
 
@@ -89,155 +89,86 @@ const detectDipstick = async () => {
   console.log(result);
 
   if (result[1][0] > 0.5) {
-    setDipstickDetected(true);
+    setDipstickDetected(1);
+
+  }else{
+    setDipstickDetected(-1);
   }
-
-
-}
-
-
-
-
+};
 
   // Using button to change what camera is being used
 	// Should work based on MDN documentation: https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints/facingMode
 	// But I cannot test properly as its running on a laptop.
-	const switchCameraFacing = React.useCallback(() => {
-		if (frontFacing){
-			setFrontFacing(false);
+  const switchCameraFacing = React.useCallback(() => {
+		if (backFacing){
+			setBackFacing(false);
 		}
-		
 		else{
-			setFrontFacing(true);
+			setBackFacing(true);
 		}
-	
-	},[frontFacing]);
 
-// Mine
-	// Trying to do the dimensions stuff.
+	},[backFacing]);
+
+//  // //**************************************************************** 
+//  // // COMBINED
+  // 	Trying to do the dimensions stuff.
 	// Rounded to floats to ensure dimensions used here make sense, only issue I see right now - the videos will record in different format each time.
-    const size = useWindowSize();
-    console.log(size)
-    var cameraHeight = Math.round(size.height*0.8);
-    var cameraWidth = Math.round(size.width);
+	const size = useWindowSize();
+	var cameraHeight = Math.round(size.height);
+  var cameraWidth = Math.round(size.width);
 
-    console.log("Height:",cameraHeight)
-    console.log("Width:", cameraWidth)
-    
-    
-    
-    // This code attempts for the dimensions of the camera to be in a 1:1 aspect ratio, by taking the previous measurements of the size of the screen.
-    // Takes the smaller of the two calcs of width and height, to ensure it will fit on the screen.
-    var minValue = cameraWidth;
+	// This code attempts for the dimensions of the camera to be in a 1:1 aspect ratio, by taking the previous measurements of the size of the screen.
+	// Takes the smaller of the two calcs of width and height, to ensure it will fit on the screen.
+	var minValue = cameraWidth;
 
-    if (cameraWidth > 400){
-      cameraWidth = 400;
-    }
+  if (cameraWidth > 400){
+    cameraWidth = 400;
+  }
 
-    if (cameraHeight > 719) {
-      cameraHeight = 719;
-    }
-    
-    // if (cameraHeight < minValue){
-    //     minValue = cameraHeight;
-    //     cameraWidth = minValue;
-    // }else{
-    //     cameraHeight = cameraHeight;
-    //     cameraWidth = cameraWidth * 0.9;
-    // };
-    
+  if (cameraHeight > 719) {
+    cameraHeight = 719;
+  }
 
-    var cameraConstraints;
-   // show back camera first
-    if (!frontFacing){
-      var x = "user";
-      console.log("Size.height:",size.height)
-      console.log("Size.width:",size.width)
+  if (cameraHeight < minValue){
+      minValue = cameraHeight;
+      cameraWidth = minValue;
+  }else{
+      cameraHeight = cameraHeight;
+      cameraWidth = cameraWidth * 0.9;
+  };
 
-      cameraConstraints = {
-        width: {
-          // min: cameraWidth,
-          // max: cameraWidth
-        },
-        facingMode: {x}
-      };
-    }else{
-      cameraConstraints = {
-        width: {
-          // min: cameraWidth,
-          // max: cameraWidth
-        },
-        height: {
-          // max: 600,
-        },
+	var cameraConstraints;
 
-        facingMode: {exact: "environment"}
-      };
-    }
-
-
-
-
-
-  // // Theirs
-  // // 	Trying to do the dimensions stuff.
-	// // Rounded to floats to ensure dimensions used here make sense, only issue I see right now - the videos will record in different format each time.
-	// const size = useWindowSize();
-	// var cameraHeight = Math.round(size.height * 0.8);
-  // var cameraWidth = Math.round(size.width);
-
-	// // This code attempts for the dimensions of the camera to be in a 1:1 aspect ratio, by taking the previous measurements of the size of the screen.
-	// // Takes the smaller of the two calcs of width and height, to ensure it will fit on the screen.
-	// var minValue = cameraWidth;
-
-  // // // horizontal position
-	// // if (cameraHeight < minValue) {
-	// // 	minValue = cameraHeight;
-	// // 	cameraWidth = minValue;
-	// // } else {
-	// // 	cameraHeight = minValue;
-	// // }
-
-  // //*************** 
-  // // From Mine 
-  // if (cameraHeight < minValue){
-  //       minValue = cameraHeight;
-  //       cameraWidth = minValue;
-  //   }else{
-  //       cameraHeight = cameraHeight;
-  //       cameraWidth = cameraWidth * 0.9;
-  //   };
-  // // ***************
-
-
-	// var cameraConstraints;
-  // // show back camera first
-	// if (frontFacing) {
-	// 	var x = "user";
-	// 	cameraConstraints = {
-	// 		width: {
-	// 			min: cameraWidth,
-	// 			max: cameraWidth,
-	// 		},
-	// 		height: {
-	// 			min: cameraHeight,
-	// 			max: cameraHeight,
-	// 		},
-	// 		facingMode: { x },
-	// 	};
-	// } else {
-	// 	cameraConstraints = {
-	// 		width: {
-	// 			min: cameraWidth,
-	// 			max: cameraWidth,
-	// 		},
-	// 		height: {
-	// 			// min: cameraHeight,
-	// 			// max: cameraHeight,
-	// 		},
-	// 		facingMode: { exact: "environment" },
-	// 	};
-	// }
+  // show back camera first
+	if (backFacing) {
+    cameraConstraints = {
+			width: {
+				// min: cameraWidth,
+				// max: cameraWidth,
+			},
+			height: {
+				// min: cameraHeight,
+				// max: cameraHeight,
+			},
+			facingMode: { exact: "environment" },
+		};
+		
+	} else {
+    var x = "user";
+		cameraConstraints = {
+			width: {
+				// min: cameraWidth,
+				// max: cameraWidth,
+			},
+			height: {
+				// min: cameraHeight,
+				// max: cameraHeight,
+			},
+			facingMode: { x },
+		};
+	}
+// // // COMBINED END
+// // //****************************************************************
 
 
 //two buttons, one for taking pictures with flash and one for without
@@ -267,13 +198,30 @@ const detectDipstick = async () => {
         {imageSrc && imageSent == false && (
           <>
             <div className="taken-pic-container">
+              <div>
+                {/* <p className="detecting-dipstick-message"> Detecting dipstick....</p> */}
+              </div>
               <img id="image" src={imageSrc} width={minValue} alt="Captured photo" />
               <div className="taken-pic-buttons-overlay-container">
-                <button onClick={handleRetakePicture} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
+                {/* Show a message that dipstick is being detected */}
+                {dipstickDetected == 0 && (
+                  <p className="detecting-dipstick-message"> Detecting dipstick... </p>)}
 
-                {dipstickDetected && (
-                <button onClick={handleSubmit} className="camera-button"><FontAwesomeIcon icon={faPaperPlane} className="camera-icon"/></button>
-                )}
+                {dipstickDetected == 1 && (
+                  <p className="detecting-dipstick-message success"> Dipstick detected </p>)}
+
+                {dipstickDetected == -1 && (
+                  <p className="detecting-dipstick-message failure"> Dipstick not detected </p>)}
+
+
+
+                <div>
+                  <button onClick={handleRetakePicture} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
+
+                  {dipstickDetected == 1 && (
+                  <button onClick={handleSubmit} className="camera-button"><FontAwesomeIcon icon={faPaperPlane} className="camera-icon"/></button>)}
+                </div>
+
               </div>
             </div>
           </>
@@ -281,7 +229,7 @@ const detectDipstick = async () => {
       </div>
 
       {/* Show a message that results are being processed */}
-      {/* <div>
+      <div>
         {imageSrc && imageSent == true  && (
           <>
             
@@ -294,7 +242,7 @@ const detectDipstick = async () => {
             </div>
           </>
         )}
-      </div> */}
+      </div>
 
 
 
