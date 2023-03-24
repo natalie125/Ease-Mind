@@ -396,11 +396,11 @@ const DipstikResults = () => {
 					)}
 
 
-					<Link to="/dipstik-home/dipstik-timer/dipstik-camera">
+					<Link to="/dipstik/dipstik-camera">
 						<button> Back </button>
 					</Link>
 
-					<Link to="/dipstik/dipstik-home/dipstik-timer/dipstik-results">
+					<Link to="/dipstik/dipstik-results">
 						<button> Results </button>
 					</Link>
 				</div>

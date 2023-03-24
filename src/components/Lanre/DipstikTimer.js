@@ -47,12 +47,12 @@ export default function DipstikTimer() {
     
     function skip() {
         setIsCounting(false);
-        navigate("/dipstik-home/dipstik-timer/dipstik-camera", { replace: true });
+        navigate("/dipstik/dipstik-detector", { replace: true });
     }
 
 
     if (timeLeft == 0 && isCounting){
-        navigate("/dipstik-home/dipstik-timer/dipstik-camera", { replace: true });
+        navigate("/dipstik/dipstik-detector", { replace: true });
     }
 
 
