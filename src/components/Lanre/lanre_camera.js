@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCamera, faArrowsRotate, faPaperPlane, faUpload, faCameraRotate, faCameraAlt, faCameraRetro, faVideoCamera, faPlaneArrival, faPlaneCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
+import * as cvstfjs from "@microsoft/customvision-tfjs";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
@@ -18,7 +19,7 @@ const LanreWebcamCapture = () => {
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
   const [imageSent, setImageSent] = useState(false);
-  const [frontFacing, setFrontFacing] = React.useState(true);
+  const [backFacing, setBackFacing] = React.useState(true);
 	let navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -37,6 +38,8 @@ const LanreWebcamCapture = () => {
     .then(response => {
       console.log(response);
       console.log(response.data);
+
+      // save the results in session storage
       sessionStorage.setItem("bilirubin",response.data.bilirubin);
       sessionStorage.setItem("blood", response.data.blood);
       sessionStorage.setItem("glucose", response.data.glucose);
@@ -49,7 +52,7 @@ const LanreWebcamCapture = () => {
       sessionStorage.setItem("urobilinogen", response.data.urobilinogen);
 
       if(response != null) {
-        navigate("/dipstik-home/dipstik-timer/dipstik-camera/dipstik-results")
+        navigate("/dipstik/dipstik-results")
       }
     })
     .catch(error=> {
@@ -59,7 +62,6 @@ const LanreWebcamCapture = () => {
     console.log(response);
 
   }
-
 
 //takes pictures without flash
   const handleTakePicture = () => {
@@ -77,142 +79,80 @@ const handleRetakePicture = () => {
   // Using button to change what camera is being used
 	// Should work based on MDN documentation: https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints/facingMode
 	// But I cannot test properly as its running on a laptop.
-	const switchCameraFacing = React.useCallback(() => {
-		if (frontFacing){
-			setFrontFacing(false);
+	// const switchCameraFacing = React.useCallback(() => {
+  const switchCameraFacing = React.useCallback(() => {
+		if (backFacing){
+			setBackFacing(false);
 		}
-		
 		else{
-			setFrontFacing(true);
+			setBackFacing(true);
 		}
 	
-	},[frontFacing]);
+	},[backFacing]);
 
-// Mine
-	// Trying to do the dimensions stuff.
+  
+//  // //**************************************************************** 
+//  // // COMBINED
+  // 	Trying to do the dimensions stuff.
 	// Rounded to floats to ensure dimensions used here make sense, only issue I see right now - the videos will record in different format each time.
-    const size = useWindowSize();
-    console.log(size)
-    var cameraHeight = Math.round(size.height*0.8);
-    var cameraWidth = Math.round(size.width);
-
-    console.log("Height:",cameraHeight)
-    console.log("Width:", cameraWidth)
-    
-    
-    
-    // This code attempts for the dimensions of the camera to be in a 1:1 aspect ratio, by taking the previous measurements of the size of the screen.
-    // Takes the smaller of the two calcs of width and height, to ensure it will fit on the screen.
-    var minValue = cameraWidth;
-
-    if (cameraWidth > 400){
-      cameraWidth = 400;
-    }
-
-    if (cameraHeight > 719) {
-      cameraHeight = 719;
-    }
-    
-    // if (cameraHeight < minValue){
-    //     minValue = cameraHeight;
-    //     cameraWidth = minValue;
-    // }else{
-    //     cameraHeight = cameraHeight;
-    //     cameraWidth = cameraWidth * 0.9;
-    // };
-    
-
-    var cameraConstraints;
-   // show back camera first
-    if (!frontFacing){
-      var x = "user";
-      console.log("Size.height:",size.height)
-      console.log("Size.width:",size.width)
-
-      cameraConstraints = {
-        width: {
-          // min: cameraWidth,
-          // max: cameraWidth
-        },
-        facingMode: {x}
-      };
-    }else{
-      cameraConstraints = {
-        width: {
-          // min: cameraWidth,
-          // max: cameraWidth
-        },
-        height: {
-          // max: 600,
-        },
-
-        facingMode: {exact: "environment"}
-      };
-    }
+	const size = useWindowSize();
+	var cameraHeight = Math.round(size.height);
+  var cameraWidth = Math.round(size.width);
 
 
 
+	// This code attempts for the dimensions of the camera to be in a 1:1 aspect ratio, by taking the previous measurements of the size of the screen.
+	// Takes the smaller of the two calcs of width and height, to ensure it will fit on the screen.
+	var minValue = cameraWidth;
 
+  if (cameraWidth > 400){
+    cameraWidth = 400;
+  }
 
-  // // Theirs
-  // // 	Trying to do the dimensions stuff.
-	// // Rounded to floats to ensure dimensions used here make sense, only issue I see right now - the videos will record in different format each time.
-	// const size = useWindowSize();
-	// var cameraHeight = Math.round(size.height * 0.8);
-  // var cameraWidth = Math.round(size.width);
+  if (cameraHeight > 719) {
+    cameraHeight = 719;
+  }
 
-	// // This code attempts for the dimensions of the camera to be in a 1:1 aspect ratio, by taking the previous measurements of the size of the screen.
-	// // Takes the smaller of the two calcs of width and height, to ensure it will fit on the screen.
-	// var minValue = cameraWidth;
+  if (cameraHeight < minValue){
+      minValue = cameraHeight;
+      cameraWidth = minValue;
+  }else{
+      cameraHeight = cameraHeight;
+      cameraWidth = cameraWidth * 0.9;
+  };
 
-  // // // horizontal position
-	// // if (cameraHeight < minValue) {
-	// // 	minValue = cameraHeight;
-	// // 	cameraWidth = minValue;
-	// // } else {
-	// // 	cameraHeight = minValue;
-	// // }
+	var cameraConstraints;
 
-  // //*************** 
-  // // From Mine 
-  // if (cameraHeight < minValue){
-  //       minValue = cameraHeight;
-  //       cameraWidth = minValue;
-  //   }else{
-  //       cameraHeight = cameraHeight;
-  //       cameraWidth = cameraWidth * 0.9;
-  //   };
-  // // ***************
-
-
-	// var cameraConstraints;
-  // // show back camera first
-	// if (frontFacing) {
-	// 	var x = "user";
-	// 	cameraConstraints = {
-	// 		width: {
-	// 			min: cameraWidth,
-	// 			max: cameraWidth,
-	// 		},
-	// 		height: {
-	// 			min: cameraHeight,
-	// 			max: cameraHeight,
-	// 		},
-	// 		facingMode: { x },
-	// 	};
-	// } else {
-	// 	cameraConstraints = {
-	// 		width: {
-	// 			min: cameraWidth,
-	// 			max: cameraWidth,
-	// 		},
-	// 		height: {
-	// 			// min: cameraHeight,
-	// 			// max: cameraHeight,
-	// 		},
-	// 		facingMode: { exact: "environment" },
-	// 	};
-	// }
+  // show back camera first
+	if (backFacing) {
+    cameraConstraints = {
+			width: {
+				// min: cameraWidth,
+				// max: cameraWidth,
+			},
+			height: {
+				// min: cameraHeight,
+				// max: cameraHeight,
+			},
+			facingMode: { exact: "environment" },
+		};
+		
+	} else {
+    var x = "user";
+		cameraConstraints = {
+			width: {
+				// min: cameraWidth,
+				// max: cameraWidth,
+			},
+			height: {
+				// min: cameraHeight,
+				// max: cameraHeight,
+			},
+			facingMode: { x },
+		};
+	}
+// // // COMBINED END
+// // //****************************************************************
 
 
 //two buttons, one for taking pictures with flash and one for without
