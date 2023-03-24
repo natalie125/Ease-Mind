@@ -20,6 +20,7 @@ const LanreWebcamCapture = () => {
   const [imageSrc, setImageSrc] = useState(null);
   const [imageSent, setImageSent] = useState(false);
   const [backFacing, setBackFacing] = React.useState(true);
+  const [dipstickDetected , setDipstickDetected ] = useState(0);
 	let navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -31,14 +32,15 @@ const LanreWebcamCapture = () => {
       method: 'post',
       data: formData,
       headers: {
+        "Access-Control-Allow-Origin": "*",
         'Content-Type': 'multipart/form-data'
       }
     })
     .then(response => {
       console.log(response);
       console.log(response.data);
-
-      // save the results in session storage
+      
+      // save results in session storage
       sessionStorage.setItem("bilirubin",response.data.bilirubin);
       sessionStorage.setItem("blood", response.data.blood);
       sessionStorage.setItem("glucose", response.data.glucose);
@@ -57,28 +59,46 @@ const LanreWebcamCapture = () => {
     .catch(error=> {
       console.error(error);
     });
-
     console.log(response);
-
   }
+
 
 //takes pictures without flash
   const handleTakePicture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImageSrc(imageSrc);
+    detectDipstick();
+    console.log(window.location.href)
   };
 
 //resets picture source and retakes picture
 const handleRetakePicture = () => {
   setImageSrc(null);
+  setDipstickDetected(0);
 };
 
 
+// object detection model
+const detectDipstick = async () => {
+  let model = new cvstfjs.ObjectDetectionModel();
+  // load the tensorflow  model hosted on aws s3
+  await model.loadModelAsync('https://dipstick-model.s3.eu-west-2.amazonaws.com/model.json');
+  const image = document.getElementById('image');
+  const result = await model.executeAsync(image);
+  console.log("*************Detecting Dipstick in image*************");
+  console.log(result);
+
+  if (result[1][0] > 0.5) {
+    setDipstickDetected(1);
+
+  }else{
+    setDipstickDetected(-1);
+  }
+};
 
   // Using button to change what camera is being used
 	// Should work based on MDN documentation: https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints/facingMode
 	// But I cannot test properly as its running on a laptop.
-	// const switchCameraFacing = React.useCallback(() => {
   const switchCameraFacing = React.useCallback(() => {
 		if (backFacing){
 			setBackFacing(false);
@@ -86,10 +106,9 @@ const handleRetakePicture = () => {
 		else{
 			setBackFacing(true);
 		}
-	
+
 	},[backFacing]);
 
-  
 //  // //**************************************************************** 
 //  // // COMBINED
   // 	Trying to do the dimensions stuff.
@@ -97,8 +116,6 @@ const handleRetakePicture = () => {
 	const size = useWindowSize();
 	var cameraHeight = Math.round(size.height);
   var cameraWidth = Math.round(size.width);
-
-
 
 	// This code attempts for the dimensions of the camera to be in a 1:1 aspect ratio, by taking the previous measurements of the size of the screen.
 	// Takes the smaller of the two calcs of width and height, to ensure it will fit on the screen.
@@ -181,10 +198,30 @@ const handleRetakePicture = () => {
         {imageSrc && imageSent == false && (
           <>
             <div className="taken-pic-container">
-              <img src={imageSrc} width={minValue} alt="Captured photo" />
+              <div>
+                {/* <p className="detecting-dipstick-message"> Detecting dipstick....</p> */}
+              </div>
+              <img id="image" src={imageSrc} width={minValue} alt="Captured photo" />
               <div className="taken-pic-buttons-overlay-container">
-                <button onClick={handleRetakePicture} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
-                <button onClick={handleSubmit} className="camera-button"><FontAwesomeIcon icon={faPaperPlane} className="camera-icon"/></button>
+                {/* Show a message that dipstick is being detected */}
+                {dipstickDetected == 0 && (
+                  <p className="detecting-dipstick-message"> Detecting dipstick... </p>)}
+
+                {dipstickDetected == 1 && (
+                  <p className="detecting-dipstick-message success"> Dipstick detected </p>)}
+
+                {dipstickDetected == -1 && (
+                  <p className="detecting-dipstick-message failure"> Dipstick not detected </p>)}
+
+
+
+                <div>
+                  <button onClick={handleRetakePicture} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
+
+                  {dipstickDetected == 1 && (
+                  <button onClick={handleSubmit} className="camera-button"><FontAwesomeIcon icon={faPaperPlane} className="camera-icon"/></button>)}
+                </div>
+
               </div>
             </div>
           </>

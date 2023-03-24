@@ -51,7 +51,7 @@ class Home extends Component {
 							<img className="homepage-button" src={skinscan_logo} alt="Skin-Scan_App_Kevin" />
 						</Link>
 
-						<Link className="link" to="/dipstik-home">
+						<Link className="link" to="/dipstik">
 							<img className="homepage-button" src={dipstik_logo} alt="Dipstik_App_Lanre" />
 						</Link>
 

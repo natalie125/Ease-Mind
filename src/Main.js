@@ -33,6 +33,7 @@ import Error404 from "./Pages/Error404";
 import DipstikInstructions from "./components/Lanre/DipstikHome";
 import DipstikTimer from "./components/Lanre/DipstikTimer";
 import DipstikCamera from "./components/Lanre/DipstikCamera";
+import DipstikDetector from "./components/Lanre/DipstikDetector";
 import DipstikResults from "./components/Lanre/DipstikResults";
 
 const Main = () => {
@@ -71,10 +72,10 @@ const Main = () => {
 			<Route exact path="/shreyas/tonsillitis_outcome_1" element={<TonsillitisOutcome1 />}></Route>
 			<Route exact path="/shreyas/tonsillitis_outcome_2" element={<TonsillitisOutcome2 />}></Route>
 			<Route path="*" element={<Error404 />}></Route>
-			<Route exact path="/dipstik-home" element={<DipstikInstructions />}></Route>
-			<Route exact path="/dipstik-home/dipstik-timer" element={<DipstikTimer />}></Route>
-			<Route exact path="/dipstik-home/dipstik-timer/dipstik-camera" element={<DipstikCamera />}></Route>
-			<Route exact path="/dipstik-home/dipstik-timer/dipstik-camera/dipstik-results" element={<DipstikResults />}></Route>
+			<Route exact path="/dipstik" element={<DipstikInstructions />}></Route>
+			<Route exact path="/dipstik/dipstik-timer" element={<DipstikTimer />}></Route>
+			<Route exact path="/dipstik/dipstik-detector" element={<DipstikDetector/>}></Route>
+			<Route exact path="/dipstik/dipstik-results" element={<DipstikResults />}></Route>
 		</Routes>
 	);
 };
