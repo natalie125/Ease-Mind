@@ -10,6 +10,7 @@ from matplotlib import pyplot as plt
 import time
 from PIL import Image
 from rembg import remove
+from io import BytesIO
 # instructions
 # add opencv to flask - pip install opencv-python 
 # add rembg to flask - pip install rembg
@@ -22,6 +23,47 @@ from rembg import remove
 # def lanre():
 #     # if request.method == 'GET' or request.method == 'POST':
 #     #     return "Lanre's App Requested"
+#############################################################
+# ROUTE SIMPLY PROVIDING A PROOF OF CONCEPT OF UPLOADING IMAGES TO SERVER
+# CURRENTLY SAVES IMAGE TO SHOTS FOLDER, BUT I IMAGINE WE DONT WANT TO DO THAT AND ONLY WANT TO PROCESS IMAGES
+# ^^^^^^^^^^^^^^^^^^^^^^^
+@app.route('/dipstik/training_data', methods=['POST'])
+def create_training_data():
+    image = request.form['image']
+    # if frontend sends no image return error
+    if image == "null":
+        return {"msg": "No image sent!"}, 415
+
+    # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
+    image = image[22:]
+    image_decoded = base64.b64decode(image)
+
+    # gets string of curr time and names file that
+    timestamp = str(int(time.time()))
+    filename = timestamp+".jpeg"
+
+    # saves decoded base 64 string to that image
+    with open(os.path.join("app/lanre/model_versions/dataset/training/", filename), "wb") as f:
+        f.write(image_decoded)
+    
+    
+    # read decoded image
+    current_dir = os.getcwd()
+    submitted_folder = current_dir + '/app/lanre/model_versions/dataset/training/'
+    image_path = submitted_folder + filename
+    im = Image.open(image_path) # read in image 
+
+    im = im.convert("RGB")
+    # im.save(f"converted-{filename}", "JPEG")
+
+    im.save(f"/Users/lanresodeinde/Desktop/final_year_app/backend/app/lanre/model_versions/dataset/training/{filename}", "JPEG")
+
+    # im = Image.fromarray(image_decoded)
+    return {"msg": "image successfully saved in server!"}, 200
+
+
+
+
 
 # #############################################################
 # # ROUTE SIMPLY PROVIDING A PROOF OF CONCEPT OF UPLOADING IMAGES TO SERVER
