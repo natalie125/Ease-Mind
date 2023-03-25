@@ -1,5 +1,5 @@
 # flake8: noqa
-from flask import Flask, render_template, Response, request, flash, redirect, url_for, session, jsonify
+from flask import request, jsonify
 from app import app, models, bcrypt, db
 import base64
 import os
@@ -10,7 +10,6 @@ from matplotlib import pyplot as plt
 import time
 from PIL import Image
 from rembg import remove
-from io import BytesIO
 # instructions
 # add opencv to flask - pip install opencv-python 
 # add rembg to flask - pip install rembg
