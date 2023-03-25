@@ -57,7 +57,7 @@ const DipstikResults = () => {
 			nitrite = "Negative";
 		  	break;
 		case "trace":
-			nitrite = "Positive";
+			nitrite = "Trace";
 			break;
 		case "positive":
 			nitrite = "Positive";
@@ -168,6 +168,35 @@ const DipstikResults = () => {
 			blood = "Error";
 	};
 
+	
+	//specific gravity
+    let specific_gravity = sessionStorage.getItem("specific_gravity");
+	switch(specific_gravity) {
+		case "1.000":
+			specific_gravity = "Abnormal-hydration";
+		  	break;
+		case "1.005":
+			specific_gravity = "Normal";
+			break;
+		case "1.010":
+			specific_gravity = "Normal";
+		  	break;
+		case "1.015":
+			specific_gravity = "Normal";
+		  	break;
+		case "1.020":
+			specific_gravity = "Normal";
+			break;
+		case "1.025":
+			specific_gravity = "Normal-dehydration";
+			break;
+		case "1.030":
+			specific_gravity = "Normal-dehydration";
+			break;
+		default:
+			specific_gravity = "Error";
+	};
+
 	//ketones
 	let ketones = sessionStorage.getItem("ketones");
 	switch(ketones) {
@@ -235,33 +264,7 @@ const DipstikResults = () => {
 			glucose = "Error";
 	};
 
-	//specific gravity
-    let specific_gravity = sessionStorage.getItem("specific_gravity");
-	switch(specific_gravity) {
-		case "1.000":
-			specific_gravity = "Abnormal";
-		  	break;
-		case "1.005":
-			specific_gravity = "Normal";
-			break;
-		case "1.010":
-			specific_gravity = "Normal";
-		  	break;
-		case "1.015":
-			specific_gravity = "Normal";
-		  	break;
-		case "1.020":
-			specific_gravity = "Normal";
-			break;
-		case "1.025":
-			specific_gravity = "Normal";
-			break;
-		case "1.030":
-			specific_gravity = "Normal";
-			break;
-		default:
-			specific_gravity = "Error";
-	};
+
 	
 
 
@@ -421,10 +424,12 @@ const DipstikResults = () => {
 		//The normal USG ranges from 1.003 to 1.030. USG less than 1.010 
 		//is suggestive of relative hydration, and values greater than 1.020 in- dicate relative dehydration.
 		let hydration = ""
-		if(specific_gravity == 'Abnormal'){
+		if(specific_gravity == 'Abnormal-hydration'){
 			hydration = "Excessive Hydration"
 		} else if (specific_gravity == 'Normal'){
 			hydration = "Optimal"
+		} else if (specific_gravity == 'Normal-dehydration'){
+			hydration = "Possible dehydration"
 		}
 	
 	
