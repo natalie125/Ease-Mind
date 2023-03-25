@@ -26,118 +26,25 @@ const DipstikResults = () => {
 	};
 
 	//Gather results and make it explainable
-	let bilirubin = sessionStorage.getItem("bilirubin");
-	switch(bilirubin) {
-		case "neg":
-			bilirubin = "Negative";
-		  	break;
-		case "+":
-			bilirubin = "Small+";
-		  	break;
-		case "++":
-			bilirubin = "Moderate++";
-		  	break;
-		case "+++":
-			bilirubin = "Large+++";
-			break;
-		default:
-			bilirubin = "Error";
-	};
 
-
-    let blood = sessionStorage.getItem("blood");
-	switch(blood) {
-		case "neg":
-			blood = "Negative";
-		  	break;
-		case "trace":
-			blood = "trace";
-			break;
-		case "+25":
-			blood = "Small+";
-		  	break;
-		case "++80":
-			blood = "Moderate++";
-		  	break;
-		case "+++200":
-			blood = "Large+++";
-			break;
-		case "non_hemolysis+10":
-			blood = "Large+++";
-			break;
-		case "++80_rbc":
-			blood = "Moderate++";
-				break;
-		default:
-			blood = "Error";
-	};
-
-    let glucose = sessionStorage.getItem("glucose");
-	switch(glucose) {
-		case "neg":
-			glucose = "Negative";
-		  	break;
-		case "+100":
-			glucose = "+100";
-			break;
-		case "+250":
-			glucose = "+250";
-		  	break;
-		case "++500":
-			glucose = "++500";
-		  	break;
-		case "+++1000":
-			glucose = "+++1000";
-			break;
-		case "++++2000":
-			glucose = "++++2000";
-			break;
-		default:
-			glucose = "Error";
-	};
-
-	//ketones
-    let ketones = sessionStorage.getItem("ketones");
-	switch(ketones) {
-		case "neg":
-			ketones = "Negative";
-		  	break;
-		case "+5":
-			ketones = "trace";
-			break;
-		case "+15":
-			ketones = "Small+";
-		  	break;
-		case "++40":
-			ketones = "Moderate++";
-		  	break;
-		case "+++80":
-			ketones = "Large+++";
-			break;
-		case "+++160":
-			ketones = "Large+++";
-			break;
-		default:
-			ketones = "Error";
-	};
 
 	//leukocytes
-    let leukocytes = sessionStorage.getItem("leukocytes");
+	let leukocytes = sessionStorage.getItem("leukocytes");
 	switch(leukocytes) {
 		case "neg":
 			leukocytes = "Negative";
-		  	break;
+				break;
 		case "trace":
-			leukocytes = "trace";
+			leukocytes = "Trace";
 			break;
 		case "+70":
-			leukocytes = "Small+";
-		  	break;
+			leukocytes = "Positive";
+				break;
 		case "++125":
-			leukocytes = "Moderate++";
-		  	break;
+			leukocytes = "Positive";
+				break;
 		case "+++500":
-			leukocytes = "Large+++";
+			leukocytes = "Positive";
 			break;
 		default:
 			leukocytes = "Error";
@@ -150,7 +57,7 @@ const DipstikResults = () => {
 			nitrite = "Negative";
 		  	break;
 		case "trace":
-			nitrite = "trace";
+			nitrite = "Positive";
 			break;
 		case "positive":
 			nitrite = "Positive";
@@ -159,32 +66,26 @@ const DipstikResults = () => {
 			nitrite = "Error";
 	};
 
-	//ph
-    let ph = sessionStorage.getItem("ph");
-	switch(ph) {
-		case "5":
-			ph = "Negative";
+	//urobilinogen
+    let urobilinogen = sessionStorage.getItem("urobilinogen");
+	switch(urobilinogen) {
+		case "0.1":
+			urobilinogen = "Normal";
 		  	break;
-		case "6":
-			ph = "Trace";
+		case "1":
+			urobilinogen = "Normal";
 			break;
-		case "6.5":
-			ph = "Small";
+		case "2":
+			urobilinogen = "Abnormal";
 		  	break;
-		case "7":
-			ph = "Moderate++";
+		case "4":
+			urobilinogen = "Abnormal";
 		  	break;
-		case "7.5":
-			ph = "Large+++";
-			break;
 		case "8":
-			ph = "Large+++";
-			break;
-		case "8.5":
-			ph = "Large+++";
+			urobilinogen = "Abnormal";
 			break;
 		default:
-			ph = "Error";
+			urobilinogen = "Error";
 	};
 
 	//protein
@@ -197,75 +98,190 @@ const DipstikResults = () => {
 			protein = "Trace";
 			break;
 		case "+30":
-			protein = "Small";
+			protein = "Positive";
 		  	break;
 		case "++100":
-			protein = "Moderate++";
+			protein = "Positive";
 		  	break;
 		case "+++300":
-			protein = "Large+++";
+			protein = "Positve";
 			break;
 		case "++++1000":
-			protein = "Large+++";
+			protein = "Postive";
 			break;
 		default:
 			protein = "Error";
+	};
+	
+	//ph
+    let ph = sessionStorage.getItem("ph");
+	switch(ph) {
+		case "5":
+			ph = "Abnormal (5)";
+		  	break;
+		case "6":
+			ph = "Normal";
+			break;
+		case "6.5":
+			ph = "Normal";
+		  	break;
+		case "7":
+			ph = "Normal";
+		  	break;
+		case "7.5":
+			ph = "Normal";
+			break;
+		case "8":
+			ph = "Normal";
+			break;
+		case "8.5":
+			ph = "Abnormal (8.5)";
+			break;
+		default:
+			ph = "Error";
+	};
+
+	let blood = sessionStorage.getItem("blood");
+	switch(blood) {
+		case "neg":
+			blood = "Negative";
+		  	break;
+		case "trace":
+			blood = "Trace";
+			break;
+		case "+25":
+			blood = "Positive";
+		  	break;
+		case "++80":
+			blood = "Positive";
+		  	break;
+		case "+++200":
+			blood = "Positive";
+			break;
+		case "non_hemolysis+10":
+			blood = "Non Hemolysed Trace";
+			break;
+		case "++80_rbc":
+			blood = "Positive";
+				break;
+		default:
+			blood = "Error";
+	};
+
+	//ketones
+	let ketones = sessionStorage.getItem("ketones");
+	switch(ketones) {
+		case "neg":
+			ketones = "Negative";
+				break;
+		case "+5":
+			ketones = "Trace";
+			break;
+		case "+15":
+			ketones = "Positive";
+				break;
+		case "++40":
+			ketones = "Positive";
+				break;
+		case "+++80":
+			ketones = "Positive";
+			break;
+		case "+++160":
+			ketones = "Positive";
+			break;
+		default:
+			ketones = "Error";
+	};
+
+	let bilirubin = sessionStorage.getItem("bilirubin");
+	switch(bilirubin) {
+		case "neg":
+			bilirubin = "Negative";
+		  	break;
+		case "+":
+			bilirubin = "Positive";
+		  	break;
+		case "++":
+			bilirubin = "Positive";
+		  	break;
+		case "+++":
+			bilirubin = "Positive";
+			break;
+		default:
+			bilirubin = "Error";
+	};
+
+    let glucose = sessionStorage.getItem("glucose");
+	switch(glucose) {
+		case "neg":
+			glucose = "Negative";
+		  	break;
+		case "+100":
+			glucose = "Trace";
+			break;
+		case "+250":
+			glucose = "Positive";
+		  	break;
+		case "++500":
+			glucose = "Positive";
+		  	break;
+		case "+++1000":
+			glucose = "Positive";
+			break;
+		case "++++2000":
+			glucose = "Positive";
+			break;
+		default:
+			glucose = "Error";
 	};
 
 	//specific gravity
     let specific_gravity = sessionStorage.getItem("specific_gravity");
 	switch(specific_gravity) {
 		case "1.000":
-			specific_gravity = "Negative";
+			specific_gravity = "Abnormal";
 		  	break;
 		case "1.005":
-			specific_gravity = "trace";
+			specific_gravity = "Normal";
 			break;
 		case "1.010":
-			specific_gravity = "Small";
+			specific_gravity = "Normal";
 		  	break;
 		case "1.015":
-			specific_gravity = "Moderate++";
+			specific_gravity = "Normal";
 		  	break;
 		case "1.020":
-			specific_gravity = "Large+++";
+			specific_gravity = "Normal";
 			break;
 		case "1.025":
-			specific_gravity = "Large+++";
+			specific_gravity = "Normal";
 			break;
 		case "1.030":
-			specific_gravity = "Large+++";
+			specific_gravity = "Normal";
 			break;
 		default:
 			specific_gravity = "Error";
 	};
+	
 
-	//urobilinogen
-    let urobilinogen = sessionStorage.getItem("urobilinogen");
-	switch(urobilinogen) {
-		case "0.1":
-			urobilinogen = "Negative";
-		  	break;
-		case "1":
-			urobilinogen = "trace";
-			break;
-		case "2":
-			urobilinogen = "Small+";
-		  	break;
-		case "4":
-			urobilinogen = "Moderate++";
-		  	break;
-		case "8":
-			urobilinogen = "Large+++";
-			break;
-		default:
-			urobilinogen = "Error";
-	};
 
 
 	// Urinary Tract Infection
 		// Positive for nitrite or *leukocytes* or red blood cells
 		//A negative UTI does not rule out UTI but a positive one strongly suggests infections and a UTI
+
+		let urinary_tract_infection = ""
+		if(leukocytes == 'Positive' || nitrite == 'Positive'){
+			urinary_tract_infection = "High Risk"
+		} else if (leukocytes == 'Positive' || nitrite == 'Negative'){
+			urinary_tract_infection = "Medium Risk"
+		} else if ((leukocytes == 'Negative' || leukocytes == 'Trace') || nitrite == 'Positive'){
+			urinary_tract_infection = "Medium Risk"
+		} else if ((leukocytes == 'Negative' || leukocytes == 'Trace') || nitrite == 'Positive'){
+			urinary_tract_infection = "Low risk"
+		}
+
+
 
 	//White blood Cells
 		// Leukocyte esterase is a screening test used to detect a substance that suggests there are 
@@ -273,9 +289,29 @@ const DipstikResults = () => {
 		//test is positive, the urine should be examined under a microscope for white blood cells 
 		//and other signs that point to an infection.
 	
+		let white_blood_cells = ""
+		if(leukocytes == 'Positive'){
+			white_blood_cells = "Medium Risk"
+		} else if (leukocytes == 'Trace'){
+			white_blood_cells = "Low Risk"
+		} else if (leukocytes == 'Negative' ){
+			white_blood_cells = "Good"
+		}
+
 	// Liver Health
 		//Bilirubin can be a early sign of liver damage
 		//https://medlineplus.gov/lab-tests/bilirubin-in-urine/
+		let liver_health = ""
+		if(bilirubin == 'Negative' && urobilinogen == 'Normal'){
+			liver_health = 'Good'
+		}else if(bilirubin == 'Negative' && urobilinogen == 'Abnormal'){
+			liver_health = 'Low risk'
+		}else if(bilirubin == 'Positive' && urobilinogen == 'Normal'){
+			liver_health = 'Low risk'
+		} else if(bilirubin == 'Positive' && urobilinogen == 'Abnormal'){
+			liver_health = 'Medium Risk'
+		}
+
 
 	//Kidney Health
 		//Protein is an important building block in the body. Everyone has protein \
@@ -286,22 +322,136 @@ const DipstikResults = () => {
 		//leaks into your urine. Having protein in your urine suggests that your 
 		//kidneys’ filtering units are damaged by kidney disease.
 		//https://www.kidney.org/sites/default/files/11-10-1815_HBE_PatBro_Urinalysis_v6.pdf
+	let kidney_health = ""
+	// Every thing positive
+	if(protein == 'Positive' && glucose == 'Postive' && ketones == 'Positive' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)") && blood == "Positive" ){
+		kidney_health = "Medium risk"
+	} 
+	// Everything Positive - one thing Trace
+	else if(protein == 'Trace' && glucose == 'Positive' && ketones == 'Positive' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)") && blood == "Positive" ) {
+		kidney_health = "Low risk"
+	}else if(protein == 'Positive' && glucose == 'Trace' && ketones == 'Positive' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)") && blood == "Positive" ) {
+		kidney_health = "Low risk"
+	}
+	else if(protein == 'Positive' && glucose == 'Postive' && ketones == 'Trace' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)") && blood == "Positive" ) {
+		kidney_health = "Medium risk"
+	}
+	else if(protein == 'Positive' && glucose == 'Postive' && ketones == 'Positive' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)") && (blood == "Trace" || blood == "Non Hemolysed Trace") ) {
+		kidney_health = "Low risk"
+	} 
+	// Everything positive - one thing negative 
+	else if(protein == 'Negative' && glucose == 'Positive' && ketones == 'Positive' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)") && blood == "Positive" ) {
+		kidney_health = "Good"
+	}else if(protein == 'Positive' && glucose == 'Negative' && ketones == 'Positive' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)") && blood == "Positive" ) {
+		kidney_health = "Good"
+	}else if(protein == 'Positive' && glucose == 'Positive' && ketones == 'Negative' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)") && blood == "Positive" ) {
+		kidney_health = "Medium risk"
+	}else if(protein == 'Postive' && glucose == 'Postive' && ketones == 'Positive' && (ph == "Normal") && blood == "Positive" ) {
+		kidney_health = "Medium risk"
+	}else if(protein == 'Positive' && glucose == 'Positive' && ketones == 'Positive' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)") && blood == "Negative" ) {
+		kidney_health = "Good"
+	}
+	//everything trace
+	else if(protein == 'Trace' && glucose == 'Trace' && ketones == 'Trace' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)") && (blood == "Trace" || blood == "Non Hemolysed Trace") ) {
+		kidney_health = "Low risk"
+	}
+	//everything trace - one thing positive
+	else if(protein == 'Positive' && glucose == 'Trace' && ketones == 'Trace' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)" || ph == "Normal" ) && (blood == "Trace" || blood == "Non Hemolysed Trace") ) {
+		kidney_health = "Low risk"
+	}else if(protein == 'Trace' && glucose == 'Positive' && ketones == 'Trace' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)" || ph == "Normal" ) && (blood == "Trace" || blood == "Non Hemolysed Trace") ) {
+		kidney_health = "Low risk"
+	}else if(protein == 'Trace' && glucose == 'Trace' && ketones == 'Positive' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)" || ph == "Normal" ) && (blood == "Trace" || blood == "Non Hemolysed Trace") ) {
+		kidney_health = "Low risk"
+	}else if(protein == 'Trace' && glucose == 'Trace' && ketones == 'Trace' && ph =="Normal"  && (blood == "Trace" || blood == "Non Hemolysed Trace") ) {
+		kidney_health = "Low risk"
+	}else if(protein == 'Trace' && glucose == 'Trace' && ketones == 'Trace' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)" || ph == "Normal" ) && blood == "Positive" ) {
+		kidney_health = "Low risk"
+	} 
+	//everything trace - one thing negative
+	else if(protein == 'Negative' && glucose == 'Trace' && ketones == 'Trace' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)" || ph == "Normal") && (blood == "Trace" || blood == "Non Hemolysed Trace") ) {
+		kidney_health = "Good"
+	}else if(protein == 'Trace' && glucose == 'Negative' && ketones == 'Trace' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)" || ph == "Normal") && (blood == "Trace" || blood == "Non Hemolysed Trace") ) {
+		kidney_health = "Good"
+	} else if(protein == 'Trace' && glucose == 'Trace' && ketones == 'Negative' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)" || ph == "Normal") && (blood == "Trace" || blood == "Non Hemolysed Trace") ) {
+		kidney_health = "Low risk"
+	}else if(protein == 'Trace' && glucose == 'Trace' && ketones == 'Trace' && ph == "Normal" && (blood == "Trace" || blood == "Non Hemolysed Trace") ) {
+		kidney_health = "Low risk"
+	}else if(protein == 'Trace' && glucose == 'Trace' && ketones == 'Trace' && (ph == "Abnormal (5)" || ph == "Abnormal (8.5)" || ph == "Normal") &&  blood == "Negative") {
+		kidney_health = "Good"
+	}
+	//everything negative
+	else if(protein == 'Negative' && glucose == 'Negative' && ketones == 'Negative' &&  ph == "Normal" &&  blood == "Negative") {
+		kidney_health = "Good"
+	}
+	//Everything negative - one thing positive
+	else if(protein == 'Positive' && glucose == 'Negative' && ketones == 'Negative' &&  ph == "Normal" &&  blood == "Negative") {
+		kidney_health = "Good"
+	}else if(protein == 'Negative' && glucose == 'Positive' && ketones == 'Negative' &&  ph == "Normal" &&  blood == "Negative") {
+		kidney_health = "Good"
+	}else if(protein == 'Negative' && glucose == 'Negative' && ketones == 'Positive' &&  ph == "Normal" &&  blood == "Negative") {
+		kidney_health = "Good"
+	}else if(protein == 'Negative' && glucose == 'Negative' && ketones == 'Negative' &&  ph == "Abnormal" &&  blood == "Negative") {
+		kidney_health = "Good"
+	}else if(protein == 'Negative' && glucose == 'Negative' && ketones == 'Negative' &&  ph == "Normal" &&  blood == "Positive") {
+		kidney_health = "Good"
+	}
+
+	// Everything negative - one thing trace
+	else if(protein == 'Trace' && glucose == 'Negative' && ketones == 'Negative' &&  ph == "Normal" &&  blood == "Negative") {
+		kidney_health = "Good"
+	}else if(protein == 'Negative' && glucose == 'Trace' && ketones == 'Negative' &&  ph == "Normal" &&  blood == "Negative") {
+		kidney_health = "Good"
+	}else if(protein == 'Negative' && glucose == 'Negative' && ketones == 'Trace' &&  ph == "Normal" &&  blood == "Negative") {
+		kidney_health = "Good"
+	}else if(protein == 'Negative' && glucose == 'Negative' && ketones == 'Negative' &&  ph == "Normal" &&  blood == "Trace") {
+		kidney_health = "Good"
+	} else {
+		kidney_health = "Good"
+	}
+	
+
+
+
 
 	// Hydration
 		// Specific Gravity
 		//https://www.healthline.com/health/urine-specific-gravity#results
 		// Specific gravity results above 1.010 can indicate mild dehydration. //The higher the number, the more dehydrated you may be.
-
 		//https://alliedhealth.ceconnection.com/files/UrineDipstickTestingEverythingYouNeedtoKnow-1440776910971.pdf
 		//The normal USG ranges from 1.003 to 1.030. USG less than 1.010 
 		//is suggestive of relative hydration, and values greater than 1.020 in- dicate relative dehydration.
-		
+		let hydration = ""
+		if(specific_gravity == 'Abnormal'){
+			hydration = "Excessive Hydration"
+		} else if (specific_gravity == 'Normal'){
+			hydration = "Optimal"
+		}
+	
+	
 	// pH
 		// nor- mal serum pH is 7.4, but the normal urinary pH ranges from 4.5 to 8. Because of normal metabolic activ- ity,
 		//the generally accepted normal pH of urine is about 5.5 to 6.5.
+		let ph_diagnosis = ""
+		if(ph == 'Abnormal (5)'){
+			ph_diagnosis = "Acidic"
+		} else if ( ph == 'Normal'){
+			ph_diagnosis = "Normal"
+		}
+		else if (ph == 'Abnormal (8.5)'){
+			ph_diagnosis = "Alkaline"
+		}
 
-	// Ketone - Uncontrolled Diabetes
-		//
+	
+	// Ketones 
+		let ketones_diagnosis = ""
+		if(ketones == 'Negative'){
+			ketones_diagnosis = "Low Ketosis"
+		} else if ( ketones == 'Trace'){
+			ketones_diagnosis = "Low Ketosis"
+		}
+		else if (ketones == 'Positive'){
+			ketones_diagnosis = "Ketoacidosis"
+		}
 
 	return (
 		<div className="dipstik-results">
@@ -365,32 +515,32 @@ const DipstikResults = () => {
 						<div className="results-container">
 							<div className="results-box">
 								<p><b>Urinary Tract Infection:</b></p>
-								<p>{leukocytes}</p>
+								<p>{urinary_tract_infection}</p>
 							</div >
 							<div className="results-box">
 								<p><b>White Blood Cells</b></p>
-								<p>{nitrite}</p>
+								<p>{white_blood_cells}</p>
 							</div>
 							<div className="results-box">
 								<p><b>Liver Health</b></p>
-								<p>{urobilinogen}</p>
+								<p>{liver_health}</p>
 							</div >
 							<div className="results-box">
 								<p><b>Kidney Health</b></p>
-								<p>{protein}</p>
+								<p>{kidney_health}</p>
 							</div>
 							<div className="results-box">
 								<p><b>Hydration:</b></p>
-								<p>{blood}</p>
+								<p>{hydration}</p>
 							</div>
 							<div className="results-box">
 								<p><b>pH:</b></p>
-								<p>{ph}</p>
+								<p>{ph_diagnosis}</p>
 							</div>
 							
 							<div className="results-box">
 								<p><b>Ketone:</b></p>
-								<p>{specific_gravity}</p>
+								<p>{ketones_diagnosis}</p>
 							</div>
 						</div>
 					)}
