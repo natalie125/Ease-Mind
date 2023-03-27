@@ -10,13 +10,10 @@ import { getNodeStyle } from "./utils.ts";
 import "../App/App.css";
 import "./Canopy.css"
 
-var baseurl = "http://localhost:5000/canopy/";
-	if(window.location.href.includes("localhost")) {
-		baseurl = "http://localhost:5000/canopy/";
-	}
-	else {
-		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
-	}
+let BASEURL = "";
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
 
 // methods for updating data in the Flask app
 // update information in the tree table
@@ -88,7 +85,7 @@ function Canopy_Edit_Node(props) {
 		let new_tree_nodes = [];
 		// for each node in the above data, we want to get it's parents and children
 		for(let i = 0; i < data.ids.length; i++) {
-			const children_get = await axios.get(baseurl + "parent_children/prod", {params: {id: data.ids[i]}});
+			const children_get = await axios.get(BASEURL + "canopy/parent_children/prod", {params: {id: data.ids[i]}});
 			// console.log("patient " + data.ids[i] + "'s children");
 			// console.log(children_get.data);
 			let children_array = []
@@ -96,7 +93,7 @@ function Canopy_Edit_Node(props) {
 				children_array.push({id: children_get.data.names[j], type: "blood"});
 			}
 			// console.log(children_array);
-			const parents_get = await axios.get(baseurl + "child_parents/prod", {params: {id: data.ids[i]}});
+			const parents_get = await axios.get(BASEURL + "canopy/child_parents/prod", {params: {id: data.ids[i]}});
 			// console.log("patient " + data.ids[i] + "'s parents");
 			// console.log(parents_get.data);
 			let parents_array = []
@@ -104,7 +101,7 @@ function Canopy_Edit_Node(props) {
 				parents_array.push({id: parents_get.data.names[j], type: "blood"});
 			}
 			// console.log(parents_array);
-			const spouses_get = await axios.get(baseurl + "patient_spouses/prod", {params: {id: data.ids[i]}});
+			const spouses_get = await axios.get(BASEURL + "canopy/patient_spouses/prod", {params: {id: data.ids[i]}});
 			// console.log("patient " + data.ids[i] + "'s spouses");
 			// console.log(spouses_get.data);
 			let spouses_array = []
@@ -188,8 +185,8 @@ function Canopy_Edit_Node(props) {
 	}
 
 	useEffect(() => {
-		getTree(baseurl + "tree/prod", { id:location.state?.id });
-		getTreeNodes(baseurl + "tree_nodes/prod", { id:location.state?.id })
+		getTree(BASEURL + "canopy/tree/prod", { id:location.state?.id });
+		getTreeNodes(BASEURL + "canopy/tree_nodes/prod", { id:location.state?.id })
 	}, [loading]);
 	
 	return (
@@ -225,7 +222,7 @@ function Canopy_Edit_Node(props) {
 
 				<div>
 					<button onClick={() => {
-						putTree(baseurl + "tree/prod", {id: id, name: name, owner: owner, new_name: new_name})
+						putTree(BASEURL + "canopy/tree/prod", {id: id, name: name, owner: owner, new_name: new_name})
 						alert("Tree Record ID: " + id + " Saved!")
 						navigate(0)
 					}}>
@@ -237,7 +234,7 @@ function Canopy_Edit_Node(props) {
 
 				<div>
 					<button onClick={() => {
-						deleteTree(baseurl + "tree/prod", {id: id, name: name, owner: owner})
+						deleteTree(BASEURL + "canopy/tree/prod", {id: id, name: name, owner: owner})
 						alert("Tree Record ID: " + id + " Deleted!")
 						navigate(-1)
 					}}>

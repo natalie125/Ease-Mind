@@ -5,13 +5,11 @@ import axios from "axios";
 import "../App/App.css";
 import "./Canopy.css"
 
-var baseurl = "http://localhost:5000/canopy/";
-	if(window.location.href.includes("localhost")) {
-		baseurl = "http://localhost:5000/canopy/";
-	}
-	else {
-		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
-	}
+let BASEURL = "";
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
+
 
 function Canopy_Edit_Condition(props) {
 	const navigate = useNavigate();
@@ -50,7 +48,7 @@ function Canopy_Edit_Condition(props) {
 	}
 
 	useEffect(() => {
-		getCondition(baseurl + "condition/prod", { id: location.state?.id });
+		getCondition(BASEURL + "canopy/condition/prod", { id: location.state?.id });
 	}, []);
 		
 	return (
@@ -94,7 +92,7 @@ function Canopy_Edit_Condition(props) {
 
 				<div>
 					<button onClick={() => {
-						putCondition(baseurl + "condition/prod", {id: id, name: name, hereditary: hereditary, new_name: new_name, new_hereditary: new_hereditary})
+						putCondition(BASEURL + "canopy/condition/prod", {id: id, name: name, hereditary: hereditary, new_name: new_name, new_hereditary: new_hereditary})
 						alert("Condition Details Saved!")
 					}}>
 						Save Condition Details
@@ -105,7 +103,7 @@ function Canopy_Edit_Condition(props) {
 
 				<div>
 					<button onClick={() => {
-						deleteCondition(baseurl + "condition/prod", {id: id, name: name, hereditary: hereditary})
+						deleteCondition(BASEURL + "canopy/condition/prod", {id: id, name: name, hereditary: hereditary})
 						alert("Condition Record ID: " + id + " Deleted!")
 						navigate(-1);
 					}}>
