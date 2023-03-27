@@ -6,13 +6,10 @@ import "../App/App.css";
 import Dropdown from "./Dropdown";
 import "./Canopy.css"
 
-var baseurl = "http://localhost:5000/canopy/";
-	if(window.location.href.includes("localhost")) {
-		baseurl = "http://localhost:5000/canopy/";
-	}
-	else {
-		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
-	}
+let BASEURL = "";
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
 
 // link patient with parents and children
 function linkParentChild(url_input, parent_child_data) {
@@ -109,13 +106,13 @@ function Canopy_New_Node_2(props) {
 		const post_response = await axios.post(url_input, null, {params: patient_data});	// should return the patient's ID
 		const new_patient_id = post_response.data;
 		console.log(new_patient_id);
-		linkPatientCondition(baseurl + "patient_condition/prod", {patient_id: new_patient_id, condition_id: "", conditions: selected_conditions, clear_conditions: true});
-		linkParentChild(baseurl + "parent_child/prod", {patient_id: new_patient_id, parent_id: "", child_id: "", parents: selected_parents, children: selected_children, clear_parents: true, clear_children: true});
-		linkPatientSpouse(baseurl + "patient_spouse/prod", {patient_id: new_patient_id, spouse_id: "", spouse_of_id: "", spouses: selected_spouses, spouse_of: [], clear_spouses: true, clear_spouse_of: true});
+		linkPatientCondition(BASEURL + "canopy/patient_condition/prod", {patient_id: new_patient_id, condition_id: "", conditions: selected_conditions, clear_conditions: true});
+		linkParentChild(BASEURL + "canopy/parent_child/prod", {patient_id: new_patient_id, parent_id: "", child_id: "", parents: selected_parents, children: selected_children, clear_parents: true, clear_children: true});
+		linkPatientSpouse(BASEURL + "canopy/patient_spouse/prod", {patient_id: new_patient_id, spouse_id: "", spouse_of_id: "", spouses: selected_spouses, spouse_of: [], clear_spouses: true, clear_spouse_of: true});
 	}
 
 	useEffect(() => {
-		getTreePatients(baseurl + "tree_nodes/prod", { id: location.state?.tree_id });
+		getTreePatients(BASEURL + "canopy/tree_nodes/prod", { id: location.state?.tree_id });
 	}, [dob]);
 	
 	return (
@@ -188,7 +185,7 @@ function Canopy_New_Node_2(props) {
 
 				<div>
 					<button onClick={() => {
-						postPatient(baseurl + "patient/prod", {name: name, dob: dob, ethnicity: ethnicity, tree_id: location.state?.tree_id })
+						postPatient(BASEURL + "canopy/patient/prod", {name: name, dob: dob, ethnicity: ethnicity, tree_id: location.state?.tree_id })
 						alert("New Patient: " + name + " Added!")
 						navigate(-2);
 					}}>

@@ -5,13 +5,10 @@ import axios from "axios";
 import "../App/App.css";
 import "./Canopy.css"
 
-var baseurl = "http://localhost:5000/canopy/";
-	if(window.location.href.includes("localhost")) {
-		baseurl = "http://localhost:5000/canopy/";
-	}
-	else {
-		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
-	}
+let BASEURL = "";
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
 
 function Canopy_New_Condition(props) {
 	const navigate = useNavigate();
@@ -54,7 +51,7 @@ function Canopy_New_Condition(props) {
 
 				<div>
 					<button onClick={() => {
-						postCondition(baseurl + "condition/prod", {name: name, hereditary: hereditary})
+						postCondition(BASEURL + "canopy/condition/prod", {name: name, hereditary: hereditary})
 						alert("New Condition: " + name + " Added!")
 						navigate(-1);
 					}}>

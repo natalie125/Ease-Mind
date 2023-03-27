@@ -5,13 +5,10 @@ import axios from "axios";
 import "../App/App.css";
 import "./Canopy.css"
 
-var baseurl = "http://localhost:5000/canopy/";
-	if(window.location.href.includes("localhost")) {
-		baseurl = "http://localhost:5000/canopy/";
-	}
-	else {
-		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
-	}
+let BASEURL = "";
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
 
 function Canopy_New_Tree(props) {
 	const navigate = useNavigate();
@@ -52,7 +49,7 @@ function Canopy_New_Tree(props) {
 			<br/>
 
 			<button onClick={() => {
-				postTree(baseurl + "tree/prod", {name: name, owner: user_email })
+				postTree(BASEURL + "canopy/tree/prod", {name: name, owner: user_email })
 				alert("New Tree: " + name + " Added!")
 				navigate(-1);
 			}}> 

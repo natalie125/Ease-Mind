@@ -6,13 +6,10 @@ import "../App/App.css";
 import Dropdown from "./Dropdown";
 import "./Canopy.css"
 
-var baseurl = "http://localhost:5000/canopy/";
-	if(window.location.href.includes("localhost")) {
-		baseurl = "http://localhost:5000/canopy/";
-	}
-	else {
-		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
-	}
+let BASEURL = "";
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
 
 // update information in the patient table
 function putPatient(url_input, patient_data) {
@@ -309,13 +306,13 @@ function Canopy_Edit_Node(props) {
 	}
 
 	useEffect(() => {
-		getPatient(baseurl + "patient/prod", { id: location.state?.id });
-		getTreePatients(baseurl + "tree_nodes/prod", { id: location.state?.tree_id });
-		getCondition(baseurl + "condition/prod", {});
-		getPatientConditions(baseurl + "patient_conditions/prod", { id: location.state?.id });
-		getPatientParents(baseurl + "child_parents/prod", { id: location.state?.id });
-		getPatientChildren(baseurl + "parent_children/prod", { id: location.state?.id });
-		getPatientSpouses(baseurl + "patient_spouses/prod", { id: location.state?.id });
+		getPatient(BASEURL + "canopy/patient/prod", { id: location.state?.id });
+		getTreePatients(BASEURL + "canopy/tree_nodes/prod", { id: location.state?.tree_id });
+		getCondition(BASEURL + "canopy/condition/prod", {});
+		getPatientConditions(BASEURL + "canopy/patient_conditions/prod", { id: location.state?.id });
+		getPatientParents(BASEURL + "canopy/child_parents/prod", { id: location.state?.id });
+		getPatientChildren(BASEURL + "canopy/parent_children/prod", { id: location.state?.id });
+		getPatientSpouses(BASEURL + "canopy/patient_spouses/prod", { id: location.state?.id });
 	}, [dob]);
 	// array at the end are state variables that these async methods change and NEED TO BE RERENDERED FOR when they eventually complete
 	
@@ -434,10 +431,10 @@ function Canopy_Edit_Node(props) {
 				<div>
 					<button onClick={() => {
 						if(checkDateFormat(new_dob)) {
-							putPatient(baseurl + "patient/prod", {id: id, name: name, dob: dob, ethnicity: ethnicity, new_name: new_name, new_dob: new_dob, new_ethnicity: new_ethnicity})
-							linkPatientCondition(baseurl + "patient_condition/prod", {patient_id: id, condition_id: "", conditions: selected_conditions, clear_conditions: true})
-							linkParentChild(baseurl + "parent_child/prod", {patient_id: id, parent_id: "", child_id: "", parents: selected_parents, children: selected_children, clear_parents: true, clear_children: true})
-							linkPatientSpouse(baseurl + "patient_spouse/prod", {patient_id: id, spouse_id: "", spouse_of_id: "", spouses: selected_spouses, spouse_of: [], clear_spouses: true, clear_spouse_of: true})
+							putPatient(BASEURL + "canopy/patient/prod", {id: id, name: name, dob: dob, ethnicity: ethnicity, new_name: new_name, new_dob: new_dob, new_ethnicity: new_ethnicity})
+							linkPatientCondition(BASEURL + "canopy/patient_condition/prod", {patient_id: id, condition_id: "", conditions: selected_conditions, clear_conditions: true})
+							linkParentChild(BASEURL + "canopy/parent_child/prod", {patient_id: id, parent_id: "", child_id: "", parents: selected_parents, children: selected_children, clear_parents: true, clear_children: true})
+							linkPatientSpouse(BASEURL + "canopy/patient_spouse/prod", {patient_id: id, spouse_id: "", spouse_of_id: "", spouses: selected_spouses, spouse_of: [], clear_spouses: true, clear_spouse_of: true})
 							alert("Patient Details Saved!")
 							navigate(0)
 						}
@@ -453,7 +450,7 @@ function Canopy_Edit_Node(props) {
 
 				<div>
 					<button onClick={() => {
-						deletePatient(baseurl + "patient/prod", {id: id, name: name, dob: dob, ethnicity: ethnicity})
+						deletePatient(BASEURL + "canopy/patient/prod", {id: id, name: name, dob: dob, ethnicity: ethnicity})
 						alert("Patient Record ID: " + id + " Deleted!")
 						navigate(-1);
 					}}>

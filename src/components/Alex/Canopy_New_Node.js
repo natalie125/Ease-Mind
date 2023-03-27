@@ -6,13 +6,10 @@ import "../App/App.css";
 import Dropdown from "./Dropdown";
 import "./Canopy.css"
 
-var baseurl = "http://localhost:5000/canopy/";
-	if(window.location.href.includes("localhost")) {
-		baseurl = "http://localhost:5000/canopy/";
-	}
-	else {
-		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
-	}
+let BASEURL = "";
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
 
 function Canopy_New_Node(props) {
 	const navigate = useNavigate();
@@ -146,7 +143,7 @@ function Canopy_New_Node(props) {
 	}
 
 	useEffect(() => {
-		getCondition(baseurl + "condition/prod", {});
+		getCondition(BASEURL + "canopy/condition/prod", {});
 	}, [dob]);
 	
 	return (
