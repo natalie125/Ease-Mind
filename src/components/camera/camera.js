@@ -29,20 +29,19 @@ const WebcamCapture = (props) => {
 		e.preventDefault();
 		const formData = new FormData();
 		formData.append("image", imageSrc);
-		try {
-			const response = await axios(BASEURL + props.context, {
-				method: "post",
-				data: formData,
-				headers: {
-					"Access-Control-Allow-Origin": "*",
-					"Content-Type": "multipart/form-data",
-				},
+		const response = await axios(BASEURL + context, {
+			method: "post",
+			data: formData,
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		})
+			.then((response) => {
+				setServerResponse(response.data["msg"]);
+			})
+			.catch((error) => {
+				console.error(error);
 			});
-			console.log(response);
-			props.returnResponse(response);
-		} catch (error) {
-			console.error(error);
-		}
 	};
 
 	//takes pictures without flash

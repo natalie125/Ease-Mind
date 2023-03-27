@@ -33,20 +33,25 @@ class Home extends Component {
 			// TODO: Need to create page that will present app options in nicer way.
 
 			<div className="Home">
-				<Header />
+				<Header hideHome={true} />
 
 				<h1 className="homepage-title">Home</h1>
 				<div data-cy="homeBttnContainer" className="btn-container">
 					<div className="btn-row">
 						<Link className="link" to="/canopy">
-							<img data-cy="alexAppLogo" className="homepage-button" src={canopy_logo} alt="Canopy_App_Alex" />
+							<img
+								data-cy="alexAppLogo"
+								className="homepage-button"
+								src={canopy_logo}
+								alt="Canopy_App_Alex"
+							/>
 						</Link>
 
 						<Link className="link" to="/kevin">
 							<img className="homepage-button" src={skinscan_logo} alt="Skin-Scan_App_Kevin" />
 						</Link>
 
-						<Link className="link" to="/dipstik-home">
+						<Link className="link" to="/dipstik">
 							<img className="homepage-button" src={dipstik_logo} alt="Dipstik_App_Lanre" />
 						</Link>
 

@@ -5,7 +5,6 @@ import Login from "./components/Login/Login";
 import SignUp from "./components/SignUp";
 import Home from "./components/Home/Home";
 
-import Lanre from "./components/Lanre/Lanre";
 import Canopy from "./components/Alex/Canopy";
 import Canopy2 from "./components/Alex/Canopy2";
 import Canopy_View_Tree from "./components/Alex/Canopy_View_Tree";
@@ -48,7 +47,6 @@ const Main = () => {
 			<Route exact path="/login" element={<Login />}></Route>
 			<Route exact path="/home" element={<Home />}></Route>
 			<Route exact path="/error400" element={<Error400 />}></Route>
-			<Route exact path="/lanre" element={<Lanre />}></Route>
 			<Route exact path="/canopy" element={<Canopy />}></Route>
 			<Route exact path="/canopy/canopy2" element={<Canopy2 />}></Route>
 			<Route exact path="/canopy/canopy_view_patient" element={<Canopy_View_Patient />}></Route>
@@ -71,10 +69,10 @@ const Main = () => {
 			<Route exact path="/shreyas/tonsillitis_outcome_1" element={<TonsillitisOutcome1 />}></Route>
 			<Route exact path="/shreyas/tonsillitis_outcome_2" element={<TonsillitisOutcome2 />}></Route>
 			<Route path="*" element={<Error404 />}></Route>
-			<Route exact path="/dipstik-home" element={<DipstikInstructions />}></Route>
-			<Route exact path="/dipstik-home/dipstik-timer" element={<DipstikTimer />}></Route>
-			<Route exact path="/dipstik-home/dipstik-timer/dipstik-camera" element={<DipstikCamera />}></Route>
-			<Route exact path="/dipstik-home/dipstik-timer/dipstik-camera/dipstik-results" element={<DipstikResults />}></Route>
+			<Route exact path="/dipstik" element={<DipstikInstructions />}></Route>
+			<Route exact path="/dipstik/dipstik-timer" element={<DipstikTimer />}></Route>
+			<Route exact path="/dipstik/dipstik-camera" element={<DipstikCamera/>}></Route>
+			<Route exact path="/dipstik/dipstik-results" element={<DipstikResults />}></Route>
 		</Routes>
 	);
 };
