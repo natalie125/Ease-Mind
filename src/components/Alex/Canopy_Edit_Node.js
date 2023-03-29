@@ -89,6 +89,7 @@ function Canopy_Edit_Node(props) {
 	const [selected_spouses, setSelectedSpouses] = useState([]);
 	const [conditions, setConditions] = useState([]);
 	const [selected_conditions, setSelectedConditions] = useState([]);
+	const [only_node, setOnlyNode] = useState(true);
 
 	// convert YYYY-MM-DD to int
 	const convertDateToInt = (date_string) => {
@@ -107,93 +108,171 @@ function Canopy_Edit_Node(props) {
 		// console.log(date);
 		if(input.length != date.length) {
 			// this length check is here to catch cases such as 2000-2-2 or 10-02-02
-			console.log("date wrong length");
+			alert("DOB is the wrong length");
 			return false;
 		}
 		if(input.charAt(4) != '-' && input.charAt(4) != '/') {
 			// checks the 5th character for a '-' or '/' character
-			console.log("missing - or / on 5th character");
+			alert("DOB missing '-' or '/' on 5th character");
 			return false;
 		}
 		if(input.charAt(7) != '-' && input.chartAt(7) != '/') {
 			// checks the 8th character for a '-' or '/'
-			console.log("missing - or / on 8th character");
+			alert("DOB missing '-' or '/' on 8th character");
 			return false;
 		}
 		let year = input.substring(0, 4);
 		if(isNaN(year)) {	// if year is NOT a number, pass the if condition and fail the check
 			// check if the first 4 characters, which should be the year, is a number
-			console.log("year place isn't a number");
+			alert("DOB year place isn't a number");
 			return false;
 		}
 		year = parseInt(year);
 		if(year <= 0) {
 			// 0 and negative check for year
-			console.log("year is 0 or negative");
+			alert("DOB year is 0 or negative");
 			return false;
 		}
 		let month = input.substring(5, 7);
 		if(isNaN(month)) {
 			// check if the 6th to 7th characters is a number
-			console.log("month place isn't a number");
+			alert("DOB month place isn't a number");
 			return false;
 		}
 		month = parseInt(month);
 		if(month > 12 || month <= 0) {
 			// check if the month is greater than 12 (final month is december) or less than 0
-			console.log("month place too large (max 12) or small (min 0)");
+			alert("DOB month place too large (max 12) or small (min 0)");
 			return false;
 		}
 		let days = input.substring(8, 10);
 		if(isNaN(days)) {
 			// check if the 9th to 10th characters are numbers
-			console.log("days place isn't a number");
+			alert("DOB days place isn't a number");
 			return false;
 		}
 		days = parseInt(days);
 		if(days <= 0) {
 			// 0 and negative check for days
-			console.log("day is 0 or negative");
+			alert("DOB day is 0 or negative");
 			return false;
 		}
 		// complex day checking based on month (and potentially year)
 		// months with 31 days
 		if(month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
 			if(days > 31) {
-				console.log("day is too large for month with 31 days");
+				alert("DOB day is too large for month with 31 days");
 				return false;
 			}
 		}
 		// months with 30 days
 		if(month == 4 || month == 6 || month == 9 || month == 11) {
 			if(days > 30) {
-				console.log("day is too large for month with 30 days");
+				alert("DOB day is too large for month with 30 days");
 				return false;
 			}
 		}
 		// check feb (month == 2) and thus leap years
 		if(month == 2) {
 			if(days > 29) {
-				console.log("day too large for feb (>29)");
+				alert("DOB day too large for feb (>29)");
 				return false;
 			}
 			if(days == 29) {	// if the day is very specifically feb 29th, it is only valid on leap years
 				if(year % 4 != 0) {
-					console.log("29th feb but not leap year (% 4 failed)");
+					alert("DOB 29th feb but not leap year"); // (% 4 failed)
 					return false;
 				}
 				// % 4 has passed
 				if(year % 100 == 0 && year % 400 != 0) {	// specifically on years where % 100 passes but % 400 fails they are no longer leap years
-					console.log("29th feb but not a leap year (% 100 passed, but % 400 failed)");
+					alert("DOB 29th feb but not a leap year"); // (% 100 passed, but % 400 failed)
 					return false;
 				}
 			}
 		}
 		if(convertDateToInt(date) < convertDateToInt(input)) {	// the current date is smaller than the input
 			// the input is greater, and thus in the future
-			console.log("date is in the future")
+			alert("DOB is in the future")
 			return false;
 		}
+		return true;
+	}
+
+	// check the validity of the node based on its selected relationships
+	const checkRelationshipValidity = () => {
+		// check for an unconnected node in a tree with multiple nodes already
+		// check if the node is not the only one in the tree (i.e there are other nodes in the tree)
+		console.log("only_node is: " + only_node);
+		if(!only_node) {
+			// if there are other nodes, fail the node if there are no connections being made to the tree
+			if(selected_children.length + selected_parents.length + selected_spouses.length == 0) {
+				alert("Adding a node to the tree with no connections!");
+				return false;
+			}
+		}
+
+		// check if there's a spousal relationship with the node's selected parents or children
+		// note: because the parents and children dropdowns are populated mutually exclusively it's implicitly impossible so no need to check
+		console.log("selected_spouses:");
+		console.log(selected_spouses);
+		console.log("selected_parents:");
+		console.log(selected_parents);
+		console.log("selected_children:");
+		console.log(selected_children);
+		for(let i = 0; i < selected_spouses.length; i++) {
+			// for each of the selected spouses check if it is also contained in the selected parents or children of this node
+			// check children first
+			for(let j = 0; j < selected_children.length; j++) {
+				if(selected_spouses[i].label == selected_children[j].label) {
+					alert("Spouses contain a node that is also being added to children!");
+					return false;
+				}
+			}
+
+			// check parents next
+			for(let k = 0; k < selected_parents.length; k++) {
+				if(selected_spouses[i].label == selected_parents[k].label) {
+					alert("Spouses contain a node that is also being added to parents!");
+					return false;
+				}
+			}
+		}
+
+		// finally return true if all passed
+		return true;
+	}
+
+	// check date validity of node's DOB versus their children and parents
+	const checkDOBValidity = () => {
+
+		// convert new_date to int
+		let date = convertDateToInt(new_dob);
+		console.log("date is: " + date);
+
+		// using the currently entered DOB, check against the DOB of parents and children
+		// check all selected children
+		console.log("selected_children: ");
+		console.log(selected_children);
+		for(let i = 0; i < selected_children.length; i++) {
+			// the date is more than that of the child being checked
+			if(date > convertDateToInt(selected_children[i].dob)) {
+				alert("DOB is less than that of selected children!");
+				return false;
+			}
+		}
+
+		// check all selected parents
+		console.log("selected_parents: ");
+		console.log(selected_parents);
+		for(let j = 0; j < selected_parents.length; j++) {
+			// the date is less than that of the parent being checked
+			if(date < convertDateToInt(selected_parents[j].dob)) {
+				alert("DOB is more than that of selected parents!");
+				return false;
+			}
+		}
+
+		// finally return true if all passed
 		return true;
 	}
 
@@ -220,10 +299,14 @@ function Canopy_Edit_Node(props) {
 		const new_potential_parents = [];
 		const new_potential_children = [];
 		const new_potential_spouses = [];
-		// create NaN value for parent
 		for(let i = 0; i < data.ids.length; i++) {
 			// run the loop for every single node returned
-			const patient_entry = {id: data.ids[i], label: data.names[i]};
+			// if even one node is returned, the node being added isn't the sole node of the tree
+			// thus we need to change the value of only_node
+			setOnlyNode(false);
+			const patient_entry = {id: data.ids[i], label: data.names[i], dob: data.dobs[i]};
+			// console.log("patient entry " + i + " is: ");
+			// console.log(patient_entry);
 			// check if the DOB is less than the DOB of the current patient
 			if(convertDateToInt(data.dobs[i]) < convertDateToInt(dob)) {
 				new_potential_parents.push(patient_entry);
@@ -247,7 +330,7 @@ function Canopy_Edit_Node(props) {
 		const initial_parents = [];
 		for(let i = 0; i < data.ids.length; i++) {
 			// run the loop once for every id in the ids array
-			const parent_entry = {id: data.ids[i], label: data.names[i]};
+			const parent_entry = {id: data.ids[i], label: data.names[i], dob: data.dobs[i]};
 			initial_parents.push(parent_entry);
 		}
 		setSelectedParents(initial_parents);
@@ -260,7 +343,7 @@ function Canopy_Edit_Node(props) {
 		const initial_children = [];
 		for(let i = 0; i < data.ids.length; i++) {
 			// run the loop once for every id in the ids array
-			const child_entry = {id: data.ids[i], label: data.names[i]};
+			const child_entry = {id: data.ids[i], label: data.names[i], dob: data.dobs[i]};
 			initial_children.push(child_entry);
 		}
 		setSelectedChildren(initial_children);
@@ -273,7 +356,7 @@ function Canopy_Edit_Node(props) {
 		const initial_spouses = [];
 		for(let i = 0; i < data.ids.length; i++) {
 			// run the loop once for every id in the ids array
-			const spouse_entry = {id: data.ids[i], label: data.names[i]};
+			const spouse_entry = {id: data.ids[i], label: data.names[i], dob: data.dobs[i]};
 			initial_spouses.push(spouse_entry);
 		}
 		setSelectedSpouses(initial_spouses);
@@ -430,16 +513,15 @@ function Canopy_Edit_Node(props) {
 
 				<div>
 					<button onClick={() => {
-						if(checkDateFormat(new_dob)) {
-							putPatient(BASEURL + "canopy/patient/prod", {id: id, name: name, dob: dob, ethnicity: ethnicity, new_name: new_name, new_dob: new_dob, new_ethnicity: new_ethnicity})
-							linkPatientCondition(BASEURL + "canopy/patient_condition/prod", {patient_id: id, condition_id: "", conditions: selected_conditions, clear_conditions: true})
-							linkParentChild(BASEURL + "canopy/parent_child/prod", {patient_id: id, parent_id: "", child_id: "", parents: selected_parents, children: selected_children, clear_parents: true, clear_children: true})
-							linkPatientSpouse(BASEURL + "canopy/patient_spouse/prod", {patient_id: id, spouse_id: "", spouse_of_id: "", spouses: selected_spouses, spouse_of: [], clear_spouses: true, clear_spouse_of: true})
-							alert("Patient Details Saved!")
-							navigate(0)
-						}
-						else {
-							alert("DOB is in an invalid format!")
+						let validity = checkDateFormat(new_dob) && checkRelationshipValidity() && checkDOBValidity();
+						console.log("validity after DOB check and relationship check: " + validity);
+						if(validity) {
+							// putPatient(BASEURL + "canopy/patient/prod", {id: id, name: name, dob: dob, ethnicity: ethnicity, new_name: new_name, new_dob: new_dob, new_ethnicity: new_ethnicity})
+							// linkPatientCondition(BASEURL + "canopy/patient_condition/prod", {patient_id: id, condition_id: "", conditions: selected_conditions, clear_conditions: true})
+							// linkParentChild(BASEURL + "canopy/parent_child/prod", {patient_id: id, parent_id: "", child_id: "", parents: selected_parents, children: selected_children, clear_parents: true, clear_children: true})
+							// linkPatientSpouse(BASEURL + "canopy/patient_spouse/prod", {patient_id: id, spouse_id: "", spouse_of_id: "", spouses: selected_spouses, spouse_of: [], clear_spouses: true, clear_spouse_of: true})
+							// alert("Patient Details Saved!")
+							// navigate(0)
 						}
 					}}>
 						Save Patient Details
