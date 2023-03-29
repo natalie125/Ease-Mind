@@ -105,6 +105,7 @@ def pipeline(image):
 def convert_to_rgb_np(img):
     img = img.resize((256, 256))
     np_img = np.array(img)
+    np_img = np_img[:, :, :3]
     return np_img
 
 
