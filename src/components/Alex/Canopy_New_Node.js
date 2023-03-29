@@ -39,91 +39,91 @@ function Canopy_New_Node(props) {
 		// console.log(date);
 		if(input.length != date.length) {
 			// this length check is here to catch cases such as 2000-2-2 or 10-02-02
-			console.log("date wrong length");
+			alert("DOB is the wrong length");
 			return false;
 		}
-		if(input.charAt(4) != '-') {
+		if(input.charAt(4) != '-' && input.charAt(4) != '/') {
 			// checks the 5th character for a '-' or '/' character
-			console.log("missing - or / on 5th character");
+			alert("DOB missing '-' or '/' on 5th character");
 			return false;
 		}
-		if(input.charAt(7) != '-') {
+		if(input.charAt(7) != '-' && input.chartAt(7) != '/') {
 			// checks the 8th character for a '-' or '/'
-			console.log("missing - or / on 8th character");
+			alert("DOB missing '-' or '/' on 8th character");
 			return false;
 		}
 		let year = input.substring(0, 4);
 		if(isNaN(year)) {	// if year is NOT a number, pass the if condition and fail the check
 			// check if the first 4 characters, which should be the year, is a number
-			console.log("year place isn't a number");
+			alert("DOB year place isn't a number");
 			return false;
 		}
 		year = parseInt(year);
 		if(year <= 0) {
 			// 0 and negative check for year
-			console.log("year is 0 or negative");
+			alert("DOB year is 0 or negative");
 			return false;
 		}
 		let month = input.substring(5, 7);
 		if(isNaN(month)) {
 			// check if the 6th to 7th characters is a number
-			console.log("month place isn't a number");
+			alert("DOB month place isn't a number");
 			return false;
 		}
 		month = parseInt(month);
 		if(month > 12 || month <= 0) {
 			// check if the month is greater than 12 (final month is december) or less than 0
-			console.log("month place too large (max 12) or small (min 0)");
+			alert("DOB month place too large (max 12) or small (min 0)");
 			return false;
 		}
 		let days = input.substring(8, 10);
 		if(isNaN(days)) {
 			// check if the 9th to 10th characters are numbers
-			console.log("days place isn't a number");
+			alert("DOB days place isn't a number");
 			return false;
 		}
 		days = parseInt(days);
 		if(days <= 0) {
 			// 0 and negative check for days
-			console.log("day is 0 or negative");
+			alert("DOB day is 0 or negative");
 			return false;
 		}
 		// complex day checking based on month (and potentially year)
 		// months with 31 days
 		if(month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
 			if(days > 31) {
-				console.log("day is too large for month with 31 days");
+				alert("DOB day is too large for month with 31 days");
 				return false;
 			}
 		}
 		// months with 30 days
 		if(month == 4 || month == 6 || month == 9 || month == 11) {
 			if(days > 30) {
-				console.log("day is too large for month with 30 days");
+				alert("DOB day is too large for month with 30 days");
 				return false;
 			}
 		}
 		// check feb (month == 2) and thus leap years
 		if(month == 2) {
 			if(days > 29) {
-				console.log("day too large for feb (>29)");
+				alert("DOB day too large for feb (>29)");
 				return false;
 			}
 			if(days == 29) {	// if the day is very specifically feb 29th, it is only valid on leap years
 				if(year % 4 != 0) {
-					console.log("29th feb but not leap year (% 4 failed)");
+					alert("DOB 29th feb but not leap year"); // (% 4 failed)
 					return false;
 				}
 				// % 4 has passed
 				if(year % 100 == 0 && year % 400 != 0) {	// specifically on years where % 100 passes but % 400 fails they are no longer leap years
-					console.log("29th feb but not a leap year (% 100 passed, but % 400 failed)");
+					alert("DOB 29th feb but not a leap year"); // (% 100 passed, but % 400 failed)
 					return false;
 				}
 			}
 		}
 		if(convertDateToInt(date) < convertDateToInt(input)) {	// the current date is smaller than the input
 			// the input is greater, and thus in the future
-			console.log("date is in the future")
+			alert("DOB is in the future")
 			return false;
 		}
 		return true;
@@ -199,11 +199,10 @@ function Canopy_New_Node(props) {
 
 				<div>
 					<button onClick={() => {
-						if(checkDateFormat(dob)) {
+						let validity = checkDateFormat(dob);
+						console.log("validity: " + validity);
+						if(validity) {
 							navigate('/canopy/canopy_new_node_2/', {state:{ tree_id: location.state?.tree_id, name: name, dob: dob, ethnicity: ethnicity, selected_conditions: selected_conditions }})
-						}
-						else {
-							alert("DOB format invalid!")
 						}
 					}}>
 						Proceed to Choosing Parents, Children, and Spouses
