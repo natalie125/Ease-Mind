@@ -225,7 +225,7 @@ def query_patient(mode):
 
     # testing mode, bind to canopy test databases
     if mode == "test":
-        # GET a tree entry
+        # GET a patient entry
         if request.method == 'GET':
             # check using the correct combination of parameters
             if id != None and name != None and dob != None and ethnicity != None:
@@ -315,7 +315,7 @@ def query_patient(mode):
                 return "Please provide an id value" + "\nid= " + str(id)
     # production mode, bind to actual canopy databases
     else:
-        # GET a tree entry
+        # GET a patient entry
         if request.method == 'GET':
             # check using the correct combination of parameters
             if id != None and name != None and dob != None and ethnicity != None:
