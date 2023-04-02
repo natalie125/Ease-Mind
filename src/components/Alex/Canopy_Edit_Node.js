@@ -516,12 +516,12 @@ function Canopy_Edit_Node(props) {
 						let validity = checkDateFormat(new_dob) && checkRelationshipValidity() && checkDOBValidity();
 						console.log("validity after DOB check and relationship check: " + validity);
 						if(validity) {
-							// putPatient(BASEURL + "canopy/patient/prod", {id: id, name: name, dob: dob, ethnicity: ethnicity, new_name: new_name, new_dob: new_dob, new_ethnicity: new_ethnicity})
-							// linkPatientCondition(BASEURL + "canopy/patient_condition/prod", {patient_id: id, condition_id: "", conditions: selected_conditions, clear_conditions: true})
-							// linkParentChild(BASEURL + "canopy/parent_child/prod", {patient_id: id, parent_id: "", child_id: "", parents: selected_parents, children: selected_children, clear_parents: true, clear_children: true})
-							// linkPatientSpouse(BASEURL + "canopy/patient_spouse/prod", {patient_id: id, spouse_id: "", spouse_of_id: "", spouses: selected_spouses, spouse_of: [], clear_spouses: true, clear_spouse_of: true})
-							// alert("Patient Details Saved!")
-							// navigate(0)
+							putPatient(BASEURL + "canopy/patient/prod", {id: id, name: name, dob: dob, ethnicity: ethnicity, new_name: new_name, new_dob: new_dob, new_ethnicity: new_ethnicity})
+							linkPatientCondition(BASEURL + "canopy/patient_condition/prod", {patient_id: id, condition_id: "", conditions: selected_conditions, clear_conditions: true})
+							linkParentChild(BASEURL + "canopy/parent_child/prod", {patient_id: id, parent_id: "", child_id: "", parents: selected_parents, children: selected_children, clear_parents: true, clear_children: true})
+							linkPatientSpouse(BASEURL + "canopy/patient_spouse/prod", {patient_id: id, spouse_id: "", spouse_of_id: "", spouses: selected_spouses, spouse_of: [], clear_spouses: true, clear_spouse_of: true})
+							alert("Patient Details Saved!")
+							navigate(0)
 						}
 					}}>
 						Save Patient Details
@@ -534,7 +534,7 @@ function Canopy_Edit_Node(props) {
 					<button onClick={() => {
 						deletePatient(BASEURL + "canopy/patient/prod", {id: id, name: name, dob: dob, ethnicity: ethnicity})
 						alert("Patient Record ID: " + id + " Deleted!")
-						navigate(-1);
+						navigate('/canopy/canopy_edit_trees/');
 					}}>
 						Delete Patient Record
 					</button>

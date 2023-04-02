@@ -237,7 +237,7 @@ function Canopy_Edit_Node(props) {
 					<button onClick={() => {
 						deleteTree(BASEURL + "canopy/tree/prod", {id: id, name: name, owner: owner})
 						alert("Tree Record ID: " + id + " Deleted!")
-						navigate(-1)
+						navigate('/canopy/canopy_show_trees/')
 					}}>
 						Delete Tree ID: {id}
 					</button>
