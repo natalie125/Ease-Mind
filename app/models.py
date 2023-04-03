@@ -143,7 +143,8 @@ class Pedigree_Health_Condition(db.Model):
     name = db.Column(db.String(500), nullable=False)  # name of the health condition
     hereditary = db.Column(db.Boolean, default=False)  # boolean for whether the condition is hereditary, default False
     disease_id = db.Column(db.String(500), nullable=False)  # the SNOMED concept ID for having the disease
-    fh_disease_id = db.Column(db.String(500))  # the SNOMED concept ID to designate having a FH of the disease
+    fh_condition_id = db.Column(db.String(500))  # the SNOMED concept ID to designate having a FH of the disease
+    fh_condition_name = db.Column(db.String(500)) # the name of the FH condition
 
     # rules for the weighing of relationships in order to assign the family history of a condition
     male_parent = db.Column(db.Integer) # weight for the relationship of a male parent
@@ -229,7 +230,8 @@ class Pedigree_Health_Condition_Test(db.Model):
     name = db.Column(db.String(500), nullable=False)  # name of the health condition
     hereditary = db.Column(db.Boolean, default=False)  # boolean for whether the condition is hereditary, default False
     disease_id = db.Column(db.String(500), nullable=False)  # the SNOMED concept ID for having the disease
-    fh_disease_id = db.Column(db.String(500))  # the SNOMED concept ID to designate having a FH of the disease
+    fh_condition_id = db.Column(db.String(500))  # the SNOMED concept ID to designate having a FH of the disease
+    fh_condition_name = db.Column(db.String(500))  # the name of the FH condition
 
     # rules for the weighing of relationships in order to assign the family history of a condition
     male_parent = db.Column(db.Integer) # weight for the relationship of a male parent

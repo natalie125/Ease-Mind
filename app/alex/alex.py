@@ -420,6 +420,27 @@ def query_condition(mode):
         hereditary = None
     if hereditary != None:
         hereditary = eval(request.args.get('hereditary').capitalize())
+    disease_id = request.args.get('disease_id')
+    if disease_id == "":
+        disease_id = None
+    fh_condition_id = request.args.get('fh_condition_id')
+    if fh_condition_id == "":
+        fh_condition_id = None
+    fh_condition_name = request.args.get('fh_condition_name')
+    if fh_condition_name == "":
+        fh_condition_name = None
+    male_parent = request.args.get('male_parent')
+    if male_parent == "":
+        male_parent = None
+    female_parent = request.args.get('female_parent')
+    if female_parent == "":
+        female_parent = None
+    male_grandparent = request.args.get('male_grandparent')
+    if male_grandparent == "":
+        male_grandparent = None
+    female_grandparent = request.args.get('female_grandparent')
+    if female_grandparent == "":
+        female_grandparent = None
     new_name = request.args.get('new_name')
     if new_name == "":
         new_name = None
@@ -428,6 +449,27 @@ def query_condition(mode):
         new_hereditary = None
     if new_hereditary != None:
         new_hereditary = eval(request.args.get('new_hereditary').capitalize())
+    new_disease_id = request.args.get('new_disease_id')
+    if new_disease_id == "":
+        new_disease_id = None
+    new_fh_condition_id = request.args.get('new_fh_condition_id')
+    if new_fh_condition_id == "":
+        new_fh_condition_id = None
+    new_fh_condition_name = request.args.get('new_fh_condition_name')
+    if new_fh_condition_name == "":
+        new_fh_condition_name = None
+    new_male_parent = request.args.get('new_male_parent')
+    if new_male_parent == "":
+        new_male_parent = None
+    new_female_parent = request.args.get('new_female_parent')
+    if new_female_parent == "":
+        new_female_parent = None
+    new_male_grandparent = request.args.get('new_male_grandparent')
+    if new_male_grandparent == "":
+        new_male_grandparent = None
+    new_female_grandparent = request.args.get('new_female_grandparent')
+    if new_female_grandparent == "":
+        new_female_grandparent = None
 
     # testing mode, bind to canopy test databases
     if mode == "test":
@@ -453,12 +495,26 @@ def query_condition(mode):
             query_parameters = {
                 'ids': [],
                 'names': [],
-                'hereditarys': []
+                'hereditarys': [],
+                'disease_ids': [],
+                'fh_condition_ids': [],
+                'fh_condition_names': [],
+                'male_parents': [],
+                'female_parents': [],
+                'male_grandparents': [],
+                'female_grandparents': []
             }
             for query in condition_query:
                 query_parameters.get('ids').append(query.id)
                 query_parameters.get('names').append(query.name)
                 query_parameters.get('hereditarys').append(query.hereditary)
+                query_parameters.get('disease_ids').append(query.disease_id)
+                query_parameters.get('fh_condition_ids').append(query.fh_condition_id)
+                query_parameters.get('fh_condition_names').append(query.fh_condition_name)
+                query_parameters.get('male_parents').append(query.male_parent)
+                query_parameters.get('female_parents').append(query.female_parent)
+                query_parameters.get('male_grandparents').append(query.male_grandparent)
+                query_parameters.get('female_grandparents').append(query.female_grandparent)
             return jsonify(query_parameters)
         if request.method == 'POST':
             # check using the correct combination of parameters
@@ -466,11 +522,45 @@ def query_condition(mode):
                 new_condition = models.Pedigree_Health_Condition_Test(name=name)
                 if hereditary != None:
                     new_condition.hereditary = hereditary
+                if disease_id != None:
+                    new_condition.disease_id = disease_id
+                if fh_condition_id != None:
+                    new_condition.fh_condition_id = fh_condition_id
+                if fh_condition_name != None:
+                    new_condition.fh_condition_name = fh_condition_name
+                if male_parent != None:
+                    new_condition.male_parent = male_parent
+                if female_parent != None:
+                    new_condition.female_parent = female_parent
+                if male_grandparent != None:
+                    new_condition.male_grandparent = male_grandparent
+                if female_grandparent != None:
+                    new_condition.female_grandparent = female_grandparent
                 db.session.add(new_condition)
                 db.session.commit()
-                return str(new_condition) + "\nid= " + str(new_condition.id) + "\nname= " + str(new_condition.name) + "\nhereditary= " + str(new_condition.hereditary)
+                return str(new_condition) + \
+                       "\nid= " + str(new_condition.id) + \
+                       "\nname= " + str(new_condition.name) + \
+                       "\nhereditary= " + str(new_condition.hereditary) + \
+                       "\ndisease_id= " + str(new_condition.disease_id) + \
+                       "\nfh_condition_id= " + str(new_condition.fh_condition_id) + \
+                       "\nfh_condition_name= " + str(new_condition.fh_condition_name) + \
+                       "\nmale_parent= " + str(new_condition.male_parent) + \
+                       "\nfemale_parent= " + str(new_condition.female_parent) + \
+                       "\nmale_grandparent= " + str(new_condition.male_grandparent) + \
+                       "\nfemale_grandparent= " + str(new_condition.female_grandparent)
             else:
-                return "Not enough information provided to create a new health condition" + "\nid= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
+                return "Not enough information provided to create a new health condition" + \
+                       "\nid= " + str(id) + \
+                       "\nname= " + str(name) + \
+                       "\nhereditary= " + str(hereditary) + \
+                       "\ndisease_id= " + str(disease_id) + \
+                       "\nfh_condition_id= " + str(fh_condition_id) + \
+                       "\nfh_condition_name= " + str(fh_condition_name) + \
+                       "\nmale_parent= " + str(male_parent) + \
+                       "\nfemale_parent= " + str(female_parent) + \
+                       "\nmale_grandparent= " + str(male_grandparent) + \
+                       "\nfemale_grandparent= " + str(female_grandparent)
         if request.method == 'PUT':
             # should only be allowed to put using the tree's id as name and owner are not unique
             if id != None:
@@ -479,8 +569,32 @@ def query_condition(mode):
                     condition_query.name = new_name
                 if new_hereditary != None:
                     condition_query.hereditary = new_hereditary
+                if new_disease_id != None:
+                    condition_query.disease_id = new_disease_id
+                if new_fh_condition_id != None:
+                    condition_query.fh_condition_id = new_fh_condition_id
+                if new_fh_condition_name != None:
+                    condition_query.fh_condition_name = new_fh_condition_name
+                if new_male_parent != None:
+                    condition_query.male_parent = new_male_parent
+                if new_female_parent != None:
+                    condition_query.female_parent = new_female_parent
+                if new_male_grandparent != None:
+                    condition_query.male_grandparent = new_male_grandparent
+                if new_female_grandparent != None:
+                    condition_query.female_grandparent = new_female_grandparent
                 db.session.commit()
-                return str(condition_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
+                return str(condition_query) + \
+                       "\nid= " + str(id) + \
+                       "\nname= " + str(name) + \
+                       "\nhereditary= " + str(hereditary) + \
+                       "\ndisease_id= " + str(disease_id) + \
+                       "\nfh_condition_id= " + str(fh_condition_id) + \
+                       "\nfh_condition_name= " + str(fh_condition_name) + \
+                       "\nmale_parent= " + str(male_parent) + \
+                       "\nfemale_parent= " + str(female_parent) + \
+                       "\nmale_grandparent= " + str(male_grandparent) + \
+                       "\nfemale_grandparent= " + str(female_grandparent)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
         if request.method == 'DELETE':
@@ -490,7 +604,16 @@ def query_condition(mode):
                 condition_query.condition_of = []
                 models.Pedigree_Health_Condition_Test.query.filter_by(id=id).delete()
                 db.session.commit()
-                return "id= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
+                return "id= " + str(id) + \
+                       "\nname= " + str(name) + \
+                       "\nhereditary= " + str(hereditary) + \
+                       "\ndisease_id= " + str(disease_id) + \
+                       "\nfh_condition_id= " + str(fh_condition_id) + \
+                       "\nfh_condition_name= " + str(fh_condition_name) + \
+                       "\nmale_parent= " + str(male_parent) + \
+                       "\nfemale_parent= " + str(female_parent) + \
+                       "\nmale_grandparent= " + str(male_grandparent) + \
+                       "\nfemale_grandparent= " + str(female_grandparent)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
     # production mode, bind to actual canopy databases
@@ -517,12 +640,26 @@ def query_condition(mode):
             query_parameters = {
                 'ids': [],
                 'names': [],
-                'hereditarys': []
+                'hereditarys': [],
+                'disease_ids': [],
+                'fh_condition_ids': [],
+                'fh_condition_names': [],
+                'male_parents': [],
+                'female_parents': [],
+                'male_grandparents': [],
+                'female_grandparents': []
             }
             for query in condition_query:
                 query_parameters.get('ids').append(query.id)
                 query_parameters.get('names').append(query.name)
                 query_parameters.get('hereditarys').append(query.hereditary)
+                query_parameters.get('disease_ids').append(query.disease_id)
+                query_parameters.get('fh_condition_ids').append(query.fh_condition_id)
+                query_parameters.get('fh_condition_names').append(query.fh_condition_name)
+                query_parameters.get('male_parents').append(query.male_parent)
+                query_parameters.get('female_parents').append(query.female_parent)
+                query_parameters.get('male_grandparents').append(query.male_grandparent)
+                query_parameters.get('female_grandparents').append(query.female_grandparent)
             return jsonify(query_parameters)
         if request.method == 'POST':
             # check using the correct combination of parameters
@@ -530,11 +667,45 @@ def query_condition(mode):
                 new_condition = models.Pedigree_Health_Condition(name=name)
                 if hereditary != None:
                     new_condition.hereditary = hereditary
+                if disease_id != None:
+                    new_condition.disease_id = disease_id
+                if fh_condition_id != None:
+                    new_condition.fh_condition_id = fh_condition_id
+                if fh_condition_name != None:
+                    new_condition.fh_condition_name = fh_condition_name
+                if male_parent != None:
+                    new_condition.male_parent = male_parent
+                if female_parent != None:
+                    new_condition.female_parent = female_parent
+                if male_grandparent != None:
+                    new_condition.male_grandparent = male_grandparent
+                if female_grandparent != None:
+                    new_condition.female_grandparent = female_grandparent
                 db.session.add(new_condition)
                 db.session.commit()
-                return str(new_condition) + "\nid= " + str(new_condition.id) + "\nname= " + str(new_condition.name) + "\nhereditary= " + str(new_condition.hereditary)
+                return str(new_condition) + \
+                       "\nid= " + str(new_condition.id) + \
+                       "\nname= " + str(new_condition.name) + \
+                       "\nhereditary= " + str(new_condition.hereditary) + \
+                       "\ndisease_id= " + str(new_condition.disease_id) + \
+                       "\nfh_condition_id= " + str(new_condition.fh_condition_id) + \
+                       "\nfh_condition_name= " + str(new_condition.fh_condition_name) + \
+                       "\nmale_parent= " + str(new_condition.male_parent) + \
+                       "\nfemale_parent= " + str(new_condition.female_parent) + \
+                       "\nmale_grandparent= " + str(new_condition.male_grandparent) + \
+                       "\nfemale_grandparent= " + str(new_condition.female_grandparent)
             else:
-                return "Not enough information provided to create a new health condition" + "\nid= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
+                return "Not enough information provided to create a new health condition" + \
+                       "\nid= " + str(id) + \
+                       "\nname= " + str(name) + \
+                       "\nhereditary= " + str(hereditary) + \
+                       "\ndisease_id= " + str(disease_id) + \
+                       "\nfh_condition_id= " + str(fh_condition_id) + \
+                       "\nfh_condition_name= " + str(fh_condition_name) + \
+                       "\nmale_parent= " + str(male_parent) + \
+                       "\nfemale_parent= " + str(female_parent) + \
+                       "\nmale_grandparent= " + str(male_grandparent) + \
+                       "\nfemale_grandparent= " + str(female_grandparent)
         if request.method == 'PUT':
             # should only be allowed to put using the tree's id as name and owner are not unique
             if id != None:
@@ -543,8 +714,32 @@ def query_condition(mode):
                     condition_query.name = new_name
                 if new_hereditary != None:
                     condition_query.hereditary = new_hereditary
+                if new_disease_id != None:
+                    condition_query.disease_id = new_disease_id
+                if new_fh_condition_id != None:
+                    condition_query.fh_condition_id = new_fh_condition_id
+                if new_fh_condition_name != None:
+                    condition_query.fh_condition_name = new_fh_condition_name
+                if new_male_parent != None:
+                    condition_query.male_parent = new_male_parent
+                if new_female_parent != None:
+                    condition_query.female_parent = new_female_parent
+                if new_male_grandparent != None:
+                    condition_query.male_grandparent = new_male_grandparent
+                if new_female_grandparent != None:
+                    condition_query.female_grandparent = new_female_grandparent
                 db.session.commit()
-                return str(condition_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
+                return str(condition_query) + \
+                       "\nid= " + str(id) + \
+                       "\nname= " + str(name) + \
+                       "\nhereditary= " + str(hereditary) + \
+                       "\ndisease_id= " + str(disease_id) + \
+                       "\nfh_condition_id= " + str(fh_condition_id) + \
+                       "\nfh_condition_name= " + str(fh_condition_name) + \
+                       "\nmale_parent= " + str(male_parent) + \
+                       "\nfemale_parent= " + str(female_parent) + \
+                       "\nmale_grandparent= " + str(male_grandparent) + \
+                       "\nfemale_grandparent= " + str(female_grandparent)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
         if request.method == 'DELETE':
@@ -554,7 +749,16 @@ def query_condition(mode):
                 condition_query.condition_of = []
                 models.Pedigree_Health_Condition.query.filter_by(id=id).delete()
                 db.session.commit()
-                return "id= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
+                return "id= " + str(id) + \
+                       "\nname= " + str(name) + \
+                       "\nhereditary= " + str(hereditary) + \
+                       "\ndisease_id= " + str(disease_id) + \
+                       "\nfh_condition_id= " + str(fh_condition_id) + \
+                       "\nfh_condition_name= " + str(fh_condition_name) + \
+                       "\nmale_parent= " + str(male_parent) + \
+                       "\nfemale_parent= " + str(female_parent) + \
+                       "\nmale_grandparent= " + str(male_grandparent) + \
+                       "\nfemale_grandparent= " + str(female_grandparent)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
     return "error, not enough information given in HTTP request"
