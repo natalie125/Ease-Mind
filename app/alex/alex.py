@@ -575,12 +575,14 @@ def get_tree_nodes(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'genders': [],
                 'ethnicities': []
             }
             for node in tree.nodes:
                 nodes_json.get('ids').append(node.id)
                 nodes_json.get('names').append(node.name)
                 nodes_json.get('dobs').append(str(node.dob.date()))
+                nodes_json.get('genders').apppend(node.gender)
                 nodes_json.get('ethnicities').append(node.ethnicity)
             return jsonify(nodes_json)
         else:
@@ -593,12 +595,14 @@ def get_tree_nodes(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'genders': [],
                 'ethnicities': []
             }
             for node in tree.nodes:
                 nodes_json.get('ids').append(node.id)
                 nodes_json.get('names').append(node.name)
                 nodes_json.get('dobs').append(str(node.dob.date()))
+                nodes_json.get('genders').apppend(node.gender)
                 nodes_json.get('ethnicities').append(node.ethnicity)
             return jsonify(nodes_json)
         else:
@@ -661,12 +665,14 @@ def get_parent_children(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'genders': [],
                 'ethnicities': []
             }
             for child in patient.children:
                 children_json.get('ids').append(child.id)
                 children_json.get('names').append(child.name)
                 children_json.get('dobs').append(str(child.dob.date()))
+                children_json.get('genders').append(child.gender)
                 children_json.get('ethnicities').append(child.ethnicity)
             return jsonify(children_json)
         else:
@@ -679,12 +685,14 @@ def get_parent_children(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'genders': [],
                 'ethnicities': []
             }
             for child in patient.children:
                 children_json.get('ids').append(child.id)
                 children_json.get('names').append(child.name)
                 children_json.get('dobs').append(str(child.dob.date()))
+                children_json.get('genders').append(child.gender)
                 children_json.get('ethnicities').append(child.ethnicity)
             return jsonify(children_json)
         else:
@@ -703,12 +711,14 @@ def get_child_parents(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'genders': [],
                 'ethnicities': []
             }
             for parent in patient.parents:
                 parents_json.get('ids').append(parent.id)
                 parents_json.get('names').append(parent.name)
                 parents_json.get('dobs').append(str(parent.dob.date()))
+                parents_json.get('genders').append(parent.gender)
                 parents_json.get('ethnicities').append(parent.ethnicity)
             return jsonify(parents_json)
         else:
@@ -721,12 +731,14 @@ def get_child_parents(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'genders': [],
                 'ethnicities': []
             }
             for parent in patient.parents:
                 parents_json.get('ids').append(parent.id)
                 parents_json.get('names').append(parent.name)
                 parents_json.get('dobs').append(str(parent.dob.date()))
+                parents_json.get('genders').append(parent.gender)
                 parents_json.get('ethnicities').append(parent.ethnicity)
             return jsonify(parents_json)
         else:
@@ -745,12 +757,14 @@ def get_patient_spouses(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'genders': [],
                 'ethnicities': []
             }
             for spouse in patient.spouses:
                 spouses_json.get('ids').append(spouse.id)
                 spouses_json.get('names').append(spouse.name)
                 spouses_json.get('dobs').append(str(spouse.dob.date()))
+                spouses_json.get('genders').append(spouse.gender)
                 spouses_json.get('ethnicities').append(spouse.ethnicity)
             return jsonify(spouses_json)
         else:
@@ -763,12 +777,14 @@ def get_patient_spouses(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'genders': [],
                 'ethnicities': []
             }
             for spouse in patient.spouses:
                 spouses_json.get('ids').append(spouse.id)
                 spouses_json.get('names').append(spouse.name)
                 spouses_json.get('dobs').append(str(spouse.dob.date()))
+                spouses_json.get('genders').append(spouse.gender)
                 spouses_json.get('ethnicities').append(spouse.ethnicity)
             return jsonify(spouses_json)
         else:
@@ -787,12 +803,14 @@ def get_spouse_of_patients(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'genders': [],
                 'ethnicities': []
             }
             for spouse_of in patient.spouses:
                 patients_json.get('ids').append(patient.id)
                 patients_json.get('names').append(patient.name)
                 patients_json.get('dobs').append(str(patient.dob.date()))
+                patients_json.get('genders').append(patient.gender)
                 patients_json.get('ethnicities').append(patient.ethnicity)
             return jsonify(patients_json)
         else:
@@ -805,12 +823,14 @@ def get_spouse_of_patients(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'genders': [],
                 'ethnicities': []
             }
             for spouse_of in patient.spouses:
                 patients_json.get('ids').append(patient.id)
                 patients_json.get('names').append(patient.name)
                 patients_json.get('dobs').append(str(patient.dob.date()))
+                patients_json.get('genders').append(patient.gender)
                 patients_json.get('ethnicities').append(patient.ethnicity)
             return jsonify(patients_json)
         else:
@@ -1130,3 +1150,15 @@ def link_patient_condition(mode):
                 patient.conditions.append(condition_query)
         db.session.commit()
         return "patient.conditions: " + str(patient.conditions) + "\npatient_id: " + str(patient_id) + "\ncondition_id: " + str(condition_id) + "\nconditions: " + str(conditions) + "\nclear_conditions: " + str(clear_conditions)
+
+# function for recalculating the FH conditions of a tree's node
+# if nothing changed, return None
+# else return a list of dicts, each containing a patient who's had fh conditions added and/or removed
+def update_tree_fh_conditions(tree_id):
+    return None
+
+# function for calculating the FH conditions of an individual node
+# if nothing changed, return None
+# else dict containing patient name, a list of added FH conditions names, and list of removed FH conditions names
+def calculate_patient_fh_conditions(patient_id):
+    return None

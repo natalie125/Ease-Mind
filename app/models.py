@@ -122,6 +122,7 @@ class Pedigree_Patient(db.Model):
     __tablename__ = 'pedigree_patient'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(500), nullable=False)  # name of the patient
+    gender = db.Column(db.String(500), nullable=False)  # gender of the patient
     dob = db.Column(db.DateTime)  # their date of birth as a Python DateTime object
     ethnicity = db.Column(db.String(500), nullable=False)  # ethnicity of the patient
 
@@ -141,6 +142,14 @@ class Pedigree_Health_Condition(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(500), nullable=False)  # name of the health condition
     hereditary = db.Column(db.Boolean, default=False)  # boolean for whether the condition is hereditary, default False
+    disease_id = db.Column(db.String(500), nullable=False)  # the SNOMED concept ID for having the disease
+    fh_disease_id = db.Column(db.String(500))  # the SNOMED concept ID to designate having a FH of the disease
+
+    # rules for the weighing of relationships in order to assign the family history of a condition
+    male_parent = db.Column(db.Integer) # weight for the relationship of a male parent
+    female_parent = db.Column(db.Integer) # weight for the relationship of a female parent
+    male_grandparent = db.Column(db.Integer) # weight for the relationship of a male grandparent
+    female_grandparent = db.Column(db.Integer) # weight for the relationship of a female grandparent
 
     def __repr__(self):
         return f'<Pedigree_Health_Condition: {self.name}>'
@@ -197,6 +206,7 @@ class Pedigree_Patient_Test(db.Model):
     __tablename__ = 'pedigree_patient_test'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(500), nullable=False)  # name of the patient
+    gender = db.Column(db.String(500), nullable=False)  # gender of the patient
     dob = db.Column(db.DateTime)  # their date of birth as a Python DateTime object
     ethnicity = db.Column(db.String(500), nullable=False)  # ethnicity of the patient
 
@@ -218,6 +228,14 @@ class Pedigree_Health_Condition_Test(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(500), nullable=False)  # name of the health condition
     hereditary = db.Column(db.Boolean, default=False)  # boolean for whether the condition is hereditary, default False
+    disease_id = db.Column(db.String(500), nullable=False)  # the SNOMED concept ID for having the disease
+    fh_disease_id = db.Column(db.String(500))  # the SNOMED concept ID to designate having a FH of the disease
+
+    # rules for the weighing of relationships in order to assign the family history of a condition
+    male_parent = db.Column(db.Integer) # weight for the relationship of a male parent
+    female_parent = db.Column(db.Integer) # weight for the relationship of a female parent
+    male_grandparent = db.Column(db.Integer) # weight for the relationship of a male grandparent
+    female_grandparent = db.Column(db.Integer) # weight for the relationship of a female grandparent
 
     def __repr__(self):
         return f'<Pedigree_Health_Condition_Test: {self.name}>'
