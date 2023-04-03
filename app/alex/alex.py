@@ -1054,12 +1054,26 @@ def get_patient_conditions(mode):
             conditions_json = {
                 'ids': [],
                 'names': [],
-                'hereditarys': []
+                'hereditarys': [],
+                'disease_ids': [],
+                'fh_condition_ids': [],
+                'fh_condition_names': [],
+                'male_parents': [],
+                'female_parents': [],
+                'male_grandparents': [],
+                'female_grandparents': []
             }
             for condition in patient.conditions:
                 conditions_json.get('ids').append(condition.id)
                 conditions_json.get('names').append(condition.name)
                 conditions_json.get('hereditarys').append(condition.hereditary)
+                conditions_json.get('disease_ids').append(condition.disease_id)
+                conditions_json.get('fh_condition_ids').append(condition.fh_condition_id)
+                conditions_json.get('fh_condition_names').append(condition.fh_condition_name)
+                conditions_json.get('male_parents').append(condition.male_parent)
+                conditions_json.get('female_parents').append(condition.female_parent)
+                conditions_json.get('male_grandparents').append(condition.male_grandparent)
+                conditions_json.get('female_grandparents').append(condition.female_grandparent)
             return jsonify(conditions_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
@@ -1070,12 +1084,26 @@ def get_patient_conditions(mode):
             conditions_json = {
                 'ids': [],
                 'names': [],
-                'hereditarys': []
+                'hereditarys': [],
+                'disease_ids': [],
+                'fh_condition_ids': [],
+                'fh_condition_names': [],
+                'male_parents': [],
+                'female_parents': [],
+                'male_grandparents': [],
+                'female_grandparents': []
             }
             for condition in patient.conditions:
                 conditions_json.get('ids').append(condition.id)
                 conditions_json.get('names').append(condition.name)
                 conditions_json.get('hereditarys').append(condition.hereditary)
+                conditions_json.get('disease_ids').append(condition.disease_id)
+                conditions_json.get('fh_condition_ids').append(condition.fh_condition_id)
+                conditions_json.get('fh_condition_names').append(condition.fh_condition_name)
+                conditions_json.get('male_parents').append(condition.male_parent)
+                conditions_json.get('female_parents').append(condition.female_parent)
+                conditions_json.get('male_grandparents').append(condition.male_grandparent)
+                conditions_json.get('female_grandparents').append(condition.female_grandparent)
             return jsonify(conditions_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
