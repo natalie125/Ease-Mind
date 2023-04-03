@@ -112,7 +112,7 @@ function Canopy_Edit_Node(props) {
 			const family_node = {
 				"id": data.names[i],
 				"dob": data.dobs[i],
-				"gender": "male",
+				"gender": data.genders[i],
 				"spouses": spouses_array,
 				"siblings": [],
 				"parents": parents_array,

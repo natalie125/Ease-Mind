@@ -37,6 +37,13 @@
     height: 100%;
 }
 
+form {
+    text-align: left;
+    padding-top: 20px;
+    padding-left: 25%;
+    padding-right: 25%;
+}
+
 .tree {
     background: #fff;
     border: 3px solid #ddd;
