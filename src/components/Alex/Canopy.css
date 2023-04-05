@@ -69,6 +69,8 @@ button {
     border: 1px solid grey;
     border-radius: 4px;
     padding: 5px 10px;
+    margin-left: 5px;
+    margin-right: 5px;
     text-align: center;
     text-decoration: none;
     display: inline-block;

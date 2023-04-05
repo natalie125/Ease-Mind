@@ -39,6 +39,19 @@ function deleteTree(url_input, tree_data) {
 	}) 
 }
 
+// recalculate fh conditions for this tree
+function refreshTree(url_input, tree_data) {
+	axios.get(url_input, {params: tree_data})
+	.then(function (response) {
+		if(response.data != "None") {
+			alert(response.data);
+		}
+	})
+	.catch(function (error) {
+		// console.log(error);
+	}) 
+}
+
 function Canopy_Edit_Node(props) {
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -228,6 +241,12 @@ function Canopy_Edit_Node(props) {
 						navigate(0)
 					}}>
 						Save Tree Details
+					</button>
+
+					<button onClick={() => {
+						refreshTree(BASEURL + "canopy/recalculate_tree/prod", {tree_id: id})
+					}}>
+						Refresh Tree
 					</button>
 				</div>
 
