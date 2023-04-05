@@ -123,7 +123,8 @@ class Pedigree_Patient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(500), nullable=False)  # name of the patient
     gender = db.Column(db.String(500), nullable=False)  # gender of the patient
-    dob = db.Column(db.DateTime)  # their date of birth as a Python DateTime object
+    dob = db.Column(db.DateTime, nullable=False)  # their date of birth as a Python DateTime object
+    dod = db.Column(db.DateTime)  # their date of death
     ethnicity = db.Column(db.String(500), nullable=False)  # ethnicity of the patient
 
     # relationships
@@ -208,7 +209,8 @@ class Pedigree_Patient_Test(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(500), nullable=False)  # name of the patient
     gender = db.Column(db.String(500), nullable=False)  # gender of the patient
-    dob = db.Column(db.DateTime)  # their date of birth as a Python DateTime object
+    dob = db.Column(db.DateTime, nullable=False)  # their date of birth as a Python DateTime object
+    dod = db.Column(db.DateTime)  # their date of death
     ethnicity = db.Column(db.String(500), nullable=False)  # ethnicity of the patient
 
     # relationships

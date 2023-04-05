@@ -202,6 +202,17 @@ def query_patient(mode):
             dob = datetime.strptime(dob, '%Y-%m-%d')
         except Exception as e:
             return str(e)
+    dod = request.args.get('dod')
+    if dod == "" or dod == "None":
+        dod = None
+    elif dod != None:
+        try:
+            dod = datetime.strptime(dod, '%Y-%m-%d')
+        except Exception as e:
+            return str(e)
+    gender = request.args.get('gender')
+    if gender == "":
+        gender = None
     ethnicity = request.args.get('ethnicity')
     if ethnicity == "":
         ethnicity = None
@@ -216,6 +227,17 @@ def query_patient(mode):
             new_dob = datetime.strptime(new_dob, '%Y-%m-%d')
         except Exception as e:
             return str(e)
+    new_dod = request.args.get('new_dod')
+    if new_dod == "" or new_dod == "None":
+        new_dod = None
+    elif new_dod != None:
+        try:
+            new_dod = datetime.strptime(new_dod, '%Y-%m-%d')
+        except Exception as e:
+            return str(e)
+    new_gender = request.args.get('new_gender')
+    if new_gender == "":
+        new_gender = None
     new_ethnicity = request.args.get('new_ethnicity')
     if new_ethnicity == "":
         new_ethnicity = None
@@ -264,18 +286,25 @@ def query_patient(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for query in patient_query:
                 query_parameters.get('ids').append(query.id)
                 query_parameters.get('names').append(query.name)
                 query_parameters.get('dobs').append(str(query.dob.date()))
+                if(query.dod != None and query.dod != "None"):
+                    query_parameters.get('dods').append(str(query.dod.date()))
+                else:
+                    query_parameters.get('dods').append("None")
+                query_parameters.get('genders').append(query.gender)
                 query_parameters.get('ethnicities').append(query.ethnicity)
             return jsonify(query_parameters)
         if request.method == 'POST':
             # check using the correct combination of parameters
             if name != None and ethnicity != None:
-                new_patient = models.Pedigree_Patient_Test(name=name, dob=dob, ethnicity=ethnicity)
+                new_patient = models.Pedigree_Patient_Test(name=name, dob=dob, dod=dod, gender=gender, ethnicity=ethnicity)
                 db.session.add(new_patient)
                 if tree_id != None:
                     tree = models.Pedigree_Tree_Test.query.filter_by(id=tree_id).first()
@@ -283,7 +312,7 @@ def query_patient(mode):
                 db.session.commit()
                 return str(new_patient.id)
             else:
-                return "Not enough information provided to create a new patient" + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
+                return "Not enough information provided to create a new patient" + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\ndod " + str(dod) + "\ngender= " + str(gender) + "\nethnicity= " + str(ethnicity)
         if request.method == 'PUT':
             # should only be allowed to put using the tree's id as name and owner are not unique
             if id != None:
@@ -292,10 +321,13 @@ def query_patient(mode):
                     patient_query.name = new_name
                 if new_dob != None:
                     patient_query.dob = new_dob
+                patient_query.dod = new_dod
+                if new_gender != None:
+                    patient_query.gender = new_gender
                 if new_ethnicity != None:
                     patient_query.ethnicity = new_ethnicity
                 db.session.commit()
-                return str(patient_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
+                return str(patient_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\ndod " + str(dod) + "\ngender= " + str(gender) + "\nethnicity= " + str(ethnicity)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
         if request.method == 'DELETE':
@@ -310,7 +342,7 @@ def query_patient(mode):
                 patient_query.spouse_of = []
                 models.Pedigree_Patient_Test.query.filter_by(id=id).delete()
                 db.session.commit()
-                return "id= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
+                return "id= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\ndod " + str(dod) + "\ngender= " + str(gender) + "\nethnicity= " + str(ethnicity)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
     # production mode, bind to actual canopy databases
@@ -354,18 +386,25 @@ def query_patient(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for query in patient_query:
                 query_parameters.get('ids').append(query.id)
                 query_parameters.get('names').append(query.name)
                 query_parameters.get('dobs').append(str(query.dob.date()))
+                if (query.dod != None and query.dod != "None"):
+                    query_parameters.get('dods').append(str(query.dod.date()))
+                else:
+                    query_parameters.get('dods').append("None")
+                query_parameters.get('genders').append(query.gender)
                 query_parameters.get('ethnicities').append(query.ethnicity)
             return jsonify(query_parameters)
         if request.method == 'POST':
             # check using the correct combination of parameters
             if name != None and ethnicity != None:
-                new_patient = models.Pedigree_Patient(name=name, dob=dob, ethnicity=ethnicity)
+                new_patient = models.Pedigree_Patient(name=name, dob=dob, dod=dod, gender=gender, ethnicity=ethnicity)
                 db.session.add(new_patient)
                 if tree_id != None:
                     tree = models.Pedigree_Tree.query.filter_by(id=tree_id).first()
@@ -373,7 +412,7 @@ def query_patient(mode):
                 db.session.commit()
                 return str(new_patient.id)
             else:
-                return "Not enough information provided to create a new patient" + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
+                return "Not enough information provided to create a new patient" + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\ndod " + str(dod) + "\ngender= " + str(gender) + "\nethnicity= " + str(ethnicity)
         if request.method == 'PUT':
             # should only be allowed to put using the tree's id as name and owner are not unique
             if id != None:
@@ -382,10 +421,14 @@ def query_patient(mode):
                     patient_query.name = new_name
                 if new_dob != None:
                     patient_query.dob = new_dob
+                patient_query.dod = new_dod
+                if new_gender != None:
+                    patient_query.gender = new_gender
                 if new_ethnicity != None:
                     patient_query.ethnicity = new_ethnicity
                 db.session.commit()
-                return str(patient_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
+                return str(patient_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(
+                    dob) + "\ndod " + str(dod) + "\ngender= " + str(gender) + "\nethnicity= " + str(ethnicity)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
         if request.method == 'DELETE':
@@ -400,7 +443,8 @@ def query_patient(mode):
                 patient_query.spouse_of = []
                 models.Pedigree_Patient.query.filter_by(id=id).delete()
                 db.session.commit()
-                return "id= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
+                return "id= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(
+                    dob) + "\ndod " + str(dod) + "\ngender= " + str(gender) + "\nethnicity= " + str(ethnicity)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
     return "error, not enough information given in HTTP request"
@@ -779,6 +823,7 @@ def get_tree_nodes(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
                 'genders': [],
                 'ethnicities': []
             }
@@ -786,7 +831,11 @@ def get_tree_nodes(mode):
                 nodes_json.get('ids').append(node.id)
                 nodes_json.get('names').append(node.name)
                 nodes_json.get('dobs').append(str(node.dob.date()))
-                nodes_json.get('genders').apppend(node.gender)
+                if (node.dod != None and node.dod != "None"):
+                    nodes_json.get('dods').append(str(node.dod.date()))
+                else:
+                    nodes_json.get('dods').append("None")
+                nodes_json.get('genders').append(node.gender)
                 nodes_json.get('ethnicities').append(node.ethnicity)
             return jsonify(nodes_json)
         else:
@@ -799,6 +848,7 @@ def get_tree_nodes(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
                 'genders': [],
                 'ethnicities': []
             }
@@ -806,7 +856,11 @@ def get_tree_nodes(mode):
                 nodes_json.get('ids').append(node.id)
                 nodes_json.get('names').append(node.name)
                 nodes_json.get('dobs').append(str(node.dob.date()))
-                nodes_json.get('genders').apppend(node.gender)
+                if (node.dod != None and node.dod != "None"):
+                    nodes_json.get('dods').append(str(node.dod.date()))
+                else:
+                    nodes_json.get('dods').append("None")
+                nodes_json.get('genders').append(node.gender)
                 nodes_json.get('ethnicities').append(node.ethnicity)
             return jsonify(nodes_json)
         else:
@@ -869,6 +923,7 @@ def get_parent_children(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
                 'genders': [],
                 'ethnicities': []
             }
@@ -876,6 +931,10 @@ def get_parent_children(mode):
                 children_json.get('ids').append(child.id)
                 children_json.get('names').append(child.name)
                 children_json.get('dobs').append(str(child.dob.date()))
+                if (child.dod != None and child.dod != "None"):
+                    children_json.get('dods').append(str(child.dod.date()))
+                else:
+                    children_json.get('dods').append("None")
                 children_json.get('genders').append(child.gender)
                 children_json.get('ethnicities').append(child.ethnicity)
             return jsonify(children_json)
@@ -889,6 +948,7 @@ def get_parent_children(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
                 'genders': [],
                 'ethnicities': []
             }
@@ -896,6 +956,10 @@ def get_parent_children(mode):
                 children_json.get('ids').append(child.id)
                 children_json.get('names').append(child.name)
                 children_json.get('dobs').append(str(child.dob.date()))
+                if (child.dod != None and child.dod != "None"):
+                    children_json.get('dods').append(str(child.dod.date()))
+                else:
+                    children_json.get('dods').append("None")
                 children_json.get('genders').append(child.gender)
                 children_json.get('ethnicities').append(child.ethnicity)
             return jsonify(children_json)
@@ -915,6 +979,7 @@ def get_child_parents(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
                 'genders': [],
                 'ethnicities': []
             }
@@ -922,6 +987,10 @@ def get_child_parents(mode):
                 parents_json.get('ids').append(parent.id)
                 parents_json.get('names').append(parent.name)
                 parents_json.get('dobs').append(str(parent.dob.date()))
+                if (parent.dod != None and parent.dod != "None"):
+                    parents_json.get('dods').append(str(parent.dod.date()))
+                else:
+                    parents_json.get('dods').append("None")
                 parents_json.get('genders').append(parent.gender)
                 parents_json.get('ethnicities').append(parent.ethnicity)
             return jsonify(parents_json)
@@ -935,6 +1004,7 @@ def get_child_parents(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
                 'genders': [],
                 'ethnicities': []
             }
@@ -942,6 +1012,10 @@ def get_child_parents(mode):
                 parents_json.get('ids').append(parent.id)
                 parents_json.get('names').append(parent.name)
                 parents_json.get('dobs').append(str(parent.dob.date()))
+                if (parent.dod != None and parent.dod != "None"):
+                    parents_json.get('dods').append(str(parent.dod.date()))
+                else:
+                    parents_json.get('dods').append("None")
                 parents_json.get('genders').append(parent.gender)
                 parents_json.get('ethnicities').append(parent.ethnicity)
             return jsonify(parents_json)
@@ -961,6 +1035,7 @@ def get_patient_spouses(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
                 'genders': [],
                 'ethnicities': []
             }
@@ -968,6 +1043,10 @@ def get_patient_spouses(mode):
                 spouses_json.get('ids').append(spouse.id)
                 spouses_json.get('names').append(spouse.name)
                 spouses_json.get('dobs').append(str(spouse.dob.date()))
+                if (spouse.dod != None and spouse.dod != "None"):
+                    spouses_json.get('dods').append(str(spouse.dod.date()))
+                else:
+                    spouses_json.get('dods').append("None")
                 spouses_json.get('genders').append(spouse.gender)
                 spouses_json.get('ethnicities').append(spouse.ethnicity)
             return jsonify(spouses_json)
@@ -981,6 +1060,7 @@ def get_patient_spouses(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
                 'genders': [],
                 'ethnicities': []
             }
@@ -988,6 +1068,10 @@ def get_patient_spouses(mode):
                 spouses_json.get('ids').append(spouse.id)
                 spouses_json.get('names').append(spouse.name)
                 spouses_json.get('dobs').append(str(spouse.dob.date()))
+                if (spouse.dod != None and spouse.dod != "None"):
+                    spouses_json.get('dods').append(str(spouse.dod.date()))
+                else:
+                    spouses_json.get('dods').append("None")
                 spouses_json.get('genders').append(spouse.gender)
                 spouses_json.get('ethnicities').append(spouse.ethnicity)
             return jsonify(spouses_json)
@@ -1007,15 +1091,20 @@ def get_spouse_of_patients(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
                 'genders': [],
                 'ethnicities': []
             }
-            for spouse_of in patient.spouses:
-                patients_json.get('ids').append(patient.id)
-                patients_json.get('names').append(patient.name)
-                patients_json.get('dobs').append(str(patient.dob.date()))
-                patients_json.get('genders').append(patient.gender)
-                patients_json.get('ethnicities').append(patient.ethnicity)
+            for spouse_of in patient.spouse_of:
+                patients_json.get('ids').append(spouse_of.id)
+                patients_json.get('names').append(spouse_of.name)
+                patients_json.get('dobs').append(str(spouse_of.dob.date()))
+                if (patient.dod != None and patient.dod != "None"):
+                    patients_json.get('dods').append(str(patient.dod.date()))
+                else:
+                    patients_json.get('dods').append("None")
+                patients_json.get('genders').append(spouse_of.gender)
+                patients_json.get('ethnicities').append(spouse_of.ethnicity)
             return jsonify(patients_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
@@ -1027,15 +1116,20 @@ def get_spouse_of_patients(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
                 'genders': [],
                 'ethnicities': []
             }
             for spouse_of in patient.spouses:
-                patients_json.get('ids').append(patient.id)
-                patients_json.get('names').append(patient.name)
-                patients_json.get('dobs').append(str(patient.dob.date()))
-                patients_json.get('genders').append(patient.gender)
-                patients_json.get('ethnicities').append(patient.ethnicity)
+                patients_json.get('ids').append(spouse_of.id)
+                patients_json.get('names').append(spouse_of.name)
+                patients_json.get('dobs').append(str(spouse_of.dob.date()))
+                if (patient.dod != None and patient.dod != "None"):
+                    patients_json.get('dods').append(str(patient.dod.date()))
+                else:
+                    patients_json.get('dods').append("None")
+                patients_json.get('genders').append(spouse_of.gender)
+                patients_json.get('ethnicities').append(spouse_of.ethnicity)
             return jsonify(patients_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
@@ -1121,12 +1215,19 @@ def get_condition_patients(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for patient in condition.condition_of:
                 condition_of_json.get('ids').append(patient.id)
                 condition_of_json.get('names').append(patient.name)
                 condition_of_json.get('dobs').append(str(patient.dob.date()))
+                if (patient.dod != None and patient.dod != "None"):
+                    condition_of_json.get('dods').append(str(patient.dod.date()))
+                else:
+                    condition_of_json.get('dods').append("None")
+                condition_of_json.get('genders').append(patient.gender)
                 condition_of_json.get('ethnicities').append(patient.ethnicity)
             return jsonify(condition_of_json)
         else:
@@ -1139,12 +1240,19 @@ def get_condition_patients(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for patient in condition.condition_of:
                 condition_of_json.get('ids').append(patient.id)
                 condition_of_json.get('names').append(patient.name)
                 condition_of_json.get('dobs').append(str(patient.dob.date()))
+                if (patient.dod != None and patient.dod != "None"):
+                    condition_of_json.get('dods').append(str(patient.dod.date()))
+                else:
+                    condition_of_json.get('dods').append("None")
+                condition_of_json.get('genders').append(patient.gender)
                 condition_of_json.get('ethnicities').append(patient.ethnicity)
             return jsonify(condition_of_json)
         else:
