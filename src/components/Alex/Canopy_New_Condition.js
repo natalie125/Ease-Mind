@@ -140,7 +140,7 @@ function Canopy_New_Condition(props) {
 						postCondition(BASEURL + "canopy/condition/prod", {	name: name, hereditary: hereditary, disease_id: disease_id, 
 																			fh_condition_id: fh_condition_id, fh_condition_name: fh_condition_name, 
 																			male_parent: male_parent, female_parent: female_parent, male_grandparent: male_grandparent, 
-																			female_grandparent: female_grandparent})
+																			female_grandparent: female_grandparent })
 						alert("New Condition: " + name + " Added!")
 						navigate(-1);
 					}}>
