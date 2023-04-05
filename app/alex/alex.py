@@ -1494,11 +1494,136 @@ def link_patient_condition(mode):
 # function for recalculating the FH conditions of a tree's node
 # if nothing changed, return None
 # else return a list of dicts, each containing a patient who's had fh conditions added and/or removed
-def update_tree_fh_conditions(tree_id):
-    return None
+@app.route('/canopy/recalculate_tree/<string:mode>', methods=['GET'])
+def update_tree_fh_conditions(mode):
+    tree_id = request.args.get('tree_id')
+    if tree_id == "":
+        tree_id = None
+    if tree_id == None:
+        return "Please provide a tree_id"
+
+    if mode == "test":
+        return None
+    else:
+        # get the final return statement ready
+        message = "Tree refreshed!\nThe following patients have new family history conditions: "
+
+        # get all the nodes of the tree
+        tree_query = models.Pedigree_Tree.query.filter_by(id=tree_id).first()
+
+        # get ready to store the patients who have different fh_conditions
+        changed_patients = []
+        # for each node in the tree, recalculate their fh_conditions
+        for node in tree_query.nodes:
+            recalculated_result = calculate_patient_fh_conditions(node.id, mode)
+            if recalculated_result:
+                changed_patients.append(recalculated_result)
+        # for a tree with 0 nodes or an unchanged tree
+        if len(changed_patients) == 0:
+            message = "Tree refreshed!\nNo patients have new family history conditions"
+        else:
+            i = 1
+            for patient_name in changed_patients:
+                message += "\n" + str(i) + ". " + patient_name
+        return message
 
 # function for calculating the FH conditions of an individual node
 # if nothing changed, return None
-# else dict containing patient name, a list of added FH conditions names, and list of removed FH conditions names
-def calculate_patient_fh_conditions(patient_id):
-    return None
+# else return patient name
+def calculate_patient_fh_conditions(patient_id, mode):
+    if mode == "test":
+        return None
+    else:
+        # make a dictionary containing key value pairs of form fh_condition_id : 0 to store weighted sums
+        condition_weights = {}
+        conditions = models.Pedigree_Health_Condition.query.all()
+        for condition in conditions:
+            if(condition.fh_condition_id != None):
+                condition_weights[condition.fh_condition_id] = 0
+
+        # get the node pointed to by this patient ID
+        patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
+
+        # make a note of the current FH conditions of the patient, at the end this will be used calculate the CHANGED
+        # fh conditions that'll be returned
+        previous_fh_condition_ids = []
+        for condition in patient.fh_conditions:
+            previous_fh_condition_ids.append(condition.fh_condition_id)
+
+        # nested loops to calculate generations, starting with parents
+        for parent in patient.parents:
+            # check the parent's conditions
+            for condition in parent.conditions:
+                # for each of the parent's conditions that have a fh_condition_id, add the sum based on gender
+                if condition.fh_condition_id != None:
+                    if parent.gender == "male":
+                        condition_weights[condition.fh_condition_id] += condition.male_parent
+                        # print("male parent for disease " + condition.disease_id + " is: " + str(condition_weights[condition.fh_condition_id]))
+                    elif parent.gender == "female":
+                        condition_weights[condition.fh_condition_id] += condition.female_parent
+                        # print("female parent for disease " + condition.disease_id + " is: " + str(condition_weights[condition.fh_condition_id]))
+
+            # once parent's conditions are checked, loop upwards towards grandparents (parent's parents)
+            for grandparent in parent.parents:
+                # check the grandparent's conditions
+                for condition in grandparent.conditions:
+                    # for each of the grandparent's conditions that have a fh_condition_id, add the sum based on gender
+                    if condition.fh_condition_id != None:
+                        if grandparent.gender == "male":
+                            condition_weights[condition.fh_condition_id] += condition.male_grandparent
+                        elif grandparent.gender == "female":
+                            condition_weights[condition.fh_condition_id] += condition.female_grandparent
+
+        # store a boolean to check if there has been a difference between the old and new fh_conditions
+        different = False
+        # store the new fh_conditions, new fh_condition_ids, and new fh_condition_names
+        new_fh_conditions = []
+        new_fh_condition_ids = []
+        new_fh_condition_names = []
+
+        # check the weights of each condition, add to the new list if greater or equal to 1
+        for condition_id in condition_weights:
+            # check if the weight value is greater than 1
+            # print("condition_id is " + condition_id)
+            # print("condition_weights[condition_id] is " + str(condition_weights[condition_id]))
+            if condition_weights[condition_id] >= 1:
+                condition_query = models.Pedigree_Health_Condition.query.filter_by(fh_condition_id=condition_id).first()
+                new_fh_conditions.append(condition_query)
+                new_fh_condition_ids.append(condition_id)
+                new_fh_condition_names.append(condition_query.fh_condition_name)
+        # print(previous_fh_condition_ids)
+        # print(new_fh_condition_ids)
+
+        # check if the new_fh_condition_ids is the same as the old one
+        # length check first
+        if len(previous_fh_condition_ids) == len(new_fh_condition_ids):
+            # length check passed
+            # then check that all previous condition_ids are in the new condition_id array
+            for previous_id in previous_fh_condition_ids:
+                # keep track if we've found the previous id in the new ids
+                found = False
+                for new_id in new_fh_condition_ids:
+                    # if found
+                    if previous_id == new_id:
+                        found = True
+                        break
+                # if never found, the lists are different
+                if not found:
+                    different = True
+                    break
+        else:
+            # length check failed
+            different = True
+        # print("different is equal to: " + str(different))
+        # print("condition_weights are: " + str(condition_weights))
+
+        # if we do have different fh_conditions
+        if different:
+            # set the patient's fh conditions to the new one
+            patient.fh_conditions = []
+            for condition in new_fh_conditions:
+                patient.fh_conditions.append(condition)
+            db.session.commit()
+            return patient.name
+        else:
+            return None

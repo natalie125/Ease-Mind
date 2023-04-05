@@ -93,6 +93,13 @@ patient_condition = db.Table('patient_condition',
                              bind_key='canopy'
                              )
 
+# join table for the relationship of "a patient has this fh health condition" or "this fh health condition affects this patient"
+patient_fh_condition = db.Table('patient_fh_condition',
+                             db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
+                             db.Column('fh_condition_id', db.Integer, db.ForeignKey('pedigree_health_condition.fh_condition_id'), primary_key=True),
+                             bind_key='canopy'
+                             )
+
 
 # join table for the relationship of "a patient has these spouses" or "this patient is a spouse of this patient"
 patient_spouse = db.Table('patient_spouse',
@@ -131,6 +138,7 @@ class Pedigree_Patient(db.Model):
     children = db.relationship('Pedigree_Patient', secondary=parent_child, primaryjoin=id==parent_child.c.parent_id, secondaryjoin=id==parent_child.c.child_id, backref=db.backref('parents'))
     spouses = db.relationship('Pedigree_Patient', secondary=patient_spouse, primaryjoin=id==patient_spouse.c.spouse_id, secondaryjoin=id==patient_spouse.c.patient_id, backref=db.backref('spouse_of'))
     conditions = db.relationship('Pedigree_Health_Condition', secondary=patient_condition, backref=db.backref('condition_of'))
+    fh_conditions = db.relationship('Pedigree_Health_Condition', secondary=patient_fh_condition, backref=db.backref('fh_condition_of'))
 
     def __repr__(self):
         return f'<Pedigree_Patient: {self.name}>'
@@ -179,6 +187,13 @@ patient_condition_test = db.Table('patient_condition_test',
                                   bind_key='canopy_test'
                                   )
 
+# join table for the relationship of "a patient has this fh health condition" or "this fh health condition affects this patient"
+patient_fh_condition_test = db.Table('patient_fh_condition_test',
+                             db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
+                             db.Column('fh_condition_id', db.Integer, db.ForeignKey('pedigree_health_condition_test.fh_condition_id'), primary_key=True),
+                             bind_key='canopy_test'
+                             )
+
 
 # join table for the relationship of "a patient has these spouses" or "this patient is a spouse of this patient"
 patient_spouse_test = db.Table('patient_spouse_test',
@@ -219,6 +234,8 @@ class Pedigree_Patient_Test(db.Model):
                               primaryjoin=id == patient_spouse_test.c.spouse_id,
                               secondaryjoin=id == patient_spouse_test.c.patient_id, backref=db.backref('spouse_of'))
     conditions = db.relationship('Pedigree_Health_Condition_Test', secondary=patient_condition_test, backref=db.backref('condition_of'))
+    fh_conditions = db.relationship('Pedigree_Health_Condition_Test', secondary=patient_fh_condition_test,
+                                    backref=db.backref('fh_condition_of'))
 
     def __repr__(self):
         return f'<Pedigree_Patient_Test: {self.name}>'
