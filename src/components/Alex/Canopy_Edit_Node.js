@@ -94,6 +94,8 @@ function Canopy_Edit_Node(props) {
 	const [selected_spouses, setSelectedSpouses] = useState([]);
 	const [conditions, setConditions] = useState([]);
 	const [selected_conditions, setSelectedConditions] = useState([]);
+	const [fh_conditions, setFHConditions] = useState([]);
+	const [has_fh_conditions, setHasFHConditions] = useState(false);
 	const [only_node, setOnlyNode] = useState(true);
 
 	// convert YYYY-MM-DD to int
@@ -409,11 +411,80 @@ function Canopy_Edit_Node(props) {
 		setSelectedConditions(initial_conditions);
 	}
 
+	// get health conditions of a patient
+	const getPatientFHConditions = async (url_input, patient_data) => {
+		const {data} = await axios.get(url_input, {params: patient_data});
+		// alert(JSON.stringify(data));
+		setFHConditions(data);
+		if(data.fh_condition_ids.length == 0) {
+			setHasFHConditions(false);
+		}
+		else {
+			setHasFHConditions(true);
+		}
+	}
+
+	// function for generating a table from the JSON response
+	// specifically from the fh_conditions of a patient
+	const generateTable = (response) => {
+		let table = []
+		let rows = []
+		
+		// Outer loop to create rows (one row for each id + 1 for the headers)
+		for (let i = -1; i < response.fh_condition_ids.length; i++) {
+			let columns = []
+
+			// Inner loop to create columns (one column for each unique key in the table)
+			for (let j = 0; j <= Object.keys(response).length; j++) {
+				// if we're on the first row (headers)
+				if(i == -1) {
+					if(j == 0) {
+						// we're on the first column
+						columns.push(<td>{"Family History Condition IDs"}</td>)
+					}
+					else if(j == 1) {
+						// we're on the first column
+						columns.push(<td>{"Family History Condition Names"}</td>)
+					}
+					else if(j < Object.keys(response).length) {
+						if(Object.keys(response)[j] != "fh_condition_ids" && Object.keys(response)[j] != "fh_condition_names") {
+							columns.push(<td>{Object.keys(response)[j]}</td>)
+						}
+					}
+				}
+				else {
+					if(j == 0) {
+						// we're on the first column
+						columns.push(<td>{response.fh_condition_ids[i]}</td>)
+					}
+					else if(j == 1) {
+						// we're on the first column
+						columns.push(<td>{response.fh_condition_names[i]}</td>)
+					}
+					else if(j < Object.keys(response).length) {
+						// we're not on the first or second
+						if(Object.keys(response)[j] != "fh_condition_ids" && Object.keys(response)[j] != "fh_condition_names") {
+							columns.push(<td>{response[Object.keys(response)[j]][i]}</td>)
+						}
+					}
+				}
+			}
+
+			// Create the parent and add the children
+			rows.push(<tr>{columns}</tr>)
+		}
+
+		table.push(<tbody>{rows}</tbody>)
+
+		return table
+	}
+
 	useEffect(() => {
 		getPatient(BASEURL + "canopy/patient/prod", { id: location.state?.id });
 		getTreePatients(BASEURL + "canopy/tree_nodes/prod", { id: location.state?.tree_id });
 		getCondition(BASEURL + "canopy/condition/prod", {});
 		getPatientConditions(BASEURL + "canopy/patient_conditions/prod", { id: location.state?.id });
+		getPatientFHConditions(BASEURL + "canopy/patient_fh_conditions/prod", { id: location.state?.id });
 		getPatientParents(BASEURL + "canopy/child_parents/prod", { id: location.state?.id });
 		getPatientChildren(BASEURL + "canopy/parent_children/prod", { id: location.state?.id });
 		getPatientSpouses(BASEURL + "canopy/patient_spouses/prod", { id: location.state?.id });
@@ -560,6 +631,19 @@ function Canopy_Edit_Node(props) {
 				</form>
 
 				<div>
+					{has_fh_conditions && (
+						<>
+							<label>
+								Family History Conditions:
+							</label>
+							<div>
+								<table border="1" className="canopy-table">
+									{generateTable(fh_conditions)}
+								</table>
+							</div>
+						</>
+					)}
+
 					<button onClick={() => {
 						let validity = checkDateFormat(new_dob, "DOB") && checkDateFormat(new_dod, "DOD") && checkRelationshipValidity() && checkDOBValidity();
 						// dates are valid

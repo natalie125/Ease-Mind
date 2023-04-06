@@ -246,7 +246,7 @@ function Canopy_Edit_Node(props) {
 					<button onClick={() => {
 						refreshTree(BASEURL + "canopy/recalculate_tree/prod", {tree_id: id})
 					}}>
-						Refresh Tree
+						Refresh FH Conditions
 					</button>
 				</div>
 

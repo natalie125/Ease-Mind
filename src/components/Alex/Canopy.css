@@ -1,6 +1,8 @@
 .canopy-table {
     margin-left: auto;
     margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 20px;
     border-collapse: collapse;
     font-size: 0.9em;
     font-family: "Times New Roman", Times, serif;
