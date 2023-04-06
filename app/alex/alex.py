@@ -1258,6 +1258,44 @@ def get_condition_patients(mode):
         else:
             return "error, condition not found at condition_id: " + str(condition_id)
 
+# function for getting conditions of a patient
+@app.route('/canopy/patient_fh_conditions/<string:mode>', methods=['GET'])
+def get_patient_fh_conditions(mode):
+    patient_id = request.args.get('id')
+    if patient_id == "":
+        patient_id = None
+
+    # check for testing mode
+    if mode == "test":
+        patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
+        if patient != None:
+            conditions_json = {
+                'fh_condition_ids': [],
+                'fh_condition_names': []
+            }
+            for condition in patient.fh_conditions:
+                conditions_json.get('fh_condition_ids').append(condition.fh_condition_id)
+                conditions_json.get('fh_condition_names').append(condition.fh_condition_name)
+            return jsonify(conditions_json)
+        else:
+            return "error, patient not found at patient_id: " + str(patient_id)
+    # we are in production mode
+    else:
+        patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
+        if patient != None:
+            conditions_json = {
+                'fh_condition_ids': [],
+                'fh_condition_names': []
+            }
+            for condition in patient.fh_conditions:
+                conditions_json.get('fh_condition_ids').append(condition.fh_condition_id)
+                conditions_json.get('fh_condition_names').append(condition.fh_condition_name)
+            return jsonify(conditions_json)
+        else:
+            return "error, patient not found at patient_id: " + str(patient_id)
+
+# LINKING METHODS
+
 # function for linking a tree and a patient
 @app.route('/canopy/tree_patient/<string:mode>', methods=['PUT'])
 def link_tree_patient(mode):
