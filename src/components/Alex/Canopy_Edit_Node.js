@@ -74,10 +74,15 @@ function Canopy_Edit_Node(props) {
 	const [id, setID] = useState(location.state?.id);
 	const [name, setName] = useState("Patient's Name");
 	const [dob, setDOB] = useState("YYYY-MM-DD");
+	const [dod, setDOD] = useState("YYYY-MM-DD");
+	const [gender, setGender] = useState("male");
+	const [genders, setGenders] = useState([{id: 1, label: "male"}, {id: 2, label: "female"}]);
 	const [ethnicity, setEthnicity] = useState("Patient's Ethnicity");
 	const [tree_id, setTreeID] = useState(location.state?.tree_id);
 	const [new_name, setNewName] = useState("Patient's New Name");
 	const [new_dob, setNewDOB] = useState("YYYY-MM-DD");
+	const [new_dod, setNewDOD] = useState("YYYY-MM-DD");
+	const [new_gender, setNewGender] = useState("male");
 	const [new_ethnicity, setNewEthnicity] = useState("Patient's New Ethnicity");
 	const [json_data, setJSONData] = useState({});
 	const [patients, setPatients] = useState([]);
@@ -89,6 +94,8 @@ function Canopy_Edit_Node(props) {
 	const [selected_spouses, setSelectedSpouses] = useState([]);
 	const [conditions, setConditions] = useState([]);
 	const [selected_conditions, setSelectedConditions] = useState([]);
+	const [fh_conditions, setFHConditions] = useState([]);
+	const [has_fh_conditions, setHasFHConditions] = useState(false);
 	const [only_node, setOnlyNode] = useState(true);
 
 	// convert YYYY-MM-DD to int
@@ -102,97 +109,105 @@ function Canopy_Edit_Node(props) {
 
 	// function to read DOB input boxes, returns true only if it passes the checks
 	// expects something like YYYY-MM-DD or YYYY/MM/DD
-	const checkDateFormat = (input) => {
+	const checkDateFormat = (input, input_name) => {
 		const current = new Date();
 		const date = `${current.getFullYear()}-${('0' + (current.getMonth()+1)).slice(-2)}-${('0' + (current.getDate())).slice(-2)}`;
 		// console.log(date);
+		if(input_name == "DOD") {
+			if(input == undefined) {
+				return true;
+			}
+			if(input.length == 0 || input == "None") {
+				return true;
+			}
+		}
 		if(input.length != date.length) {
 			// this length check is here to catch cases such as 2000-2-2 or 10-02-02
-			alert("DOB is the wrong length");
+			alert(input_name + " is the wrong length");
 			return false;
 		}
 		if(input.charAt(4) != '-' && input.charAt(4) != '/') {
 			// checks the 5th character for a '-' or '/' character
-			alert("DOB missing '-' or '/' on 5th character");
+			alert(input_name + " missing '-' or '/' on 5th character");
 			return false;
 		}
 		if(input.charAt(7) != '-' && input.chartAt(7) != '/') {
 			// checks the 8th character for a '-' or '/'
-			alert("DOB missing '-' or '/' on 8th character");
+			alert(input_name + " missing '-' or '/' on 8th character");
 			return false;
 		}
 		let year = input.substring(0, 4);
 		if(isNaN(year)) {	// if year is NOT a number, pass the if condition and fail the check
 			// check if the first 4 characters, which should be the year, is a number
-			alert("DOB year place isn't a number");
+			alert(input_name + " year place isn't a number");
 			return false;
 		}
 		year = parseInt(year);
 		if(year <= 0) {
 			// 0 and negative check for year
-			alert("DOB year is 0 or negative");
+			alert(input_name + " year is 0 or negative");
 			return false;
 		}
 		let month = input.substring(5, 7);
 		if(isNaN(month)) {
 			// check if the 6th to 7th characters is a number
-			alert("DOB month place isn't a number");
+			alert(input_name + " month place isn't a number");
 			return false;
 		}
 		month = parseInt(month);
 		if(month > 12 || month <= 0) {
 			// check if the month is greater than 12 (final month is december) or less than 0
-			alert("DOB month place too large (max 12) or small (min 0)");
+			alert(input_name + " month place too large (max 12) or small (min 0)");
 			return false;
 		}
 		let days = input.substring(8, 10);
 		if(isNaN(days)) {
 			// check if the 9th to 10th characters are numbers
-			alert("DOB days place isn't a number");
+			alert(input_name + " days place isn't a number");
 			return false;
 		}
 		days = parseInt(days);
 		if(days <= 0) {
 			// 0 and negative check for days
-			alert("DOB day is 0 or negative");
+			alert(input_name + " day is 0 or negative");
 			return false;
 		}
 		// complex day checking based on month (and potentially year)
 		// months with 31 days
 		if(month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
 			if(days > 31) {
-				alert("DOB day is too large for month with 31 days");
+				alert(input_name + " day is too large for month with 31 days");
 				return false;
 			}
 		}
 		// months with 30 days
 		if(month == 4 || month == 6 || month == 9 || month == 11) {
 			if(days > 30) {
-				alert("DOB day is too large for month with 30 days");
+				alert(input_name + " day is too large for month with 30 days");
 				return false;
 			}
 		}
 		// check feb (month == 2) and thus leap years
 		if(month == 2) {
 			if(days > 29) {
-				alert("DOB day too large for feb (>29)");
+				alert(input_name + " day too large for feb (>29)");
 				return false;
 			}
 			if(days == 29) {	// if the day is very specifically feb 29th, it is only valid on leap years
 				if(year % 4 != 0) {
-					alert("DOB 29th feb but not leap year"); // (% 4 failed)
+					alert(input_name + " 29th feb but not leap year"); // (% 4 failed)
 					return false;
 				}
 				// % 4 has passed
 				if(year % 100 == 0 && year % 400 != 0) {	// specifically on years where % 100 passes but % 400 fails they are no longer leap years
-					alert("DOB 29th feb but not a leap year"); // (% 100 passed, but % 400 failed)
+					alert(input_name + " 29th feb but not a leap year"); // (% 100 passed, but % 400 failed)
 					return false;
 				}
 			}
 		}
 		if(convertDateToInt(date) < convertDateToInt(input)) {	// the current date is smaller than the input
 			// the input is greater, and thus in the future
-			alert("DOB is in the future")
+			alert(input_name + " is in the future")
 			return false;
 		}
 		return true;
@@ -283,10 +298,14 @@ function Canopy_Edit_Node(props) {
 		setJSONData(data);
 		setName(data.names[0])
 		setDOB(data.dobs[0])
+		setDOD(data.dods[0])
+		setGender(data.genders[0])
 		setEthnicity(data.ethnicities[0])
 		// also initialise the text fields
 		setNewName(data.names[0])
 		setNewDOB(data.dobs[0])
+		setNewDOD(data.dods[0])
+		setNewGender({id: 1, label: data.genders[0]})
 		setNewEthnicity(data.ethnicities[0])
 	}
 
@@ -315,6 +334,10 @@ function Canopy_Edit_Node(props) {
 			// else it would make them a child
 			else if(convertDateToInt(data.dobs[i]) > convertDateToInt(dob)){
 				new_potential_children.push(patient_entry);
+				new_potential_spouses.push(patient_entry);
+			}
+			// might have the exact same birthdate, check that it's not the patient themselves
+			else if(data.names[i] != name) {
 				new_potential_spouses.push(patient_entry);
 			}
 		}
@@ -388,11 +411,80 @@ function Canopy_Edit_Node(props) {
 		setSelectedConditions(initial_conditions);
 	}
 
+	// get health conditions of a patient
+	const getPatientFHConditions = async (url_input, patient_data) => {
+		const {data} = await axios.get(url_input, {params: patient_data});
+		// alert(JSON.stringify(data));
+		setFHConditions(data);
+		if(data.fh_condition_ids.length == 0) {
+			setHasFHConditions(false);
+		}
+		else {
+			setHasFHConditions(true);
+		}
+	}
+
+	// function for generating a table from the JSON response
+	// specifically from the fh_conditions of a patient
+	const generateTable = (response) => {
+		let table = []
+		let rows = []
+		
+		// Outer loop to create rows (one row for each id + 1 for the headers)
+		for (let i = -1; i < response.fh_condition_ids.length; i++) {
+			let columns = []
+
+			// Inner loop to create columns (one column for each unique key in the table)
+			for (let j = 0; j <= Object.keys(response).length; j++) {
+				// if we're on the first row (headers)
+				if(i == -1) {
+					if(j == 0) {
+						// we're on the first column
+						columns.push(<td>{"Family History Condition IDs"}</td>)
+					}
+					else if(j == 1) {
+						// we're on the first column
+						columns.push(<td>{"Family History Condition Names"}</td>)
+					}
+					else if(j < Object.keys(response).length) {
+						if(Object.keys(response)[j] != "fh_condition_ids" && Object.keys(response)[j] != "fh_condition_names") {
+							columns.push(<td>{Object.keys(response)[j]}</td>)
+						}
+					}
+				}
+				else {
+					if(j == 0) {
+						// we're on the first column
+						columns.push(<td>{response.fh_condition_ids[i]}</td>)
+					}
+					else if(j == 1) {
+						// we're on the first column
+						columns.push(<td>{response.fh_condition_names[i]}</td>)
+					}
+					else if(j < Object.keys(response).length) {
+						// we're not on the first or second
+						if(Object.keys(response)[j] != "fh_condition_ids" && Object.keys(response)[j] != "fh_condition_names") {
+							columns.push(<td>{response[Object.keys(response)[j]][i]}</td>)
+						}
+					}
+				}
+			}
+
+			// Create the parent and add the children
+			rows.push(<tr>{columns}</tr>)
+		}
+
+		table.push(<tbody>{rows}</tbody>)
+
+		return table
+	}
+
 	useEffect(() => {
 		getPatient(BASEURL + "canopy/patient/prod", { id: location.state?.id });
 		getTreePatients(BASEURL + "canopy/tree_nodes/prod", { id: location.state?.tree_id });
 		getCondition(BASEURL + "canopy/condition/prod", {});
 		getPatientConditions(BASEURL + "canopy/patient_conditions/prod", { id: location.state?.id });
+		getPatientFHConditions(BASEURL + "canopy/patient_fh_conditions/prod", { id: location.state?.id });
 		getPatientParents(BASEURL + "canopy/child_parents/prod", { id: location.state?.id });
 		getPatientChildren(BASEURL + "canopy/parent_children/prod", { id: location.state?.id });
 		getPatientSpouses(BASEURL + "canopy/patient_spouses/prod", { id: location.state?.id });
@@ -422,20 +514,47 @@ function Canopy_Edit_Node(props) {
 						value={new_name}
 						onChange={e => setNewName(e.target.value)} />
 					</label>
-					<br /><br />
+					<br />
 
 					<h3>
 						Date Of Birth: { dob }
 					</h3>
 					<label>
-						New DOB (YYYY-MM-DD): {}
+						New DOB (Format:YYYY-MM-DD): {}
 						<input
 						name="new_dob"
 						type="text"
 						value={new_dob}
 						onChange={e => setNewDOB(e.target.value)} />
 					</label>
-					<br /><br />
+					<br />
+
+					<h3>
+						Date Of Death: { dod }
+					</h3>
+					<label>
+						New DOD (Format:YYYY-MM-DD): {} 
+						<input
+						name="new_dod"
+						type="text"
+						value={new_dod}
+						onChange={e => setNewDOD(e.target.value)} />
+					</label>
+					<br />
+
+					<h3>
+						Gender: { gender }
+					</h3>
+					<label>
+						New Gender:
+					</label>
+					<Dropdown
+						placeHolder="Select..."
+						initialValues={new_gender}
+						options={genders}
+						onChange={(value) => { setNewGender(value) }}
+					/>
+					<br />
 
 					<h3>
 						Ethnicity: { ethnicity }
@@ -448,7 +567,7 @@ function Canopy_Edit_Node(props) {
 						value={new_ethnicity}
 						onChange={e => setNewEthnicity(e.target.value)} />
 					</label>
-					<br /><br />
+					<br />
 
 					<label>
 						Parents:
@@ -463,7 +582,7 @@ function Canopy_Edit_Node(props) {
 							onChange={(value) => { setSelectedParents(value) }}
 						/>
 					</div>
-					<br /><br />
+					<br />
 
 					<label>
 						Children:
@@ -478,7 +597,7 @@ function Canopy_Edit_Node(props) {
 							onChange={(value) => { setSelectedChildren(value) }}
 						/>
 					</div>
-					<br /><br />
+					<br />
 
 					<label>
 						Spouses:
@@ -493,7 +612,7 @@ function Canopy_Edit_Node(props) {
 							onChange={(value) => { setSelectedSpouses(value) }}
 						/>
 					</div>
-					<br /><br />
+					<br />
 					
 					<label>
 						Health Conditions:
@@ -508,20 +627,44 @@ function Canopy_Edit_Node(props) {
 							onChange={(value) => { setSelectedConditions(value) }}
 						/>
 					</div>
-					<br /><br />
+					<br />
 				</form>
 
 				<div>
+					{has_fh_conditions && (
+						<>
+							<label>
+								Family History Conditions:
+							</label>
+							<div>
+								<table border="1" className="canopy-table">
+									{generateTable(fh_conditions)}
+								</table>
+							</div>
+						</>
+					)}
+
 					<button onClick={() => {
-						let validity = checkDateFormat(new_dob) && checkRelationshipValidity() && checkDOBValidity();
-						console.log("validity after DOB check and relationship check: " + validity);
+						let validity = checkDateFormat(new_dob, "DOB") && checkDateFormat(new_dod, "DOD") && checkRelationshipValidity() && checkDOBValidity();
+						// dates are valid
 						if(validity) {
-							// putPatient(BASEURL + "canopy/patient/prod", {id: id, name: name, dob: dob, ethnicity: ethnicity, new_name: new_name, new_dob: new_dob, new_ethnicity: new_ethnicity})
-							// linkPatientCondition(BASEURL + "canopy/patient_condition/prod", {patient_id: id, condition_id: "", conditions: selected_conditions, clear_conditions: true})
-							// linkParentChild(BASEURL + "canopy/parent_child/prod", {patient_id: id, parent_id: "", child_id: "", parents: selected_parents, children: selected_children, clear_parents: true, clear_children: true})
-							// linkPatientSpouse(BASEURL + "canopy/patient_spouse/prod", {patient_id: id, spouse_id: "", spouse_of_id: "", spouses: selected_spouses, spouse_of: [], clear_spouses: true, clear_spouse_of: true})
-							// alert("Patient Details Saved!")
-							// navigate(0)
+							// dod is blank, don't check
+							if(new_dod == undefined || new_dod == "None") {
+							
+							} else if(convertDateToInt(new_dob) > convertDateToInt(new_dod)) {
+								// dod is not blank, check it's not behind the DOB
+								alert("New DOB should be before the New DOD of the patient");
+								validity = false;
+							}
+						}
+						console.log("validity after DOB, DOD check and relationship check: " + validity);
+						if(validity) {
+							putPatient(BASEURL + "canopy/patient/prod", {id: id, name: name, dob: dob, dod: dod, gender: gender, ethnicity: ethnicity, new_name: new_name, new_dob: new_dob, new_dod: new_dod, new_gender: new_gender.label, new_ethnicity: new_ethnicity})
+							linkPatientCondition(BASEURL + "canopy/patient_condition/prod", {patient_id: id, condition_id: "", conditions: selected_conditions, clear_conditions: true})
+							linkParentChild(BASEURL + "canopy/parent_child/prod", {patient_id: id, parent_id: "", child_id: "", parents: selected_parents, children: selected_children, clear_parents: true, clear_children: true})
+							linkPatientSpouse(BASEURL + "canopy/patient_spouse/prod", {patient_id: id, spouse_id: "", spouse_of_id: "", spouses: selected_spouses, spouse_of: [], clear_spouses: true, clear_spouse_of: true})
+							alert("Patient Details Saved!")
+							navigate(0)
 						}
 					}}>
 						Save Patient Details
@@ -532,9 +675,9 @@ function Canopy_Edit_Node(props) {
 
 				<div>
 					<button onClick={() => {
-						deletePatient(BASEURL + "canopy/patient/prod", {id: id, name: name, dob: dob, ethnicity: ethnicity})
+						deletePatient(BASEURL + "canopy/patient/prod", {id: id, name: name, dob: dob, dod: dod, gender: gender, ethnicity: ethnicity})
 						alert("Patient Record ID: " + id + " Deleted!")
-						navigate(-1);
+						navigate('/canopy/canopy_edit_trees/');
 					}}>
 						Delete Patient Record
 					</button>

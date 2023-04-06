@@ -39,6 +39,19 @@ function deleteTree(url_input, tree_data) {
 	}) 
 }
 
+// recalculate fh conditions for this tree
+function refreshTree(url_input, tree_data) {
+	axios.get(url_input, {params: tree_data})
+	.then(function (response) {
+		if(response.data != "None") {
+			alert(response.data);
+		}
+	})
+	.catch(function (error) {
+		// console.log(error);
+	}) 
+}
+
 function Canopy_Edit_Node(props) {
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -112,7 +125,7 @@ function Canopy_Edit_Node(props) {
 			const family_node = {
 				"id": data.names[i],
 				"dob": data.dobs[i],
-				"gender": "male",
+				"gender": data.genders[i],
 				"spouses": spouses_array,
 				"siblings": [],
 				"parents": parents_array,
@@ -229,6 +242,12 @@ function Canopy_Edit_Node(props) {
 					}}>
 						Save Tree Details
 					</button>
+
+					<button onClick={() => {
+						refreshTree(BASEURL + "canopy/recalculate_tree/prod", {tree_id: id})
+					}}>
+						Refresh FH Conditions
+					</button>
 				</div>
 
 				<br />
@@ -237,7 +256,7 @@ function Canopy_Edit_Node(props) {
 					<button onClick={() => {
 						deleteTree(BASEURL + "canopy/tree/prod", {id: id, name: name, owner: owner})
 						alert("Tree Record ID: " + id + " Deleted!")
-						navigate(-1)
+						navigate('/canopy/canopy_show_trees/')
 					}}>
 						Delete Tree ID: {id}
 					</button>

@@ -17,7 +17,11 @@ function Canopy_Show_Conditions(props) {
 	const [conditions, setConditions] = useState({
 													ids: [],
 													names: [],
-													'hereditary?':[]
+													'hereditary?':[],
+													male_parents: [],
+													female_parents: [],
+													male_grandparents: [],
+													female_grandparents: []
 												});
 
 	// methods for receiving data from the Flask app
@@ -27,7 +31,11 @@ function Canopy_Show_Conditions(props) {
 		let data = {
 			ids: [],
 			names: [],
-			'hereditary?':[]
+			'hereditary?':[],
+			male_parents: [],
+			female_parents: [],
+			male_grandparents: [],
+			female_grandparents: []
 		};
 		data = await axios.get(url_input, {params: {}});
 		// console.log(data);
@@ -57,7 +65,7 @@ function Canopy_Show_Conditions(props) {
 					else if(j < Object.keys(response).length) {
 						if(Object.keys(response)[j] != "ids") {
 							if(Object.keys(response)[j] == "hereditarys") {	// catch when we're naming a column hereditarys in the 1st row
-								columns.push(<td>hereditary?</td>)	// name it hereditary? instetad
+								columns.push(<td>hereditary?</td>)	// name it hereditary? instead
 							}
 							else {	// generic key name
 								columns.push(<td>{Object.keys(response)[j]}</td>)

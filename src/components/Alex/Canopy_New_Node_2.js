@@ -52,6 +52,8 @@ function Canopy_New_Node_2(props) {
 	const [id, setID] = useState();
 	const [name, setName] = useState(location.state?.name);
 	const [dob, setDOB] = useState(location.state?.dob);
+	const [dod, setDOD] = useState(location.state?.dod);
+	const [gender, setGender] = useState(location.state?.gender);
 	const [ethnicity, setEthnicity] = useState(location.state?.ethnicity);
 	const [json_data, setJSONData] = useState({});
 	const [patients, setPatients] = useState([]);
@@ -97,6 +99,10 @@ function Canopy_New_Node_2(props) {
 			// else it would make them a child
 			else if(convertDateToInt(data.dobs[i]) > convertDateToInt(dob)){
 				new_potential_children.push(patient_entry);
+				new_potential_spouses.push(patient_entry);
+			}
+			// might have the exact same birthdate, check that it's not the patient themselves
+			else if(data.names[i] != name) {
 				new_potential_spouses.push(patient_entry);
 			}
 		}
@@ -172,17 +178,27 @@ function Canopy_New_Node_2(props) {
 					<label>
 						Name: {name}
 					</label>
-					<br /><br />
+					<br />
 
 					<label>
 						DOB: {dob}
 					</label>
-					<br /><br />
+					<br />
+
+					<label>
+						DOD: {dod}
+					</label>
+					<br />
+
+					<label>
+						Gender: {gender}
+					</label>
+					<br />
 
 					<label>
 						Ethnicity: {ethnicity}
 					</label>
-					<br /><br />
+					<br />
 
 					<label>
 						Parents:
@@ -197,7 +213,7 @@ function Canopy_New_Node_2(props) {
 							onChange={(value) => { setSelectedParents(value) }}
 						/>
 					</div>
-					<br /><br />
+					<br />
 
 					<label>
 						Children:
@@ -212,7 +228,7 @@ function Canopy_New_Node_2(props) {
 							onChange={(value) => { setSelectedChildren(value) }}
 						/>
 					</div>
-					<br /><br />
+					<br />
 
 					<label>
 						Spouses:
@@ -227,7 +243,6 @@ function Canopy_New_Node_2(props) {
 							onChange={(value) => { setSelectedSpouses(value) }}
 						/>
 					</div>
-					<br /><br />
 				</form>
 
 				<div>
@@ -235,8 +250,8 @@ function Canopy_New_Node_2(props) {
 						let validity = checkRelationshipValidity();
 						console.log("validity: " + validity);
 						if(validity) {
-							postPatient(BASEURL + "canopy/patient/prod", {name: name, dob: dob, ethnicity: ethnicity, tree_id: location.state?.tree_id })
-							alert("New Patient: " + name + " Added!")
+							postPatient(BASEURL + "canopy/patient/prod", {name: name, dob: dob, dod: dod, gender: gender, ethnicity: ethnicity, tree_id: location.state?.tree_id });
+							alert("New Patient: " + name + " Added!");
 							navigate(-2);
 						}
 					}}>
