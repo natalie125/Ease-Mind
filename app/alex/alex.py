@@ -202,6 +202,17 @@ def query_patient(mode):
             dob = datetime.strptime(dob, '%Y-%m-%d')
         except Exception as e:
             return str(e)
+    dod = request.args.get('dod')
+    if dod == "" or dod == "None":
+        dod = None
+    elif dod != None:
+        try:
+            dod = datetime.strptime(dod, '%Y-%m-%d')
+        except Exception as e:
+            return str(e)
+    gender = request.args.get('gender')
+    if gender == "":
+        gender = None
     ethnicity = request.args.get('ethnicity')
     if ethnicity == "":
         ethnicity = None
@@ -216,6 +227,17 @@ def query_patient(mode):
             new_dob = datetime.strptime(new_dob, '%Y-%m-%d')
         except Exception as e:
             return str(e)
+    new_dod = request.args.get('new_dod')
+    if new_dod == "" or new_dod == "None":
+        new_dod = None
+    elif new_dod != None:
+        try:
+            new_dod = datetime.strptime(new_dod, '%Y-%m-%d')
+        except Exception as e:
+            return str(e)
+    new_gender = request.args.get('new_gender')
+    if new_gender == "":
+        new_gender = None
     new_ethnicity = request.args.get('new_ethnicity')
     if new_ethnicity == "":
         new_ethnicity = None
@@ -264,18 +286,25 @@ def query_patient(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for query in patient_query:
                 query_parameters.get('ids').append(query.id)
                 query_parameters.get('names').append(query.name)
                 query_parameters.get('dobs').append(str(query.dob.date()))
+                if(query.dod != None and query.dod != "None"):
+                    query_parameters.get('dods').append(str(query.dod.date()))
+                else:
+                    query_parameters.get('dods').append("None")
+                query_parameters.get('genders').append(query.gender)
                 query_parameters.get('ethnicities').append(query.ethnicity)
             return jsonify(query_parameters)
         if request.method == 'POST':
             # check using the correct combination of parameters
             if name != None and ethnicity != None:
-                new_patient = models.Pedigree_Patient_Test(name=name, dob=dob, ethnicity=ethnicity)
+                new_patient = models.Pedigree_Patient_Test(name=name, dob=dob, dod=dod, gender=gender, ethnicity=ethnicity)
                 db.session.add(new_patient)
                 if tree_id != None:
                     tree = models.Pedigree_Tree_Test.query.filter_by(id=tree_id).first()
@@ -283,7 +312,7 @@ def query_patient(mode):
                 db.session.commit()
                 return str(new_patient.id)
             else:
-                return "Not enough information provided to create a new patient" + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
+                return "Not enough information provided to create a new patient" + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\ndod " + str(dod) + "\ngender= " + str(gender) + "\nethnicity= " + str(ethnicity)
         if request.method == 'PUT':
             # should only be allowed to put using the tree's id as name and owner are not unique
             if id != None:
@@ -292,10 +321,13 @@ def query_patient(mode):
                     patient_query.name = new_name
                 if new_dob != None:
                     patient_query.dob = new_dob
+                patient_query.dod = new_dod
+                if new_gender != None:
+                    patient_query.gender = new_gender
                 if new_ethnicity != None:
                     patient_query.ethnicity = new_ethnicity
                 db.session.commit()
-                return str(patient_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
+                return str(patient_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\ndod " + str(dod) + "\ngender= " + str(gender) + "\nethnicity= " + str(ethnicity)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
         if request.method == 'DELETE':
@@ -310,7 +342,7 @@ def query_patient(mode):
                 patient_query.spouse_of = []
                 models.Pedigree_Patient_Test.query.filter_by(id=id).delete()
                 db.session.commit()
-                return "id= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
+                return "id= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\ndod " + str(dod) + "\ngender= " + str(gender) + "\nethnicity= " + str(ethnicity)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
     # production mode, bind to actual canopy databases
@@ -354,18 +386,25 @@ def query_patient(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for query in patient_query:
                 query_parameters.get('ids').append(query.id)
                 query_parameters.get('names').append(query.name)
                 query_parameters.get('dobs').append(str(query.dob.date()))
+                if (query.dod != None and query.dod != "None"):
+                    query_parameters.get('dods').append(str(query.dod.date()))
+                else:
+                    query_parameters.get('dods').append("None")
+                query_parameters.get('genders').append(query.gender)
                 query_parameters.get('ethnicities').append(query.ethnicity)
             return jsonify(query_parameters)
         if request.method == 'POST':
             # check using the correct combination of parameters
             if name != None and ethnicity != None:
-                new_patient = models.Pedigree_Patient(name=name, dob=dob, ethnicity=ethnicity)
+                new_patient = models.Pedigree_Patient(name=name, dob=dob, dod=dod, gender=gender, ethnicity=ethnicity)
                 db.session.add(new_patient)
                 if tree_id != None:
                     tree = models.Pedigree_Tree.query.filter_by(id=tree_id).first()
@@ -373,7 +412,7 @@ def query_patient(mode):
                 db.session.commit()
                 return str(new_patient.id)
             else:
-                return "Not enough information provided to create a new patient" + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
+                return "Not enough information provided to create a new patient" + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\ndod " + str(dod) + "\ngender= " + str(gender) + "\nethnicity= " + str(ethnicity)
         if request.method == 'PUT':
             # should only be allowed to put using the tree's id as name and owner are not unique
             if id != None:
@@ -382,10 +421,14 @@ def query_patient(mode):
                     patient_query.name = new_name
                 if new_dob != None:
                     patient_query.dob = new_dob
+                patient_query.dod = new_dod
+                if new_gender != None:
+                    patient_query.gender = new_gender
                 if new_ethnicity != None:
                     patient_query.ethnicity = new_ethnicity
                 db.session.commit()
-                return str(patient_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
+                return str(patient_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(
+                    dob) + "\ndod " + str(dod) + "\ngender= " + str(gender) + "\nethnicity= " + str(ethnicity)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
         if request.method == 'DELETE':
@@ -400,7 +443,8 @@ def query_patient(mode):
                 patient_query.spouse_of = []
                 models.Pedigree_Patient.query.filter_by(id=id).delete()
                 db.session.commit()
-                return "id= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(dob) + "\nethnicity= " + str(ethnicity)
+                return "id= " + str(id) + "\nname= " + str(name) + "\ndob= " + str(
+                    dob) + "\ndod " + str(dod) + "\ngender= " + str(gender) + "\nethnicity= " + str(ethnicity)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
     return "error, not enough information given in HTTP request"
@@ -420,6 +464,27 @@ def query_condition(mode):
         hereditary = None
     if hereditary != None:
         hereditary = eval(request.args.get('hereditary').capitalize())
+    disease_id = request.args.get('disease_id')
+    if disease_id == "":
+        disease_id = None
+    fh_condition_id = request.args.get('fh_condition_id')
+    if fh_condition_id == "":
+        fh_condition_id = None
+    fh_condition_name = request.args.get('fh_condition_name')
+    if fh_condition_name == "":
+        fh_condition_name = None
+    male_parent = request.args.get('male_parent')
+    if male_parent == "":
+        male_parent = None
+    female_parent = request.args.get('female_parent')
+    if female_parent == "":
+        female_parent = None
+    male_grandparent = request.args.get('male_grandparent')
+    if male_grandparent == "":
+        male_grandparent = None
+    female_grandparent = request.args.get('female_grandparent')
+    if female_grandparent == "":
+        female_grandparent = None
     new_name = request.args.get('new_name')
     if new_name == "":
         new_name = None
@@ -428,6 +493,27 @@ def query_condition(mode):
         new_hereditary = None
     if new_hereditary != None:
         new_hereditary = eval(request.args.get('new_hereditary').capitalize())
+    new_disease_id = request.args.get('new_disease_id')
+    if new_disease_id == "":
+        new_disease_id = None
+    new_fh_condition_id = request.args.get('new_fh_condition_id')
+    if new_fh_condition_id == "":
+        new_fh_condition_id = None
+    new_fh_condition_name = request.args.get('new_fh_condition_name')
+    if new_fh_condition_name == "":
+        new_fh_condition_name = None
+    new_male_parent = request.args.get('new_male_parent')
+    if new_male_parent == "":
+        new_male_parent = None
+    new_female_parent = request.args.get('new_female_parent')
+    if new_female_parent == "":
+        new_female_parent = None
+    new_male_grandparent = request.args.get('new_male_grandparent')
+    if new_male_grandparent == "":
+        new_male_grandparent = None
+    new_female_grandparent = request.args.get('new_female_grandparent')
+    if new_female_grandparent == "":
+        new_female_grandparent = None
 
     # testing mode, bind to canopy test databases
     if mode == "test":
@@ -453,12 +539,26 @@ def query_condition(mode):
             query_parameters = {
                 'ids': [],
                 'names': [],
-                'hereditarys': []
+                'hereditarys': [],
+                'disease_ids': [],
+                'fh_condition_ids': [],
+                'fh_condition_names': [],
+                'male_parents': [],
+                'female_parents': [],
+                'male_grandparents': [],
+                'female_grandparents': []
             }
             for query in condition_query:
                 query_parameters.get('ids').append(query.id)
                 query_parameters.get('names').append(query.name)
                 query_parameters.get('hereditarys').append(query.hereditary)
+                query_parameters.get('disease_ids').append(query.disease_id)
+                query_parameters.get('fh_condition_ids').append(query.fh_condition_id)
+                query_parameters.get('fh_condition_names').append(query.fh_condition_name)
+                query_parameters.get('male_parents').append(query.male_parent)
+                query_parameters.get('female_parents').append(query.female_parent)
+                query_parameters.get('male_grandparents').append(query.male_grandparent)
+                query_parameters.get('female_grandparents').append(query.female_grandparent)
             return jsonify(query_parameters)
         if request.method == 'POST':
             # check using the correct combination of parameters
@@ -466,11 +566,45 @@ def query_condition(mode):
                 new_condition = models.Pedigree_Health_Condition_Test(name=name)
                 if hereditary != None:
                     new_condition.hereditary = hereditary
+                if disease_id != None:
+                    new_condition.disease_id = disease_id
+                if fh_condition_id != None:
+                    new_condition.fh_condition_id = fh_condition_id
+                if fh_condition_name != None:
+                    new_condition.fh_condition_name = fh_condition_name
+                if male_parent != None:
+                    new_condition.male_parent = male_parent
+                if female_parent != None:
+                    new_condition.female_parent = female_parent
+                if male_grandparent != None:
+                    new_condition.male_grandparent = male_grandparent
+                if female_grandparent != None:
+                    new_condition.female_grandparent = female_grandparent
                 db.session.add(new_condition)
                 db.session.commit()
-                return str(new_condition) + "\nid= " + str(new_condition.id) + "\nname= " + str(new_condition.name) + "\nhereditary= " + str(new_condition.hereditary)
+                return str(new_condition) + \
+                       "\nid= " + str(new_condition.id) + \
+                       "\nname= " + str(new_condition.name) + \
+                       "\nhereditary= " + str(new_condition.hereditary) + \
+                       "\ndisease_id= " + str(new_condition.disease_id) + \
+                       "\nfh_condition_id= " + str(new_condition.fh_condition_id) + \
+                       "\nfh_condition_name= " + str(new_condition.fh_condition_name) + \
+                       "\nmale_parent= " + str(new_condition.male_parent) + \
+                       "\nfemale_parent= " + str(new_condition.female_parent) + \
+                       "\nmale_grandparent= " + str(new_condition.male_grandparent) + \
+                       "\nfemale_grandparent= " + str(new_condition.female_grandparent)
             else:
-                return "Not enough information provided to create a new health condition" + "\nid= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
+                return "Not enough information provided to create a new health condition" + \
+                       "\nid= " + str(id) + \
+                       "\nname= " + str(name) + \
+                       "\nhereditary= " + str(hereditary) + \
+                       "\ndisease_id= " + str(disease_id) + \
+                       "\nfh_condition_id= " + str(fh_condition_id) + \
+                       "\nfh_condition_name= " + str(fh_condition_name) + \
+                       "\nmale_parent= " + str(male_parent) + \
+                       "\nfemale_parent= " + str(female_parent) + \
+                       "\nmale_grandparent= " + str(male_grandparent) + \
+                       "\nfemale_grandparent= " + str(female_grandparent)
         if request.method == 'PUT':
             # should only be allowed to put using the tree's id as name and owner are not unique
             if id != None:
@@ -479,8 +613,32 @@ def query_condition(mode):
                     condition_query.name = new_name
                 if new_hereditary != None:
                     condition_query.hereditary = new_hereditary
+                if new_disease_id != None:
+                    condition_query.disease_id = new_disease_id
+                if new_fh_condition_id != None:
+                    condition_query.fh_condition_id = new_fh_condition_id
+                if new_fh_condition_name != None:
+                    condition_query.fh_condition_name = new_fh_condition_name
+                if new_male_parent != None:
+                    condition_query.male_parent = new_male_parent
+                if new_female_parent != None:
+                    condition_query.female_parent = new_female_parent
+                if new_male_grandparent != None:
+                    condition_query.male_grandparent = new_male_grandparent
+                if new_female_grandparent != None:
+                    condition_query.female_grandparent = new_female_grandparent
                 db.session.commit()
-                return str(condition_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
+                return str(condition_query) + \
+                       "\nid= " + str(id) + \
+                       "\nname= " + str(name) + \
+                       "\nhereditary= " + str(hereditary) + \
+                       "\ndisease_id= " + str(disease_id) + \
+                       "\nfh_condition_id= " + str(fh_condition_id) + \
+                       "\nfh_condition_name= " + str(fh_condition_name) + \
+                       "\nmale_parent= " + str(male_parent) + \
+                       "\nfemale_parent= " + str(female_parent) + \
+                       "\nmale_grandparent= " + str(male_grandparent) + \
+                       "\nfemale_grandparent= " + str(female_grandparent)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
         if request.method == 'DELETE':
@@ -490,7 +648,16 @@ def query_condition(mode):
                 condition_query.condition_of = []
                 models.Pedigree_Health_Condition_Test.query.filter_by(id=id).delete()
                 db.session.commit()
-                return "id= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
+                return "id= " + str(id) + \
+                       "\nname= " + str(name) + \
+                       "\nhereditary= " + str(hereditary) + \
+                       "\ndisease_id= " + str(disease_id) + \
+                       "\nfh_condition_id= " + str(fh_condition_id) + \
+                       "\nfh_condition_name= " + str(fh_condition_name) + \
+                       "\nmale_parent= " + str(male_parent) + \
+                       "\nfemale_parent= " + str(female_parent) + \
+                       "\nmale_grandparent= " + str(male_grandparent) + \
+                       "\nfemale_grandparent= " + str(female_grandparent)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
     # production mode, bind to actual canopy databases
@@ -517,12 +684,26 @@ def query_condition(mode):
             query_parameters = {
                 'ids': [],
                 'names': [],
-                'hereditarys': []
+                'hereditarys': [],
+                'disease_ids': [],
+                'fh_condition_ids': [],
+                'fh_condition_names': [],
+                'male_parents': [],
+                'female_parents': [],
+                'male_grandparents': [],
+                'female_grandparents': []
             }
             for query in condition_query:
                 query_parameters.get('ids').append(query.id)
                 query_parameters.get('names').append(query.name)
                 query_parameters.get('hereditarys').append(query.hereditary)
+                query_parameters.get('disease_ids').append(query.disease_id)
+                query_parameters.get('fh_condition_ids').append(query.fh_condition_id)
+                query_parameters.get('fh_condition_names').append(query.fh_condition_name)
+                query_parameters.get('male_parents').append(query.male_parent)
+                query_parameters.get('female_parents').append(query.female_parent)
+                query_parameters.get('male_grandparents').append(query.male_grandparent)
+                query_parameters.get('female_grandparents').append(query.female_grandparent)
             return jsonify(query_parameters)
         if request.method == 'POST':
             # check using the correct combination of parameters
@@ -530,11 +711,45 @@ def query_condition(mode):
                 new_condition = models.Pedigree_Health_Condition(name=name)
                 if hereditary != None:
                     new_condition.hereditary = hereditary
+                if disease_id != None:
+                    new_condition.disease_id = disease_id
+                if fh_condition_id != None:
+                    new_condition.fh_condition_id = fh_condition_id
+                if fh_condition_name != None:
+                    new_condition.fh_condition_name = fh_condition_name
+                if male_parent != None:
+                    new_condition.male_parent = male_parent
+                if female_parent != None:
+                    new_condition.female_parent = female_parent
+                if male_grandparent != None:
+                    new_condition.male_grandparent = male_grandparent
+                if female_grandparent != None:
+                    new_condition.female_grandparent = female_grandparent
                 db.session.add(new_condition)
                 db.session.commit()
-                return str(new_condition) + "\nid= " + str(new_condition.id) + "\nname= " + str(new_condition.name) + "\nhereditary= " + str(new_condition.hereditary)
+                return str(new_condition) + \
+                       "\nid= " + str(new_condition.id) + \
+                       "\nname= " + str(new_condition.name) + \
+                       "\nhereditary= " + str(new_condition.hereditary) + \
+                       "\ndisease_id= " + str(new_condition.disease_id) + \
+                       "\nfh_condition_id= " + str(new_condition.fh_condition_id) + \
+                       "\nfh_condition_name= " + str(new_condition.fh_condition_name) + \
+                       "\nmale_parent= " + str(new_condition.male_parent) + \
+                       "\nfemale_parent= " + str(new_condition.female_parent) + \
+                       "\nmale_grandparent= " + str(new_condition.male_grandparent) + \
+                       "\nfemale_grandparent= " + str(new_condition.female_grandparent)
             else:
-                return "Not enough information provided to create a new health condition" + "\nid= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
+                return "Not enough information provided to create a new health condition" + \
+                       "\nid= " + str(id) + \
+                       "\nname= " + str(name) + \
+                       "\nhereditary= " + str(hereditary) + \
+                       "\ndisease_id= " + str(disease_id) + \
+                       "\nfh_condition_id= " + str(fh_condition_id) + \
+                       "\nfh_condition_name= " + str(fh_condition_name) + \
+                       "\nmale_parent= " + str(male_parent) + \
+                       "\nfemale_parent= " + str(female_parent) + \
+                       "\nmale_grandparent= " + str(male_grandparent) + \
+                       "\nfemale_grandparent= " + str(female_grandparent)
         if request.method == 'PUT':
             # should only be allowed to put using the tree's id as name and owner are not unique
             if id != None:
@@ -543,8 +758,32 @@ def query_condition(mode):
                     condition_query.name = new_name
                 if new_hereditary != None:
                     condition_query.hereditary = new_hereditary
+                if new_disease_id != None:
+                    condition_query.disease_id = new_disease_id
+                if new_fh_condition_id != None:
+                    condition_query.fh_condition_id = new_fh_condition_id
+                if new_fh_condition_name != None:
+                    condition_query.fh_condition_name = new_fh_condition_name
+                if new_male_parent != None:
+                    condition_query.male_parent = new_male_parent
+                if new_female_parent != None:
+                    condition_query.female_parent = new_female_parent
+                if new_male_grandparent != None:
+                    condition_query.male_grandparent = new_male_grandparent
+                if new_female_grandparent != None:
+                    condition_query.female_grandparent = new_female_grandparent
                 db.session.commit()
-                return str(condition_query) + "\nid= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
+                return str(condition_query) + \
+                       "\nid= " + str(id) + \
+                       "\nname= " + str(name) + \
+                       "\nhereditary= " + str(hereditary) + \
+                       "\ndisease_id= " + str(disease_id) + \
+                       "\nfh_condition_id= " + str(fh_condition_id) + \
+                       "\nfh_condition_name= " + str(fh_condition_name) + \
+                       "\nmale_parent= " + str(male_parent) + \
+                       "\nfemale_parent= " + str(female_parent) + \
+                       "\nmale_grandparent= " + str(male_grandparent) + \
+                       "\nfemale_grandparent= " + str(female_grandparent)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
         if request.method == 'DELETE':
@@ -554,7 +793,16 @@ def query_condition(mode):
                 condition_query.condition_of = []
                 models.Pedigree_Health_Condition.query.filter_by(id=id).delete()
                 db.session.commit()
-                return "id= " + str(id) + "\nname= " + str(name) + "\nhereditary= " + str(hereditary)
+                return "id= " + str(id) + \
+                       "\nname= " + str(name) + \
+                       "\nhereditary= " + str(hereditary) + \
+                       "\ndisease_id= " + str(disease_id) + \
+                       "\nfh_condition_id= " + str(fh_condition_id) + \
+                       "\nfh_condition_name= " + str(fh_condition_name) + \
+                       "\nmale_parent= " + str(male_parent) + \
+                       "\nfemale_parent= " + str(female_parent) + \
+                       "\nmale_grandparent= " + str(male_grandparent) + \
+                       "\nfemale_grandparent= " + str(female_grandparent)
             else:
                 return "Please provide an id value" + "\nid= " + str(id)
     return "error, not enough information given in HTTP request"
@@ -575,12 +823,19 @@ def get_tree_nodes(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for node in tree.nodes:
                 nodes_json.get('ids').append(node.id)
                 nodes_json.get('names').append(node.name)
                 nodes_json.get('dobs').append(str(node.dob.date()))
+                if (node.dod != None and node.dod != "None"):
+                    nodes_json.get('dods').append(str(node.dod.date()))
+                else:
+                    nodes_json.get('dods').append("None")
+                nodes_json.get('genders').append(node.gender)
                 nodes_json.get('ethnicities').append(node.ethnicity)
             return jsonify(nodes_json)
         else:
@@ -593,12 +848,19 @@ def get_tree_nodes(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for node in tree.nodes:
                 nodes_json.get('ids').append(node.id)
                 nodes_json.get('names').append(node.name)
                 nodes_json.get('dobs').append(str(node.dob.date()))
+                if (node.dod != None and node.dod != "None"):
+                    nodes_json.get('dods').append(str(node.dod.date()))
+                else:
+                    nodes_json.get('dods').append("None")
+                nodes_json.get('genders').append(node.gender)
                 nodes_json.get('ethnicities').append(node.ethnicity)
             return jsonify(nodes_json)
         else:
@@ -661,12 +923,19 @@ def get_parent_children(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for child in patient.children:
                 children_json.get('ids').append(child.id)
                 children_json.get('names').append(child.name)
                 children_json.get('dobs').append(str(child.dob.date()))
+                if (child.dod != None and child.dod != "None"):
+                    children_json.get('dods').append(str(child.dod.date()))
+                else:
+                    children_json.get('dods').append("None")
+                children_json.get('genders').append(child.gender)
                 children_json.get('ethnicities').append(child.ethnicity)
             return jsonify(children_json)
         else:
@@ -679,12 +948,19 @@ def get_parent_children(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for child in patient.children:
                 children_json.get('ids').append(child.id)
                 children_json.get('names').append(child.name)
                 children_json.get('dobs').append(str(child.dob.date()))
+                if (child.dod != None and child.dod != "None"):
+                    children_json.get('dods').append(str(child.dod.date()))
+                else:
+                    children_json.get('dods').append("None")
+                children_json.get('genders').append(child.gender)
                 children_json.get('ethnicities').append(child.ethnicity)
             return jsonify(children_json)
         else:
@@ -703,12 +979,19 @@ def get_child_parents(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for parent in patient.parents:
                 parents_json.get('ids').append(parent.id)
                 parents_json.get('names').append(parent.name)
                 parents_json.get('dobs').append(str(parent.dob.date()))
+                if (parent.dod != None and parent.dod != "None"):
+                    parents_json.get('dods').append(str(parent.dod.date()))
+                else:
+                    parents_json.get('dods').append("None")
+                parents_json.get('genders').append(parent.gender)
                 parents_json.get('ethnicities').append(parent.ethnicity)
             return jsonify(parents_json)
         else:
@@ -721,12 +1004,19 @@ def get_child_parents(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for parent in patient.parents:
                 parents_json.get('ids').append(parent.id)
                 parents_json.get('names').append(parent.name)
                 parents_json.get('dobs').append(str(parent.dob.date()))
+                if (parent.dod != None and parent.dod != "None"):
+                    parents_json.get('dods').append(str(parent.dod.date()))
+                else:
+                    parents_json.get('dods').append("None")
+                parents_json.get('genders').append(parent.gender)
                 parents_json.get('ethnicities').append(parent.ethnicity)
             return jsonify(parents_json)
         else:
@@ -745,12 +1035,19 @@ def get_patient_spouses(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for spouse in patient.spouses:
                 spouses_json.get('ids').append(spouse.id)
                 spouses_json.get('names').append(spouse.name)
                 spouses_json.get('dobs').append(str(spouse.dob.date()))
+                if (spouse.dod != None and spouse.dod != "None"):
+                    spouses_json.get('dods').append(str(spouse.dod.date()))
+                else:
+                    spouses_json.get('dods').append("None")
+                spouses_json.get('genders').append(spouse.gender)
                 spouses_json.get('ethnicities').append(spouse.ethnicity)
             return jsonify(spouses_json)
         else:
@@ -763,12 +1060,19 @@ def get_patient_spouses(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for spouse in patient.spouses:
                 spouses_json.get('ids').append(spouse.id)
                 spouses_json.get('names').append(spouse.name)
                 spouses_json.get('dobs').append(str(spouse.dob.date()))
+                if (spouse.dod != None and spouse.dod != "None"):
+                    spouses_json.get('dods').append(str(spouse.dod.date()))
+                else:
+                    spouses_json.get('dods').append("None")
+                spouses_json.get('genders').append(spouse.gender)
                 spouses_json.get('ethnicities').append(spouse.ethnicity)
             return jsonify(spouses_json)
         else:
@@ -787,13 +1091,20 @@ def get_spouse_of_patients(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
-            for spouse_of in patient.spouses:
-                patients_json.get('ids').append(patient.id)
-                patients_json.get('names').append(patient.name)
-                patients_json.get('dobs').append(str(patient.dob.date()))
-                patients_json.get('ethnicities').append(patient.ethnicity)
+            for spouse_of in patient.spouse_of:
+                patients_json.get('ids').append(spouse_of.id)
+                patients_json.get('names').append(spouse_of.name)
+                patients_json.get('dobs').append(str(spouse_of.dob.date()))
+                if (patient.dod != None and patient.dod != "None"):
+                    patients_json.get('dods').append(str(patient.dod.date()))
+                else:
+                    patients_json.get('dods').append("None")
+                patients_json.get('genders').append(spouse_of.gender)
+                patients_json.get('ethnicities').append(spouse_of.ethnicity)
             return jsonify(patients_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
@@ -805,13 +1116,20 @@ def get_spouse_of_patients(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for spouse_of in patient.spouses:
-                patients_json.get('ids').append(patient.id)
-                patients_json.get('names').append(patient.name)
-                patients_json.get('dobs').append(str(patient.dob.date()))
-                patients_json.get('ethnicities').append(patient.ethnicity)
+                patients_json.get('ids').append(spouse_of.id)
+                patients_json.get('names').append(spouse_of.name)
+                patients_json.get('dobs').append(str(spouse_of.dob.date()))
+                if (patient.dod != None and patient.dod != "None"):
+                    patients_json.get('dods').append(str(patient.dod.date()))
+                else:
+                    patients_json.get('dods').append("None")
+                patients_json.get('genders').append(spouse_of.gender)
+                patients_json.get('ethnicities').append(spouse_of.ethnicity)
             return jsonify(patients_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
@@ -830,12 +1148,26 @@ def get_patient_conditions(mode):
             conditions_json = {
                 'ids': [],
                 'names': [],
-                'hereditarys': []
+                'hereditarys': [],
+                'disease_ids': [],
+                'fh_condition_ids': [],
+                'fh_condition_names': [],
+                'male_parents': [],
+                'female_parents': [],
+                'male_grandparents': [],
+                'female_grandparents': []
             }
             for condition in patient.conditions:
                 conditions_json.get('ids').append(condition.id)
                 conditions_json.get('names').append(condition.name)
                 conditions_json.get('hereditarys').append(condition.hereditary)
+                conditions_json.get('disease_ids').append(condition.disease_id)
+                conditions_json.get('fh_condition_ids').append(condition.fh_condition_id)
+                conditions_json.get('fh_condition_names').append(condition.fh_condition_name)
+                conditions_json.get('male_parents').append(condition.male_parent)
+                conditions_json.get('female_parents').append(condition.female_parent)
+                conditions_json.get('male_grandparents').append(condition.male_grandparent)
+                conditions_json.get('female_grandparents').append(condition.female_grandparent)
             return jsonify(conditions_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
@@ -846,12 +1178,26 @@ def get_patient_conditions(mode):
             conditions_json = {
                 'ids': [],
                 'names': [],
-                'hereditarys': []
+                'hereditarys': [],
+                'disease_ids': [],
+                'fh_condition_ids': [],
+                'fh_condition_names': [],
+                'male_parents': [],
+                'female_parents': [],
+                'male_grandparents': [],
+                'female_grandparents': []
             }
             for condition in patient.conditions:
                 conditions_json.get('ids').append(condition.id)
                 conditions_json.get('names').append(condition.name)
                 conditions_json.get('hereditarys').append(condition.hereditary)
+                conditions_json.get('disease_ids').append(condition.disease_id)
+                conditions_json.get('fh_condition_ids').append(condition.fh_condition_id)
+                conditions_json.get('fh_condition_names').append(condition.fh_condition_name)
+                conditions_json.get('male_parents').append(condition.male_parent)
+                conditions_json.get('female_parents').append(condition.female_parent)
+                conditions_json.get('male_grandparents').append(condition.male_grandparent)
+                conditions_json.get('female_grandparents').append(condition.female_grandparent)
             return jsonify(conditions_json)
         else:
             return "error, patient not found at patient_id: " + str(patient_id)
@@ -869,12 +1215,19 @@ def get_condition_patients(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for patient in condition.condition_of:
                 condition_of_json.get('ids').append(patient.id)
                 condition_of_json.get('names').append(patient.name)
                 condition_of_json.get('dobs').append(str(patient.dob.date()))
+                if (patient.dod != None and patient.dod != "None"):
+                    condition_of_json.get('dods').append(str(patient.dod.date()))
+                else:
+                    condition_of_json.get('dods').append("None")
+                condition_of_json.get('genders').append(patient.gender)
                 condition_of_json.get('ethnicities').append(patient.ethnicity)
             return jsonify(condition_of_json)
         else:
@@ -887,16 +1240,61 @@ def get_condition_patients(mode):
                 'ids': [],
                 'names': [],
                 'dobs': [],
+                'dods': [],
+                'genders': [],
                 'ethnicities': []
             }
             for patient in condition.condition_of:
                 condition_of_json.get('ids').append(patient.id)
                 condition_of_json.get('names').append(patient.name)
                 condition_of_json.get('dobs').append(str(patient.dob.date()))
+                if (patient.dod != None and patient.dod != "None"):
+                    condition_of_json.get('dods').append(str(patient.dod.date()))
+                else:
+                    condition_of_json.get('dods').append("None")
+                condition_of_json.get('genders').append(patient.gender)
                 condition_of_json.get('ethnicities').append(patient.ethnicity)
             return jsonify(condition_of_json)
         else:
             return "error, condition not found at condition_id: " + str(condition_id)
+
+# function for getting conditions of a patient
+@app.route('/canopy/patient_fh_conditions/<string:mode>', methods=['GET'])
+def get_patient_fh_conditions(mode):
+    patient_id = request.args.get('id')
+    if patient_id == "":
+        patient_id = None
+
+    # check for testing mode
+    if mode == "test":
+        patient = models.Pedigree_Patient_Test.query.filter_by(id=patient_id).first()
+        if patient != None:
+            conditions_json = {
+                'fh_condition_ids': [],
+                'fh_condition_names': []
+            }
+            for condition in patient.fh_conditions:
+                conditions_json.get('fh_condition_ids').append(condition.fh_condition_id)
+                conditions_json.get('fh_condition_names').append(condition.fh_condition_name)
+            return jsonify(conditions_json)
+        else:
+            return "error, patient not found at patient_id: " + str(patient_id)
+    # we are in production mode
+    else:
+        patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
+        if patient != None:
+            conditions_json = {
+                'fh_condition_ids': [],
+                'fh_condition_names': []
+            }
+            for condition in patient.fh_conditions:
+                conditions_json.get('fh_condition_ids').append(condition.fh_condition_id)
+                conditions_json.get('fh_condition_names').append(condition.fh_condition_name)
+            return jsonify(conditions_json)
+        else:
+            return "error, patient not found at patient_id: " + str(patient_id)
+
+# LINKING METHODS
 
 # function for linking a tree and a patient
 @app.route('/canopy/tree_patient/<string:mode>', methods=['PUT'])
@@ -1130,3 +1528,140 @@ def link_patient_condition(mode):
                 patient.conditions.append(condition_query)
         db.session.commit()
         return "patient.conditions: " + str(patient.conditions) + "\npatient_id: " + str(patient_id) + "\ncondition_id: " + str(condition_id) + "\nconditions: " + str(conditions) + "\nclear_conditions: " + str(clear_conditions)
+
+# function for recalculating the FH conditions of a tree's node
+# if nothing changed, return None
+# else return a list of dicts, each containing a patient who's had fh conditions added and/or removed
+@app.route('/canopy/recalculate_tree/<string:mode>', methods=['GET'])
+def update_tree_fh_conditions(mode):
+    tree_id = request.args.get('tree_id')
+    if tree_id == "":
+        tree_id = None
+    if tree_id == None:
+        return "Please provide a tree_id"
+
+    if mode == "test":
+        return None
+    else:
+        # get the final return statement ready
+        message = "Tree refreshed!\nThe following patients have new family history conditions: "
+
+        # get all the nodes of the tree
+        tree_query = models.Pedigree_Tree.query.filter_by(id=tree_id).first()
+
+        # get ready to store the patients who have different fh_conditions
+        changed_patients = []
+        # for each node in the tree, recalculate their fh_conditions
+        for node in tree_query.nodes:
+            recalculated_result = calculate_patient_fh_conditions(node.id, mode)
+            if recalculated_result:
+                changed_patients.append(recalculated_result)
+        # for a tree with 0 nodes or an unchanged tree
+        if len(changed_patients) == 0:
+            message = "Tree refreshed!\nNo patients have new family history conditions"
+        else:
+            i = 1
+            for patient_name in changed_patients:
+                message += "\n" + str(i) + ". " + patient_name
+        return message
+
+# function for calculating the FH conditions of an individual node
+# if nothing changed, return None
+# else return patient name
+def calculate_patient_fh_conditions(patient_id, mode):
+    if mode == "test":
+        return None
+    else:
+        # make a dictionary containing key value pairs of form fh_condition_id : 0 to store weighted sums
+        condition_weights = {}
+        conditions = models.Pedigree_Health_Condition.query.all()
+        for condition in conditions:
+            if(condition.fh_condition_id != None):
+                condition_weights[condition.fh_condition_id] = 0
+
+        # get the node pointed to by this patient ID
+        patient = models.Pedigree_Patient.query.filter_by(id=patient_id).first()
+
+        # make a note of the current FH conditions of the patient, at the end this will be used calculate the CHANGED
+        # fh conditions that'll be returned
+        previous_fh_condition_ids = []
+        for condition in patient.fh_conditions:
+            previous_fh_condition_ids.append(condition.fh_condition_id)
+
+        # nested loops to calculate generations, starting with parents
+        for parent in patient.parents:
+            # check the parent's conditions
+            for condition in parent.conditions:
+                # for each of the parent's conditions that have a fh_condition_id, add the sum based on gender
+                if condition.fh_condition_id != None:
+                    if parent.gender == "male":
+                        condition_weights[condition.fh_condition_id] += condition.male_parent
+                        # print("male parent for disease " + condition.disease_id + " is: " + str(condition_weights[condition.fh_condition_id]))
+                    elif parent.gender == "female":
+                        condition_weights[condition.fh_condition_id] += condition.female_parent
+                        # print("female parent for disease " + condition.disease_id + " is: " + str(condition_weights[condition.fh_condition_id]))
+
+            # once parent's conditions are checked, loop upwards towards grandparents (parent's parents)
+            for grandparent in parent.parents:
+                # check the grandparent's conditions
+                for condition in grandparent.conditions:
+                    # for each of the grandparent's conditions that have a fh_condition_id, add the sum based on gender
+                    if condition.fh_condition_id != None:
+                        if grandparent.gender == "male":
+                            condition_weights[condition.fh_condition_id] += condition.male_grandparent
+                        elif grandparent.gender == "female":
+                            condition_weights[condition.fh_condition_id] += condition.female_grandparent
+
+        # store a boolean to check if there has been a difference between the old and new fh_conditions
+        different = False
+        # store the new fh_conditions, new fh_condition_ids, and new fh_condition_names
+        new_fh_conditions = []
+        new_fh_condition_ids = []
+        new_fh_condition_names = []
+
+        # check the weights of each condition, add to the new list if greater or equal to 1
+        for condition_id in condition_weights:
+            # check if the weight value is greater than 1
+            # print("condition_id is " + condition_id)
+            # print("condition_weights[condition_id] is " + str(condition_weights[condition_id]))
+            if condition_weights[condition_id] >= 1:
+                condition_query = models.Pedigree_Health_Condition.query.filter_by(fh_condition_id=condition_id).first()
+                new_fh_conditions.append(condition_query)
+                new_fh_condition_ids.append(condition_id)
+                new_fh_condition_names.append(condition_query.fh_condition_name)
+        # print(previous_fh_condition_ids)
+        # print(new_fh_condition_ids)
+
+        # check if the new_fh_condition_ids is the same as the old one
+        # length check first
+        if len(previous_fh_condition_ids) == len(new_fh_condition_ids):
+            # length check passed
+            # then check that all previous condition_ids are in the new condition_id array
+            for previous_id in previous_fh_condition_ids:
+                # keep track if we've found the previous id in the new ids
+                found = False
+                for new_id in new_fh_condition_ids:
+                    # if found
+                    if previous_id == new_id:
+                        found = True
+                        break
+                # if never found, the lists are different
+                if not found:
+                    different = True
+                    break
+        else:
+            # length check failed
+            different = True
+        # print("different is equal to: " + str(different))
+        # print("condition_weights are: " + str(condition_weights))
+
+        # if we do have different fh_conditions
+        if different:
+            # set the patient's fh conditions to the new one
+            patient.fh_conditions = []
+            for condition in new_fh_conditions:
+                patient.fh_conditions.append(condition)
+            db.session.commit()
+            return patient.name
+        else:
+            return None
