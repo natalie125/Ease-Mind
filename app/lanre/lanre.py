@@ -10,6 +10,7 @@ from matplotlib import pyplot as plt
 import time
 from PIL import Image
 from rembg import remove
+import json
 # instructions
 # add opencv to flask - pip install opencv-python 
 # add rembg to flask - pip install rembg
@@ -74,6 +75,9 @@ def dipstick_image_upload():
     #     return "Lanre's App Requested"
     
     image = request.form['image']
+
+    email = request.form['email']
+    print(email)
     # if frontend sends no image return error
     if image == "null":
         return {"msg": "No image sent!"}, 415
@@ -122,6 +126,13 @@ def dipstick_image_upload():
     # check diagnoses
     diagnoses = check_dipstick(extracted_colours, reference_chart)
     print(diagnoses)
+
+    # check that the user has an at dipstick email
+    # if they do they are testing the app, save their results for evaluation
+    if "@dipstik.com" in email:
+        # save diagnosis user is doing evaluation
+        save_diagnoses_result(email, diagnoses)
+
 
     return jsonify(diagnoses), 200
 
@@ -424,3 +435,31 @@ diagnoses = check_dipstick(extracted_colours, reference_chart)
 
 # # get diagnoses
 # print(diagnoses)
+
+
+# Function used to save diagnosis result during evaluation
+def save_diagnoses_result(email, diagnoses):
+    print("Saving user evaluation result...")
+    print(diagnoses)
+    print(email)
+    # Remove the quotes using strip method
+    email = email.strip('"')
+
+    # added user's email
+    user_diagnoses = {'email': email,
+                      'results' : diagnoses}
+    
+
+    # read the contents of the file
+    with open("app/lanre/submitted_images/user_evaluation_results.json", "r") as file:
+        file_data = json.load(file)
+    
+    # append new diagnoses
+    file_data.append(user_diagnoses)
+
+    # write updated diagnosis to file
+    with open("app/lanre/submitted_images/user_evaluation_results.json", "w") as file:
+        # file.seek(0)
+        json.dump(file_data, file, indent = 4)
+    
+    print("Saving user evaluation result... completed...")
