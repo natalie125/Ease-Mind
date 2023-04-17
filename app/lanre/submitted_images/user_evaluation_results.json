@@ -1,0 +1,32 @@
+[
+    {
+        "email": "est@dipstik.co",
+        "results": {
+            "leukocytes": "+70",
+            "nitrite": "trace",
+            "urobilinogen": "0.1",
+            "protein": "neg",
+            "ph": "6",
+            "blood": "+25",
+            "specific_gravity": "1.020",
+            "ketones": "+15",
+            "bilirubin": "++",
+            "glucose": "neg"
+        }
+    },
+    {
+        "email": "admin@gmail.com",
+        "results": {
+            "leukocytes": "+70",
+            "nitrite": "trace",
+            "urobilinogen": "0.1",
+            "protein": "trace",
+            "ph": "6.5",
+            "blood": "neg",
+            "specific_gravity": "1.020",
+            "ketones": "+15",
+            "bilirubin": "++",
+            "glucose": "neg"
+        }
+    }
+]
