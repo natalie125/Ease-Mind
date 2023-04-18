@@ -457,11 +457,17 @@ const DipstikResults = () => {
 		else if (ketones == 'Positive'){
 			ketones_diagnosis = "Ketoacidosis"
 		}
+	
+		let email = sessionStorage.getItem("email");
 
 	return (
 		<div className="dipstik-results">
 			<Header />
 			<h1>Dipstik Results</h1>
+
+			{"@dipstik.com" in email && (
+				<a href="https://forms.office.com/e/dpnjQfcVs3" target="_blank">Click here for user evaluation survey</a>
+			)};
 
 			<div className="results-switcher-container">
 				<div className="results-switcher-button-container">
@@ -469,6 +475,8 @@ const DipstikResults = () => {
 					<button onClick={handleSwitchToHealthConditions} className={healthStyling}>By Health Conditions</button>
 				</div>
 			</div>
+
+
 
 				<div>
 					{view == 1 && (
