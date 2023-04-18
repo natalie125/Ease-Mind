@@ -27,6 +27,7 @@ const DipstikCamera = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("image", imageSrc);
+    formData.append("email", sessionStorage.getItem("email"));
     setImageSent(true);
     const response = await axios(BASEURL+"dipstik/upload",{
       method: 'post',
@@ -78,7 +79,7 @@ const handleRetakePicture = () => {
 };
 
 
-// object detection model
+// dipstick object detection model
 const detectDipstick = async () => {
   let model = new cvstfjs.ObjectDetectionModel();
   // load the tensorflow  model hosted on aws s3
