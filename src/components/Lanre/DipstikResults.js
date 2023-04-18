@@ -465,8 +465,10 @@ const DipstikResults = () => {
 			<Header />
 			<h1>Dipstik Results</h1>
 
-			{"@dipstik.com" in email && (
-				<a href="https://forms.office.com/e/dpnjQfcVs3" target="_blank">Click here for user evaluation survey</a>
+			{ email.includes('@dipstik.com') && ( 
+				<div>
+					<a href="https://forms.office.com/e/dpnjQfcVs3" target="_blank" >Click here to complete User Evaluation Survey</a>
+				</div>
 			)};
 
 			<div className="results-switcher-container">
