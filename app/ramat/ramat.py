@@ -14,6 +14,7 @@ import os
 import librosa
 import pandas as pd
 import tensorflow as tf
+import time
 
 
 def featureExtraction (raw_image):
@@ -38,10 +39,10 @@ def featureExtraction (raw_image):
 
     # check there is only 1 face in the imagea
     if (len(faces) < 1):
-        print("NO FACE")
+        # print("NO FACE")
         return "None", [0], [0]
     elif (len(faces) > 1):
-        print("MULTI FACE")
+        # print("MULTI FACE")
         return "Multi", [0], [0]
 
     face = faces[0]
@@ -89,11 +90,11 @@ def voiceFeatureExtraction():
     directory = os.getcwd()
     voice_path =  os.path.join(directory,"app/ramat/temp.wav")
 
-    print("-------------------------------------")
-    print(type(directory))
-    print(directory)
-    print(voice_path)
-    print("=====================================s")
+    # print("-------------------------------------")
+    # print(type(directory))
+    # print(directory)
+    # print(voice_path)
+    # print("=====================================s")
 
 
     x , sr = librosa.load(voice_path)
@@ -116,14 +117,20 @@ def image_and_audio():
     if request.method == 'GET':
         return "Ramat's App has been Requested"
     elif request.method == 'POST':
+        #print("request recieved")
+        total_time_start = time.time()
 
-        print(request)
-        print(request.files)
-        print("-------------------------------------------------------")     
+        # print(request)
+        # print(request.files)
+        # print("-------------------------------------------------------")     
 
+        model_load_start = time.time()
 
         face_model = pickle.load(open("app/ramat/droop_model.sav", 'rb'))
         voice_model = tf.keras.models.load_model('app/ramat/model.h5')
+
+        model_load_end = time.time()
+        print("model load time: " + str(model_load_end - model_load_start))
 
         image = request.form['image']
         audio_file = request.files['audio']
@@ -145,21 +152,38 @@ def image_and_audio():
         #convert image string to array of bytes
         imageBytes = np.fromstring(imageStr, np.uint8)
         
-        # get the calculations fo-r the inputted image
+        image_feature_extraction_start = time.time()
+        # get the calculations for the inputted image
         image_calcs = getCalculations(imageBytes)
-
-        
-        ###########################
-        # Handle audio
-        # -----------
-        features = voiceFeatureExtraction()
-        audio_prediction = voice_model.predict(features)
+        image_feature_extraction_end = time.time()
+        print("image feature extraction time: " + str(image_feature_extraction_end - image_feature_extraction_start))
 
         # check the status of the calculations beftemore generating a prediction
         if (image_calcs[0] == "ERROR"):
+            total_time_end = time.time()
+            print("total time: " + str(total_time_end - total_time_start))
+            
             return {"msg": image_calcs[1]}, image_calcs[2]
         elif (image_calcs[0] == "SUCCESS"):
             prediction = face_model.predict([[image_calcs[1], image_calcs[2]]])
+
+            ###########################
+            # Handle audio
+            # -----------
+
+            # only bother predicting voice if image is valid
+            voice_feature_extraction_start = time.time()
+            features = voiceFeatureExtraction()
+            voice_feature_extraction_end = time.time()
+            print("voice feature extraction time: " + str(voice_feature_extraction_end - voice_feature_extraction_start))
+
+            audio_prediction = voice_model.predict(features)
+
+            total_time_end = time.time()
+            print("total time: " + str(total_time_end - total_time_start))
+
+            print()
+
             return {"msg": {"face_prediction": prediction[0], "voice_prediction":str(audio_prediction[0][0])}}, 200
         
 
@@ -169,12 +193,12 @@ def audio():
         return "Ramat's App has been Requested"
     elif request.method == 'POST':
         voice_model = load_model('app/ramat/model.h5')
-        print(request)
-        print(request.files)
+        # print(request)
+        # print(request.files)
         # print(request.files['audio'].read())
 
 
-        print("-------------------------------------------------------")     
+        # print("-------------------------------------------------------")     
 
         audio_file = request.files['audio']
 
@@ -188,7 +212,7 @@ def audio():
 
 
         prediction = voice_model.predict(features)
-        print(prediction[0][0])
+        # print(prediction[0][0])
         return {"msg": str(prediction[0][0])}, 200
 
 
