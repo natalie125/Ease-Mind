@@ -83,7 +83,7 @@ def reference_chart():
     filename = timestamp+".png"
 
     # saves decoded base 64 string to that image
-    with open(os.path.join("app/lanre/reference_chart/squares_from_camera", "test_image.png"), "wb") as f:
+    with open(os.path.join("app/lanre/reference_chart/squares_from_camera2", "image2.png"), "wb") as f:
         f.write(image_decoded)
     print("Saved image...")
 
