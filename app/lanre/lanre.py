@@ -24,8 +24,7 @@ import json
 #     # if request.method == 'GET' or request.method == 'POST':
 #     #     return "Lanre's App Requested"
 #############################################################
-# ROUTE SIMPLY PROVIDING A PROOF OF CONCEPT OF UPLOADING IMAGES TO SERVER
-# CURRENTLY SAVES IMAGE TO SHOTS FOLDER, BUT I IMAGINE WE DONT WANT TO DO THAT AND ONLY WANT TO PROCESS IMAGES
+# THIS ROUTE ALLOWS THE SAVING OF TRAINING DATA FOR THE OBJECT DETECTION MODEL
 # ^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/dipstik/training_data', methods=['POST'])
 def create_training_data():
@@ -63,11 +62,37 @@ def create_training_data():
 
 
 
+#############################################################
+# THIS ROUTE ALLOW THE SAVING OF IMAGES FOR THE REFERNCE CHART
+# FOR CROPPING AND EXTRACTING COLOURS FROM REFERENCE CHART
+# ^^^^^^^^^^^^^^^^^^^^^^^
+@app.route('/dipstik/reference_chart', methods=['POST'])
+def reference_chart():
+    print("Saving reference image...")
+    image = request.form['image']
+    # if frontend sends no image return error
+    if image == "null":
+        return {"msg": "No image sent!"}, 415
+
+    # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
+    image = image[22:]
+    image_decoded = base64.b64decode(image)
+    print("Getting time stamp...")
+    # gets string of curr time and names file that
+    timestamp = str(int(time.time()))
+    filename = timestamp+".png"
+
+    # saves decoded base 64 string to that image
+    with open(os.path.join("app/lanre/reference_chart/squares_from_camera", "test_image.png"), "wb") as f:
+        f.write(image_decoded)
+    print("Saved image...")
+
+    return {"msg": "image successfully saved in server!"}, 200
+
 
 
 # #############################################################
-# # ROUTE SIMPLY PROVIDING A PROOF OF CONCEPT OF UPLOADING IMAGES TO SERVER
-# # CURRENTLY SAVES IMAGE TO SHOTS FOLDER, BUT I IMAGINE WE DONT WANT TO DO THAT AND ONLY WANT TO PROCESS IMAGES
+# # THE MAIN ROUTE THAT HANDLES THE PREPROCESSING OF DETA AND RETURNING THE RESULT
 # # ^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/dipstik/upload', methods=['POST'])
 def dipstick_image_upload():
