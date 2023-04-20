@@ -44,6 +44,14 @@ def handle_bad_request(e):
     # Need to figure out how to request the "400Error" page on the React frontend
     return 'bad request!', 400
 
+
+@app.after_request
+def add_header(response):
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    return response
+
 #############################################################
 # GETTER AND SETTER METHODS
 # ^^^^^^^^^^^^^^^^^^^^^^^
