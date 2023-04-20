@@ -184,8 +184,8 @@ def remove_background(image_path):
 # Slice dipstick image with background removed to just the dipstick
 def slice_image(image):
     # Convert image to grayscale
-    # image = scipy.misc.toimage(image)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    h, s, v = cv2.split(image)
+    gray = v
     
     # Apply threshold to the image
     ret, thresh = cv2.threshold(gray,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
