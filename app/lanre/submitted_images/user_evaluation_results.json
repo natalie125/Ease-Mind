@@ -1,32 +1,17 @@
 [
     {
-        "email": "est@dipstik.co",
+        "email": "lanre@dipstik.com",
         "results": {
-            "leukocytes": "+70",
-            "nitrite": "trace",
-            "urobilinogen": "0.1",
-            "protein": "neg",
+            "leukocytes": "neg",
+            "nitrite": "neg",
+            "urobilinogen": "1",
+            "protein": "+30",
             "ph": "6",
-            "blood": "+25",
+            "blood": "trace",
             "specific_gravity": "1.020",
-            "ketones": "+15",
-            "bilirubin": "++",
-            "glucose": "neg"
-        }
-    },
-    {
-        "email": "admin@gmail.com",
-        "results": {
-            "leukocytes": "+70",
-            "nitrite": "trace",
-            "urobilinogen": "0.1",
-            "protein": "trace",
-            "ph": "6.5",
-            "blood": "neg",
-            "specific_gravity": "1.020",
-            "ketones": "+15",
-            "bilirubin": "++",
-            "glucose": "neg"
+            "ketones": "neg",
+            "bilirubin": "neg",
+            "glucose": "+250"
         }
     }
 ]
