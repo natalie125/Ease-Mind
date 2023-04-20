@@ -128,6 +128,7 @@ def dipstick_image_upload():
     # remove background
     pillow_image = remove_background(image_path)
     cropped_image = np.array(pillow_image) # convert image back to numpy array
+    cropped_image = cv2.cvtColor(cropped_image,cv2.COLOR_RGB2HSV)
     print("Background removed!")
     print(type(cropped_image))
     save_image_to_file(cropped_image)    
@@ -157,7 +158,6 @@ def dipstick_image_upload():
     if "@dipstik.com" in email:
         # save diagnosis user is doing evaluation
         save_diagnoses_result(email, diagnoses)
-
 
     return jsonify(diagnoses), 200
 
@@ -442,19 +442,18 @@ def check_parameter(colour_on_pad, reference_colours_for_pad):
             lowest = ed
             closest_match = parameter_name
 
-    # print(f'    Match: {closest_match}')
     return closest_match
 
 
 # check the whole dipstick
 def check_dipstick(extracted_colours,reference_chart):
     diagnoses = {}
+
     # check each value in the dipstick
     for parameter_name in extracted_colours:
-        # print(parameter_name)
         result = check_parameter(extracted_colours.get(parameter_name), reference_chart.get(parameter_name))
         diagnoses[parameter_name] = result
-    # 
+    
     return diagnoses
 
 diagnoses = check_dipstick(extracted_colours, reference_chart)
@@ -463,7 +462,7 @@ diagnoses = check_dipstick(extracted_colours, reference_chart)
 # print(diagnoses)
 
 
-# Function used to save diagnosis result during evaluation
+# Function used to save diagnosis result if a user decides to do an evaluation
 def save_diagnoses_result(email, diagnoses):
     print("Saving user evaluation result...")
     print(diagnoses)
