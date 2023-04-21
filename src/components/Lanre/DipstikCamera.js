@@ -23,9 +23,16 @@ const DipstikCamera = () => {
   const [dipstickDetected , setDipstickDetected ] = useState(0);
 	let navigate = useNavigate();
 
+  //get the json from the memory
+	const token_JSON = JSON.parse(sessionStorage.getItem("token"));
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
+    //get the specific token string
+		const token = token_JSON.data.token;
+
     formData.append("image", imageSrc);
     formData.append("email", sessionStorage.getItem("email"));
     setImageSent(true);
@@ -34,7 +41,9 @@ const DipstikCamera = () => {
       data: formData,
       headers: {
         "Access-Control-Allow-Origin": "*",
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+        //add authorization header
+				Authorization: "Bearer " + token,
       }
     })
     .then(response => {
