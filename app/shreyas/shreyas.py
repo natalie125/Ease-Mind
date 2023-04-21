@@ -9,6 +9,7 @@ from PIL import Image
 import tensorflow as tf
 import os
 import cv2
+from flask_jwt_extended import jwt_required
 #############################################################
 # ROUTE FOR SHREYAS'S APP
 # ^^^^^^^^^^^^^^^^^^^^^^^
@@ -123,6 +124,7 @@ def decode_image_json(image):
 
 
 @app.route('/shreyas', methods=['GET', 'POST'])
+@jwt_required()
 def shreyas():
     if request.method == 'POST':
         image = request.form['image']

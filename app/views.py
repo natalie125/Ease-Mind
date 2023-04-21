@@ -7,7 +7,7 @@ import os
 import json
 import base64
 from .models import User_Login, User_Login_Test
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_jwt_extended import JWTManager
 from datetime import timedelta
 
@@ -173,6 +173,7 @@ def register():
 # CURRENTLY SAVES IMAGE TO SHOTS FOLDER, BUT I IMAGINE WE DONT WANT TO DO THAT AND ONLY WANT TO PROCESS IMAGES
 # ^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/upload', methods=['POST'])
+@jwt_required()
 def upload():
     image = request.form['image']
     # if frontend sends no image return error
@@ -191,3 +192,15 @@ def upload():
     with open(os.path.join("shots", filename), "wb") as f:
         f.write(image_decoded)
     return {"msg": "image successfully saved in server!"}, 200
+
+#############################################################
+# ROUTE SIMPLY PROVIDING A PROOF OF CONCEPT OF SECURING ENDPOINTS BY USING DECORATOR. WITHOUT APPROPRIATE ACCESS TOKEN THIS ENDPOINT CANNOT BE ACCESSED.
+# ^^^^^^^^^^^^^^^^^^^^^^^
+
+
+@app.route('/verification', methods=['GET'])
+@jwt_required()
+def some_endpoint():
+    current_user = get_jwt_identity()
+    print(current_user)
+    return {'user': current_user}
