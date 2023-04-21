@@ -11,6 +11,7 @@ import time
 from PIL import Image
 from rembg import remove
 import json
+from flask_jwt_extended import jwt_required
 # instructions
 # add opencv to flask - pip install opencv-python 
 # add rembg to flask - pip install rembg
@@ -95,6 +96,7 @@ def reference_chart():
 # # THE MAIN ROUTE THAT HANDLES THE PREPROCESSING OF DETA AND RETURNING THE RESULT
 # # ^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/dipstik/upload', methods=['POST'])
+@jwt_required()
 def dipstick_image_upload():
     # if request.method == 'GET' or request.method == 'POST':
     #     return "Lanre's App Requested"
