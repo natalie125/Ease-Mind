@@ -9,6 +9,7 @@ import tensorflow as tf
 from sklearn import model_selection
 import os
 import pandas as pd
+import cv2
 
 
 #############################################################
@@ -29,13 +30,35 @@ def kevin():
     image = image[22:]
     image_decoded = base64.b64decode(image)
     img = Image.open(io.BytesIO(image_decoded))
-    # resize img
-    pil_image = img.resize((128, 128))
-    # convert PIL to np.array
+    # resize img - size based on model being used.
+    IMG_DIMS = 128
+    pil_image = img.resize((IMG_DIMS, IMG_DIMS))
     img_arr = np.array(pil_image)
 
+    
+    img_arr = img_arr.astype('uint8')
+    print(img_arr)
+
+    im = Image.fromarray(img_arr)
+    im.save("your_file.jpeg")
+
+    # apply CLAHE - Contrast Limited Adaptive Histogram Equalisation
+    img_arr = clahe(img_arr)
+
+    # apply SoG - Shades of Gray algorithm.
+    img_arr = SoG(img_arr)
+
+    im = Image.fromarray(img_arr)
+    im.save("your_file_processed.jpeg")
+
+
+    # Normalise image - divide by 255 as that is the max value of a pixel in rgb image.
+    # Normalise last, to account for ML algorithm using normalised images.
+    img_arr = img_arr / 255.0
+
+    
     # reshape img_arr to have correct dimensions wanted by ML model
-    img_arr_reshaped = np.reshape(img_arr, (-1, 128, 128, 3))
+    img_arr_reshaped = np.reshape(img_arr, (-1, IMG_DIMS, IMG_DIMS, 3))
     model = tf.keras.models.load_model('app\kevin\model_no_augment.h5')
     pred = model.predict(img_arr_reshaped)
 
@@ -47,5 +70,47 @@ def kevin():
     return  {"msg": msg}, 200
     
 
+
+def clahe(image):
+    hsv_img = cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
+#   Split the image to only consider value aspect of image
+    h,s,v = cv2.split(hsv_img)
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+    v = clahe.apply(v)
+    hsv_eq = cv2.merge([h,s,v])
+    img_bgr = cv2.cvtColor(hsv_eq,cv2.COLOR_HSV2BGR)
+    return img_bgr
+
+
+# Code taken from Kaggle Notebook found at following link
+# Being used under the Apache 2.0 open license from the Kaggle Notebook
+# No major modifications made to the code.
+def SoG(img,power=6, gamma=None):
+    """
+    img (numpy array): the original image with format of (h, w, c)
+    power (int): the degree of norm, 6 is used in reference paper
+    gamma (float): the value of gamma correction, 2.2 is used in reference paper
+    """
+    img_dtype = img.dtype
+
+    if gamma is not None:
+        img = img.astype('uint8')
+        look_up_table = np.ones((256,1), dtype='uint8') * 0
+        for i in range(256):
+            look_up_table[i][0] = 255 * pow(i/255, 1/gamma)
+        img = cv2.LUT(img, look_up_table)
+
+    img = img.astype('float32')
+    img_power = np.power(img, power)
+    rgb_vec = np.power(np.mean(img_power, (0,1)), 1/power)
+    rgb_norm = np.sqrt(np.sum(np.power(rgb_vec, 2.0)))
+    rgb_vec = rgb_vec/rgb_norm
+    rgb_vec = 1/(rgb_vec*np.sqrt(3))
+    img = np.multiply(img, rgb_vec)
+
+    # Andrew Anikin suggestion
+    img = np.clip(img, a_min=0, a_max=255)
+    
+    return img.astype(img_dtype)
 
 
