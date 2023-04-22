@@ -104,8 +104,8 @@ def login():
             if bcrypt.check_password_hash(u.password, data['credentials']['password']):
                 # response = {"token": "test123"}
                 print('Login Successful!', 'success')
-                access_token = create_access_token(
-                    identity=data['credentials']['email'])
+                # access_token = create_access_token(identity=data['credentials']['email'])
+                access_token = create_access_token(identity=u.id)
                 print(access_token)
                 response = {"token": access_token,
                             "email": u.email}   # added by Alex in order to track the email of the logged in user
