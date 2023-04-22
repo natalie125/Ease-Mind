@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
 import WebcamStreamCapture from "../Webcam";
 
@@ -8,8 +8,14 @@ import "../App/App.css";
 import "./Kevin.css";
 import Header from "../Header/Header";
 
-class Kevin extends Component {
+// const [is,setIs] = false;
+// const handleCheckboxChange = (event) => {
+//     setIs(event.target.checked);}
+
+
+class Kevin extends Component {	
 	render() {
+		
 		return (
 			<div className="Kevin">
 				<Header />
@@ -29,6 +35,10 @@ class Kevin extends Component {
 						<p>
 							If you have any doubts regarding your personal health, please visit a medical professional to receive a diagnosis.
 						</p>
+						{/* <label for="checkid">
+							<input id="checkid"  type="checkbox" value="test" onChange={handleCheckboxChange} />
+							I have read and understood the disclaimer. I understand that team LARKS are not liable for any damages caused by diagnosis received. 
+						</label> */}
 
 						<Link to="/kevin/instructions">
 							<button> Continue </button>

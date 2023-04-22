@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import "./Kevin.css";
+
 const instructions_body = [
     "Firstly, identify the lesion that you would like to identify. Whilst you are already checking, we would recommend that you attempt to self-assess your body for any other lesions that fit under the following criteria: ADD ABCDE RULES HERE IN TABLE FORMAT, MAYBE IMAGE aswell",
     "Next, take your device of choice and attempt to capture good image.",
@@ -19,11 +21,23 @@ const instructions_heading = [
 const Instructions = () => {
 const navigate = useNavigate();
   const [index, setIndex] = useState(0);
+  const [isChecked,setIsChecked] = useState(false);
 
   const next = () => {
     if (index < instructions_body.length - 1) {
       setIndex(index + 1);
     }
+  };
+
+  const prev = () => {
+    if (index > 0) {
+      setIndex(index - 1);
+    }
+  };
+
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
   };
 
 
@@ -33,17 +47,32 @@ const navigate = useNavigate();
   };
 
   return (
-    <div>
+    <div className="instructions-kevin">
     <h3> {instructions_heading[index]}</h3>
     <p>{instructions_body[index]}</p>
-    <p>Instruction count: {index + 1} / {instructions_heading.length} </p>
-    {index === instructions_body.length - 1 ? (
-    <button onClick={handleContinue}>Continue</button>
+
+    <b>Instruction count: {index + 1} / {instructions_heading.length} </b>
+    {(index === instructions_body.length - 1) ? (
+    <div>
+      <div className="checkbox-row-kevin">
+        <label className="checkbox-label-kevin">
+        <input type="checkbox" onClick={handleCheckboxChange}/>
+        I have read and understood the disclaimer. I understand that team LARKS are not liable for any damages caused by diagnosis received.
+        </label>
+      </div>
+      <button className="instructions-button-kevin" onClick={prev} >Previous</button>
+      <button className="instructions-button-kevin" onClick={handleContinue} disabled={!isChecked} >Continue</button>
+      
+    </div>
     ) : (
-    <button onClick={next}>Next</button>
+      <div>
+        <button className="instructions-button-kevin" onClick={prev} disabled={index === 0} >Previous</button>
+        <button className="instructions-button-kevin" onClick={next}>Next</button>
+      </div>
+    
     )}
     </div>
-  );
+  )
 };
 
 export default Instructions;

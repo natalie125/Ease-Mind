@@ -132,21 +132,23 @@ const WebcamCapture = (props) => {
   //two buttons, one for taking pictures with flash and one for without
   return (
     <>
-      <Webcam className = "webcam" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} audio={false} ref={webcamRef} />
-			<br></br>
+    <div className="cam-container-kevin">
+      <div className="cam-box-kevin">
+        <Webcam className = "webcam-kevin" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} audio={false} ref={webcamRef} />
+      </div>
+      <div className="gap-camera-kevin"></div>
+			{/* <br></br> */}
             <div className="bttn-container-kevin"> 
                 <button className="cam-button-kevin" onClick={handleTakePicture}>Take Picture</button>
                 <button className="cam-button-kevin" onClick={switchCameraFacing}>Change Camera</button>
-			</div>
-            <div className="bttn-container-kevin"> 
                 <button className="cam-button-kevin" onClick={handleSubmit}>Submit Image</button>
-            </div>
-            <p>Captured image can be reviewed below. Note: The most recently captured image using the Take photo button will be sent for analysis. Any other image captured will be deleted.</p>
+			    </div>
+			</div>
+      <p>Captured image can be reviewed below. Note: The most recently captured image using the Take photo button will be sent for analysis. Any other image captured will be deleted.</p>
             <div>
 				{imageSrc && (
-					<img src={imageSrc} style={{ width: "100%", borderRadius: "5px" }} alt="User's captured image" />
+					<img src={imageSrc} style={{ width: cameraWidth, borderRadius: "5px" }} alt="User's captured image" />
 				)}
-			</div>
           
           
       <div>
@@ -158,6 +160,8 @@ const WebcamCapture = (props) => {
           skin_outcome(serverResponse)
         )}
       </div>
+    </div>
+      
     </>
   );
 };

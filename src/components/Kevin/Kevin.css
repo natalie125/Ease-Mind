@@ -11,6 +11,7 @@
 
 .landing_page_kevin{
     color: black;
+    line-height: 0.75cm;
     width: 80%;
 }
 
@@ -18,12 +19,15 @@
 .image_page{
     color: black;
     width: 80%;
+    line-height: 0.75cm;
+    
 }
 
 
 .results_page{
     color: black;
     width: 80%;
+    line-height: 0.75cm;
 }
 
 .cam-button-kevin{
@@ -41,3 +45,84 @@
     justify-content: center;
     
 }
+
+
+@media only screen and (max-height: 500px){
+    .cam-container-kevin {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto
+      }
+      
+      .cam-box,
+      .btnn-container-kevin {
+        width: 45%;
+      }
+      
+      .gap-camera-kevin {
+        width: 5%;
+      }
+      
+      .cam-button-kevin {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 30vh;
+        height: 16vh;
+       
+      }
+}
+
+
+
+.instructions-button-kevin{
+    width: calc((100% - 10%) / 3);
+    height: 8vh;
+    font-size: 1em; 
+    background-color: #005eb8;
+	color: white;
+    margin: 1vh 2%; 
+
+}
+
+.instructions-button-kevin:disabled{
+    width: calc((100% - 10%) / 3);
+    height: 8vh;
+    font-size: 1em; 
+    background-color: #001c36;
+	color: white;
+    margin: 1vh 2%; 
+    cursor: none;
+
+}
+
+.instructions-kevin{
+    color: black;
+    line-height: 0.75cm;
+}
+
+.results-kevin{
+    color: black;
+    line-height: 0.75cm;
+}
+
+
+input[type=checkbox] {
+    transform: scale(1.5);
+    
+}
+
+.checkbox-label-kevin{
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+}
+
+.webcam-kevin{
+    width: fit-content;
+	height: fit-content;
+	border-radius: 5px;
+    
+}
+
