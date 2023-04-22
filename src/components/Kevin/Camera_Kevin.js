@@ -3,6 +3,8 @@ import Webcam from "react-webcam";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../App/App.css";
+import "./Kevin.css";
+
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
@@ -131,13 +133,15 @@ const WebcamCapture = (props) => {
   return (
     <>
       <Webcam className = "webcam" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} audio={false} ref={webcamRef} />
-			<div style={{width:buttonPortrait}}> 
-                <button className="cam-button" onClick={handleTakePicture} style={{width:{buttonPortrait}}}>Take Picture</button>
-                <button className="cam-button" onClick={switchCameraFacing}>Change Camera</button>
-                <button className="cam-button" onClick={handleSubmit}>Submit Image</button>
-                <p>Captured image can be reviewed below. Note: The most recently captured image using the Take photo button will be sent for analysis. Any other image captured will be deleted.</p>
+			<br></br>
+            <div className="bttn-container-kevin"> 
+                <button className="cam-button-kevin" onClick={handleTakePicture}>Take Picture</button>
+                <button className="cam-button-kevin" onClick={switchCameraFacing}>Change Camera</button>
 			</div>
-
+            <div className="bttn-container-kevin"> 
+                <button className="cam-button-kevin" onClick={handleSubmit}>Submit Image</button>
+            </div>
+            <p>Captured image can be reviewed below. Note: The most recently captured image using the Take photo button will be sent for analysis. Any other image captured will be deleted.</p>
             <div>
 				{imageSrc && (
 					<img src={imageSrc} style={{ width: "100%", borderRadius: "5px" }} alt="User's captured image" />

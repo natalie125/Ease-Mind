@@ -25,7 +25,7 @@ import Kevin from "./components/Kevin/Kevin";
 import Kevin_Take_Photo from "./components/Kevin/Kevin_Take_Photo";
 import Kevin_Outcome_Positive from "./components/Kevin/Kevin_Outcome_Positive";
 import Kevin_Outcome_Negative from "./components/Kevin/Kevin_OutcomeNegative";
-
+import Kevin_Instructions from "./components/Kevin/Kevin_Instructions";
 import Shreyas from "./components/Shreyas/Shreyas";
 import TonsPhotoInstructions from "./components/Shreyas/TonsPhotoInstructions";
 import TonsillitisOutcome1 from "./components/Shreyas/TonsillitsOutcome1";
@@ -71,6 +71,7 @@ const Main = () => {
 			<Route exact path="/kevin/take_photo" element={<Kevin_Take_Photo />}></Route>
 			<Route exact path="/kevin/outcome_positive" element={<Kevin_Outcome_Positive />}></Route>
 			<Route exact path="/kevin/outcome_negative" element={<Kevin_Outcome_Negative />}></Route>
+			<Route exact path="kevin/instructions" element={<Kevin_Instructions />}></Route>
 			<Route exact path="/shreyas/shreyas" element={<Shreyas />}></Route>
 			<Route exact path="/shreyas/tonsillitis_instructions" element={<TonsPhotoInstructions />}></Route>
 			<Route exact path="/shreyas/tonsillitis_outcome_1" element={<TonsillitisOutcome1 />}></Route>

@@ -25,3 +25,19 @@
     color: black;
     width: 80%;
 }
+
+.cam-button-kevin{
+    width: calc((100% - 10%) / 2);
+    height: 10vh;
+    font-size: 1em; 
+    background-color: #005eb8;
+	color: white;
+    margin: 1vh 2%; 
+
+}
+
+.bttn-row-kevin{
+    display: flex;
+    justify-content: center;
+    
+}

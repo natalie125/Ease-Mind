@@ -1,14 +1,21 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
 import WebcamStreamCapture from "../Webcam";
 
 import WebcamCapture from "../camera/camera";
+import Instructions from "./Instructions_Component";
 
 import "../App/App.css";
 import "./Kevin.css";
 import Header from "../Header/Header";
 
+    
+
+
 class Kevin extends Component {
+
+    
+
 	render() {
 		return (
 			<div className="Kevin">
@@ -19,20 +26,20 @@ class Kevin extends Component {
 
 						<h2 className="h2_kevin"> Iteration 1 - Simple Case</h2>
 
-						<h3 className="h3_kevin"> Disclaimer:</h3>
+						<h3 className="h3_kevin"> Instructions:</h3>
 						<p>
-							This Skin Cancer identification application has been developed as a prototype only, to demonstrate the potential application of Computer Aided Diagnosis (CAD).
-						</p>
-						<p>
-							This application should not be used primarily as a diagnosis device.
-						</p>
-						<p>
-							If you have any doubts regarding your personal health, please visit a medical professional to receive a diagnosis.
-						</p>
+                            Please read the following instructions carefully, in order to correctly utilise this application.
+                        </p>
 
-						<Link to="/kevin/instructions">
+                        <Instructions>
+
+                        </Instructions>
+
+
+                        
+						{/* <Link to="/kevin/take_photo">
 							<button> Continue </button>
-						</Link>
+						</Link> */}
 
 
 
