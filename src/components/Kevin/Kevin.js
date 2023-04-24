@@ -23,7 +23,7 @@ class Kevin extends Component {
 				<div className="App-body">
 					<div className="landing_page_kevin">
 
-						<h2 className="h2_kevin"> Iteration 1 - Simple Case</h2>
+						<h2 className="h2_kevin"> Iteration 2</h2>
 
 						<h3 className="h3_kevin"> Disclaimer:</h3>
 						<p>

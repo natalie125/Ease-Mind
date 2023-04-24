@@ -15,7 +15,7 @@ class Kevin extends Component {
 				<h1>Kevin's app</h1>
 				<div className="App-body">
                     <div className="image_page">
-                        <h2> Iteration 1 - Simple Case</h2>
+                        <h2> Iteration 2</h2>
                         <h3> Take Photo of Skin Lesion</h3>
 						
 						<p style={{ textAlign: "center", marginBottom: "20px" }}> Webcam Capture </p>

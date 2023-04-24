@@ -15,7 +15,7 @@ class Kevin extends Component {
 				<h1>Kevin's app</h1>
 				<div className="App-body">
                     <div className="results_page">
-                        <h2> Iteration 1 - Simple Case</h2>
+                        <h2> Iteration 2</h2>
                         <h3> Outcome - Negative</h3>
                         <p> Based on the photo submitted, there is a low likelihood that it is a malignant skin lesion</p>
                         <p> If you have any doubts about this recommendation, please seek medical advice.</p>
