@@ -198,7 +198,7 @@ def upload():
 # ^^^^^^^^^^^^^^^^^^^^^^^
 
 
-@app.route('/verification', methods=['GET'])
+@app.route('/verification', methods=['POST'])
 @jwt_required()
 def some_endpoint():
     current_user = get_jwt_identity()
