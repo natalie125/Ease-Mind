@@ -51,7 +51,7 @@ class Home extends Component {
 							<img data-cy="kevinAppLogo" className="homepage-button" src={skinscan_logo} alt="Skin-Scan_App_Kevin" />
 						</Link>
 
-						<Link className="link" to="/lanre">
+						<Link className="link" to="/dipstik">
 							<img data-cy="lanreAppLogo" className="homepage-button" src={dipstik_logo} alt="Dipstik_App_Lanre" />
 						</Link>
 
@@ -59,7 +59,7 @@ class Home extends Component {
 							<img data-cy="ramatAppLogo" className="homepage-button" src={paralysis_analysis_logo} alt="Stroke_App_Ramat" />
 						</Link>
 
-						<Link className="link" to="/shreyas">
+						<Link className="link" to="/shreyas/tonsillitis_instructions">
 							<img data-cy="shreyasAppLogo" className="homepage-button" src={tonsilitis_detector_logo} alt="Tonsilitis_App_Shreyas" />
 						</Link>
 						{/* <button onClick={this.getEC2}> Get EC2 </button> */}
