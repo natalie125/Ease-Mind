@@ -3,7 +3,7 @@ import Webcam from "react-webcam";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../App/App.css";
-import { toBeChecked } from "@testing-library/jest-dom/dist/matchers";
+import "./ParalysisAnalysis.css";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
@@ -12,64 +12,30 @@ process.env.NODE_ENV === "development"
 
 //This component is used to take pictures
 //pictures are stored in the imageSrc variable after taking it
-//Not sure what to do after picture is stored in the imageSrc variable
-const WebcamCapture = (props) => {
+const Camera = (props) => {
 	const webcamRef = useRef(null);
 	const [imageSrc, setImageSrc] = useState(null);
 	const [flash, setFlash] = useState(false);
 	const [frontFacing, setFrontFacing] = React.useState(true);
 	const [serverResponse, setServerResponse] = React.useState(null);
-	const navigate = useNavigate();
-	//get the json from the memory
-	const token_JSON = JSON.parse(sessionStorage.getItem("token"));
-	//pass endpoint in as a props to the component whichever endpoint you want to send the image to.
-	//if in doubt how to do that please refer to shreyas.js
-	//if no context is provided it will send to /upload endpoint
-	let context = props.context || "upload";
-	context = context.toString();
-
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		const formData = new FormData();
-		//get the specific token string
-		const token = token_JSON.data.token;
-		formData.append("image", imageSrc);
-		const response = await axios(BASEURL + context, {
-			method: "post",
-			data: formData,
-			headers: {
-				//add authorization header
-				Authorization: "Bearer " + token,
-				"Content-Type": "multipart/form-data",
-			},
-		})
-			.then((response) => {
-				setServerResponse(response.data["msg"]);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	};
 
 	//takes pictures without flash
 	const handleTakePicture = () => {
 		const imageSrc = webcamRef.current.getScreenshot();
 		setImageSrc(imageSrc);
+		props.returnImage(imageSrc);
 	};
 
-	//takes pictures with flash
-	const handleTakePictureWithFlash = () => {
-		setFlash(true);
-		setTimeout(() => {
-			const imageSrc = webcamRef.current.getScreenshot();
-			setImageSrc(imageSrc);
-			setFlash(false);
-		}, 1000);
+	//takes pictures without flash
+	const handleRetakePicture = () => {
+		setImageSrc(null);
 	};
 
-	// Using button to change what camera is being used
-	// Should work based on MDN documentation: https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints/facingMode
-	// But I cannot test properly as its running on a laptop.
+	//takes pictures without flash
+	const handleNext = () => {
+		props.returnFinished(true);
+	};
+
 	const switchCameraFacing = React.useCallback(() => {
 		if (frontFacing) {
 			setFrontFacing(false);
@@ -123,56 +89,47 @@ const WebcamCapture = (props) => {
 		};
 	}
 
-	const tons_outcome = (serverResponse) => {
-		if (serverResponse === 0) navigate("/shreyas/tonsillitis_outcome_1", { replace: true });
-		else navigate("/shreyas/tonsillitis_outcome_2", { replace: true });
-	};
-
 	//two buttons, one for taking pictures with flash and one for without
 	return (
 		<>
-			<div className="cam-horizontal-container">
-				<div style={{ width: "80%", paddingRight: "5px" }}>
-					<Webcam
-						className="webcam"
-						videoConstraints={cameraConstraints}
-						ref={webcamRef}
-						style={{ width: "100%" }}
-					/>
-				</div>
-				<div
-					style={{
-						width: "20%",
-						paddingLeft: "5px",
-						display: "flex",
-						flexDirection: "column",
-						justifyContent: "space-between",
-					}}
-				>
-					<button className="cam-button" onClick={handleTakePicture}>
-						Take Picture
-					</button>
-					<button className="cam-button" onClick={handleTakePictureWithFlash}>
-						Take Picture With Flash
-					</button>
-					<button className="cam-button" onClick={switchCameraFacing}>
-						Change Camera
-					</button>
-					<button className="cam-button" onClick={handleSubmit}>
-						Submit Image
-					</button>
-				</div>
-			</div>
-			<div>
-				{flash && <div className="flash" />}
+			<div className="paralysis-cam-container">
+				{!imageSrc && (
+					<>
+						<div>
+							<Webcam
+								className="webcam"
+								videoConstraints={cameraConstraints}
+								ref={webcamRef}
+								style={{ width: "100%" }}
+							/>
+						</div>
+						<div className="paralysis-cam-button-container">
+							<button className="paralysis-cam-button" onClick={handleTakePicture}>
+								Take Picture
+							</button>
+							<button className="paralysis-cam-button" onClick={switchCameraFacing}>
+								Change Camera
+							</button>
+						</div>
+					</>
+				)}
 				{imageSrc && (
-					<img src={imageSrc} style={{ width: "100%", borderRadius: "5px" }} alt="Captured photo" />
+					<>
+						<div className="webcam" style={{ width: "100%" }}>
+							<img src={imageSrc} style={{ borderRadius: "5px" }} alt="Captured" />
+						</div>
+						<div className="paralysis-cam-button-container">
+							<button className="paralysis-cam-button" onClick={handleRetakePicture}>
+								Retake Picture
+							</button>
+							<button className="paralysis-cam-button" onClick={handleNext}>
+								Next
+							</button>
+						</div>
+					</>
 				)}
 			</div>
-			<div>
-				{context === "shreyas" && serverResponse === 0 && tons_outcome(serverResponse)}
-				{context === "shreyas" && serverResponse === 1 && tons_outcome(serverResponse)}
-			</div>
+			<div>{flash && <div className="flash" />}</div>
 		</>
 	);
 };
@@ -205,4 +162,4 @@ function useWindowSize() {
 	return windowSize;
 }
 
-export default WebcamCapture;
+export default Camera;

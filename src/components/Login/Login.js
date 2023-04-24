@@ -13,7 +13,7 @@ const loginUser = async (credentials) => {
 	// e.preventDefault();
 	const response = await axios
 		.post(BASEURL + "login", JSON.stringify({ credentials }), {
-			headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+			headers: { "Content-Type": "application/json" },
 			//   withCredentials: true,
 		})
 		.then((response) => {
@@ -24,6 +24,7 @@ const loginUser = async (credentials) => {
 				console.log("User logged in");
 				console.log(response);
 				sessionStorage.setItem("token", JSON.stringify(response.data.token));
+				sessionStorage.setItem("email", JSON.stringify(response.data.email)); // added by Alex to track email of logged in user
 			}
 			return response;
 		});
@@ -84,34 +85,32 @@ function Login({ setToken }) {
 							<h1 className="authentication-page-title">LARKS APP</h1>
 						</nav>
 					</header>
-					
+
 					{/* LOGIN FORM */}
 					<div className="login-form">
 						<div>
 							<h2 className="login-title">Login</h2>
 							<p className="login-subtitle">Please login to your account below </p>
 						</div>
-							
-						
-							<input 
-								data-cy="loginEmail" 
-								id="login_email" className="authentication-form-input" 
-								type="text" 
-								placeholder="Email"
-								aria-label="Enter Password"
-							/>
-					
-								
-						
-							<input
-								id="login_password"
-								className="authentication-form-input"
-								type="password"
-								placeholder="Password"
-								data-cy="loginPassword"
-								aria-label="Enter Password"
-							/>
-							
+
+						<input
+							data-cy="loginEmail"
+							id="login_email"
+							className="authentication-form-input"
+							type="text"
+							placeholder="Email"
+							aria-label="Enter Password"
+						/>
+
+						<input
+							id="login_password"
+							className="authentication-form-input"
+							type="password"
+							placeholder="Password"
+							data-cy="loginPassword"
+							aria-label="Enter Password"
+						/>
+
 						<div>
 							<button
 								className="authentication-button"
@@ -125,8 +124,6 @@ function Login({ setToken }) {
 							</button>
 						</div>
 
-						
-
 						{isFilled === false && (
 							<p data-cy="loginError" className="error-message">
 								Please enter a username and password
@@ -139,12 +136,13 @@ function Login({ setToken }) {
 							</p>
 						)}
 
-						<div className="signup-link-container"> 
+						<div className="signup-link-container">
 							<Link to="/signup">
-								<p className="sigup-link" data-cy="loginSignUpBttn"> Don't have an account? <b>Sign Up</b>  </p>
+								<p className="sigup-link" data-cy="loginSignUpBttn">
+									Don't have an account? <b>Sign Up</b>
+								</p>
 							</Link>
 						</div>
-						
 					</div>
 				</div>
 			</div>

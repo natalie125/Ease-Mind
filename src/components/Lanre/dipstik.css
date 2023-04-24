@@ -1,0 +1,343 @@
+/* **********************
+** LANRE STYLES
+*************************/
+.instructions-container{
+    /* border: 1px solid red; */
+    padding: 0px 5px;
+}
+
+.instructions-title{
+    padding: 15px 0px 0px 0px;
+}
+
+.important-note-container{
+    display: flex;
+    justify-content: center;
+    /* border: 1px solid blue; */
+}
+
+.important-note {
+    /* border: 1px solid red; */
+    line-height:28px;
+    color: rgb(87, 87, 87);
+    margin-bottom: 15px;
+    max-width: 400px;
+}
+
+
+.instructions{
+    /* border: 1px solid blue; */
+    padding: 3px 0px;
+    font-size: 16px;
+    color: rgb(87, 87, 87);
+    line-height:28px;
+}
+
+
+.start-button {
+    border: 1px solid green;
+    width: 90px;
+    height: 90px;
+    border-radius: 90px;
+    background-color: green;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.start-button:hover{
+    background-color: white;
+    color: green;
+}
+
+
+/* **********************
+** LANRE CAMERA STYLES
+*************************/
+.camera-container{
+    /* border: 2px solid green; */
+    display: flex;
+    justify-content: center;
+    /* min-height: 700px; */
+    /* max-width: 390px; */
+}
+
+.overlay-ancestor{
+    /* border: 2px solid pink; */
+    position:relative;
+    height: 100%;
+    width: 100%;
+    width:fit-content;
+    display: flex;
+    /* max-width: 390px;  */
+}
+
+.camera-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: none;
+    z-index: 2;
+    border-width: 40px 170px 140px 170px;
+    border-style: solid;
+    border-color: rgb(21, 21, 21);
+    opacity: 50%;
+}
+
+.lanre-webcam {
+    /* height: fit-content; */
+    /* border-radius: 5px; */
+    width: 100%;
+    /* height: 600px; */
+}
+
+.camera-buttons-container {
+    position: absolute;
+    /* top: 0; */
+    left: 50;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid green; */
+    width: 100%;
+    height: 140px;
+    z-index: 3;
+}
+
+
+.camera-button {
+    height: 80px;
+    width: 80px;
+    border-radius: 80px;
+    margin: 1px 20px;
+    background-color: #ed444a00;
+    padding: 0px;
+    /* color: #ed444a; */
+    color: white;
+
+    /* border: 2px solid #ed444a; */
+    border: 7px solid white;
+}
+
+.taken-pic-container{
+    /* border: 2px solid green; */
+    display: flex;
+    justify-content: center;
+    position: relative;
+    /* min-height: 700px; */
+}
+
+.taken-pic-buttons-overlay-container{
+    position: absolute;
+    /* top: 0; */
+    /* left: 50; */
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    /* border: 1px solid green; */
+    width: 100%;
+    height: 140px;
+    background-color: rgba(21, 21, 21, 0.547);
+    background-color: none;
+    z-index: 3;
+}
+
+.detecting-dipstick-message{
+    z-index: 2;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px;
+    /* border: 1px solid red; */
+}
+
+.success {
+    color: rgb(12, 193, 12);
+}
+
+.failure {
+    color: rgb(255, 37, 37);
+}
+
+
+.camera-icon {
+    font-size: 28px;
+}
+
+
+/* .loader-container {
+    width: 200px;
+    height: 200px;
+    position: fixed;
+    background: rgba(255, 255, 255, 0)
+        url("https://media.giphy.com/media/8agqybiK5LW8qrG3vJ/giphy.gif") center
+        no-repeat;
+} */
+
+.loader-container {
+    /* border: 1px solid red; */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    background: rgba(0, 0, 0, 0);
+}
+
+.processing-results-text{
+    color: #ed444a;
+    font-size: 35px;
+}
+
+.spinner {
+    width: 120px;
+    height: 120px;
+    border: 12px solid;
+    border-color: #ed444a transparent #ed444a transparent;
+    border-radius: 50%;
+    animation: spin-anim 1.2s linear infinite;
+    margin: 30px;
+}
+
+@keyframes spin-anim {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* **********************
+** TIMER STYLES
+*************************/
+.timer-container{
+    /* border: 2px solid red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* height: 70vh; */
+}
+
+.timer {
+    /* border: 1px solid blue; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40%;
+}
+
+.time {
+    /* border: 1px solid red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 160px;
+    height: 200px;
+    width: 200px;
+    background-color: #ed444a;
+    color: white;
+    font-size: 50px;
+    font-weight: 700;
+}
+
+.buttons{
+    /* border: 1px solid green; */
+    padding: 20px 0px;
+}
+
+.timer-button{
+    width: 80px;
+    height: 80px;
+    border-radius: 100px;
+    margin: 10px;
+    font-size: 14px;
+    color: #ed444a;
+    font-weight: bold;
+    border: none;
+    border: 1px solid #ed444a;
+    background-color: rgb(249, 249, 249);
+}
+
+.timer-button:hover {
+    background-color: #ed444a;
+    color: white;
+}
+
+/* **********************
+** RESULTS STYLES
+*************************/
+.results-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.results-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgb(234, 234, 234);
+    height: 70px;
+    width: 320px;
+    border-radius: 15px;
+    margin: 10px;
+    box-shadow: 5px 5px 15px rgb(231, 231, 231);
+}
+
+.results-switcher-container {
+    display: flex;
+    justify-content: center;
+    /* border: 1px solid red; */
+    height: 50px;
+    margin-top: 15px;
+}
+
+.results-switcher-button-container {
+    display: flex;
+    justify-content: center;
+    width: 320px;
+    /* border: 1px solid blue; */
+    background-color: rgb(233, 231, 231);
+    border-radius: 50px;
+    
+}
+
+.results-button{
+    background-color: rgb(233, 231, 231);
+    color: rgb(111, 104, 104);
+    width: 100%;
+    border: none;
+    border-radius: 50px;
+    font-size: 14px;
+    margin: 0px 2px;
+}
+
+.selected {
+    background-color: #ed444a;
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
