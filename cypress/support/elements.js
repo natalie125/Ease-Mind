@@ -19,6 +19,11 @@ export var elements = {
 	Home: {
 		ButtonContainer: "[data-cy=homeBttnContainer]",
 		applicationButton: "[data-cy=alexAppLogo]",
-		Logout_Button: "[data-cy=logoutBttn]"
+		Logout_Button: "[data-cy=logoutBttn]",
+		shreyasAppLogo: "[data-cy=shreyasAppLogo]",
+		lanreAppLogo: "[data-cy=lanreAppLogo]",
+		ramatAppLogo: "[data-cy=ramatAppLogo]",
+		kevinAppLogo: "[data-cy=kevinAppLogo]",
+		alexAppLogo: "[data-cy=alexAppLogo]",
 	},
 };
