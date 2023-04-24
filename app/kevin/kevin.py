@@ -23,21 +23,19 @@ def kevin():
     # if frontend sends no image return error
     if image == "null":
         return {"msg": "No image sent!"}, 415
-    
-
 
     # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
     image = image[22:]
     image_decoded = base64.b64decode(image)
     img = Image.open(io.BytesIO(image_decoded))
     # resize img - size based on model being used.
-    IMG_DIMS = 128
+    IMG_DIMS = 224
     pil_image = img.resize((IMG_DIMS, IMG_DIMS))
     img_arr = np.array(pil_image)
 
     
     img_arr = img_arr.astype('uint8')
-    print(img_arr)
+    # print(img_arr)
 
     im = Image.fromarray(img_arr)
     im.save("your_file.jpeg")
@@ -49,25 +47,29 @@ def kevin():
     img_arr = SoG(img_arr)
 
     im = Image.fromarray(img_arr)
+    # Save image - useful for local development to ensure preprocessing steps work as expected.
     im.save("your_file_processed.jpeg")
 
 
-    # Normalise image - divide by 255 as that is the max value of a pixel in rgb image.
-    # Normalise last, to account for ML algorithm using normalised images.
-    img_arr = img_arr / 255.0
-
-    
     # reshape img_arr to have correct dimensions wanted by ML model
     img_arr_reshaped = np.reshape(img_arr, (-1, IMG_DIMS, IMG_DIMS, 3))
-    model = tf.keras.models.load_model('app\kevin\model_no_augment.h5')
+    model = tf.keras.models.load_model('app\kevin\TL-210-effNet.h5')
     pred = model.predict(img_arr_reshaped)
 
-    print(f'prediction made from the image itself{pred}')
-    if (pred > 0.5):
+    print(f'prediction made from the image itself{pred[0][0]}')
+
+    # format prediction
+
+    
+
+    if pred > 0.5:
         msg = 1
     else:
         msg = 0
-    return  {"msg": msg}, 200
+    pred = pred[0][0] * 100
+    pred = str(pred)
+    pred = pred[:5] + "%"
+    return  {"msg": msg, "pred": pred}, 200
     
 
 
@@ -77,12 +79,15 @@ def clahe(image):
     h,s,v = cv2.split(hsv_img)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
     v = clahe.apply(v)
+    # Merge the 3 channels back together
     hsv_eq = cv2.merge([h,s,v])
+    # Convert the image back to BGR format, where itll be used by the Machine Learning algorithm.
     img_bgr = cv2.cvtColor(hsv_eq,cv2.COLOR_HSV2BGR)
     return img_bgr
 
 
-# Code taken from Kaggle Notebook found at following link
+# Code taken from Kaggle Notebook found at following link:
+# https://www.kaggle.com/code/apacheco/shades-of-gray-color-constancy
 # Being used under the Apache 2.0 open license from the Kaggle Notebook
 # No major modifications made to the code.
 def SoG(img,power=6, gamma=None):
