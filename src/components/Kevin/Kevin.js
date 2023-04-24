@@ -1,8 +1,6 @@
-import React, { Component, useState } from "react";
+import React, { Component} from "react";
 import { Link } from "react-router-dom";
-import WebcamStreamCapture from "../Webcam";
 
-import WebcamCapture from "../camera/camera";
 
 import "../App/App.css";
 import "./Kevin.css";
@@ -35,21 +33,12 @@ class Kevin extends Component {
 						<p>
 							If you have any doubts regarding your personal health, please visit a medical professional to receive a diagnosis.
 						</p>
-						{/* <label for="checkid">
-							<input id="checkid"  type="checkbox" value="test" onChange={handleCheckboxChange} />
-							I have read and understood the disclaimer. I understand that team LARKS are not liable for any damages caused by diagnosis received. 
-						</label> */}
-
-						<Link to="/kevin/instructions">
-							<button> Continue </button>
+						<Link to="/home">
+							<button className="instructions-button-kevin"> Back </button>
 						</Link>
 
-
-
-					{/* <p style={{ textAlign: "center", marginBottom: "20px" }}> Webcam Capture </p>
-							<WebcamCapture context="kevin"/> */}
-						<Link to="/home">
-							<button> Back </button>
+						<Link to="/kevin/instructions">
+							<button className="instructions-button-kevin"> Continue </button>
 						</Link>
 					
 					</div>

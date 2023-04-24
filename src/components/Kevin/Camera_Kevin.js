@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ const WebcamCapture = (props) => {
   const [imageSrc, setImageSrc] = useState(null);
   const [frontFacing, setFrontFacing] = React.useState(true);
   const [serverResponse, setServerResponse] = React.useState(null);
+  const [prediction, setPrediction] = React.useState(null);
   const navigate = useNavigate();
   //pass endpoint in as a props to the component whichever endpoint you want to send the image to.
   //if in doubt how to do that please refer to shreyas.js
@@ -26,7 +27,6 @@ const WebcamCapture = (props) => {
   let context = props.context || "upload";
   context = context.toString();
 
-  let inputValues = props.inputValues;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,6 +42,8 @@ const WebcamCapture = (props) => {
     })
       .then(response => {
         setServerResponse(response.data['msg']);
+        setPrediction(response.data['pred']);
+
       })
       .catch(error => {
         console.error(error);
@@ -88,9 +90,6 @@ const WebcamCapture = (props) => {
     cameraHeight = minValue;
   };
 
-  var buttonPortrait = minValue ;
-
-
 
   var cameraConstraints;
   if (frontFacing) {
@@ -124,8 +123,17 @@ const WebcamCapture = (props) => {
   // Following Shreyas' Implementation of rerouting user based on backend reponse
 
   const skin_outcome = (serverResponse) => {
-    if (serverResponse === 0) navigate("/kevin/outcome_negative", { replace: true });
-    else navigate("/kevin/outcome_positive", { replace: true });
+    if (serverResponse > 0.5){
+      serverResponse = 1
+    }else{
+      serverResponse = 0
+    }
+
+    sessionStorage.setItem('prediction-skin-cancer',prediction)
+    
+
+    if (serverResponse === 0) navigate("/kevin/outcome_negative", { replace: true});
+    else navigate("/kevin/outcome_positive", { replace: true});
   }
 
 

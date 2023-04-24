@@ -63,6 +63,9 @@
       .gap-camera-kevin {
         width: 5%;
       }
+      .gap-instructions-kevin{
+        width: 5%;
+      }
       
       .cam-button-kevin {
         display: flex;
@@ -71,6 +74,16 @@
         width: 30vh;
         height: 16vh;
        
+      }
+
+      .instructions-kevin {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .instructions-container-left,.instructions-container-right{
+        width: 45%;
       }
 }
 

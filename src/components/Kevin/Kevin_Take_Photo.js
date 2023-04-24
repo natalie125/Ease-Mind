@@ -1,7 +1,5 @@
-import React, { Component, useState}  from "react";
+import React, { Component}  from "react";
 import { Link } from "react-router-dom";
-import WebcamStreamCapture from "../Webcam";
-
 import WebcamCapture from "./Camera_Kevin.js";
 
 import "../App/App.css";
@@ -20,11 +18,6 @@ class Kevin extends Component {
 						
 						<p style={{ textAlign: "center", marginBottom: "20px" }}> Webcam Capture </p>
                                 <WebcamCapture context="kevin" />
-                        
-						
-						<Link to="/home">
-                            <button> Back </button>
-                        </Link>
                     </div>
 					
 				</div>

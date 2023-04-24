@@ -25,7 +25,7 @@ import Kevin from "./components/Kevin/Kevin";
 import Kevin_Take_Photo from "./components/Kevin/Kevin_Take_Photo";
 import Kevin_Outcome_Positive from "./components/Kevin/Kevin_Outcome_Positive";
 import Kevin_Outcome_Negative from "./components/Kevin/Kevin_OutcomeNegative";
-import Kevin_Instructions from "./components/Kevin/Kevin_Instructions";
+import Kevin_Instructions from "./components/Kevin/Kevin_instructions";
 import Shreyas from "./components/Shreyas/Shreyas";
 import TonsPhotoInstructions from "./components/Shreyas/TonsPhotoInstructions";
 import TonsillitisOutcome1 from "./components/Shreyas/TonsillitsOutcome1";
