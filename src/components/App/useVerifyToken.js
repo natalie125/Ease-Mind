@@ -10,7 +10,7 @@ process.env.NODE_ENV === "development"
 export default function useVerifyToken(token) {
 	const getTokenVerification = async () => {
 		const response = await axios(BASEURL + "verification", {
-			method: "get",
+			method: "post",
 			headers: {
 				Authorization: "Bearer " + token,
 			},
