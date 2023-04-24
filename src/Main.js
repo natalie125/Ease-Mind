@@ -22,6 +22,10 @@ import Canopy_New_Tree from "./components/Alex/Canopy_New_Tree";
 import Canopy_New_Condition from "./components/Alex/Canopy_New_Condition";
 import Ramat from "./components/Ramat/Ramat";
 import Kevin from "./components/Kevin/Kevin";
+import Kevin_Take_Photo from "./components/Kevin/Kevin_Take_Photo";
+import Kevin_Outcome_Positive from "./components/Kevin/Kevin_Outcome_Positive";
+import Kevin_Outcome_Negative from "./components/Kevin/Kevin_OutcomeNegative";
+import Kevin_Instructions from "./components/Kevin/Kevin_instructions";
 import Shreyas from "./components/Shreyas/Shreyas";
 import TonsPhotoInstructions from "./components/Shreyas/TonsPhotoInstructions";
 import TonsillitisOutcome1 from "./components/Shreyas/TonsillitsOutcome1";
@@ -64,6 +68,10 @@ const Main = () => {
 			<Route exact path="/canopy/canopy_new_condition" element={<Canopy_New_Condition />}></Route>
 			<Route exact path="/ramat" element={<Ramat />}></Route>
 			<Route exact path="/kevin" element={<Kevin />}></Route>
+			<Route exact path="/kevin/take_photo" element={<Kevin_Take_Photo />}></Route>
+			<Route exact path="/kevin/outcome_positive" element={<Kevin_Outcome_Positive />}></Route>
+			<Route exact path="/kevin/outcome_negative" element={<Kevin_Outcome_Negative />}></Route>
+			<Route exact path="kevin/instructions" element={<Kevin_Instructions />}></Route>
 			<Route exact path="/shreyas/shreyas" element={<Shreyas />}></Route>
 			<Route exact path="/shreyas/tonsillitis_instructions" element={<TonsPhotoInstructions />}></Route>
 			<Route exact path="/shreyas/tonsillitis_outcome_1" element={<TonsillitisOutcome1 />}></Route>
