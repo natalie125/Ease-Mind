@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import {isMobile} from 'react-device-detect';
 import Webcam from "react-webcam";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +13,7 @@ process.env.NODE_ENV === "development"
 
 //This component is used to take pictures
 //pictures are stored in the imageSrc variable after taking it
-const Camera = (props) => {
+const ParalysisAnalysisCamera = (props) => {
 	const webcamRef = useRef(null);
 	const [imageSrc, setImageSrc] = useState(null);
 	const [flash, setFlash] = useState(false);
@@ -89,7 +90,6 @@ const Camera = (props) => {
 		};
 	}
 
-	//two buttons, one for taking pictures with flash and one for without
 	return (
 		<>
 			<div className="paralysis-cam-container">
@@ -98,38 +98,41 @@ const Camera = (props) => {
 						<div>
 							<Webcam
 								className="webcam"
+								data-cy="activeCamera"
 								videoConstraints={cameraConstraints}
 								ref={webcamRef}
 								style={{ width: "100%" }}
 							/>
 						</div>
 						<div className="paralysis-cam-button-container">
-							<button className="paralysis-cam-button" onClick={handleTakePicture}>
+							<button className="paralysis-cam-button" onClick={handleTakePicture} data-cy="takePicBttn">
 								Take Picture
 							</button>
-							<button className="paralysis-cam-button" onClick={switchCameraFacing}>
-								Change Camera
-							</button>
+							{
+								isMobile && 
+								<button className="paralysis-cam-button" onClick={switchCameraFacing} data-cy="switchCamBttn">
+									Change Camera
+								</button>
+							}
 						</div>
 					</>
 				)}
 				{imageSrc && (
 					<>
 						<div className="webcam" style={{ width: "100%" }}>
-							<img src={imageSrc} style={{ borderRadius: "5px" }} alt="Captured" />
+							<img src={imageSrc} style={{ borderRadius: "5px" }} alt="Captured face" data-cy="capturedImage" />
 						</div>
 						<div className="paralysis-cam-button-container">
-							<button className="paralysis-cam-button" onClick={handleRetakePicture}>
+							<button className="paralysis-cam-button" onClick={handleRetakePicture} data-cy="retakeBttn">
 								Retake Picture
 							</button>
-							<button className="paralysis-cam-button" onClick={handleNext}>
+							<button className="paralysis-cam-button" onClick={handleNext} data-cy="submitPicBttn">
 								Next
 							</button>
 						</div>
 					</>
 				)}
 			</div>
-			<div>{flash && <div className="flash" />}</div>
 		</>
 	);
 };
@@ -162,4 +165,4 @@ function useWindowSize() {
 	return windowSize;
 }
 
-export default Camera;
+export default ParalysisAnalysisCamera;

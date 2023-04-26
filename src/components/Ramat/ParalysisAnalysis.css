@@ -132,6 +132,7 @@ paralysis-split-container {
 	top: 50%;
 	left: 45%;
 	transform: translate(-50%, -50%);
+	margin: 2vh, 0px
 }
 
 .paralysis-mic-img {

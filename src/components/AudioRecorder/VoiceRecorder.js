@@ -177,7 +177,7 @@ const VoiceRecorder = (props) => {
 
 	return (
 		<>
-			<div className="paralysis-mic-container">
+			<div className="paralysis-mic-container" data-cy="audioContainer">
 				<div className="paralysis-mic-status-container">
 					<img src={mic} className="paralysis-mic-img" alt="Microphone" />
 					<div className="paralysis-mic-loader">
@@ -201,6 +201,7 @@ const VoiceRecorder = (props) => {
 						className="paralysis-cam-button"
 						onClick={startRecording}
 						disabled={isRecording}
+						data-cy="startVoiceRecording"
 					>
 						Start Recording
 					</button>
@@ -209,6 +210,7 @@ const VoiceRecorder = (props) => {
 						className="paralysis-cam-button"
 						onClick={stopRecording}
 						disabled={!isRecording}
+						data-cy="stopVoiceRecording"
 					>
 						Stop Recording
 					</button>
@@ -218,6 +220,8 @@ const VoiceRecorder = (props) => {
 						className="paralysis-cam-button"
 						onClick={handleSubmit}
 						disabled={isRecording !== false}
+						data-cy="submitVoiceRecording"
+
 					>
 						Submit
 					</button>

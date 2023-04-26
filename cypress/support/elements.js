@@ -21,4 +21,32 @@ export var elements = {
 		applicationButton: "[data-cy=alexAppLogo]",
 		Logout_Button: "[data-cy=logoutBttn]"
 	},
+
+	// Paralysis Alanysis elements
+	PA: {
+		Link:"[data-cy=paralysisAnalysisLink]",
+		Logo:"[data-cy=paralysisAnalysisLogo]",
+
+		// Image elements
+		Image: {
+			Active_Camera:"[data-cy=activeCamera]",
+			Take_Pic_Button: "[data-cy=takePicBttn]",
+			Switch_Cam_Button: "[data-cy=switchCamBttn]",
+			Captured_Image: "[data-cy=capturedImage]",
+			Retake_Button: "[data-cy=retakeBttn]",
+			Submit_Button: "[data-cy=submitPicBttn]",
+		},
+		
+		// Audio elements
+		Voice: {
+			Audio_Container: "[data-cy=audioContainer]",
+			Start_Button: "[data-cy=startVoiceRecording]",
+			Stop_Button: "[data-cy=stopVoiceRecording]",
+			Submit_Button: "[data-cy=submitVoiceRecording]",
+		}
+		
+
+
+
+	},
 };

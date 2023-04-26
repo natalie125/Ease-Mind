@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import Camera from "./Camera";
+import {default as Camera} from "./ParalysisAnalysisCamera";
 import AudioRecorder from "../AudioRecorder";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -54,6 +54,10 @@ const ImageAudio = (props) => {
 		setAudio(null);
 	};
 
+	const call999 = () => {
+		window.open('tel:+447846054321');
+	}
+
 	const getDisplayMessage = () => {
 		const jsonResponse = JSON.parse(serverResponse)
 		const droop_prediction = jsonResponse.face_prediction
@@ -64,12 +68,18 @@ const ImageAudio = (props) => {
 			setDisplayMessage("You are not displaying any signs of facial droop or slurring.")
 		}else if(droop_prediction === "droop" && dys_prediction < 75){
 			setDisplayMessage("Uh oh, you seem to be displaying a symptom of stroke with a certainty of 56%. Call 999 immediately!")
+			call999()
 		}else if(droop_prediction === "no_droop" && dys_prediction > 75){
 			setDisplayMessage("Uh oh, you seem to be displaying a symptom of stroke with a certainty of 90%. Call 999 immediately!")
+			call999()
 		}else if(droop_prediction === "droop" && dys_prediction > 75){
 			setDisplayMessage("Uh oh, you seem to be displaying two symptom of stroke with a certainty of 50%. Call 999 immediately!")
+			call999()
 		}
 	}
+	
+
+	
 
 	useEffect(() => {
 		if (hasMounted && serverResponse !== null) {
@@ -107,8 +117,14 @@ const ImageAudio = (props) => {
 			{serverResponse && (
 				<>
 					<h2 style={{ paddingTop: "3%", paddingBottom: "3%" }}>{displayMessage}</h2>
+					<tr onclick={call999}>
+						<td>Phone: 900 300 400</td>
+					</tr>
+
 					<button className ="paralysis-button" onClick={restart}>Restart</button>
+
 				</>
+				
 			)}
 		</div>
 	);
