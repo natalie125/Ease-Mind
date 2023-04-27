@@ -33,39 +33,27 @@ def kevin():
     pil_image = img.resize((IMG_DIMS, IMG_DIMS))
     img_arr = np.array(pil_image)
 
-    
+    # convert do data used by model
     img_arr = img_arr.astype('uint8')
-    # print(img_arr)
-
-    im = Image.fromarray(img_arr)
-    im.save("your_file.jpeg")
-
     # apply CLAHE - Contrast Limited Adaptive Histogram Equalisation
     img_arr = clahe(img_arr)
 
     # apply SoG - Shades of Gray algorithm.
     img_arr = SoG(img_arr)
 
-    im = Image.fromarray(img_arr)
-    # Save image - useful for local development to ensure preprocessing steps work as expected.
-    im.save("your_file_processed.jpeg")
-
-
     # reshape img_arr to have correct dimensions wanted by ML model
     img_arr_reshaped = np.reshape(img_arr, (-1, IMG_DIMS, IMG_DIMS, 3))
     model = tf.keras.models.load_model('app\kevin\TL-210-effNet.h5')
     pred = model.predict(img_arr_reshaped)
 
-    print(f'prediction made from the image itself{pred[0][0]}')
-
-    # format prediction
+    # print(f'prediction made from the image itself{pred[0][0]}')
 
     
-
     if pred > 0.5:
         msg = 1
     else:
         msg = 0
+    # format prediction
     pred = pred[0][0] * 100
     pred = str(pred)
     pred = pred[:5] + "%"
