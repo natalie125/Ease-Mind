@@ -21,6 +21,7 @@ const WebcamCapture = (props) => {
   const [serverResponse, setServerResponse] = React.useState(null);
   const [prediction, setPrediction] = React.useState(null);
   const navigate = useNavigate();
+  const token_JSON = JSON.parse(sessionStorage.getItem("token"));
   //pass endpoint in as a props to the component whichever endpoint you want to send the image to.
   //if in doubt how to do that please refer to shreyas.js
   //if no context is provided it will send to /upload endpoint
@@ -30,15 +31,18 @@ const WebcamCapture = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("image", imageSrc);
-    const response = await axios(BASEURL + context, {
-      method: 'post',
-      data: formData,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        'Content-Type': 'multipart/form-data'
-      }
+		const formData = new FormData();
+		//get the specific token string
+		const token = token_JSON.data.token;
+		formData.append("image", imageSrc);
+		const response = await axios(BASEURL + context, {
+			method: "post",
+			data: formData,
+			headers: {
+				//add authorization header
+				Authorization: "Bearer " + token,
+				"Content-Type": "multipart/form-data",
+			},
     })
       .then(response => {
         setServerResponse(response.data['msg']);
