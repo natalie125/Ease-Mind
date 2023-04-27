@@ -9,7 +9,7 @@ import "./Canopy.css"
 let BASEURL = "";
 process.env.NODE_ENV === "development"
 	? (BASEURL = process.env.REACT_APP_DEV)
-	: (BASEURL = process.env.REACT_APP_PROD);
+	: (BASEURL = process.env.EC2_URL);
 
 // link patient with parents and children
 function linkParentChild(url_input, parent_child_data) {

@@ -13,7 +13,7 @@ import "./Canopy.css"
 let BASEURL = "";
 process.env.NODE_ENV === "development"
 	? (BASEURL = process.env.REACT_APP_DEV)
-	: (BASEURL = process.env.REACT_APP_PROD);
+	: (BASEURL = process.env.EC2_URL);
 
 // methods for updating data in the Flask app
 // update information in the tree table
