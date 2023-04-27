@@ -8,7 +8,7 @@ import "./Canopy.css"
 let BASEURL = "";
 process.env.NODE_ENV === "development"
 	? (BASEURL = process.env.REACT_APP_DEV)
-	: (BASEURL = process.env.EC2_URL);
+	: (BASEURL = process.env.REACT_APP_EC2_URL);
 
 
 function Canopy_Edit_Condition(props) {

@@ -7,7 +7,7 @@ import "../App/App.css";
 let BASEURL = "";
 process.env.NODE_ENV === "development"
 	? (BASEURL = process.env.REACT_APP_DEV)
-	: (BASEURL = process.env.EC2_URL);
+	: (BASEURL = process.env.REACT_APP_EC2_URL);
 
 class Canopy_View_Tree extends Component {
 	// form methods
