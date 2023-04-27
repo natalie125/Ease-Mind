@@ -11,11 +11,12 @@ import os
 import pandas as pd
 import cv2
 
-
+from flask_jwt_extended import jwt_required
 #############################################################
 # ROUTE FOR Kevin's APP
 # ^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/kevin', methods=['GET', 'POST'])
+@jwt_required()
 def kevin():
 
     # Code for handling image upload to server - taken from shared code base.
