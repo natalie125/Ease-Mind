@@ -20,6 +20,7 @@ const WebcamCapture = (props) => {
   const [frontFacing, setFrontFacing] = React.useState(true);
   const [serverResponse, setServerResponse] = React.useState(null);
   const [prediction, setPrediction] = React.useState(null);
+  const [showSubmission, setShowSubmission] = React.useState(false);
   const navigate = useNavigate();
   const token_JSON = JSON.parse(sessionStorage.getItem("token"));
   //pass endpoint in as a props to the component whichever endpoint you want to send the image to.
@@ -35,6 +36,7 @@ const WebcamCapture = (props) => {
 		//get the specific token string
 		const token = token_JSON.data.token;
 		formData.append("image", imageSrc);
+    setShowSubmission(true);
 		const response = await axios(BASEURL + context, {
 			method: "post",
 			data: formData,
@@ -45,8 +47,9 @@ const WebcamCapture = (props) => {
 			},
     })
       .then(response => {
-        setServerResponse(response.data['msg']);
-        setPrediction(response.data['pred']);
+        setServerResponse(response.data['msg']); // msg variable: whether user should be routed to positive or negative outcome page.
+        setPrediction(response.data['pred']); // Raw prediciton value of ML algorithm on backend
+        // Code above gets text from backend response, to be used in next pages seen by user
 
       })
       .catch(error => {
@@ -54,6 +57,9 @@ const WebcamCapture = (props) => {
       });
   }
 
+  // set imageSrc variable as captured image by user.
+  // Used to send image to backend.
+  // Also used to show captured image to user.
   const handleTakePicture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImageSrc(imageSrc);
@@ -67,11 +73,9 @@ const WebcamCapture = (props) => {
     if (frontFacing) {
       setFrontFacing(false);
     }
-
     else {
       setFrontFacing(true);
     }
-
   }, [frontFacing]);
 
 
@@ -95,6 +99,8 @@ const WebcamCapture = (props) => {
   };
 
 
+  // Code below dictates which camera is being used by device
+  // Useful for running on mobile applicaton
   var cameraConstraints;
   if (frontFacing) {
     var x = "user";
@@ -132,48 +138,55 @@ const WebcamCapture = (props) => {
     }else{
       serverResponse = 0
     }
-
+    // Store the ML Backend Algorithm prediction in SessionStorage, to allow for easy access on outcome page.
     sessionStorage.setItem('prediction-skin-cancer',prediction)
-    
-
     if (serverResponse === 0) navigate("/kevin/outcome_negative", { replace: true});
     else navigate("/kevin/outcome_positive", { replace: true});
   }
 
-
-  //two buttons, one for taking pictures with flash and one for without
   return (
     <>
-    <div className="cam-container-kevin">
-      <div className="cam-box-kevin">
-        <Webcam className = "webcam-kevin" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} audio={false} ref={webcamRef} />
-      </div>
-      <div className="gap-camera-kevin"></div>
-			{/* <br></br> */}
-            <div className="bttn-container-kevin"> 
-                <button className="cam-button-kevin" onClick={handleTakePicture}>Take Picture</button>
-                <button className="cam-button-kevin" onClick={switchCameraFacing}>Change Camera</button>
-                <button className="cam-button-kevin" onClick={handleSubmit}>Submit Image</button>
-			    </div>
-			</div>
-      <p>Captured image can be reviewed below. Note: The most recently captured image using the Take photo button will be sent for analysis. Any other image captured will be deleted.</p>
-            <div>
-				{imageSrc && (
-					<img src={imageSrc} style={{ width: cameraWidth, borderRadius: "5px" }} alt="User's captured image" />
-				)}
-          
-          
+    {(showSubmission) ? (
       <div>
-        {/* Implementation of Skin Cancer tool using shreyas' routing approach */}
-        {context === "kevin" && serverResponse === 0 && (
-          skin_outcome(serverResponse)
-        )}
-        {context === "kevin" && serverResponse === 1 && (
-          skin_outcome(serverResponse)
-        )}
+        <h3> Image submission being processed</h3>
+        <p>Please remain on this page whilst your image is being analysed. Once complete, you will automatically be relocated to your results page.</p>
+        <p>Leaving this page will lead to the results of this submission being lost.</p>
+      </div>
+    ) : (
+      <div className="cam-page-kevin">
+      <div className="cam-container-kevin">
+        <div className="cam-box-kevin">
+          <p>Please capture the lesion in the camera view below:</p>
+          <Webcam className = "webcam-kevin" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} audio={false} ref={webcamRef} />
+        </div>
+        <div className="gap-camera-kevin"></div>
+        {/* <br></br> */}
+              <div className="bttn-container-kevin"> 
+                  <button className="cam-button-kevin" onClick={handleTakePicture}>Take Picture</button>
+                  <button className="cam-button-kevin" onClick={switchCameraFacing}>Change Camera</button>
+                  <button className="cam-button-kevin" disabled={imageSrc === null} onClick={handleSubmit}>Submit Image</button>
+            </div>
+        </div>
+        <p>Captured image can be reviewed below. Note: The most recently captured image using the Take photo button will be sent for analysis. Any other image captured will be deleted.</p>
+              <div>
+          {imageSrc && (
+            <img src={imageSrc} style={{ width: cameraWidth, borderRadius: "5px" }} alt="User's captured image" />
+          )}
+            
       </div>
     </div>
-      
+    )}
+
+    <div>
+      {/* Implementation of Skin Cancer tool using shreyas' routing approach */}
+      {context === "kevin" && serverResponse === 0 && (
+        skin_outcome(serverResponse)
+      )}
+      {context === "kevin" && serverResponse === 1 && (
+        skin_outcome(serverResponse)
+      )}
+    </div>
+
     </>
   );
 };
