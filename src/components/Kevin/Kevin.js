@@ -17,13 +17,13 @@ class Kevin extends Component {
 		return (
 			<div className="Kevin">
 				<Header />
-				<h1 className="h1_kevin">Kevin's app</h1>
+				<h1 className="h1_kevin">Skin Scan</h1>
 				<div className="App-body">
 					<div className="landing_page_kevin">
 
-						<h2 className="h2_kevin"> Iteration 2</h2>
+						<h2 className="h2_kevin">Product Disclaimer </h2>
 
-						<h3 className="h3_kevin"> Disclaimer:</h3>
+						<h3 className="h3_kevin"> Please read the following information carefully:</h3>
 						<p>
 							This Skin Cancer identification application has been developed as a prototype only, to demonstrate the potential application of Computer Aided Diagnosis (CAD).
 						</p>
