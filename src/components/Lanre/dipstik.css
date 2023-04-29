@@ -2,40 +2,42 @@
 ** LANRE STYLES
 *************************/
 .instructions-container{
-    border: 1px solid red;
-    padding: 0px 5px;
-    height: 100vh;
+    height: 75vh;
 }
 
 .instructions-title{
-    padding: 15px 0px 0px 0px;
+    padding: 15px 0px 5px 0px;
 }
 
-.important-note-container{
+.instructions-content{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    /* justify-content: center; */
     /* border: 1px solid blue; */
+    height: 400px;
 }
 
-.important-note {
+/* Instructions 1 */
+.disclaimer {
     /* border: 1px solid red; */
-    line-height:28px;
+    line-height:23px;
     color: rgb(87, 87, 87);
     margin-bottom: 15px;
     max-width: 400px;
 }
 
-
+/* Instructions 2 */
 .instructions{
     /* border: 1px solid blue; */
-    padding: 3px 0px;
+    margin-top: 10px;
+    padding: 0px 5px;
     font-size: 16px;
     color: rgb(87, 87, 87);
-    line-height:28px;
+    line-height: 30px;
 }
 
 
-.start-button {
+.instructions-button {
     border: 1px solid green;
     width: 90px;
     height: 90px;
@@ -48,9 +50,10 @@
     margin-top: 10px;
 }
 
-.start-button:hover{
+.instructions-button:hover{
     background-color: white;
     color: green;
+    margin-right: 10px;
 }
 
 
