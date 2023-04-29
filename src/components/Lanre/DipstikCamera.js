@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCamera, faArrowsRotate, faPaperPlane, faUpload, faCameraRotate, faCameraAlt, faCameraRetro, faVideoCamera, faPlaneArrival, faPlaneCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import {faArrowsRotate, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import * as cvstfjs from "@microsoft/customvision-tfjs";
@@ -107,18 +107,6 @@ const detectDipstick = async () => {
   }
 };
 
-  // Using button to change what camera is being used
-	// Should work based on MDN documentation: https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints/facingMode
-	// But I cannot test properly as its running on a laptop.
-  const switchCameraFacing = React.useCallback(() => {
-		if (backFacing){
-			setBackFacing(false);
-		}
-		else{
-			setBackFacing(true);
-		}
-
-	},[backFacing]);
 
 //  // //**************************************************************** 
 //  // // COMBINED
@@ -208,7 +196,7 @@ const detectDipstick = async () => {
     {/* Show camera */}
     <div>
 
-    {!imageSrc && imageSent == false &&  (
+    {!imageSrc && imageSent === false &&  (
 			<>
         {/* Display message if camera not working */}
         <div className="camera-container">
@@ -232,13 +220,13 @@ const detectDipstick = async () => {
 		)}
 
     {!cameraWorking && ( 
-          <h4> Failed to laod camera. <br/><br/> Please refresh your browser!</h4>
+          <h4> Failed to load camera. <br/><br/> Please refresh your browser!</h4>
         )}
     </div>
 
     {/* Show the taken image */}
       <div>
-        {imageSrc && imageSent == false && (
+        {imageSrc && imageSent === false && (
           <>
             <div className="taken-pic-container">
               <div>
@@ -247,13 +235,13 @@ const detectDipstick = async () => {
               <img id="image" src={imageSrc} width={minValue} alt="Captured photo" />
               <div className="taken-pic-buttons-overlay-container">
                 {/* Show a message that dipstick is being detected */}
-                {dipstickDetected == 0 && (
+                {dipstickDetected === 0 && (
                   <p className="detecting-dipstick-message"> Detecting dipstick... </p>)}
 
-                {dipstickDetected == 1 && (
+                {dipstickDetected === 1 && (
                   <p className="detecting-dipstick-message success"> Dipstick detected </p>)}
 
-                {dipstickDetected == -1 && (
+                {dipstickDetected === -1 && (
                   <p className="detecting-dipstick-message failure"> Dipstick not detected </p>)}
 
 
@@ -261,7 +249,7 @@ const detectDipstick = async () => {
                 <div>
                   <button onClick={handleRetakePicture} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
 
-                  {dipstickDetected == 1 && (
+                  {dipstickDetected === 1 && (
                   <button onClick={handleSubmit} className="camera-button"><FontAwesomeIcon icon={faPaperPlane} className="camera-icon"/></button>)}
                 </div>
 
