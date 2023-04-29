@@ -261,7 +261,7 @@ const detectDipstick = async () => {
 
       {/* Show a message that results are being processed */}
       <div>
-        {imageSrc && imageSent == true  && (
+        {imageSrc && imageSent === true  && (
           <>
               <Header />
             <div>

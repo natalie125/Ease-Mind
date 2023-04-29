@@ -149,7 +149,6 @@ video {
     bottom: 0;
     display: flex;
     flex-direction: column;
-    justify-content: start;
     align-items: center;
     /* border: 1px solid green; */
     width: 100%;
