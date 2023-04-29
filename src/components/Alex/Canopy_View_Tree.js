@@ -4,13 +4,10 @@ import axios from "axios";
 
 import "../App/App.css";
 
-var baseurl = "http://localhost:5000/canopy/";
-	if(window.location.href.includes("localhost")) {
-		baseurl = "http://localhost:5000/canopy/";
-	}
-	else {
-		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
-	}
+let BASEURL = "";
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
 
 class Canopy_View_Tree extends Component {
 	// form methods
@@ -97,7 +94,7 @@ class Canopy_View_Tree extends Component {
 					</form>
 
 					<div>
-						<button onClick={() => {this.getTree(baseurl + "tree/prod", {id: this.state.tree_id, name: this.state.name, owner: this.state.owner})}}>GET tree at: {baseurl}</button>
+						<button onClick={() => {this.getTree(BASEURL + "canopy/tree/prod", {id: this.state.tree_id, name: this.state.name, owner: this.state.owner})}}>GET tree at: {BASEURL}</button>
 					</div>
 
 					<Link to="/canopy">

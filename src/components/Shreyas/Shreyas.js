@@ -15,7 +15,9 @@ class Shreyas extends Component {
 				<h1 className="tons-page-header">Shreyas' app</h1>
 				<div className="tons-page-camera-container">
 					<div className="webcam-capture-holder">
-						<p style={{ textAlign: "center", marginBottom: "20px" }}>Webcam capture below (to use flash please brighten your screen)</p>
+						<p style={{ textAlign: "center", marginBottom: "20px" }}>
+							Webcam capture below (to use flash please brighten your screen)
+						</p>
 						<WebcamCapture context="shreyas" />
 						{/*<WebcamCapture context="shreyas"/>*/}
 					</div>
@@ -23,7 +25,7 @@ class Shreyas extends Component {
 						<button className="tons-page-button"> Back </button>
 					</Link>
 				</div>
-			</div >
+			</div>
 		);
 	}
 }

@@ -3,6 +3,7 @@ import Webcam from "react-webcam";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../App/App.css";
+import { toBeChecked } from "@testing-library/jest-dom/dist/matchers";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
@@ -19,6 +20,8 @@ const WebcamCapture = (props) => {
 	const [frontFacing, setFrontFacing] = React.useState(true);
 	const [serverResponse, setServerResponse] = React.useState(null);
 	const navigate = useNavigate();
+	//get the json from the memory
+	const token_JSON = JSON.parse(sessionStorage.getItem("token"));
 	//pass endpoint in as a props to the component whichever endpoint you want to send the image to.
 	//if in doubt how to do that please refer to shreyas.js
 	//if no context is provided it will send to /upload endpoint
@@ -28,21 +31,24 @@ const WebcamCapture = (props) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const formData = new FormData();
+		//get the specific token string
+		const token = token_JSON.data.token;
 		formData.append("image", imageSrc);
-		try {
-			const response = await axios(BASEURL + props.context, {
-				method: "post",
-				data: formData,
-				headers: {
-					"Access-Control-Allow-Origin": "*",
-					"Content-Type": "multipart/form-data",
-				},
+		const response = await axios(BASEURL + context, {
+			method: "post",
+			data: formData,
+			headers: {
+				//add authorization header
+				Authorization: "Bearer " + token,
+				"Content-Type": "multipart/form-data",
+			},
+		})
+			.then((response) => {
+				setServerResponse(response.data["msg"]);
+			})
+			.catch((error) => {
+				console.error(error);
 			});
-			console.log(response);
-			props.returnResponse(response);
-		} catch (error) {
-			console.error(error);
-		}
 	};
 
 	//takes pictures without flash

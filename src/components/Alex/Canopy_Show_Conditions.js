@@ -5,13 +5,10 @@ import axios from "axios";
 import "../App/App.css";
 import "./Canopy.css"
 
-var baseurl = "http://localhost:5000/canopy/";
-	if(window.location.href.includes("localhost")) {
-		baseurl = "http://localhost:5000/canopy/";
-	}
-	else {
-		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
-	}
+let BASEURL = "";
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
 
 function Canopy_Show_Conditions(props) {
 	const navigate = useNavigate();
@@ -20,7 +17,11 @@ function Canopy_Show_Conditions(props) {
 	const [conditions, setConditions] = useState({
 													ids: [],
 													names: [],
-													'hereditary?':[]
+													'hereditary?':[],
+													male_parents: [],
+													female_parents: [],
+													male_grandparents: [],
+													female_grandparents: []
 												});
 
 	// methods for receiving data from the Flask app
@@ -30,7 +31,11 @@ function Canopy_Show_Conditions(props) {
 		let data = {
 			ids: [],
 			names: [],
-			'hereditary?':[]
+			'hereditary?':[],
+			male_parents: [],
+			female_parents: [],
+			male_grandparents: [],
+			female_grandparents: []
 		};
 		data = await axios.get(url_input, {params: {}});
 		// console.log(data);
@@ -60,7 +65,7 @@ function Canopy_Show_Conditions(props) {
 					else if(j < Object.keys(response).length) {
 						if(Object.keys(response)[j] != "ids") {
 							if(Object.keys(response)[j] == "hereditarys") {	// catch when we're naming a column hereditarys in the 1st row
-								columns.push(<td>hereditary?</td>)	// name it hereditary? instetad
+								columns.push(<td>hereditary?</td>)	// name it hereditary? instead
 							}
 							else {	// generic key name
 								columns.push(<td>{Object.keys(response)[j]}</td>)
@@ -104,7 +109,7 @@ function Canopy_Show_Conditions(props) {
 	}
 
 	useEffect(() => {
-		getConditions(baseurl + "condition/prod", {})
+		getConditions(BASEURL + "canopy/condition/prod", {})
 	}, []);
 
 	return (
