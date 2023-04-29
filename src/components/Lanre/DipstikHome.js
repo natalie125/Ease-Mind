@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { useState} from "react";
 import "../App/App.css";
 import "../Lanre/dipstik.css";
 import Header from "../Header/Header";
@@ -7,7 +7,7 @@ import DipstikTimer from "./DipstikTimer";
 const DipstikInstructions = () =>  {
         const [instructions, setInstructions] = useState(1);
 
-        // Handle What happends when 
+        // Handle what happends when next instruction  is clicked 
         const HandleNextInstructions = () => {
             if (instructions >= 3) {
                 setInstructions(3);
@@ -16,6 +16,7 @@ const DipstikInstructions = () =>  {
             }
         };
 
+        // Handle what happends when previous instruction  is clicked 
         const HandlePreviousInstructions = () => {
             if (instructions <= 0) {
                 setInstructions(1);
@@ -26,7 +27,6 @@ const DipstikInstructions = () =>  {
         };
 
 
-        
 		return (
             <>
 			<div className="Lanre">
@@ -65,7 +65,7 @@ const DipstikInstructions = () =>  {
 				</>
                 )}
 
-                {instructions == 2 && (
+                {instructions === 2 && (
                     <>
                         <h3 className="instructions-title">Instructions</h3>
 
@@ -89,7 +89,7 @@ const DipstikInstructions = () =>  {
                     </>
                 )}
 
-                {instructions == 3 && (
+                {instructions === 3 && (
                     <>
                         <h3 className="instructions-title">Wait 60 seconds!</h3>
                         <div className="instructions-content">
@@ -109,11 +109,6 @@ const DipstikInstructions = () =>  {
                     </>
                 )}
                 </div>
-
-
-                {/* <Link to="/home">
-						<button> Back </button>
-				</Link> */}
 			</div>
             </>
         );

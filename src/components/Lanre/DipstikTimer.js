@@ -48,7 +48,7 @@ export default function DipstikTimer() {
     }
 
 
-    if (timeLeft == 0 && isCounting){
+    if (timeLeft === 0 && isCounting){
         navigate("/dipstik/dipstik-camera", { replace: true });
     }
 
