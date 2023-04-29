@@ -6,14 +6,6 @@ import "../App/App.css";
 import Header from "../Header/Header";
 import "./Canopy.css"
 
-var baseurl = "http://localhost:5000/canopy/";
-	if(window.location.href.includes("localhost")) {
-		baseurl = "http://localhost:5000/canopy/";
-	}
-	else {
-		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
-	}
-
 function Canopy(props) {
 	const navigate = useNavigate();
 	const location = useLocation();

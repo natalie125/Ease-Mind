@@ -4,13 +4,10 @@ import axios from "axios";
 
 import "../App/App.css";
 
-var baseurl = "http://localhost:5000/canopy/";
-	if(window.location.href.includes("localhost")) {
-		baseurl = "http://localhost:5000/canopy/";
-	}
-	else {
-		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
-	}
+let BASEURL = "";
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
 
 function Canopy_Show_Trees(props) {
 	const navigate = useNavigate();
@@ -104,7 +101,7 @@ function Canopy_Show_Trees(props) {
 	}
 
 	useEffect(() => {
-		getTree(baseurl + "tree/prod", {owner: owner})
+		getTree(BASEURL + "canopy/tree/prod", {owner: owner})
 	}, []);
 
 	return (

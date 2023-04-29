@@ -33,37 +33,34 @@ class Home extends Component {
 			// TODO: Need to create page that will present app options in nicer way.
 
 			<div className="Home">
-				<Header />
+				<Header hideHome={true} />
 
 				<h1 className="homepage-title">Home</h1>
 				<div data-cy="homeBttnContainer" className="btn-container">
 					<div className="btn-row">
 						<Link className="link" to="/canopy">
-							<img data-cy="alexAppLogo" className="homepage-button" src={canopy_logo} alt="Canopy_App_Alex" />
+							<img
+								data-cy="alexAppLogo"
+								className="homepage-button"
+								src={canopy_logo}
+								alt="Canopy_App_Alex"
+							/>
 						</Link>
 
 						<Link className="link" to="/kevin">
-							<img className="homepage-button" src={skinscan_logo} alt="Skin-Scan_App_Kevin" />
+							<img data-cy="kevinAppLogo" className="homepage-button" src={skinscan_logo} alt="Skin-Scan_App_Kevin" />
 						</Link>
 
 						<Link className="link" to="/dipstik">
-							<img className="homepage-button" src={dipstik_logo} alt="Dipstik_App_Lanre" />
+							<img data-cy="lanreAppLogo" className="homepage-button" src={dipstik_logo} alt="Dipstik_App_Lanre" />
 						</Link>
 
 						<Link className="link" to="/ramat">
-							<img
-								className="homepage-button"
-								src={paralysis_analysis_logo}
-								alt="Stroke_App_Ramat"
-							/>
+							<img data-cy="ramatAppLogo" className="homepage-button" src={paralysis_analysis_logo} alt="Stroke_App_Ramat" />
 						</Link>
 
 						<Link className="link" to="/shreyas/tonsillitis_instructions">
-							<img
-								className="homepage-button"
-								src={tonsilitis_detector_logo}
-								alt="Tonsilitis_App_Shreyas"
-							/>
+							<img data-cy="shreyasAppLogo" className="homepage-button" src={tonsilitis_detector_logo} alt="Tonsilitis_App_Shreyas" />
 						</Link>
 						{/* <button onClick={this.getEC2}> Get EC2 </button> */}
 					</div>

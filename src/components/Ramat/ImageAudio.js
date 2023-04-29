@@ -33,7 +33,6 @@ const ImageAudio = (props) => {
 		try {
 			const response = await axios.post(BASEURL + "ramat", formData, {
 				headers: {
-					"Access-Control-Allow-Origin": "*",
 					"Content-Type": "multipart/form-data",
 				},
 			});
@@ -52,41 +51,33 @@ const ImageAudio = (props) => {
 	};
 
 	return (
-		<>
-			<div className="cam-horizontal-container">
-				{!showAudio && (
-					<>
-						<div className="tons-page-camera-container">
-							<div className="webcam-capture-holder">
-								<p style={{ textAlign: "center", marginBottom: "20px" }}>
-									Webcam capture below (to use flash please brighten your screen)
-								</p>
-								<Camera
-									endpoint="ramat/image"
-									returnImage={setImage}
-									returnFinished={setShowAudio}
-								/>
-							</div>
-						</div>
-					</>
-				)}
-				{showAudio && !audio && (
-					<>
-						<div className="tons-page-camera-container">
-							<AudioRecorder returnAudio={setAudio} returnFinished={submitAll} />
-						</div>
-					</>
-				)}
-				{serverResponse && (
-					<>
-						<div className="tons-page-camera-container">
-							<p>Response: {serverResponse}</p>
-							<button onClick={restart}>Restart</button>
-						</div>
-					</>
-				)}
-			</div>
-		</>
+		<div className="paralysis-container">
+			<h2 style={{ marginBottom: "1%" }}>Welcome to Paralysis Analysis</h2>
+
+			{!showAudio && (
+				<div className="paralysis-split-container">
+					<p className="paralysis-text-container">
+						Straighten your head as best as you can, keep a neutral expresssion and take a picture.
+					</p>
+					<Camera endpoint="ramat/image" returnImage={setImage} returnFinished={setShowAudio} />
+				</div>
+			)}
+			{showAudio && !audio && (
+				<>
+					<p>Record yourself saying the following prompt and submit when ready:</p>
+					<p>
+						<em>The quick brown fox jumps over the lazy dog</em>
+					</p>
+					<AudioRecorder returnAudio={setAudio} returnFinished={submitAll} />
+				</>
+			)}
+			{serverResponse && (
+				<>
+					<p>Response: {serverResponse}</p>
+					<button onClick={restart}>Restart</button>
+				</>
+			)}
+		</div>
 	);
 };
 

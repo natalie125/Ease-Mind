@@ -4,13 +4,10 @@ import axios from "axios";
 
 import "../App/App.css";
 
-var baseurl = "http://localhost:5000/canopy/";
-	if(window.location.href.includes("localhost")) {
-		baseurl = "http://localhost:5000/canopy/";
-	}
-	else {
-		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
-	}
+let BASEURL = "";
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
 
 class Canopy_View_Patient extends Component {
 	// form methods
@@ -137,7 +134,7 @@ class Canopy_View_Patient extends Component {
 					</form>
 
 					<div>
-						<button onClick={() => {this.getPatient(baseurl + "patient/prod", {id: this.state.patient_id, name: this.state.name, dob: this.state.dob, ethnicity: this.state.ethnicity})}}>GET patient at: {baseurl}</button>
+						<button onClick={() => {this.getPatient(BASEURL + "canopy/patient/prod", {id: this.state.patient_id, name: this.state.name, dob: this.state.dob, ethnicity: this.state.ethnicity})}}>GET patient at: {BASEURL}</button>
 					</div>
 
 					<Link to="/canopy">

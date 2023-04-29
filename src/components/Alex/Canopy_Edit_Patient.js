@@ -4,13 +4,10 @@ import axios from "axios";
 
 import "../App/App.css";
 
-var baseurl = "http://localhost:5000/canopy/";
-	if(window.location.href.includes("localhost")) {
-		baseurl = "http://localhost:5000/canopy/";
-	}
-	else {
-		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
-	}
+let BASEURL = "";
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
 
 class Canopy_Edit_Patient extends Component {
 	// form methods
@@ -294,43 +291,43 @@ class Canopy_Edit_Patient extends Component {
 					</form>
 
 					<div>
-						<button onClick={() => {this.postPatient(baseurl + "patient/prod", {id: this.state.patient_id, name: this.state.name, dob: this.state.dob, ethnicity: this.state.ethnicity})}}>POST patient at: {baseurl}</button>
+						<button onClick={() => {this.postPatient(BASEURL + "canopy/patient/prod", {id: this.state.patient_id, name: this.state.name, dob: this.state.dob, ethnicity: this.state.ethnicity})}}>POST patient at: {BASEURL}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.putPatient(baseurl + "patient/prod", {id: this.state.patient_id, name: this.state.name, dob: this.state.dob, ethnicity: this.state.ethnicity, new_name: this.state.new_name, new_dob: this.state.new_dob, new_ethnicity: this.state.new_ethnicity})}}>PUT patient at: {baseurl}</button>
+						<button onClick={() => {this.putPatient(BASEURL + "canopy/patient/prod", {id: this.state.patient_id, name: this.state.name, dob: this.state.dob, ethnicity: this.state.ethnicity, new_name: this.state.new_name, new_dob: this.state.new_dob, new_ethnicity: this.state.new_ethnicity})}}>PUT patient at: {BASEURL}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.deletePatient(baseurl + "patient/prod", {id: this.state.patient_id, name: this.state.name, dob: this.state.dob, ethnicity: this.state.ethnicity})}}>DELETE patient at: {baseurl}</button>
+						<button onClick={() => {this.deletePatient(BASEURL + "canopy/patient/prod", {id: this.state.patient_id, name: this.state.name, dob: this.state.dob, ethnicity: this.state.ethnicity})}}>DELETE patient at: {BASEURL}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.getPatientTrees(baseurl + "patient_trees/prod", {id: this.state.patient_node_of_id})}}>Get trees of patient at: {baseurl}</button>
+						<button onClick={() => {this.getPatientTrees(BASEURL + "canopy/patient_trees/prod", {id: this.state.patient_node_of_id})}}>Get trees of patient at: {BASEURL}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.getParentChildren(baseurl + "parent_children/prod", {id: this.state.parent_id})}}>Get children of parent at: {baseurl}</button>
+						<button onClick={() => {this.getParentChildren(BASEURL + "canopy/parent_children/prod", {id: this.state.parent_id})}}>Get children of parent at: {BASEURL}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.getChildParents(baseurl + "child_parents/prod", {id: this.state.child_id})}}>Get parents of child at: {baseurl}</button>
+						<button onClick={() => {this.getChildParents(BASEURL + "canopy/child_parents/prod", {id: this.state.child_id})}}>Get parents of child at: {BASEURL}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.getPatientConditions(baseurl + "patient_conditions/prod", {id: this.state.patient_conditions_id})}}>Get conditions of patient at: {baseurl}</button>
+						<button onClick={() => {this.getPatientConditions(BASEURL + "canopy/patient_conditions/prod", {id: this.state.patient_conditions_id})}}>Get conditions of patient at: {BASEURL}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.linkTreePatient(baseurl + "tree_patient/prod", {tree_id: this.state.tree_nodes_id, patient_id: this.state.patient_node_of_id})}}>Link tree and patient at: {baseurl}</button>
+						<button onClick={() => {this.linkTreePatient(BASEURL + "canopy/tree_patient/prod", {tree_id: this.state.tree_nodes_id, patient_id: this.state.patient_node_of_id})}}>Link tree and patient at: {BASEURL}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.linkParentChild(baseurl + "parent_child/prod", {parent_id: this.state.parent_id, child_id: this.state.child_id})}}>Link parent and child at: {baseurl}</button>
+						<button onClick={() => {this.linkParentChild(BASEURL + "canopy/parent_child/prod", {parent_id: this.state.parent_id, child_id: this.state.child_id})}}>Link parent and child at: {BASEURL}</button>
 					</div>
 
 					<div>
-						<button onClick={() => {this.linkPatientCondition(baseurl + "patient_condition/prod", {patient_id: this.state.patient_conditions_id, condition_id: this.state.condition_patients_id})}}>Link patient and health condition at: {baseurl}</button>
+						<button onClick={() => {this.linkPatientCondition(BASEURL + "canopy/patient_condition/prod", {patient_id: this.state.patient_conditions_id, condition_id: this.state.condition_patients_id})}}>Link patient and health condition at: {BASEURL}</button>
 					</div>
 
 					<Link to="/home">

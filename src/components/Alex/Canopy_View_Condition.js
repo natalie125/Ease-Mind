@@ -4,13 +4,10 @@ import axios from "axios";
 
 import "../App/App.css";
 
-var baseurl = "http://localhost:5000/canopy/";
-	if(window.location.href.includes("localhost")) {
-		baseurl = "http://localhost:5000/canopy/";
-	}
-	else {
-		baseurl = "https://d23bykmxle9vsv.cloudfront.net/";
-	}
+let BASEURL = "";
+process.env.NODE_ENV === "development"
+	? (BASEURL = process.env.REACT_APP_DEV)
+	: (BASEURL = process.env.REACT_APP_PROD);
 
 class Canopy_View_Condition extends Component {
 	// form methods
@@ -94,7 +91,7 @@ class Canopy_View_Condition extends Component {
 					</form>
 
 					<div>
-						<button onClick={() => {this.getCondition(baseurl + "condition/prod", {id: this.state.condition_id, name: this.state.name, hereditary: this.state.hereditary})}}>GET health condition at: {baseurl}</button>
+						<button onClick={() => {this.getCondition(BASEURL + "canopy/condition/prod", {id: this.state.condition_id, name: this.state.name, hereditary: this.state.hereditary})}}>GET health condition at: {BASEURL}</button>
 					</div>
 
 					<Link to="/home">
