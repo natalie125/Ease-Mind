@@ -148,7 +148,7 @@ const WebcamCapture = (props) => {
     <>
     {(showSubmission) ? (
       <div>
-        <h3> Image submission being processed</h3>
+        <h3 data-cy="subConfirm"> Image submission being processed</h3>
         <p>Please remain on this page whilst your image is being analysed. Once complete, you will automatically be relocated to your results page.</p>
         <p>Leaving this page will lead to the results of this submission being lost.</p>
       </div>
@@ -162,9 +162,9 @@ const WebcamCapture = (props) => {
         <div className="gap-camera-kevin"></div>
         {/* <br></br> */}
               <div className="bttn-container-kevin"> 
-                  <button className="cam-button-kevin" onClick={handleTakePicture}>Take Picture</button>
-                  <button className="cam-button-kevin" onClick={switchCameraFacing}>Change Camera</button>
-                  <button className="cam-button-kevin" disabled={imageSrc === null} onClick={handleSubmit}>Submit Image</button>
+                  <button className="cam-button-kevin" data-cy="cameraTakePhoto" onClick={handleTakePicture}>Take Picture</button>
+                  <button className="cam-button-kevin" data-cy="cameraSwitch" onClick={switchCameraFacing}>Change Camera</button>
+                  <button className="cam-button-kevin" data-cy="cameraSubmit" disabled={imageSrc === null} onClick={handleSubmit}>Submit Image</button>
             </div>
         </div>
         <p>Captured image can be reviewed below. Note: The most recently captured image using the Take photo button will be sent for analysis. Any other image captured will be deleted.</p>
