@@ -2,8 +2,9 @@
 ** LANRE STYLES
 *************************/
 .instructions-container{
-    /* border: 1px solid red; */
+    border: 1px solid red;
     padding: 0px 5px;
+    height: 100vh;
 }
 
 .instructions-title{
