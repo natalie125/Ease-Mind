@@ -1,10 +1,8 @@
 import React, { useState, Component } from "react";
-import { Link } from "react-router-dom";
 import "../App/App.css";
 import "../Lanre/dipstik.css";
 import Header from "../Header/Header";
 import DipstikTimer from "./DipstikTimer";
-import DipstikCamera from "./DipstikCamera";
 
 const DipstikInstructions = () =>  {
         const [instructions, setInstructions] = useState(1);
@@ -97,7 +95,8 @@ const DipstikInstructions = () =>  {
                         <div className="instructions-content">
                             <p className="instructions">
                                 Dip your dipstick and hold it horizontally! <br/>
-                                Click start to start the timer!
+                                Start the 60 second timer!
+                                Camera will open up when timer is over!
                             </p>
                             <DipstikTimer />
                         </div>
