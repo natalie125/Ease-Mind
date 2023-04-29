@@ -201,16 +201,21 @@ const detectDipstick = async () => {
         {/* Display message if camera not working */}
         <div className="camera-container">
           <div className="overlay-ancestor">
-
-          {cameraWorking && ( 
-            <div className="camera-overlay" id="camera-overlay"></div>
-          )}
-
             <Webcam className="lanre-webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"0px"} screenshotQuality="1" />
-            <div className="camera-buttons-container">
-              <p className="camera-instructions">Fit the dipstick within the guides </p>
-              <button onClick={handleTakePicture} className="camera-button"></button>
-            </div>
+            
+            {cameraWorking && ( 
+              <>
+              <div className="camera-overlay" id="camera-overlay"></div>
+              <div className="camera-buttons-container">
+                <p className="camera-instructions">Fit the dipstick within the guides</p>
+                <button onClick={handleTakePicture} className="camera-button"></button>
+              </div>
+              </>
+            )}
+
+            
+            
+            
           </div>
         </div>
 

@@ -31,7 +31,7 @@ const DipstikInstructions = () =>  {
             <>
 			<div className="Lanre">
 				<Header />
-				<h1>Welcome to dipstik</h1>
+				<h1 className="dipstik-title">Welcome to dipstik</h1>
 
                 <div className="instructions-container">
                 {instructions <= 1 && (
@@ -93,7 +93,7 @@ const DipstikInstructions = () =>  {
                     <>
                         <h3 className="instructions-title">Wait 60 seconds!</h3>
                         <div className="instructions-content">
-                            <p className="instructions">
+                            <p className="timer-instructions">
                                 Dip your dipstick and hold it horizontally! <br/>
                                 Start the 60 second timer!
                                 Camera will open up when timer is over!
