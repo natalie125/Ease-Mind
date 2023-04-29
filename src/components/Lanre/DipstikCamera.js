@@ -19,8 +19,9 @@ const DipstikCamera = () => {
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
   const [imageSent, setImageSent] = useState(false);
-  const [backFacing, setBackFacing] = React.useState(true);
+  const [backFacing, setBackFacing] = useState(true);
   const [dipstickDetected , setDipstickDetected ] = useState(0);
+  const [cameraWorking , setCameraWorking ] = useState(true);
 	let navigate = useNavigate();
 
   //get the json from the memory
@@ -177,20 +178,46 @@ const detectDipstick = async () => {
 			facingMode: { x },
 		};
 	}
+
+  // console.log(cameraConstraints)
+  // console.log(cameraHeight)
+ 
+// Checks if webcam is working
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (webcamRef.current && webcamRef.current.video) {
+        if (webcamRef.current.video.readyState === 4) {
+          setCameraWorking(true);
+        } else {
+          setCameraWorking(false);
+        }
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  console.log(cameraWorking);
+  
+
 // // // COMBINED END
 // // //****************************************************************
 
-
-//two buttons, one for taking pictures with flash and one for without
   return (
     <>
+
     {/* Show camera */}
     <div>
+
     {!imageSrc && imageSent == false &&  (
 			<>
+        {/* Display message if camera not working */}
         <div className="camera-container">
           <div className="overlay-ancestor">
-            <div className="camera-overlay"></div>
+
+          {cameraWorking && ( 
+            <div className="camera-overlay" id="camera-overlay"></div>
+          )}
+
             <Webcam className="lanre-webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"0px"} screenshotQuality="1" />
             <div className="camera-buttons-container">
               {/* <button onClick={switchCameraFacing} className="camera-button"><FontAwesomeIcon icon={faCameraRotate} className="camera-icon"/></button> */}
@@ -199,11 +226,17 @@ const detectDipstick = async () => {
             </div>
           </div>
         </div>
-      </>
+
+        
+      </> 
 		)}
+
+    {!cameraWorking && ( 
+          <h4> Failed to laod camera. <br/><br/> Please refresh your browser!</h4>
+        )}
     </div>
 
-    {/* Show taken image */}
+    {/* Show the taken image */}
       <div>
         {imageSrc && imageSent == false && (
           <>
@@ -253,9 +286,6 @@ const detectDipstick = async () => {
           </>
         )}
       </div>
-
-
-
     </>
   );
 };

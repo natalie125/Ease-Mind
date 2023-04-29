@@ -128,6 +128,12 @@
     border: 7px solid white;
 }
 
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
 .taken-pic-container{
     /* border: 2px solid green; */
     display: flex;
@@ -255,16 +261,15 @@
     font-weight: 700;
 }
 
-.buttons{
-    /* border: 1px solid green; */
-    padding: 20px 0px;
+.timer-buttons{
+    padding: 10px 0px;
 }
 
 .timer-button{
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     border-radius: 100px;
-    margin: 10px;
+    margin: 5px;
     font-size: 14px;
     color: #ed444a;
     font-weight: bold;
@@ -276,6 +281,10 @@
 .timer-button:hover {
     background-color: #ed444a;
     color: white;
+}
+
+.timer-start-button {
+    width: 120px;
 }
 
 /* **********************
