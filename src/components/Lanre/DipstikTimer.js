@@ -12,7 +12,7 @@ const getPadTime = (time) => time.toString().padStart(2,'0');
 // Working Timer
 export default function DipstikTimer() {
     const [timeLeft, setTimeLeft] = useState(60) 
-    const [isCounting, setIsCounting] = useState(true) 
+    const [isCounting, setIsCounting] = useState(false) 
 
     const minutes = getPadTime(Math.floor(timeLeft / 60));
     const seconds = getPadTime(timeLeft - minutes * 60);
@@ -70,10 +70,10 @@ export default function DipstikTimer() {
                    
                 </div>
 
-                <div className="buttons">
-                    {/* <button className="timer-button" onClick={handle60s}>60s</button> */}
+                <div className="timer-buttons">
                     {/* <button className="timer-button" onClick={handle120s}>120s</button> */}
                     <button className="timer-button" onClick={handleReset}>Reset</button>
+                    <button className="timer-button timer-start-button" onClick={handle60s}>Start</button>
                     <button className="timer-button" onClick={skip}>Skip</button>
                 </div>
                 
