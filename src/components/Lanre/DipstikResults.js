@@ -564,11 +564,11 @@ const DipstikResults = () => {
 
 
 					<Link to="/dipstik/dipstik-camera">
-						<button> Back </button>
+						<button className="instructions-button"> Back </button>
 					</Link>
 
-					<Link to="/dipstik/dipstik-results">
-						<button> Results </button>
+					<Link to="/">
+						<button className="instructions-button" > Home </button>
 					</Link>
 				</div>
 		</div>

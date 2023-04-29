@@ -36,7 +36,7 @@ const DipstikInstructions = () =>  {
                 <div className="instructions-container">
                 {instructions <= 1 && (
 				<>
-                        <h3 className="instructions-title">Disclaimer!</h3>
+                        <h3 className="instructions-title">Disclaimer! (1/3)</h3>
 
                         <div className="instructions-content">
                             <p className="disclaimer"> This app is only to be used as a proof of concept
@@ -59,7 +59,7 @@ const DipstikInstructions = () =>  {
 					    </div>
                     <div className="instructions-button-container">
                         {/* <button onClick={HandlePreviousInstructions}className="start-button"> Back </button> */}
-                        <button onClick={HandleNextInstructions}className="instructions-button"> Continue </button>
+                        <button onClick={HandleNextInstructions} className="instructions-button"> Continue </button>
                     </div>
 
 				</>
@@ -67,7 +67,7 @@ const DipstikInstructions = () =>  {
 
                 {instructions === 2 && (
                     <>
-                        <h3 className="instructions-title">Instructions</h3>
+                        <h3 className="instructions-title">Instructions (2/3)</h3>
 
                         <div className="instructions-content">
                             <p className="instructions">
@@ -91,11 +91,11 @@ const DipstikInstructions = () =>  {
 
                 {instructions === 3 && (
                     <>
-                        <h3 className="instructions-title">Wait 60 seconds!</h3>
+                        <h3 className="instructions-title">Wait 60 seconds! (3/3)</h3>
                         <div className="instructions-content">
                             <p className="timer-instructions">
                                 Dip your dipstick and hold it horizontally! <br/>
-                                Start the 60 second timer!
+                                Start the 60 second timer! <br/>
                                 Camera will open up when timer is over!
                             </p>
                             <DipstikTimer />
