@@ -208,8 +208,7 @@ const detectDipstick = async () => {
 
             <Webcam className="lanre-webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"0px"} screenshotQuality="1" />
             <div className="camera-buttons-container">
-              {/* <button onClick={switchCameraFacing} className="camera-button"><FontAwesomeIcon icon={faCameraRotate} className="camera-icon"/></button> */}
-              {/* <button onClick={handleTakePicture} className="camera-button"><FontAwesomeIcon icon={faCamera} className="camera-icon"/></button> */}
+              <p className="camera-instructions">Fit the dipstick within the guides </p>
               <button onClick={handleTakePicture} className="camera-button"></button>
             </div>
           </div>
