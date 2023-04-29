@@ -19,6 +19,7 @@ const DipstikCamera = () => {
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
   const [imageSent, setImageSent] = useState(false);
+  // eslint-disable-next-line
   const [backFacing, setBackFacing] = useState(true);
   const [dipstickDetected , setDipstickDetected ] = useState(0);
   const [cameraWorking , setCameraWorking ] = useState(true);
@@ -132,7 +133,7 @@ const detectDipstick = async () => {
       minValue = cameraHeight;
       cameraWidth = minValue;
   }else{
-      cameraHeight = cameraHeight;
+      // cameraHeight = cameraHeight;
       cameraWidth = cameraWidth * 0.9;
   };
 
@@ -150,8 +151,7 @@ const detectDipstick = async () => {
 				// max: cameraHeight,
 			},
 			facingMode: { exact: "environment" },
-		};
-		
+		};	
 	} else {
     var x = "user";
 		cameraConstraints = {
@@ -232,7 +232,7 @@ const detectDipstick = async () => {
               <div>
                 {/* <p className="detecting-dipstick-message"> Detecting dipstick....</p> */}
               </div>
-              <img id="image" src={imageSrc} width={minValue} alt="Captured photo" />
+              <img id="image" src={imageSrc} width={minValue} alt="Captured Dipstick" />
               <div className="taken-pic-buttons-overlay-container">
                 {/* Show a message that dipstick is being detected */}
                 {dipstickDetected === 0 && (

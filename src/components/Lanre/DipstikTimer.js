@@ -34,6 +34,7 @@ export default function DipstikTimer() {
         setIsCounting(true);
     }
 
+    // eslint-disable-next-line
     const handle120s = () => {
         setTimeLeft(120);
         setIsCounting(true);
