@@ -65,19 +65,19 @@ const navigate = useNavigate();
         {/* Depending on the instruction index, the user is shown a different option of buttons and text on screen */}
         {(index === instructions_body.length - 1) ? (
             <div>
-              <div className="checkbox-row-kevin">
+              <div data-cy="instructionsCheckbox" className="checkbox-row-kevin">
                 <label className="checkbox-label-kevin">
                 <input type="checkbox" onClick={handleCheckboxChange}/>
                 I have read and understood the disclaimer. I understand that team LARKS are not liable for any damages caused by diagnosis received.
                 </label>
               </div>
-                <button className="instructions-button-kevin" onClick={prev} >Previous</button>
-                <button className="instructions-button-kevin" onClick={handleContinue} disabled={!isChecked} >Continue</button>
+                <button className="instructions-button-kevin" data-cy="instructionsPrev" onClick={prev} >Previous</button>
+                <button className="instructions-button-kevin" data-cy="instructionsContinue" onClick={handleContinue} disabled={!isChecked} >Continue</button>
             </div>
           ) : (
             <div>
-              <button className="instructions-button-kevin" onClick={prev} disabled={index === 0} >Previous</button>
-              <button className="instructions-button-kevin" onClick={next}>Next</button>
+              <button className="instructions-button-kevin" data-cy="instructionsPrev" onClick={prev} disabled={index === 0} >Previous</button>
+              <button className="instructions-button-kevin" data-cy="instructionsNext" onClick={next}>Next</button>
             </div>
 
         )}

@@ -38,7 +38,7 @@ class Kevin extends Component {
 						</Link>
 
 						<Link to="/kevin/instructions">
-							<button className="instructions-button-kevin"> Continue </button>
+							<button data-cy="indexContinue" className="instructions-button-kevin"> Continue </button>
 						</Link>
 					
 					</div>

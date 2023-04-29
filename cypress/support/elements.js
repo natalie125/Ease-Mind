@@ -1,6 +1,4 @@
 export var elements = {
-
-
 	Login: {
 		Email: "[data-cy=loginEmail]",
 		Password: "[data-cy=loginPassword]",
@@ -25,5 +23,16 @@ export var elements = {
 		ramatAppLogo: "[data-cy=ramatAppLogo]",
 		kevinAppLogo: "[data-cy=kevinAppLogo]",
 		alexAppLogo: "[data-cy=alexAppLogo]",
+	},
+	KevinApp: {
+		instructionsPrev : "[data-cy=instructionsPrev]",
+		instructionsNext: "[data-cy=instructionsNext]",
+		instructionsContinue: "[data-cy=instructionsContinue]",
+		cameraTakePhoto: "[data-cy=cameraTakePhoto]",
+		cameraSwitch: "[data-cy=cameraSwitch]",
+		cameraSubmit: "[data-cy=cameraSubmit]",
+		indexContinue: "[data-cy=indexContinue]",
+		checkbox: "[data-cy=instructionsCheckbox]",
+		subConfirm: "[data-cy=subConfirm]"
 	},
 };
