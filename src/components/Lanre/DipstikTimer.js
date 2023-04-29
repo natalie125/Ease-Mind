@@ -1,10 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import "../App/App.css";
 import { useState,useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-
-import Header from "../Header/Header";
 
 
 const getPadTime = (time) => time.toString().padStart(2,'0');
@@ -58,7 +55,6 @@ export default function DipstikTimer() {
 
     return (
         <div>
-            {/* <Header /> */}
 
             <div className="timer-container">
 
@@ -71,7 +67,6 @@ export default function DipstikTimer() {
                 </div>
 
                 <div className="timer-buttons">
-                    {/* <button className="timer-button" onClick={handle120s}>120s</button> */}
                     <button className="timer-button" onClick={handleReset}>Reset</button>
                     <button className="timer-button timer-start-button" onClick={handle60s}>Start</button>
                     <button className="timer-button" onClick={skip}>Skip</button>
