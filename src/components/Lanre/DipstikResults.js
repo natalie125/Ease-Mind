@@ -173,10 +173,10 @@ const DipstikResults = () => {
     let specific_gravity = sessionStorage.getItem("specific_gravity");
 	switch(specific_gravity) {
 		case "1.000":
-			specific_gravity = "Abnormal-hydration";
+			specific_gravity = "Abnormal - hydration";
 		  	break;
 		case "1.005":
-			specific_gravity = "Normal";
+			specific_gravity = "Abnormal - hydration ";
 			break;
 		case "1.010":
 			specific_gravity = "Normal";
@@ -188,10 +188,10 @@ const DipstikResults = () => {
 			specific_gravity = "Normal";
 			break;
 		case "1.025":
-			specific_gravity = "Normal-dehydration";
+			specific_gravity = "Abnormal - dehydration";
 			break;
 		case "1.030":
-			specific_gravity = "Normal-dehydration";
+			specific_gravity = "Abnormal - dehydration";
 			break;
 		default:
 			specific_gravity = "Error";
@@ -276,11 +276,13 @@ const DipstikResults = () => {
 		let urinary_tract_infection = ""
 		if(leukocytes == 'Positive' || nitrite == 'Positive'){
 			urinary_tract_infection = "High Risk"
-		} else if (leukocytes == 'Positive' || nitrite == 'Negative'){
+		} else if (leukocytes == 'Positive' && nitrite == 'Negative'){
+			urinary_tract_infection = "Medium Risk"
+		} else if ((leukocytes == 'Negative' || leukocytes == 'Trace') && nitrite == 'Positive'){
 			urinary_tract_infection = "Medium Risk"
 		} else if ((leukocytes == 'Negative' || leukocytes == 'Trace') || nitrite == 'Positive'){
-			urinary_tract_infection = "Medium Risk"
-		} else if ((leukocytes == 'Negative' || leukocytes == 'Trace') || nitrite == 'Positive'){
+			urinary_tract_infection = "Low risk"
+		}else if(leukocytes == 'Negative' &&  nitrite =='Negative '){
 			urinary_tract_infection = "Low risk"
 		}
 
@@ -424,11 +426,11 @@ const DipstikResults = () => {
 		//The normal USG ranges from 1.003 to 1.030. USG less than 1.010 
 		//is suggestive of relative hydration, and values greater than 1.020 in- dicate relative dehydration.
 		let hydration = ""
-		if(specific_gravity == 'Abnormal-hydration'){
+		if(specific_gravity == 'Abnormal - hydration'){
 			hydration = "Excessive Hydration"
 		} else if (specific_gravity == 'Normal'){
 			hydration = "Optimal"
-		} else if (specific_gravity == 'Normal-dehydration'){
+		} else if (specific_gravity == 'Abnormal - dehydration'){
 			hydration = "Possible dehydration"
 		}
 	
@@ -457,11 +459,19 @@ const DipstikResults = () => {
 		else if (ketones == 'Positive'){
 			ketones_diagnosis = "Ketoacidosis"
 		}
+	
+		let email = sessionStorage.getItem("email");
 
 	return (
 		<div className="dipstik-results">
 			<Header />
 			<h1>Dipstik Results</h1>
+
+			{ email.includes('@dipstik.com') && ( 
+				<div>
+					<a href="https://forms.office.com/e/dpnjQfcVs3" target="_blank" >Click here to complete User Evaluation Survey</a>
+				</div>
+			)}
 
 			<div className="results-switcher-container">
 				<div className="results-switcher-button-container">
@@ -469,6 +479,8 @@ const DipstikResults = () => {
 					<button onClick={handleSwitchToHealthConditions} className={healthStyling}>By Health Conditions</button>
 				</div>
 			</div>
+
+
 
 				<div>
 					{view == 1 && (
