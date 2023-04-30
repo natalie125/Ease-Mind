@@ -20,7 +20,7 @@
     flex-direction: column;
     /* justify-content: center; */
     /* border: 1px solid blue; */
-    height: 395px;
+    height: 390px;
 }
 
 /* Instructions 1 */
@@ -48,7 +48,7 @@
 .timer-instructions{
     /* border: 1px solid blue; */
     color: rgb(87, 87, 87);
-    line-height: 36px;
+    line-height: 28px;
 }
 
 
