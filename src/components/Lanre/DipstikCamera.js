@@ -38,14 +38,14 @@ const DipstikCamera = () => {
     formData.append("image", imageSrc);
     formData.append("email", sessionStorage.getItem("email"));
     setImageSent(true);
-    const response = await axios(BASEURL+"dipstik/upload",{
+    const response = await axios(BASEURL+"dipstik",{
       method: 'post',
       data: formData,
       headers: {
         // "Access-Control-Allow-Origin": "*",
-        'Content-Type': 'multipart/form-data',
         //add authorization header
 				Authorization: "Bearer " + token,
+				"Content-Type": "multipart/form-data",
       }
     })
     .then(response => {
