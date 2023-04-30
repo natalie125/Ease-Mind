@@ -95,7 +95,7 @@ def reference_chart():
 # #############################################################
 # # THE MAIN ROUTE THAT HANDLES THE PREPROCESSING OF DETA AND RETURNING THE RESULT
 # # ^^^^^^^^^^^^^^^^^^^^^^^
-@app.route('/dipstik/upload', methods=['POST'])
+@app.route('/dipstik/upload', methods=['GET','POST'])
 @jwt_required()
 def dipstick_image_upload():
     # if request.method == 'GET' or request.method == 'POST':
