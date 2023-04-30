@@ -7,7 +7,7 @@ import os
 import json
 import base64
 from .models import User_Login, User_Login_Test
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_jwt_extended import JWTManager
 from datetime import timedelta
 
@@ -43,6 +43,14 @@ testing = False  # default should be False, explictly change to True whenever yo
 def handle_bad_request(e):
     # Need to figure out how to request the "400Error" page on the React frontend
     return 'bad request!', 400
+
+
+@app.after_request
+def add_header(response):
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    return response
 
 #############################################################
 # GETTER AND SETTER METHODS
@@ -96,8 +104,8 @@ def login():
             if bcrypt.check_password_hash(u.password, data['credentials']['password']):
                 # response = {"token": "test123"}
                 print('Login Successful!', 'success')
-                access_token = create_access_token(
-                    identity=data['credentials']['email'])
+                # access_token = create_access_token(identity=data['credentials']['email'])
+                access_token = create_access_token(identity=u.id)
                 print(access_token)
                 response = {"token": access_token,
                             "email": u.email}   # added by Alex in order to track the email of the logged in user
@@ -165,6 +173,7 @@ def register():
 # CURRENTLY SAVES IMAGE TO SHOTS FOLDER, BUT I IMAGINE WE DONT WANT TO DO THAT AND ONLY WANT TO PROCESS IMAGES
 # ^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/upload', methods=['POST'])
+@jwt_required()
 def upload():
     image = request.form['image']
     # if frontend sends no image return error
@@ -183,3 +192,15 @@ def upload():
     with open(os.path.join("shots", filename), "wb") as f:
         f.write(image_decoded)
     return {"msg": "image successfully saved in server!"}, 200
+
+#############################################################
+# ROUTE SIMPLY PROVIDING A PROOF OF CONCEPT OF SECURING ENDPOINTS BY USING DECORATOR. WITHOUT APPROPRIATE ACCESS TOKEN THIS ENDPOINT CANNOT BE ACCESSED.
+# ^^^^^^^^^^^^^^^^^^^^^^^
+
+
+@app.route('/verification', methods=['POST'])
+@jwt_required()
+def some_endpoint():
+    current_user = get_jwt_identity()
+    print(current_user)
+    return {'user': current_user}

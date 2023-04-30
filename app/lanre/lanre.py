@@ -10,6 +10,8 @@ from matplotlib import pyplot as plt
 import time
 from PIL import Image
 from rembg import remove
+import json
+from flask_jwt_extended import jwt_required
 # instructions
 # add opencv to flask - pip install opencv-python 
 # add rembg to flask - pip install rembg
@@ -23,8 +25,7 @@ from rembg import remove
 #     # if request.method == 'GET' or request.method == 'POST':
 #     #     return "Lanre's App Requested"
 #############################################################
-# ROUTE SIMPLY PROVIDING A PROOF OF CONCEPT OF UPLOADING IMAGES TO SERVER
-# CURRENTLY SAVES IMAGE TO SHOTS FOLDER, BUT I IMAGINE WE DONT WANT TO DO THAT AND ONLY WANT TO PROCESS IMAGES
+# THIS ROUTE ALLOWS THE SAVING OF TRAINING DATA FOR THE OBJECT DETECTION MODEL
 # ^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/dipstik/training_data', methods=['POST'])
 def create_training_data():
@@ -62,18 +63,48 @@ def create_training_data():
 
 
 
+#############################################################
+# THIS ROUTE ALLOW THE SAVING OF IMAGES FOR THE REFERNCE CHART
+# FOR CROPPING AND EXTRACTING COLOURS FROM REFERENCE CHART
+# ^^^^^^^^^^^^^^^^^^^^^^^
+@app.route('/dipstik/reference_chart', methods=['POST'])
+def reference_chart():
+    print("Saving reference image...")
+    image = request.form['image']
+    # if frontend sends no image return error
+    if image == "null":
+        return {"msg": "No image sent!"}, 415
+
+    # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
+    image = image[22:]
+    image_decoded = base64.b64decode(image)
+    print("Getting time stamp...")
+    # gets string of curr time and names file that
+    timestamp = str(int(time.time()))
+    filename = timestamp+".png"
+
+    # saves decoded base 64 string to that image
+    with open(os.path.join("app/lanre/reference_chart/squares_from_camera2", "image2.png"), "wb") as f:
+        f.write(image_decoded)
+    print("Saved image...")
+
+    return {"msg": "image successfully saved in server!"}, 200
+
 
 
 # #############################################################
-# # ROUTE SIMPLY PROVIDING A PROOF OF CONCEPT OF UPLOADING IMAGES TO SERVER
-# # CURRENTLY SAVES IMAGE TO SHOTS FOLDER, BUT I IMAGINE WE DONT WANT TO DO THAT AND ONLY WANT TO PROCESS IMAGES
+# # THE MAIN ROUTE THAT HANDLES THE PREPROCESSING OF DETA AND RETURNING THE RESULT
 # # ^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/dipstik/upload', methods=['POST'])
+@jwt_required()
 def dipstick_image_upload():
     # if request.method == 'GET' or request.method == 'POST':
     #     return "Lanre's App Requested"
     
     image = request.form['image']
+
+    email = request.form['email']
+    print(email)
     # if frontend sends no image return error
     if image == "null":
         return {"msg": "No image sent!"}, 415
@@ -99,6 +130,7 @@ def dipstick_image_upload():
     # remove background
     pillow_image = remove_background(image_path)
     cropped_image = np.array(pillow_image) # convert image back to numpy array
+    cropped_image = cv2.cvtColor(cropped_image,cv2.COLOR_RGB2HSV)
     print("Background removed!")
     print(type(cropped_image))
     save_image_to_file(cropped_image)    
@@ -122,6 +154,12 @@ def dipstick_image_upload():
     # check diagnoses
     diagnoses = check_dipstick(extracted_colours, reference_chart)
     print(diagnoses)
+
+    # check that the user has an at dipstick email
+    # if they do they are testing the app, save their results for evaluation
+    if "@dipstik.com" in email:
+        # save diagnosis user is doing evaluation
+        save_diagnoses_result(email, diagnoses)
 
     return jsonify(diagnoses), 200
 
@@ -148,8 +186,8 @@ def remove_background(image_path):
 # Slice dipstick image with background removed to just the dipstick
 def slice_image(image):
     # Convert image to grayscale
-    # image = scipy.misc.toimage(image)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    h, s, v = cv2.split(image)
+    gray = v
     
     # Apply threshold to the image
     ret, thresh = cv2.threshold(gray,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
@@ -296,81 +334,82 @@ def draw_rectangles_and_extract_colours(image):
 # compare colours to reference chart
 reference_chart = {
     'leukocytes' : {
-        'neg': [253, 241, 221],
-        'trace': [252, 225, 188],
-        '+70': [251, 235, 235],
-        '++125':[234, 189, 208],
-        '+++500': [182, 130, 169],
+        'neg': [16,  75, 209],
+        'trace': [15,  85, 213],
+        '+70': [173,  50, 209],
+        '++125':[167,  79, 163],
+        '+++500': [154,  81, 139],
     },
+    
     'nitrite' : {
-    'neg': [254, 246, 219],
-    'trace': [252, 237, 237],
-    'pos': [198,  47, 120],
+    'neg': [21,  77, 204],
+    'trace': [171,  46, 208],
+    'pos': [166, 163, 165],
     }, 
     
     'urobilinogen': {
-        '0.1'  : [247, 199,135],
-        '1' : [244, 189, 163],
-        '2' : [240, 170, 153],
-        '4' : [231, 123, 104],
-        '8' : [227,  89, 100],
+        '0.1'  : [14, 135, 202],
+        '1' : [  3,  95, 203],
+        '2' : [  1, 116, 189],
+        '4' : [  1, 138, 195],
+        '8' : [176, 158, 190],
     }, 
     'protein' :{
-        'neg': [243, 224, 118],
-        'trace': [225, 209, 81],
-        '+30': [198, 206, 129],
-        '++100':[182, 193, 101],
-        '+++300': [144, 189, 121],
-        '++++1000': [ 90, 174, 150],
+        'neg': [ 28, 146, 186],
+        'trace': [ 34, 140, 172],
+        '+30': [ 47,  98, 159],
+        '++100':[ 44, 119, 135],
+        '+++300': [ 63,  96, 128],
+        '++++1000':[ 8, 134, 126],
     },
     'ph' : {
-        '5'  : [226, 142, 61],
-        '6': [234, 170, 54],
-        '6.5' : [225, 182, 42],
-        '7' : [204, 188, 15],
-        '7.5' : [146, 155, 37],
-        '8' : [67, 138,  65],
-        '8.5' : [23, 116, 124],
+        '5'  : [ 13, 175, 200],
+        '6': [ 20, 193, 203],
+        '6.5' : [ 22, 179, 162],
+        '7' : [ 34, 153, 143],
+        '7.5' : [ 45, 141,  114],
+        '8' : [ 72, 154,  96],
+        '8.5' : [ 92, 173,  87],
     },
     'blood' : {
-        'neg': [239, 177, 9],
-        'trace': [225, 180, 11],
-        '+25': [158, 151,  58],
-        '++80':[142, 158,  83],
-        '++200':[30, 95, 78],
-        'non_hemolysis+10': [234, 215, 130],
-        '++80_rbc': [211, 204, 120],
+        'neg': [ 18, 210, 194],
+        'trace': [ 23, 190, 166],
+        '+25': [ 35, 138, 110],
+        '++80':[ 48, 111, 108],
+        '+++200':[ 78, 188,  57],
+        'non_hemolysis+10': [ 27, 143, 176],
+        '++80_rbc': [ 32, 135, 165],
     },
     'specific_gravity' :{
-        '1.000': [ 4, 66, 72],
-        '1.005': [49, 73, 59],
-        '1.010': [ 94, 105,  65],
-        '1.015': [132, 129, 39],
-        '1.020':[163, 144,  35],
-        '1.025' : [204, 163, 16],
-        '1.030' : [237, 176, 8],
+        '1.000': [ 90, 196,  61],
+        '1.005': [ 84, 109,  74],
+        '1.010': [54, 73, 83],
+        '1.015': [ 39, 138, 101],
+        '1.020': [ 28, 163, 117],
+        '1.025' : [ 23, 205, 148],
+        '1.030' : [ 20, 229, 169],
     }, 
     'ketones' : {
-        'neg'  : [245, 224, 202],
-        '+5': [231,184, 164],
-        '+15' : [212, 155, 153],
-        '++40' : [158,  78,  99],
-        '+++80' : [128,  45,  78],
-        '++++160' : [111,  48,  72],
+        'neg': [10,  70, 188],
+        '+5': [6,  76, 188],
+        '+15': [173,  97, 173],
+        '++40': [169, 127, 104],
+        '+++80': [169, 209,  77],
+        '++++160': [164, 196, 74],
     },
     'bilirubin' : {
-        'neg'  : [245, 229, 192],
-        '+': [245, 229, 192],
-        '++' : [229, 190, 154],
-        '+++' : [203, 148, 129],
+        'neg'  : [19,  85, 207],
+        '+': [15, 96, 195],
+        '++' : [12, 107, 182],
+        '+++' : [3, 97, 174],
     },
     'glucose': {
-        'neg'  : [103, 180 ,161],
-        '+100': [203, 148, 129],
-        '+250' : [156, 176,  79],
-        '++500' : [153, 135,  43],
-        '+++1000' : [134,  88,  48],
-        '++++2000' :[108,  63,  47],
+        'neg' :[ 90, 117, 155],
+        '+100': [ 70,  94, 127],
+        '+250': [ 48, 116, 147],
+        '++500' : [ 28, 135,  96],
+        '+++1000': [ 12, 145, 105],
+        '++++2000':[5, 206,  56],
     }
 }
 
@@ -405,22 +444,49 @@ def check_parameter(colour_on_pad, reference_colours_for_pad):
             lowest = ed
             closest_match = parameter_name
 
-    # print(f'    Match: {closest_match}')
     return closest_match
 
 
 # check the whole dipstick
 def check_dipstick(extracted_colours,reference_chart):
     diagnoses = {}
+
     # check each value in the dipstick
     for parameter_name in extracted_colours:
-        # print(parameter_name)
         result = check_parameter(extracted_colours.get(parameter_name), reference_chart.get(parameter_name))
         diagnoses[parameter_name] = result
-    # 
+    
     return diagnoses
 
 diagnoses = check_dipstick(extracted_colours, reference_chart)
 
 # # get diagnoses
 # print(diagnoses)
+
+
+# Function used to save diagnosis result if a user decides to do an evaluation
+def save_diagnoses_result(email, diagnoses):
+    print("Saving user evaluation result...")
+    print(diagnoses)
+    print(email)
+    # Remove the quotes using strip method
+    email = email.strip('"')
+
+    # added user's email
+    user_diagnoses = {'email': email,
+                      'results' : diagnoses}
+    
+
+    # read the contents of the file
+    with open("app/lanre/submitted_images/user_evaluation_results.json", "r") as file:
+        file_data = json.load(file)
+    
+    # append new diagnoses
+    file_data.append(user_diagnoses)
+
+    # write updated diagnosis to file
+    with open("app/lanre/submitted_images/user_evaluation_results.json", "w") as file:
+        # file.seek(0)
+        json.dump(file_data, file, indent = 4)
+    
+    print("Saving user evaluation result... completed...")
