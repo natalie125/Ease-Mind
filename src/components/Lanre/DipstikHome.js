@@ -53,7 +53,7 @@ const DipstikInstructions = () =>  {
                                 to the backend for processing, however this diagnosis will not be saved anywhere in the backend. 
 
                                 <br /> <br />
-                                By clicking "continue", you agree to the  above conditions.
+                                By clicking "Continue", you agree to the  above conditions.
                             </p>
                     
 					    </div>
