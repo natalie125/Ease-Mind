@@ -20,7 +20,7 @@ export var elements = {
 		Logout_Button: "[data-cy=logoutBttn]",
 		shreyasAppLogo: "[data-cy=shreyasAppLogo]",
 		lanreAppLogo: "[data-cy=lanreAppLogo]",
-		ramatAppLogo: "[data-cy=ramatAppLogo]",
+		ramatAppLogo: "[data-cy=paralysisAnalysisLogo]",
 		kevinAppLogo: "[data-cy=kevinAppLogo]",
 		alexAppLogo: "[data-cy=alexAppLogo]",
 	},
