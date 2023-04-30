@@ -146,6 +146,7 @@ const WebcamCapture = (props) => {
 
   return (
     <>
+    {/* Check if the user had made a submission, this dictates what elements on the page are shown to the user */}
     {(showSubmission) ? (
       <div>
         <h3 data-cy="subConfirm"> Image submission being processed</h3>

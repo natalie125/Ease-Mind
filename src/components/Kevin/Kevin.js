@@ -25,11 +25,9 @@ class Kevin extends Component {
 
 						<h3 className="h3_kevin"> Please read the following information carefully:</h3>
 						<p>
-							This Skin Cancer identification application has been developed as a prototype only, to demonstrate the potential application of Computer Aided Diagnosis (CAD).
+							This Skin Cancer identification application has been developed as a prototype only, to demonstrate the potential application of Computer Aided Diagnosis (CAD), and as such should not be used as a replacement to diagnosis received from a medical professional.
 						</p>
-						<p>
-							This application should not be used primarily as a diagnosis device.
-						</p>
+						<p> When developing the application, the algorithm being used was able to accurately identify a malignant or benign skin cancer/lesion in 86.2% of cases. The algorithm was also able to detect a malignant skin cancer in 81.1% of cases.</p>
 						<p>
 							If you have any doubts regarding your personal health, please visit a medical professional to receive a diagnosis.
 						</p>

@@ -21,6 +21,8 @@ class Kevin extends Component {
 						<p> This result was calculated based on the information our Machine Learning Algorithm was trained, from which it has deduced that this image may contain a malignant skin cancer.</p>
 						<p> Please do not use this information as an alternative to professional diagnosis. If you have any doubts about your health and/or well-being, please visit a medical professional. </p>
 						
+
+						
 					</div>
 					
 				</div>
