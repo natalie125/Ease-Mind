@@ -1,10 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import "../App/App.css";
 import { useState,useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-
-import Header from "../Header/Header";
 
 
 const getPadTime = (time) => time.toString().padStart(2,'0');
@@ -12,7 +9,7 @@ const getPadTime = (time) => time.toString().padStart(2,'0');
 // Working Timer
 export default function DipstikTimer() {
     const [timeLeft, setTimeLeft] = useState(60) 
-    const [isCounting, setIsCounting] = useState(true) 
+    const [isCounting, setIsCounting] = useState(false) 
 
     const minutes = getPadTime(Math.floor(timeLeft / 60));
     const seconds = getPadTime(timeLeft - minutes * 60);
@@ -37,6 +34,7 @@ export default function DipstikTimer() {
         setIsCounting(true);
     }
 
+    // eslint-disable-next-line
     const handle120s = () => {
         setTimeLeft(120);
         setIsCounting(true);
@@ -51,14 +49,13 @@ export default function DipstikTimer() {
     }
 
 
-    if (timeLeft == 0 && isCounting){
+    if (timeLeft === 0 && isCounting){
         navigate("/dipstik/dipstik-camera", { replace: true });
     }
 
 
     return (
         <div>
-            {/* <Header /> */}
 
             <div className="timer-container">
 
@@ -70,10 +67,9 @@ export default function DipstikTimer() {
                    
                 </div>
 
-                <div className="buttons">
-                    {/* <button className="timer-button" onClick={handle60s}>60s</button> */}
-                    {/* <button className="timer-button" onClick={handle120s}>120s</button> */}
+                <div className="timer-buttons">
                     <button className="timer-button" onClick={handleReset}>Reset</button>
+                    <button className="timer-button timer-start-button" onClick={handle60s}>Start</button>
                     <button className="timer-button" onClick={skip}>Skip</button>
                 </div>
                 

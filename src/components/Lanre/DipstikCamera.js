@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCamera, faArrowsRotate, faPaperPlane, faUpload, faCameraRotate, faCameraAlt, faCameraRetro, faVideoCamera, faPlaneArrival, faPlaneCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import {faArrowsRotate, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import * as cvstfjs from "@microsoft/customvision-tfjs";
@@ -19,21 +19,33 @@ const DipstikCamera = () => {
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
   const [imageSent, setImageSent] = useState(false);
-  const [backFacing, setBackFacing] = React.useState(true);
+  // eslint-disable-next-line
+  const [backFacing, setBackFacing] = useState(true);
   const [dipstickDetected , setDipstickDetected ] = useState(0);
+  const [cameraWorking , setCameraWorking ] = useState(true);
 	let navigate = useNavigate();
+
+  //get the json from the memory
+	const token_JSON = JSON.parse(sessionStorage.getItem("token"));
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
+    //get the specific token string
+		const token = token_JSON.data.token;
+
     formData.append("image", imageSrc);
+    formData.append("email", sessionStorage.getItem("email"));
     setImageSent(true);
     const response = await axios(BASEURL+"dipstik/upload",{
       method: 'post',
       data: formData,
       headers: {
         "Access-Control-Allow-Origin": "*",
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+        //add authorization header
+				Authorization: "Bearer " + token,
       }
     })
     .then(response => {
@@ -78,7 +90,7 @@ const handleRetakePicture = () => {
 };
 
 
-// object detection model
+// dipstick object detection model
 const detectDipstick = async () => {
   let model = new cvstfjs.ObjectDetectionModel();
   // load the tensorflow  model hosted on aws s3
@@ -96,18 +108,6 @@ const detectDipstick = async () => {
   }
 };
 
-  // Using button to change what camera is being used
-	// Should work based on MDN documentation: https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints/facingMode
-	// But I cannot test properly as its running on a laptop.
-  const switchCameraFacing = React.useCallback(() => {
-		if (backFacing){
-			setBackFacing(false);
-		}
-		else{
-			setBackFacing(true);
-		}
-
-	},[backFacing]);
 
 //  // //**************************************************************** 
 //  // // COMBINED
@@ -133,7 +133,7 @@ const detectDipstick = async () => {
       minValue = cameraHeight;
       cameraWidth = minValue;
   }else{
-      cameraHeight = cameraHeight;
+      // cameraHeight = cameraHeight;
       cameraWidth = cameraWidth * 0.9;
   };
 
@@ -151,8 +151,7 @@ const detectDipstick = async () => {
 				// max: cameraHeight,
 			},
 			facingMode: { exact: "environment" },
-		};
-		
+		};	
 	} else {
     var x = "user";
 		cameraConstraints = {
@@ -167,50 +166,86 @@ const detectDipstick = async () => {
 			facingMode: { x },
 		};
 	}
+
+  // console.log(cameraConstraints)
+  // console.log(cameraHeight)
+ 
+// Checks if webcam is working
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (webcamRef.current && webcamRef.current.video) {
+        if (webcamRef.current.video.readyState === 4) {
+          setCameraWorking(true);
+        } else {
+          setCameraWorking(false);
+        }
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  console.log(cameraWorking);
+  
+
 // // // COMBINED END
 // // //****************************************************************
 
-
-//two buttons, one for taking pictures with flash and one for without
   return (
     <>
+
     {/* Show camera */}
     <div>
-    {!imageSrc && imageSent == false &&  (
+
+    {!imageSrc && imageSent === false &&  (
 			<>
+        {/* Display message if camera not working */}
         <div className="camera-container">
           <div className="overlay-ancestor">
-            <div className="camera-overlay"></div>
             <Webcam className="lanre-webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"0px"} screenshotQuality="1" />
-            <div className="camera-buttons-container">
-              {/* <button onClick={switchCameraFacing} className="camera-button"><FontAwesomeIcon icon={faCameraRotate} className="camera-icon"/></button> */}
-              {/* <button onClick={handleTakePicture} className="camera-button"><FontAwesomeIcon icon={faCamera} className="camera-icon"/></button> */}
-              <button onClick={handleTakePicture} className="camera-button"></button>
-            </div>
+            
+            {cameraWorking && ( 
+              <>
+              <div className="camera-overlay" id="camera-overlay"></div>
+              <div className="camera-buttons-container">
+                <p className="camera-instructions">Fit the dipstick within the guides</p>
+                <button onClick={handleTakePicture} className="camera-button"></button>
+              </div>
+              </>
+            )}
+
+            
+            
+            
           </div>
         </div>
-      </>
+
+        
+      </> 
 		)}
+
+    {!cameraWorking && ( 
+          <h4> Failed to load camera. <br/><br/> Please refresh your browser!</h4>
+        )}
     </div>
 
-    {/* Show taken image */}
+    {/* Show the taken image */}
       <div>
-        {imageSrc && imageSent == false && (
+        {imageSrc && imageSent === false && (
           <>
             <div className="taken-pic-container">
               <div>
                 {/* <p className="detecting-dipstick-message"> Detecting dipstick....</p> */}
               </div>
-              <img id="image" src={imageSrc} width={minValue} alt="Captured photo" />
+              <img id="image" src={imageSrc} width={minValue} alt="Captured Dipstick" />
               <div className="taken-pic-buttons-overlay-container">
                 {/* Show a message that dipstick is being detected */}
-                {dipstickDetected == 0 && (
+                {dipstickDetected === 0 && (
                   <p className="detecting-dipstick-message"> Detecting dipstick... </p>)}
 
-                {dipstickDetected == 1 && (
+                {dipstickDetected === 1 && (
                   <p className="detecting-dipstick-message success"> Dipstick detected </p>)}
 
-                {dipstickDetected == -1 && (
+                {dipstickDetected === -1 && (
                   <p className="detecting-dipstick-message failure"> Dipstick not detected </p>)}
 
 
@@ -218,7 +253,7 @@ const detectDipstick = async () => {
                 <div>
                   <button onClick={handleRetakePicture} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
 
-                  {dipstickDetected == 1 && (
+                  {dipstickDetected === 1 && (
                   <button onClick={handleSubmit} className="camera-button"><FontAwesomeIcon icon={faPaperPlane} className="camera-icon"/></button>)}
                 </div>
 
@@ -230,7 +265,7 @@ const detectDipstick = async () => {
 
       {/* Show a message that results are being processed */}
       <div>
-        {imageSrc && imageSent == true  && (
+        {imageSrc && imageSent === true  && (
           <>
               <Header />
             <div>
@@ -243,9 +278,6 @@ const detectDipstick = async () => {
           </>
         )}
       </div>
-
-
-
     </>
   );
 };

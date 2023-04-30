@@ -1,15 +1,13 @@
-import React, { useState, Component } from "react";
-import { Link } from "react-router-dom";
+import React, { useState} from "react";
 import "../App/App.css";
 import "../Lanre/dipstik.css";
 import Header from "../Header/Header";
 import DipstikTimer from "./DipstikTimer";
-import DipstikCamera from "./DipstikCamera";
 
 const DipstikInstructions = () =>  {
         const [instructions, setInstructions] = useState(1);
 
-        // Handle What happends when 
+        // Handle what happends when next instruction  is clicked 
         const HandleNextInstructions = () => {
             if (instructions >= 3) {
                 setInstructions(3);
@@ -18,6 +16,7 @@ const DipstikInstructions = () =>  {
             }
         };
 
+        // Handle what happends when previous instruction  is clicked 
         const HandlePreviousInstructions = () => {
             if (instructions <= 0) {
                 setInstructions(1);
@@ -28,79 +27,88 @@ const DipstikInstructions = () =>  {
         };
 
 
-        
 		return (
             <>
 			<div className="Lanre">
 				<Header />
-				<h1>Welcome to dipstik</h1>
+				<h1 className="dipstik-title">Welcome to dipstik</h1>
 
+                <div className="instructions-container">
                 {instructions <= 1 && (
-				<div>
-					<div className="instructions-container">
-                        <h3 className="instructions-title">Important Note</h3>
-                        <div className="important-note-container">
-                            <p className="important-note"> This app is only to be used as a proof of concept. <br />
-                                All advice or diagnosis given in this app should not be taken as medical advice. <br /><br />
-                                If you are concerned about any part of your health, please get in contact with
-                                your GP or a qualified medical professional for further advice.
-                                This app is not intended to treat, diagnose, or cur any conditions. 
-                                {/* From Urinox app */}
+				<>
+                        <h3 className="instructions-title">Disclaimer! (1/3)</h3>
 
+                        <div className="instructions-content">
+                            <p className="disclaimer"> This app is only to be used as a proof of concept
+                                not intended to treat, diagnose, or cure any conditions. All advice or diagnosis
+                                given in this app should not be taken as medical advice. 
+                                
                                 <br /><br />
+                                <b> If you are concerned about any part of your health, please get in contact with
+                                your GP or a qualified medical professional for further advice. </b>
+                                <br />
 
-                                The app material is provided for informational and educational purposes alone. Please 
-                                seek your doctor's advice before making any clinical inference or decision. 
-                                Use this app as a reference to record your activity.
+                                <br />
+                                To collect your diagnosis, an image of your urine will be sent 
+                                to the backend for processing, however this diagnosis will not be saved anywhere in the backend. 
+
+                                <br /> <br />
+                                By clicking "Continue", you agree to the  above conditions.
                             </p>
-                        </div>
-                        
                     
-					</div>
-                    <div className="start-button-container">
-                        <button onClick={HandlePreviousInstructions}className="start-button"> Back </button>
-                        <button onClick={HandleNextInstructions}className="start-button"> Next </button>
-
-                        {/* <Link to="/dipstik-home/dipstik-timer">
-                            <button className="start-button"> Start </button>
-                        </Link> */}
+					    </div>
+                    <div className="instructions-button-container">
+                        {/* <button onClick={HandlePreviousInstructions}className="start-button"> Back </button> */}
+                        <button onClick={HandleNextInstructions} className="instructions-button"> Continue </button>
                     </div>
 
-				</div>
+				</>
                 )}
 
-                {instructions == 2 && (
+                {instructions === 2 && (
                     <>
-                        <h3 className="instructions-title">Instructions</h3>
-                        <div>
+                        <h3 className="instructions-title">Instructions (2/3)</h3>
+
+                        <div className="instructions-content">
                             <p className="instructions">
                                 1. Make sure you have collected your urine sample. <br />
-                                2. Dip the dipstick in your urine sample<br/>
+                                2. Dip the dipstick in your urine sample.<br/>
+                                3. Remove the dipstick. <br />
+                                4. Hold the stick horizontally and wait 60 seconds. <br />
+                                5. Ensure you have good lighting! <br />
+                                6. Take a picture of the urine dipstick. <br />
+                                7. Ensure you take the image from directly above the dipstick! <br />
+                                8. Get your diagnosis! <br/>
                             </p>
                         </div>
-                        <button onClick={HandlePreviousInstructions}className="start-button"> Back </button>
-                        <button onClick={HandleNextInstructions}className="start-button"> Next </button>
+
+                        <div className="instructions-button-container">
+                            <button onClick={HandlePreviousInstructions} className="instructions-button"> Back </button>
+                            <button onClick={HandleNextInstructions} className="instructions-button"> Next </button>
+                        </div>
                     </>
                 )}
 
-                {instructions == 3 && (
+                {instructions === 3 && (
                     <>
-                        <h3 className="instructions-title">Instructions</h3>
-                        <p> 3. Wait</p>
-                        <p> Hold the stick horizontally and wait 60 seconds</p>
-                        <DipstikTimer />
-
+                        <h3 className="instructions-title">Wait 60 seconds! (3/3)</h3>
+                        <div className="instructions-content">
+                            <p className="timer-instructions">
+                                Dip your dipstick and hold it horizontally! <br/>
+                                Start the 60 second timer! <br/>
+                                Camera will open up when timer is over!
+                            </p>
+                            <DipstikTimer />
+                        </div>
                         
-                        
-                        <button onClick={HandlePreviousInstructions}className="start-button"> Back </button>
+                        <div className="instructions-button-container">
+                            <button onClick={HandlePreviousInstructions} className="instructions-button"> Back </button>
+                        </div>
+                        {/* <button onClick={HandlePreviousInstructions}className="start-button"> Back </button> */}
                         {/* <button onClick={HandleNextInstructions}className="start-button"> Next </button> */}
                     </>
                 )}
-
-
-                <Link to="/home">
-						<button> Back </button>
-				</Link>
+                </div>
 			</div>
             </>
         );

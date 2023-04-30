@@ -1,6 +1,4 @@
 export var elements = {
-
-
 	Login: {
 		Email: "[data-cy=loginEmail]",
 		Password: "[data-cy=loginPassword]",
@@ -19,7 +17,23 @@ export var elements = {
 	Home: {
 		ButtonContainer: "[data-cy=homeBttnContainer]",
 		applicationButton: "[data-cy=alexAppLogo]",
-		Logout_Button: "[data-cy=logoutBttn]"
+		Logout_Button: "[data-cy=logoutBttn]",
+		shreyasAppLogo: "[data-cy=shreyasAppLogo]",
+		lanreAppLogo: "[data-cy=lanreAppLogo]",
+		ramatAppLogo: "[data-cy=ramatAppLogo]",
+		kevinAppLogo: "[data-cy=kevinAppLogo]",
+		alexAppLogo: "[data-cy=alexAppLogo]",
+	},
+	KevinApp: {
+		instructionsPrev : "[data-cy=instructionsPrev]",
+		instructionsNext: "[data-cy=instructionsNext]",
+		instructionsContinue: "[data-cy=instructionsContinue]",
+		cameraTakePhoto: "[data-cy=cameraTakePhoto]",
+		cameraSwitch: "[data-cy=cameraSwitch]",
+		cameraSubmit: "[data-cy=cameraSubmit]",
+		indexContinue: "[data-cy=indexContinue]",
+		checkbox: "[data-cy=instructionsCheckbox]",
+		subConfirm: "[data-cy=subConfirm]"
 	},
 
 	// Paralysis Alanysis elements
