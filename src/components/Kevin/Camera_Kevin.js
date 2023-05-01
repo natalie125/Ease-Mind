@@ -47,12 +47,15 @@ const WebcamCapture = (props) => {
 			},
     })
       .then(response => {
+        console.log(response);
+        console.log(response.data);
         setServerResponse(response.data['msg']); // msg variable: whether user should be routed to positive or negative outcome page.
         setPrediction(response.data['pred']); // Raw prediciton value of ML algorithm on backend
         // Code above gets text from backend response, to be used in next pages seen by user
 
       })
       .catch(error => {
+        console.log("error with response");
         console.error(error);
       });
   }
@@ -133,20 +136,21 @@ const WebcamCapture = (props) => {
   // Following Shreyas' Implementation of rerouting user based on backend reponse
 
   const skin_outcome = (serverResponse) => {
-    if (serverResponse > 0.5){
-      serverResponse = 1
-    }else{
-      serverResponse = 0
-    }
+    
     // Store the ML Backend Algorithm prediction in SessionStorage, to allow for easy access on outcome page.
     sessionStorage.setItem('prediction-skin-cancer',prediction)
     if (serverResponse === 0) navigate("/kevin/outcome_negative", { replace: true});
     else navigate("/kevin/outcome_positive", { replace: true});
-  }
+
+ 
+ }
+
+ const handleRetake = () => {
+  setImageSrc(null);
+ }
 
   return (
     <>
-    {/* Check if the user had made a submission, this dictates what elements on the page are shown to the user */}
     {(showSubmission) ? (
       <div>
         <h3 data-cy="subConfirm"> Image submission being processed</h3>
@@ -154,28 +158,44 @@ const WebcamCapture = (props) => {
         <p>Leaving this page will lead to the results of this submission being lost.</p>
       </div>
     ) : (
-      <div className="cam-page-kevin">
-      <div className="cam-container-kevin">
-        <div className="cam-box-kevin">
-          <p>Please capture the lesion in the camera view below:</p>
-          <Webcam className = "webcam-kevin" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} audio={false} ref={webcamRef} />
-        </div>
-        <div className="gap-camera-kevin"></div>
-        {/* <br></br> */}
-              <div className="bttn-container-kevin"> 
-                  <button className="cam-button-kevin" data-cy="cameraTakePhoto" onClick={handleTakePicture}>Take Picture</button>
-                  <button className="cam-button-kevin" data-cy="cameraSwitch" onClick={switchCameraFacing}>Change Camera</button>
-                  <button className="cam-button-kevin" data-cy="cameraSubmit" disabled={imageSrc === null} onClick={handleSubmit}>Submit Image</button>
+
+
+      <div>
+
+      {(imageSrc) ? (
+        <div className= "cam-page-kevin">
+          <div className="cam-container-kevin">
+            <div className="cam-box-kevin">
+              <p> Captured image displayed below:</p>
+              <img src={imageSrc} style={{ width: cameraWidth, borderRadius: "5px" }} alt="User's capture" />
             </div>
-        </div>
-        <p>Captured image can be reviewed below. Note: The most recently captured image using the Take photo button will be sent for analysis. Any other image captured will be deleted.</p>
-              <div>
-          {imageSrc && (
-            <img src={imageSrc} style={{ width: cameraWidth, borderRadius: "5px" }} alt="User's captured image" />
-          )}
+            <div className="gap-camera-kevin"></div>
+            <div className="bttn-container-kevin">
+              <button className="cam-button-kevin" data-cy="cameraSubmit" disabled={imageSrc === null} onClick={handleSubmit}>Submit Image</button>
+              <button className="cam-button-kevin" data-cy="cameraTakePhoto" onClick={handleRetake}>Retake Picture</button>
+            </div>
             
+          </div>
+          <p> Please ensure the image captured is clear and in focus, with the lesion to the analysed placed in the center of the frame.</p>
+        </div>
+
+      ) : (
+        <div className= "cam-page-kevin">
+          <div className="cam-container-kevin">
+          <div className="cam-box-kevin">
+            <p> Use camera window to capture lesion image:</p>
+          <Webcam className = "webcam-kevin" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} audio={false} ref={webcamRef} />
+          </div>
+          <div className="gap-camera-kevin"></div>
+          <div className="bttn-container-kevin">
+            <button className="cam-button-kevin" data-cy="cameraTakePhoto" onClick={handleTakePicture}>Take Picture</button>
+              <button className="cam-button-kevin" data-cy="cameraSwitch" onClick={switchCameraFacing}>Change Camera</button>
+          </div>
+        </div>
       </div>
-    </div>
+      )}
+      </div>
+      
     )}
 
     <div>
