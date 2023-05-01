@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import {default as Camera} from "./ParalysisAnalysisCamera";
 import AudioRecorder from "../AudioRecorder";
+import {SpinnerCircularFixed} from "spinners-react";
+import InfoPanel from "./InfoPanel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../App/App.css";
@@ -19,6 +21,7 @@ const ImageAudio = (props) => {
 	const [audio, setAudio] = useState(false);
 	const [serverResponse, setServerResponse] = React.useState(null);
 	const [displayMessage, setDisplayMessage] = React.useState(null);
+	const [showInfoPanel, setShowInfoPanel] = React.useState(true);
 	let [hasMounted, setHasMounted] = useState(false);
 
 
@@ -41,7 +44,7 @@ const ImageAudio = (props) => {
 				},
 			});
 			console.log(response);
-			setServerResponse(JSON.stringify(response.data.msg));
+			setServerResponse(response);
 		} catch (error) {
 			console.error(error);
 		}
@@ -59,10 +62,18 @@ const ImageAudio = (props) => {
 	}
 
 	const getDisplayMessage = () => {
-		const jsonResponse = JSON.parse(serverResponse)
+		const jsonResponse = JSON.stringify(serverResponse.data.msg)
 		const droop_prediction = jsonResponse.face_prediction
 		const dys_prediction = jsonResponse.voice_prediction
-			console.log(jsonResponse[1])
+		console.log(serverResponse)
+		console.log(jsonResponse)
+		console.log(droop_prediction)
+		console.log("-------------------------------")
+
+		if(serverResponse.status === 422){
+			setDisplayMessage(jsonResponse)
+			return
+		}
 
 		if(droop_prediction === "no droop" && dys_prediction < 75){
 			setDisplayMessage("You are not displaying any signs of facial droop or slurring.")
@@ -77,9 +88,6 @@ const ImageAudio = (props) => {
 			call999()
 		}
 	}
-	
-
-	
 
 	useEffect(() => {
 		if (hasMounted && serverResponse !== null) {
@@ -91,41 +99,64 @@ const ImageAudio = (props) => {
 
 
 	return (
-		<div className="paralysis-container">
-
-			{!showAudio && (
-				<>
-				<h2 style={{ marginBottom: "1%" }}>Welcome to Paralysis Analysis</h2>
-
-				<div className="paralysis-split-container">
-					<p className="paralysis-text-container">
-						Straighten your head as best as you can, keep a neutral expresssion and take a picture.
-					</p>
-					<Camera endpoint="ramat/image" returnImage={setImage} returnFinished={setShowAudio} />
+		<div className = "paralysis-container">
+			{showInfoPanel && (
+				<div style={{height: "100%", width: "100%", justifyContent: "center", alignItems: "center", display: "flex"}}>
+					<div className="paralysis-layered-container paralysis-overlay"/>
+					<InfoPanel visible={setShowInfoPanel}/>
 				</div>
-				</>
 			)}
-			{showAudio && !audio && (
-				<>
-					<p style={{ paddingTop: "3%", }}>Record yourself saying the following prompt and submit when ready:</p>
-					<p>
-						<em>The quick brown fox jumps over the lazy dog</em>
-					</p>
-					<AudioRecorder returnAudio={setAudio} returnFinished={submitAll} />
-				</>
-			)}
-			{serverResponse && (
-				<>
-					<h2 style={{ paddingTop: "3%", paddingBottom: "3%" }}>{displayMessage}</h2>
-					<tr onclick={call999}>
-						<td>Phone: 900 300 400</td>
-					</tr>
+			<div className="paralysis-layered-container paralysis-component-container ">
 
-					<button className ="paralysis-button" onClick={restart}>Restart</button>
+				{!showAudio && (
+					<>
+					<h2 style={{ marginTop: "1%" }}>Welcome to Paralysis Analysis</h2>
 
-				</>
-				
-			)}
+					<button className="paralysis-info-button" onClick={() => {setShowInfoPanel(true)}}>
+						What is Paralysis Analysis?
+					</button>
+
+					<div className="paralysis-split-container">
+						<li><span style={{ verticalAlign: "center" }}><p className="paralysis-text-container">
+							Straighten your head as best as you can, keep a neutral expresssion and take a picture.
+						</p></span></li>
+						<li><span style={{ verticalAlign: "top" }}><Camera endpoint="ramat/image" returnImage={setImage} returnFinished={setShowAudio} /></span></li>
+					</div>
+					</>
+				)}
+				{showAudio && !audio && (
+					<>
+						<p style={{ paddingTop: "3%", }}>Record yourself saying the following prompt and submit when ready:</p>
+						<p>
+							<em>The quick brown fox jumps over the lazy dog</em>
+						</p>
+						<AudioRecorder returnAudio={setAudio} returnFinished={submitAll} />
+					</>
+				)}
+				{showAudio && audio && !serverResponse && (
+					<div className = "paralysis-loader-container">
+						<SpinnerCircularFixed
+							color="#0B603E"
+							size={"90%"}
+							enabled={true}
+							aria-label="Audio Spinner"
+							data-testid="loader"
+						/>
+					</div>
+				)}
+				{serverResponse && (
+					<>
+						<h2 style={{ paddingTop: "3%", paddingBottom: "3%" }}>{displayMessage}</h2>
+						<a href="tel:+447846054321">
+							Call Emergency Services
+						</a>
+
+						<button className ="paralysis-button" style={{width: "80%", fontSize: "90%"}} onClick={restart}>Restart</button>
+
+					</>
+					
+				)}
+			</div>
 		</div>
 	);
 };

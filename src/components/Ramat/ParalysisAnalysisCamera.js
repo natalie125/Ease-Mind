@@ -1,8 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import {isMobile} from 'react-device-detect';
 import Webcam from "react-webcam";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import "../App/App.css";
 import "./ParalysisAnalysis.css";
 
@@ -16,9 +14,7 @@ process.env.NODE_ENV === "development"
 const ParalysisAnalysisCamera = (props) => {
 	const webcamRef = useRef(null);
 	const [imageSrc, setImageSrc] = useState(null);
-	const [flash, setFlash] = useState(false);
 	const [frontFacing, setFrontFacing] = React.useState(true);
-	const [serverResponse, setServerResponse] = React.useState(null);
 
 	//takes pictures without flash
 	const handleTakePicture = () => {
@@ -92,16 +88,16 @@ const ParalysisAnalysisCamera = (props) => {
 
 	return (
 		<>
-			<div className="paralysis-cam-container">
+			
 				{!imageSrc && (
 					<>
-						<div>
+						<div className="paralysis-cam-container">
 							<Webcam
 								className="webcam"
 								data-cy="activeCamera"
 								videoConstraints={cameraConstraints}
 								ref={webcamRef}
-								style={{ width: "100%" }}
+								style={{ maxWidth: "100%" }}
 							/>
 						</div>
 						<div className="paralysis-cam-button-container">
@@ -119,7 +115,8 @@ const ParalysisAnalysisCamera = (props) => {
 				)}
 				{imageSrc && (
 					<>
-						<div className="webcam" style={{ width: "100%" }}>
+
+						<div className="paralysis-cam-container">
 							<img src={imageSrc} style={{ borderRadius: "5px" }} alt="Captured face" data-cy="capturedImage" />
 						</div>
 						<div className="paralysis-cam-button-container">
@@ -132,7 +129,6 @@ const ParalysisAnalysisCamera = (props) => {
 						</div>
 					</>
 				)}
-			</div>
 		</>
 	);
 };
