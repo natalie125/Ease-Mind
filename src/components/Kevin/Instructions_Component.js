@@ -5,18 +5,18 @@ import "./Kevin.css";
 
 // Instructions corresponding to Instructions headings.
 const instructions_body = [
-    "Firstly, identify the lesion that you would like to identify. Look for any new or exising moles, or lesions showing signs of assymetry, discolouration, rough borders, or a relatively large size.",
-    "Next, take your device of choice and attempt to capture good image. Aim for the image to be in focus, and for the lesion to take up most of the camera space.",
-    "Here, assess the image that you have taken, and consider if the following could be improved before submission. Take as many attempts as needed in order to get a clear image.",
-    "Once submitted, please remain on the page, you should receive a response within 10 seconds and you will then be redirected to a page with your outcome.",
+  "Firstly, identify the lesion that you would like to identify. Look for any new or exising moles, or lesions showing signs of assymetry, discolouration, rough borders, a relatively large size. or that may have grown recently.",
+  "Next, capture an image of the lesion using the camera shown. To ensure an accurate prediction, ensure the image taken is clear and in focus.",
+  "Once captured, assess the image that you have taken before submission. The image will be displayed prior to submission, and the camera controls allow for as many attempts at retaking the image as needed.",
+  "Once submitted, please remain on the page, you should receive a response shortly (less than 45 seconds), where you automatically be redirected to the outcome page.",
   ];
 
   // Instruction headings
 const instructions_heading = [
   "Instruction 1 - Find Lesion on body",
   "Instruction 2 - Capture photo of lesion",
-  "Instruction 3 - Ensure Image is of high quality",
-  "Instruction 4 - Submit and await results.",
+  "Instruction 3 - Check captured image",
+  "Instruction 4 - Submit and await results",
 ];
 
 
