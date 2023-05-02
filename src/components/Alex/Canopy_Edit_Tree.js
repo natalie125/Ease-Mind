@@ -88,8 +88,14 @@ function Canopy_Edit_Node(props) {
 	// get data of the tree's nodes
 	const getTreeNodes = async (url_input, tree_data) => {
 		const {data} = await axios.get(url_input, {params: tree_data});
-		// console.log(data);
+
+		console.log("returned data");
+		console.log(data);
+
+		console.log("set owned nodes");
 		setOwnedNodes(data);
+		console.log(owned_nodes);
+
 		if(data.ids.length == 0) {
 			// console.log("break out of getTreeNodes");
 			setLoading(false);
@@ -134,10 +140,14 @@ function Canopy_Edit_Node(props) {
 			// console.log(family_node);
 			new_tree_nodes.push(family_node);
 		}
-		// console.log(new_tree_nodes);
+		console.log("family tree nodes: ");
+		console.log(new_tree_nodes);
 		setRootId(new_tree_nodes[0].id);
 		setTreeNodes(new_tree_nodes);
+
+		console.log("change loading to false: ");
 		setLoading(false);
+		console.log(loading);
 	}
 
 	// function for generating a table from the JSON response
