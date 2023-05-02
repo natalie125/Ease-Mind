@@ -44,6 +44,10 @@ def handle_bad_request(e):
     # Need to figure out how to request the "400Error" page on the React frontend
     return 'bad request!', 400
 
+#############################################################
+# FOLLOWING RESPONSE HEADERS ARE ADDED IN THE RESPONSE TO EVERY REQUEST TO PREVENT CLICKJACKING, XSS, ETC
+# ^^^^^^^^^^^^^^^^^^^^^^^
+
 
 @app.after_request
 def add_header(response):
@@ -78,7 +82,7 @@ def index():
 
 
 ############################################################
-# ROUTE FOR LOGIN - FOR TESTING
+# ROUTE FOR LOGIN
 # ^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -131,7 +135,7 @@ def login():
 
 
 ############################################################
-# ROUTE FOR REGISTER - FOR TESTING
+# ROUTE FOR REGISTER
 # ^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -194,7 +198,8 @@ def upload():
     return {"msg": "image successfully saved in server!"}, 200
 
 #############################################################
-# ROUTE SIMPLY PROVIDING A PROOF OF CONCEPT OF SECURING ENDPOINTS BY USING DECORATOR. WITHOUT APPROPRIATE ACCESS TOKEN THIS ENDPOINT CANNOT BE ACCESSED.
+# ROUTE USED TO VERIFY A JWT
+# NEEDED SO MALICIOUS ACTORS SIMPLY CANNOT MANUALLY ADD IN A RANDOM SESSION STORAGE VARIABLE IN THE BROWSER ALLOWING THEM TO LOGIN
 # ^^^^^^^^^^^^^^^^^^^^^^^
 
 
