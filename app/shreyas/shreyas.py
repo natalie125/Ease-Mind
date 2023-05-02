@@ -10,9 +10,7 @@ import tensorflow as tf
 import os
 import cv2
 from flask_jwt_extended import jwt_required
-#############################################################
-# ROUTE FOR SHREYAS'S APP
-# ^^^^^^^^^^^^^^^^^^^^^^^
+
 file_path = os.path.abspath(os.path.join(
     'app/shreyas', 'tonsil_detector.h5'))
 model = tf.keras.models.load_model(file_path)
@@ -122,6 +120,10 @@ def decode_image_json(image):
     img = Image.open(io.BytesIO(image_decoded))
     return img
 
+
+#############################################################
+# GIVEN AN INPUT OF AN IMAGE, RETURNS A BINARY VALUE OF THE SCORE GIVEN BY THE MODEL WHETHER ITS TONSILLITIS OR NOT
+# ^^^^^^^^^^^^^^^^^^^^^^^
 
 @app.route('/shreyas', methods=['GET', 'POST'])
 @jwt_required()
