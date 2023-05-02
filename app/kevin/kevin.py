@@ -26,76 +26,59 @@ def kevin():
         return {"msg": "No image sent!"}, 415
     
     
-    try:
-        # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
-        image = image[22:]
-        image_decoded = base64.b64decode(image)
-        img = Image.open(io.BytesIO(image_decoded))
-        # resize img - size based on model being used.
-        IMG_DIMS = 224
-    except:
-        return {"msg": 0,"pred": "Image decoding and opening using IO library failed.."}, 489
+    
+    # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
+    image = image[22:]
+    image_decoded = base64.b64decode(image)
+    img = Image.open(io.BytesIO(image_decoded))
+    # resize img - size based on model being used.
+    IMG_DIMS = 224
     
     
-    try:
-        pil_image = img.resize((IMG_DIMS, IMG_DIMS))
-        img_arr = np.array(pil_image)
-    except:
-        return {"msg": 0,"pred": "image resize and np array conversion failed."}, 490
+    
+    # resize image and convert to numpy array
+    pil_image = img.resize((IMG_DIMS, IMG_DIMS))
+    img_arr = np.array(pil_image)
 
     # convert do data used by model
-    try:
-        img_arr = img_arr.astype('uint8')
-    except:
-        return {"msg": 0,"pred": "image conversion to uint8 failed."}, 491
+    img_arr = img_arr.astype('uint8')
     
-    try:
-        # apply CLAHE - Contrast Limited Adaptive Histogram Equalisation
-        img_arr = clahe(img_arr)
-    except:
-        return {"msg": 0,"pred": "Applying CLAHE algorithm failed."}, 492
+    
+   
+    # apply CLAHE - Contrast Limited Adaptive Histogram Equalisation
+    img_arr = clahe(img_arr)
+    
 
     # apply SoG - Shades of Gray algorithm.
-    try:
-        img_arr = SoG(img_arr)
-    except:
-        return {"msg": 0,"pred": "Applying Shades of gray algorithm failed."}, 493
+    img_arr = SoG(img_arr)
+    
 
     # reshape img_arr to have correct dimensions wanted by ML model
-    try:
-        img_arr_reshaped = np.reshape(img_arr, (-1, IMG_DIMS, IMG_DIMS, 3))
-    except:
-        return {"msg": 0,"pred": "Reshape image for ML array failed."}, 494
+    img_arr_reshaped = np.reshape(img_arr, (-1, IMG_DIMS, IMG_DIMS, 3))
+   
     
-    try:
-        model = tf.keras.models.load_model('app\kevin\TL-210-effNet.h5')
-    except:
-        return {"msg": 0,"pred": "Loading model failed."}, 495
+    # Load model
+    model = tf.keras.models.load_model('app\kevin\TL-210-effNet.h5')
     
-    try:
-        pred = model.predict(img_arr_reshaped)
-    except:
-        return {"msg": 0,"pred": "Generating model prediciton failed."}, 496
+    
+    # perform prediction on preprocessed image
+    pred = model.predict(img_arr_reshaped)
+    
 
     # print(f'prediction made from the image itself{pred[0][0]}')
 
-    try:
-        if pred > 0.5:
-            msg = 1
-        else:
-            msg = 0
-    except:
-        return {"msg": 0,"pred": "basic arithmetic failed."}, 497
-    # format prediction
-
-    try:
-        pred = pred[0][0] * 100
-        pred = str(pred)
-        pred = pred[:5] + "%"
-    except:
-        return {"msg": 0,"pred": "Prediction formatting failed."}, 498
+#    decide what page user is routed to upon returned response
+    if pred > 0.5:
+        msg = 1
+    else:
+        msg = 0
     
 
+    #  format prediction
+    pred = pred[0][0] * 100
+    pred = str(pred)
+    pred = pred[:5] + "%"
+    
     return  {"msg": msg, "pred": pred}, 200
     
 
