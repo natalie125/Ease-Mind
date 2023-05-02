@@ -211,7 +211,7 @@ function Canopy_Edit_Node(props) {
 	useEffect(() => {
 		getTree(BASEURL + "canopy/tree/prod", { id:location.state?.id });
 		getTreeNodes(BASEURL + "canopy/tree_nodes/prod", { id:location.state?.id })
-	}, [loading]);
+	}, []);
 	
 	return (
 		<div className="App">
