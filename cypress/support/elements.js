@@ -29,6 +29,7 @@ export var elements = {
 		instructionsNext: "[data-cy=instructionsNext]",
 		instructionsContinue: "[data-cy=instructionsContinue]",
 		cameraTakePhoto: "[data-cy=cameraTakePhoto]",
+		cameraRetakePhoto: "[data-cy=cameraRetakePhoto]",
 		cameraSwitch: "[data-cy=cameraSwitch]",
 		cameraSubmit: "[data-cy=cameraSubmit]",
 		indexContinue: "[data-cy=indexContinue]",
