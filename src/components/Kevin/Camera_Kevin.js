@@ -176,7 +176,7 @@ const WebcamCapture = (props) => {
             </div>
             
           </div>
-          <p> Please ensure the image captured is clear and in focus, with the lesion to the analysed placed in the center of the frame.</p>
+          <p> Please ensure the image captured is clear and in focus, with the lesion to be analysed positioned in the center of the image.</p>
         </div>
 
       ) : (

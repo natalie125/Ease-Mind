@@ -27,6 +27,7 @@ class Kevin extends Component {
 						<p>
 							This Skin Cancer identification application has been developed as a prototype only, to demonstrate the potential application of Computer Aided Diagnosis (CAD), and as such should not be used as a replacement to diagnosis received from a medical professional.
 						</p>
+						<p> This application is able to classify a lesion as either malignant or benign with an accuracy of  81%, when tested on previously unseen data</p>
 						<p>
 							If you have any doubts regarding your personal health, please visit a medical professional to receive a diagnosis.
 						</p>

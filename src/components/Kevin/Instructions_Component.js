@@ -5,7 +5,7 @@ import "./Kevin.css";
 
 // Instructions corresponding to Instructions headings.
 const instructions_body = [
-  "Firstly, identify the lesion that you would like to identify. Look for any new or exising moles, or lesions showing signs of assymetry, discolouration, rough borders, or a relatively large size.",
+  "Firstly, identify the lesion that you would like to identify. Look for any new or exising moles, or lesions showing signs of assymetry, discolouration, rough borders, a relatively large size. or that may have grown recently.",
   "Next, capture an image of the lesion using the camera shown. To ensure an accurate prediction, ensure the image taken is clear and in focus.",
   "Once captured, assess the image that you have taken before submission. The image will be displayed prior to submission, and the camera controls allow for as many attempts at retaking the image as needed.",
   "Once submitted, please remain on the page, you should receive a response shortly (less than 45 seconds), where you automatically be redirected to the outcome page.",

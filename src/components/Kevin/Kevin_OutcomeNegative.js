@@ -16,7 +16,7 @@ class Kevin extends Component {
 						<h3> Outcome - Benign</h3>
 						<h4> Prediction Probability: {prediction}</h4>
 						<p> Based on the photo submitted, our Machine Learning Algorithm predicts that there is a low likelihood that the image submitted is a malignant skin lesion</p>
-						<p> This result was calculated based on the information our Machine Learning Algorithm was trained, from which it has deduced that this image is not likely to contain a malignant skin cancer.</p>
+						<p> This result was calculated based on the information our Machine Learning Algorithm was trained on, from which it has deduced that this image is not likely to contain a malignant skin cancer.</p>
 						<p> Please do not use this information as an alternative to professional diagnosis. If you have any doubts about your health and/or well-being, please visit a medical professional. </p>
 					</div>
 					
