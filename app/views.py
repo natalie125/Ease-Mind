@@ -78,7 +78,7 @@ def get_testing():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     response = {"Larks App": "Welcome",
-                "version": "1.1"}
+                "version": "1.2"}
     return jsonify(response)
 
 
