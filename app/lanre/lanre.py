@@ -161,7 +161,8 @@ def dipstick_image_upload():
         # save diagnosis user is doing evaluation
         save_diagnoses_result(email, diagnoses)
 
-    return jsonify(diagnoses), 200
+    # return jsonify(diagnoses), 200
+    return {"msg": 1}, 200
 
 # TODO: For debugging purposed - Remove later
 def save_image_to_file(image):
