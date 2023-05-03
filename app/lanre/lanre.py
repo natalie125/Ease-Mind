@@ -27,39 +27,39 @@ from flask_jwt_extended import jwt_required
 #############################################################
 # THIS ROUTE ALLOWS THE SAVING OF TRAINING DATA FOR THE OBJECT DETECTION MODEL
 # ^^^^^^^^^^^^^^^^^^^^^^^
-@app.route('/dipstik/training_data', methods=['POST'])
-def create_training_data():
-    image = request.form['image']
-    # if frontend sends no image return error
-    if image == "null":
-        return {"msg": "No image sent!"}, 415
+# @app.route('/lanre/training_data', methods=['POST'])
+# def create_training_data():
+#     image = request.form['image']
+#     # if frontend sends no image return error
+#     if image == "null":
+#         return {"msg": "No image sent!"}, 415
 
-    # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
-    image = image[22:]
-    image_decoded = base64.b64decode(image)
+#     # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
+#     image = image[22:]
+#     image_decoded = base64.b64decode(image)
 
-    # gets string of curr time and names file that
-    timestamp = str(int(time.time()))
-    filename = timestamp+".jpeg"
+#     # gets string of curr time and names file that
+#     timestamp = str(int(time.time()))
+#     filename = timestamp+".jpeg"
 
-    # saves decoded base 64 string to that image
-    with open(os.path.join("app/lanre/model_versions/dataset/training/", filename), "wb") as f:
-        f.write(image_decoded)
+#     # saves decoded base 64 string to that image
+#     with open(os.path.join("app/lanre/model_versions/dataset/training/", filename), "wb") as f:
+#         f.write(image_decoded)
     
     
-    # read decoded image
-    current_dir = os.getcwd()
-    submitted_folder = current_dir + '/app/lanre/model_versions/dataset/training/'
-    image_path = submitted_folder + filename
-    im = Image.open(image_path) # read in image 
+#     # read decoded image
+#     current_dir = os.getcwd()
+#     submitted_folder = current_dir + '/app/lanre/model_versions/dataset/training/'
+#     image_path = submitted_folder + filename
+#     im = Image.open(image_path) # read in image 
 
-    im = im.convert("RGB")
-    # im.save(f"converted-{filename}", "JPEG")
+#     im = im.convert("RGB")
+#     # im.save(f"converted-{filename}", "JPEG")
 
-    im.save(f"/Users/lanresodeinde/Desktop/final_year_app/backend/app/lanre/model_versions/dataset/training/{filename}", "JPEG")
+#     im.save(f"/Users/lanresodeinde/Desktop/final_year_app/backend/app/lanre/model_versions/dataset/training/{filename}", "JPEG")
 
-    # im = Image.fromarray(image_decoded)
-    return {"msg": "image successfully saved in server!"}, 200
+#     # im = Image.fromarray(image_decoded)
+#     return {"msg": "image successfully saved in server!"}, 200
 
 
 
@@ -67,35 +67,35 @@ def create_training_data():
 # THIS ROUTE ALLOW THE SAVING OF IMAGES FOR THE REFERNCE CHART
 # FOR CROPPING AND EXTRACTING COLOURS FROM REFERENCE CHART
 # ^^^^^^^^^^^^^^^^^^^^^^^
-@app.route('/dipstik/reference_chart', methods=['POST'])
-def reference_chart():
-    print("Saving reference image...")
-    image = request.form['image']
-    # if frontend sends no image return error
-    if image == "null":
-        return {"msg": "No image sent!"}, 415
+# @app.route('/lanre/reference_chart', methods=['POST'])
+# def reference_chart():
+#     print("Saving reference image...")
+#     image = request.form['image']
+#     # if frontend sends no image return error
+#     if image == "null":
+#         return {"msg": "No image sent!"}, 415
 
-    # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
-    image = image[22:]
-    image_decoded = base64.b64decode(image)
-    print("Getting time stamp...")
-    # gets string of curr time and names file that
-    timestamp = str(int(time.time()))
-    filename = timestamp+".png"
+#     # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
+#     image = image[22:]
+#     image_decoded = base64.b64decode(image)
+#     print("Getting time stamp...")
+#     # gets string of curr time and names file that
+#     timestamp = str(int(time.time()))
+#     filename = timestamp+".png"
 
-    # saves decoded base 64 string to that image
-    with open(os.path.join("app/lanre/reference_chart/squares_from_camera2", "image2.png"), "wb") as f:
-        f.write(image_decoded)
-    print("Saved image...")
+#     # saves decoded base 64 string to that image
+#     with open(os.path.join("app/lanre/reference_chart/squares_from_camera2", "image2.png"), "wb") as f:
+#         f.write(image_decoded)
+#     print("Saved image...")
 
-    return {"msg": "image successfully saved in server!"}, 200
+#     return {"msg": "image successfully saved in server!"}, 200
 
 
 
 # #############################################################
 # # THE MAIN ROUTE THAT HANDLES THE PREPROCESSING OF DETA AND RETURNING THE RESULT
 # # ^^^^^^^^^^^^^^^^^^^^^^^
-@app.route('/dipstik', methods=['GET', 'POST'])
+@app.route('/lanre', methods=['GET', 'POST'])
 def dipstick_image_upload():
     if request.method == "POST":
         # if request.method == 'GET' or request.method == 'POST':
