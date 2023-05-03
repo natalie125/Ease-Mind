@@ -172,7 +172,7 @@ const WebcamCapture = (props) => {
             <div className="gap-camera-kevin"></div>
             <div className="bttn-container-kevin">
               <button className="cam-button-kevin" data-cy="cameraSubmit" disabled={imageSrc === null} onClick={handleSubmit}>Submit Image</button>
-              <button className="cam-button-kevin" data-cy="cameraTakePhoto" onClick={handleRetake}>Retake Picture</button>
+              <button className="cam-button-kevin" data-cy="cameraRetakePhoto" onClick={handleRetake}>Retake Picture</button>
             </div>
             
           </div>
