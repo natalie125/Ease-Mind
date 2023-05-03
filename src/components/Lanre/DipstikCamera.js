@@ -28,6 +28,10 @@ const DipstikCamera = () => {
   //get the json from the memory
 	const token_JSON = JSON.parse(sessionStorage.getItem("token"));
 
+  let context = 'dipstik';
+  context = context.toString();
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,15 +42,15 @@ const DipstikCamera = () => {
     formData.append("image", imageSrc);
     formData.append("email", sessionStorage.getItem("email"));
     setImageSent(true);
-    const response = await axios(BASEURL+"dipstik",{
-      method: 'post',
+    const response = await axios(BASEURL + context,{
+      method: "post",
       data: formData,
       headers: {
         // "Access-Control-Allow-Origin": "*",
         //add authorization header
 				Authorization: "Bearer " + token,
 				"Content-Type": "multipart/form-data",
-      }
+      },
     })
     .then(response => {
       console.log(response);
