@@ -96,73 +96,73 @@ def reference_chart():
 # # THE MAIN ROUTE THAT HANDLES THE PREPROCESSING OF DETA AND RETURNING THE RESULT
 # # ^^^^^^^^^^^^^^^^^^^^^^^
 @app.route('/dipstik', methods=['GET','POST'])
-@jwt_required()
 def dipstick_image_upload():
-    # if request.method == 'GET' or request.method == 'POST':
-    #     return "Lanre's App Requested"
-    
-    image = request.form['image']
+    if request.method == "POST":
+        # if request.method == 'GET' or request.method == 'POST':
+        #     return "Lanre's App Requested"
+        
+        image = request.form['image']
 
-    email = request.form['email']
-    print(email)
-    # if frontend sends no image return error
-    if image == "null":
-        return {"msg": "No image sent!"}, 415
+        email = request.form['email']
+        print(email)
+        # if frontend sends no image return error
+        if image == "null":
+            return {"msg": "No image sent!"}, 415
 
-    # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
-    image = image[22:]
-    image_decoded = base64.b64decode(image)
+        # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
+        image = image[22:]
+        image_decoded = base64.b64decode(image)
 
-    # gets string of curr time and names file that
-    timestamp = str(int(time.time()))
-    filename = timestamp+".png"
-    
-    # saves decoded base 64 string to that image
-    with open(os.path.join("app/lanre/submitted_images", "image.png"), "wb") as f:
-        f.write(image_decoded)
-    print("Decoded")
+        # gets string of curr time and names file that
+        timestamp = str(int(time.time()))
+        filename = timestamp+".png"
+        
+        # saves decoded base 64 string to that image
+        with open(os.path.join("app/lanre/submitted_images", "image.png"), "wb") as f:
+            f.write(image_decoded)
+        print("Decoded")
 
-    # variables
-    current_dir = os.getcwd()
-    submitted_folder = current_dir + '/app/lanre/submitted_images/'
-    image_path = submitted_folder+ 'image.png'
+        # variables
+        current_dir = os.getcwd()
+        submitted_folder = current_dir + '/app/lanre/submitted_images/'
+        image_path = submitted_folder+ 'image.png'
 
-    # remove background
-    pillow_image = remove_background(image_path)
-    cropped_image = np.array(pillow_image) # convert image back to numpy array
-    cropped_image = cv2.cvtColor(cropped_image,cv2.COLOR_RGB2HSV)
-    print("Background removed!")
-    print(type(cropped_image))
-    save_image_to_file(cropped_image)    
-    print("Cropped Image saved!")
+        # remove background
+        pillow_image = remove_background(image_path)
+        cropped_image = np.array(pillow_image) # convert image back to numpy array
+        cropped_image = cv2.cvtColor(cropped_image,cv2.COLOR_RGB2HSV)
+        print("Background removed!")
+        print(type(cropped_image))
+        save_image_to_file(cropped_image)    
+        print("Cropped Image saved!")
 
-    # slice image
-    sliced_image = slice_image(cropped_image)
-    save_image_to_file(sliced_image)
-    print("Sliced Image saved!")
+        # slice image
+        sliced_image = slice_image(cropped_image)
+        save_image_to_file(sliced_image)
+        print("Sliced Image saved!")
 
-    # resize image
-    resized_image = resize_image_dimensions(sliced_image)
-    save_image_to_file(resized_image)
-    print("Resized Image saved!")
+        # resize image
+        resized_image = resize_image_dimensions(sliced_image)
+        save_image_to_file(resized_image)
+        print("Resized Image saved!")
 
-    # draw rectangles and extract colour
-    draw_rectangles_and_extract_colours(resized_image)
-    save_image_to_file(resized_image)
-    print("Rectangles drawn and colors extracted!")
+        # draw rectangles and extract colour
+        draw_rectangles_and_extract_colours(resized_image)
+        save_image_to_file(resized_image)
+        print("Rectangles drawn and colors extracted!")
 
-    # check diagnoses
-    diagnoses = check_dipstick(extracted_colours, reference_chart)
-    print(diagnoses)
+        # check diagnoses
+        diagnoses = check_dipstick(extracted_colours, reference_chart)
+        print(diagnoses)
 
-    # check that the user has an at dipstick email
-    # if they do they are testing the app, save their results for evaluation
-    if "@dipstik.com" in email:
-        # save diagnosis user is doing evaluation
-        save_diagnoses_result(email, diagnoses)
+        # check that the user has an at dipstick email
+        # if they do they are testing the app, save their results for evaluation
+        if "@dipstik.com" in email:
+            # save diagnosis user is doing evaluation
+            save_diagnoses_result(email, diagnoses)
 
-    # return jsonify(diagnoses), 200
-    return {"msg": 1}, 200
+        return jsonify(diagnoses), 200
+        # return {"msg": 1}, 200
 
 # TODO: For debugging purposed - Remove later
 def save_image_to_file(image):
