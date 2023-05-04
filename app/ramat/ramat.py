@@ -267,6 +267,7 @@ def voiceFeatureExtraction():
     #print(mfcc_coeffs.to_numpy().shape)
     #print(mfcc_coeffs.to_numpy())
 
+    os.remove(voice_path)
 
     return mfcc_coeffs.to_numpy().reshape(-1,16,8,1)
 
