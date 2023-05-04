@@ -149,12 +149,10 @@ def face_feature_extraction(raw_image):
     landmarks = None
 
     try:
-        results = face_mesh.process(cv2.cvtColor(face * 255, cv2.COLOR_BGR2RGB))
+        results = face_mesh.process(cv2.cvtColor(face, cv2.COLOR_GRAY2RGB))
         landmarks = results.multi_face_landmarks[0]
     except TypeError:
         return ["ERROR", "face unclear"]
-
-    
 
     right_eye_gradient = calculate_gradient(landmarks, facial_features['right_eye_corners'])
     left_eye_gradient = calculate_gradient(landmarks, facial_features['left_eye_corners'])
