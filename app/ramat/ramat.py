@@ -5,17 +5,182 @@ from app import app
 import pickle
 import base64
 from shapely.geometry import Polygon
-
+from numpy import ones,vstack
+from numpy.linalg import lstsq
 
 import cv2
+import mediapipe as mp
+from deepface import DeepFace
+from deepface.commons import functions
+
 import numpy as np
-# import dlib
 import os
 import librosa
 import pandas as pd
 import tensorflow as tf
 import time
 
+mp_face_mesh = mp.solutions.face_mesh
+face_mesh = mp_face_mesh.FaceMesh(static_image_mode = True)
+facial_features = {
+    'right_eye_inner': [362, 398, 384, 385, 386, 387, 388, 466, 263, 249, 390, 373, 374, 380, 381, 382, 362], # inner corner -> outer corner -> inner_corner
+    'left_eye_inner': [133, 173, 157, 158, 159, 160, 161, 246, 33, 7, 163, 144, 145, 153, 154, 155, 133],
+    'right_eye_corners': [263, 362],  # outer -> inner
+    'left_eye_corners': [33, 133 ],
+    'right_cheek_line':[358, 423, 426, 436, 432],
+    'left_cheek_line':[129, 203, 206, 216, 212],
+    'mouth_corners': [61, 291],  # left to right
+    'inner_mouth': [62, 78, 191, 80, 81, 82, 13, 312, 311, 310, 415, 308, 
+                    292, 324, 318, 402, 317, 14, 87, 178, 88, 95, 78],
+    'right_mouth_outer': [0, 17, 314, 405, 321, 375, 291, 409, 270, 269, 267, 0],
+    'left_mouth_outer' : [0, 17, 84, 181, 91, 146, 61, 185, 40, 39, 37 , 0], 
+    'mid_line': [10, 151, 9, 200, 199, 175, 152]                             
+}
+
+# function to return the coordinates of lanmark points 
+def landmarks_to_coords(landmarks, facial_area, zipped=True):
+    x_ords = []
+    y_ords = []
+
+    for point in facial_area:
+        landmark = landmarks.landmark[point]
+        x_ords.append(landmark.x)
+        y_ords.append(landmark.y)
+
+    if(zipped):
+        return zip(x_ords, y_ords)
+    else:
+        return np.vstack((x_ords, y_ords)).T
+    
+# function to return the line of best fit uaing the least squaares method when given landmark points
+def get_line(coordinates):
+    x_ords, y_ords = np.split(coordinates,2,axis=1)
+
+    x_ords=x_ords.flatten()
+    y_ords=y_ords.flatten()
+
+    A = vstack([x_ords,ones(len(x_ords))]).T
+    m, c = lstsq(A, y_ords)[0]
+
+    #print(str(m) + ", " + str(c))
+
+    return m, c
+
+# function to reflect coordinates over a given line
+def reflect_points(coordinates, m, c):
+    reflection_mat = np.array([[((1-m**2)/(1+m**2)), ((2*m)/(1+m**2))],
+              [((2*m)/(1+m**2)), ((m**2-1)/(1+m**2))]])
+    reflected_coordinates = []
+    temp = []
+    for coord in coordinates:
+        #x = (((1 - m**2)*coord[0]) + 2*m*coord[1] - 2*m*c)/1+m**2
+        #y = ((2*m*coord[0]) + (m**2 - 1)*coord[1] + (2*c))/1+m**2
+
+        #np.matmul(, reflection_mat)
+
+        x = (-(m**2*coord[0]) - 2*m*c)/m**2
+        y = ((m**2)*coord[1])/m**2
+        reflected_coordinates.append([x,y])
+
+    return reflected_coordinates
+
+# function to calculate the symmetry between a feature on the left and right side of the face
+# reflects the feature on the right side to the left side over the mid-line of the face and 
+# gets the difference between the reflected right coordinates and the corresponsing left coordinates
+def get_feature_symmetry(landmarks, mid_face, right_landmarks, left_landmarks):
+    diff = 0
+    mid_face_coordinates = landmarks_to_coords(landmarks, mid_face, False)
+    right_coordinates = landmarks_to_coords(landmarks, right_landmarks, False)
+    left_coordinates = landmarks_to_coords(landmarks, left_landmarks, False)
+    m, c = get_line(mid_face_coordinates)
+    reflected_right = reflect_points(right_coordinates, m, c)
+
+    for index,  reflected_right_coord in enumerate(reflected_right):
+        left_coord = left_coordinates[index]
+        diff += abs(left_coord[0] - reflected_right_coord[0])
+        diff += abs(left_coord[1] - reflected_right_coord[1])
+
+    return diff
+
+# calculates the area of a given feature
+# feature should be closed
+def calculate_feature_area(landmarks, facial_area):
+    coordinates = landmarks_to_coords(landmarks, facial_area)
+    feature = Polygon(coordinates)
+
+    return feature.area
+
+# calculates the gradients given a start point and en end point
+def calculate_gradient(landmarks, facial_area):
+    zipped_coords = landmarks_to_coords(landmarks, facial_area)
+    coordinates = list(zipped_coords)
+
+    return ((coordinates[0][1] - coordinates[1][1]) / (coordinates[0][0] - coordinates[1][0]))
+
+# function to calculate ratio of area of feature 
+def calculate_area_ratio(right_area, left_area):
+    areas = [right_area, left_area]
+
+    area1 = areas[areas.index(max(areas))]
+    area2 = areas[areas.index(min(areas))]
+
+    return (area1 / area2)
+
+def face_feature_extraction(raw_image):
+    # convert the image from bytes to a cvs::Umat
+    image = cv2.imdecode(raw_image, cv2.IMREAD_COLOR)
+
+    faces = DeepFace.extract_faces(image, grayscale = True,
+                                            enforce_detection = False, detector_backend ="mtcnn")
+    
+    
+    if (len(faces) > 1): # check there is more than 1 face in the image
+        return ["ERROR", "multiple faces detected"]
+    elif (len(faces) < 1 or (faces[0])['confidence'] == 0.0): # check if no face was detected  
+        print(len(faces))
+        print((faces[0])['confidence'])
+        return ["ERROR", "no face detected"]
+    
+    print(faces)
+
+    raw_face = (faces[0])['face']
+    face = np.array(raw_face * 255, dtype = np.uint8)
+
+    landmarks = None
+
+    try:
+        results = face_mesh.process(cv2.cvtColor(face * 255, cv2.COLOR_BGR2RGB))
+        landmarks = results.multi_face_landmarks[0]
+    except TypeError:
+        return ["ERROR", "face unclear"]
+
+    
+
+    right_eye_gradient = calculate_gradient(landmarks, facial_features['right_eye_corners'])
+    left_eye_gradient = calculate_gradient(landmarks, facial_features['left_eye_corners'])
+    right_eye_area = calculate_feature_area(landmarks, facial_features['right_eye_inner'])
+    left_eye_area = calculate_feature_area(landmarks, facial_features['left_eye_inner'])
+    
+    mouth_gradient = calculate_gradient(landmarks, facial_features['mouth_corners'])
+    inner_mouth_area = calculate_feature_area(landmarks, facial_features['inner_mouth'])
+    right_mouth_area = calculate_feature_area(landmarks, facial_features['right_mouth_outer'])
+    left_mouth_area = calculate_feature_area(landmarks, facial_features['left_mouth_outer'])
+
+    cheek_line_sim = get_feature_symmetry(landmarks, facial_features['mid_line'], 
+                                            facial_features['right_cheek_line'], facial_features['left_cheek_line'])
+    
+    eye_sim = get_feature_symmetry(landmarks, facial_features['mid_line'], 
+                                            facial_features['right_eye_inner'], facial_features['left_eye_inner'])
+    
+    mouth_sim = get_feature_symmetry(landmarks, facial_features['mid_line'], 
+                                            facial_features['right_mouth_outer'], facial_features['left_mouth_outer'])
+
+    eye_area_ratio = calculate_area_ratio(right_eye_area, left_eye_area)
+    mouth_area_ratio = calculate_area_ratio(right_mouth_area, left_mouth_area)
+
+    
+
+    return ["SUCCESS", [cheek_line_sim, eye_area_ratio, right_eye_gradient, left_eye_gradient, mouth_area_ratio, mouth_gradient, inner_mouth_area]]
 
 def featureExtraction (raw_image):
     face_predictor_path = os.path.join(os.getcwd(),'app/ramat/shape_predictor_68_face_landmarks.dat')
@@ -146,26 +311,34 @@ def image_and_audio():
             return {"msg": "No audio sent!"}, 415
 
         # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
-        image = image[22:]
+        image = image[23:]
         imageStr = base64.b64decode(image)
         
         #convert image string to array of bytes
-        imageBytes = np.fromstring(imageStr, np.uint8)
+        image_bytes = np.fromstring(imageStr, np.uint8)
+
+        print("_____________________________________")
+        print(type(image_bytes))
+        print(image_bytes.shape)
+        print(image_bytes.shape)
+        print("_____________________________________")
+
         
         image_feature_extraction_start = time.time()
         # get the calculations for the inputted image
-        image_calcs = getCalculations(imageBytes)
+        face_calculations = face_feature_extraction(image_bytes)
         image_feature_extraction_end = time.time()
         print("image feature extraction time: " + str(image_feature_extraction_end - image_feature_extraction_start))
 
         # check the status of the calculations beftemore generating a prediction
-        if (image_calcs[0] == "ERROR"):
+        if (face_calculations[0] == "ERROR"):
             total_time_end = time.time()
             print("total time: " + str(total_time_end - total_time_start))
             
-            return {"msg": image_calcs[1]}, image_calcs[2]
-        elif (image_calcs[0] == "SUCCESS"):
-            prediction = face_model.predict([[image_calcs[1], image_calcs[2]]])
+            return {"msg": face_calculations[1]}, 422
+        elif (face_calculations[0] == "SUCCESS"):
+            print([face_calculations[1]])
+            face_prediction = face_model.predict_proba([face_calculations[1]])
 
             ###########################
             # Handle audio
@@ -184,7 +357,8 @@ def image_and_audio():
 
             print()
 
-            return {"msg": {"face_prediction": prediction[0], "voice_prediction":str(audio_prediction[0][0])}}, 200
+            # return probability of droop being present
+            return {"msg": {"face_prediction": face_prediction[0][1], "voice_prediction":str(audio_prediction[0][0])}}, 200
         
 
 @app.route('/ramat/audio', methods=['GET', 'POST'])
