@@ -42,7 +42,7 @@
 }
 
 .paralysis-container p {
-	font-size: 70%;
+	font-size: 100%;
 	margin-bottom: 2%;
 }
 
@@ -167,12 +167,12 @@
 
 .paralysis-mic-status-container {
 	width: 100%;
-	min-height: 50%;
-	max-height: 70%;
+	height: 100vw;
 	position: relative;
 	align-items: center;
 	justify-content: center;
 	display: flex;
+	text-align: center;
 }
 
 .paralysis-mic-loader {
@@ -190,7 +190,7 @@
 
 .paralysis-mic-button-container {
 	width: 100%;
-	padding: 5% 0%;
+	margin: 1vh 0% 5vh 0% ;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;

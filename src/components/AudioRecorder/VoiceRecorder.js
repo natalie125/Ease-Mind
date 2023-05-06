@@ -95,10 +95,6 @@ const VoiceRecorder = (props) => {
 
 					audio.muted = true;
 					audio.srcObject = microphone;
-
-					alert(
-						"Please click startRecording button again. First time we tried to access your microphone. Now we will record it."
-					);
 				}
 			});
 		}
@@ -179,14 +175,14 @@ const VoiceRecorder = (props) => {
 			<div className="paralysis-mic-container" data-cy="audioContainer">
 				<div className="paralysis-mic-status-container">
 					<img src={mic} className="paralysis-mic-img" alt="Microphone" />
-					<div className="paralysis-layered-container">
+					<div className="paralysis-layered-container paralysis-component-container {">
 						<SpinnerRoundFilled
 							color="#0B603E"
-							size={"120%"}
+							size={"100%"}
 							enabled={isRecording}
 							aria-label="Audio Spinner"
 							data-testid="loader"
-							style={{minHeight: "100%"}}
+							style={{minWidth: "90%"}}
 						/>
 					</div>
 				</div>
