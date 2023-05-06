@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import close from "../../images/close.png"
 import "../App/App.css";
 
@@ -18,7 +18,7 @@ const InfoPanel = (props) => {
             <div style={{padding: "10%"}}>
                 <p style={{color: "red", paddingBottom: "5%"}}><strong>Note:</strong> This is just a prototype. Any diagnosis given should not be relied on. If you are worried you are having a stroke, call 999 < strong>immediately</strong>.</p>
                 <p>Paralysis Analysis is an application that aims to determine if a user is showing signs of a stroke. It focuses on two common symptoms of stroke: facial droop and slurring of speech. </p>
-                <p>You will need to take a picture of your face and a recording of your voice (a prompt is provided), then submit them. This will be stored temporarily and deletd after use.</p>
+                <p>You will need to take a picture of your face and a recording of your voice (a prompt is provided), then submit them. This will be stored temporarily and deleted after use.</p>
                 <p>Your face face and voice will be analysed for symptoms of stroke and a prediction of stroke is provided based on this analysis.</p>
             </div>
 

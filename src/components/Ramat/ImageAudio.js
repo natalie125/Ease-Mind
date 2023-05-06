@@ -29,7 +29,7 @@ const ImageAudio = (props) => {
 	const submitAll = async (blob) => {
 		setAudio(blob);
 		console.log(blob);
-		let file = new File([blob], "test.wav", {
+		let file = new File([blob], "voice.wav", {
 			type: "audio/wav",
 		});
 
@@ -74,6 +74,9 @@ const ImageAudio = (props) => {
 			setDisplayMessage(jsonResponse)
 			return
 		}
+
+		setDisplayMessage(jsonResponse)
+		return
 
 		if(droop_prediction === "no droop" && dys_prediction < 75){
 			setDisplayMessage("You are not displaying any signs of facial droop or slurring.")
@@ -151,6 +154,18 @@ const ImageAudio = (props) => {
 							Call Emergency Services
 						</a>
 
+						<div className="paralysis-symptoms-container">
+							<p>Symptoms of a stroke include:</p>
+							<li>A sudden headache</li>
+							<li>A sudden weakness or numbness in your arms, legs or face, particularly on one side of your body</li>
+							<li>Sudden difficulty speaking or understanding speech</li>
+							<li>Sudden confusion</li>
+							<li>Sudden trouble walking, dizziness, loss of balance or lack of coordination</li>
+							<li>Sudden trouble seeing out of one or both eyes</li>
+							<li>Sudden severe headache with no known cause</li>
+							<p style={{marginTop: "5%"}}>If you are displaying <strong>even one of these symptoms</strong>, call emergency services immediately</p>
+							<p>For more information see the CDC website</p>
+						</div>
 						<button className ="paralysis-button" style={{width: "80%", fontSize: "90%"}} onClick={restart}>Restart</button>
 
 					</>
