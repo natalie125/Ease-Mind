@@ -24,16 +24,19 @@ export default function DipstikTimer() {
         };
     },[isCounting])
 
+    // resets the timer
     const handleReset = () => {
         setIsCounting(true);
         setTimeLeft(60);
     }
 
+    // sets a 60 second timer
     const handle60s = () => {
         setTimeLeft(60);
         setIsCounting(true);
     }
 
+    // Set a 120s timer
     // eslint-disable-next-line
     const handle120s = () => {
         setTimeLeft(120);
@@ -43,12 +46,13 @@ export default function DipstikTimer() {
 
     let navigate = useNavigate();
     
+    // Skip button to timer
     function skip() {
         setIsCounting(false);
         navigate("/dipstik/dipstik-camera", { replace: true });
     }
 
-
+    // redirect to camera when timer is done
     if (timeLeft === 0 && isCounting){
         navigate("/dipstik/dipstik-camera", { replace: true });
     }

@@ -26,8 +26,6 @@ const DipstikResults = () => {
 	};
 
 	//Gather results and make it explainable
-
-
 	//leukocytes
 	let leukocytes = sessionStorage.getItem("leukocytes");
 	switch(leukocytes) {
@@ -479,9 +477,8 @@ const DipstikResults = () => {
 					<button onClick={handleSwitchToHealthConditions} className={healthStyling}>By Health Conditions</button>
 				</div>
 			</div>
-
-
-
+			
+				{/* BY PARAMETER RESULTS */}
 				<div>
 					{view == 1 && (
 					<div className="results-container">
@@ -528,6 +525,7 @@ const DipstikResults = () => {
 					</div>
 					)}
 
+					{/* RESULTS BY DISEASE */}
 					{view == 2 && (
 						<div className="results-container">
 							<div className="results-box">
