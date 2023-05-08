@@ -19,6 +19,7 @@ import librosa
 import pandas as pd
 import tensorflow as tf
 import time
+import csv
 
 mp_face_mesh = mp.solutions.face_mesh
 face_mesh = mp_face_mesh.FaceMesh(static_image_mode = True)
@@ -202,10 +203,8 @@ def featureExtraction (raw_image):
 
     # check there is only 1 face in the imagea
     if (len(faces) < 1):
-        # print("NO FACE")
         return "None", [0], [0]
     elif (len(faces) > 1):
-        # print("MULTI FACE")
         return "Multi", [0], [0]
 
     face = faces[0]
@@ -251,25 +250,24 @@ def getCalculations(raw_image):
 
 def voiceFeatureExtraction():
     directory = os.getcwd()
-    voice_path =  os.path.join(directory,"app/ramat/temp.wav")
-
-    # print("-------------------------------------")
-    # print(type(directory))
-    # print(directory)
-    # print(voice_path)
-    # print("=====================================s")
-
+    voice_path =  os.path.join(directory,"app/ramat/voice.wav")
 
     x , sr = librosa.load(voice_path)
-    mean_mfcc = np.mean(librosa.feature.mfcc(y=x, sr=sr, n_mfcc=128),axis=1)
-    #print(mean_mfcc)
-    mfcc_coeffs = pd.DataFrame([mean_mfcc])
-    #print(mfcc_coeffs.to_numpy().shape)
-    #print(mfcc_coeffs.to_numpy())
 
-    os.remove(voice_path)
+    mean_mfcc = np.mean(librosa.feature.mfcc(y=x, sr=sr, n_mfcc=128),axis=1)
+    mfcc_coeffs = pd.DataFrame([mean_mfcc])
 
     return mfcc_coeffs.to_numpy().reshape(-1,16,8,1)
+
+def times_to_csv(filename, model_load, face_extraction, voice_extraction, total):
+    # field names 
+    header = ['model_time', 'face_extraction_time', 'voice_extraction_time', 'total_time'] 
+
+    with open(filename, 'a', newline='') as file: 
+        writer = csv.writer(file)
+        writer.writerow(header)
+        writer.writerow([model_load, face_extraction, voice_extraction, total])
+
 
 
 
@@ -281,20 +279,16 @@ def image_and_audio():
     if request.method == 'GET':
         return "Ramat's App has been Requested"
     elif request.method == 'POST':
-        #print("request recieved")
         total_time_start = time.time()
-
-        # print(request)
-        # print(request.files)
-        # print("-------------------------------------------------------")     
 
         model_load_start = time.time()
 
         face_model = pickle.load(open("app/ramat/droop_model.sav", 'rb'))
-        voice_model = tf.keras.models.load_model('app/ramat/model.h5')
+        voice_model = tf.keras.models.load_model('app/ramat/speech_model.h5')
 
         model_load_end = time.time()
-        print("model load time: " + str(model_load_end - model_load_start))
+        model_load_time = model_load_end - model_load_start
+        print("model load time: " + str(model_load_time))
 
         image = request.form['image']
         audio_file = request.files['audio']
@@ -304,13 +298,24 @@ def image_and_audio():
             return {"msg": "No image sent!"}, 415
         
         if audio_file.filename != '':
-            request.files['audio'].save("app/ramat/temp.wav")
+            request.files['audio'].save("app/ramat/voice.wav")
         else:
             # if frontend sends no file return error
             return {"msg": "No audio sent!"}, 415
+        
+        f = open("demofile2.txt", "w")
+        f.write(image)
+        f.close()
 
         # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
-        image = image[23:]
+        image = image.split("base64,")[1]
+
+        f = open("demofile2.txt", "a")
+        f.write("\n")
+        f.write("_____________________________________________________________________________________")
+        f.write(image)
+        f.close()
+
         imageStr = base64.b64decode(image)
         
         #convert image string to array of bytes
@@ -327,12 +332,17 @@ def image_and_audio():
         # get the calculations for the inputted image
         face_calculations = face_feature_extraction(image_bytes)
         image_feature_extraction_end = time.time()
+        face_extraction_time = image_feature_extraction_end - image_feature_extraction_start
         print("image feature extraction time: " + str(image_feature_extraction_end - image_feature_extraction_start))
 
         # check the status of the calculations beftemore generating a prediction
         if (face_calculations[0] == "ERROR"):
             total_time_end = time.time()
+            total_time = total_time_end - total_time_start
+
             print("total time: " + str(total_time_end - total_time_start))
+            times_to_csv("complete_v2", model_load_time, face_extraction_time, voice_extraction_time, total_time)
+
             
             return {"msg": face_calculations[1]}, 422
         elif (face_calculations[0] == "SUCCESS"):
@@ -347,14 +357,18 @@ def image_and_audio():
             voice_feature_extraction_start = time.time()
             features = voiceFeatureExtraction()
             voice_feature_extraction_end = time.time()
+            voice_extraction_time = voice_feature_extraction_end - voice_feature_extraction_start
             print("voice feature extraction time: " + str(voice_feature_extraction_end - voice_feature_extraction_start))
 
             audio_prediction = voice_model.predict(features)
 
             total_time_end = time.time()
+            total_time = total_time_end - total_time_start
             print("total time: " + str(total_time_end - total_time_start))
 
             print()
+
+            times_to_csv("stress_test_v2.csv", model_load_time, face_extraction_time, voice_extraction_time, total_time)
 
             # return probability of droop being present
             return {"msg": {"face_prediction": face_prediction[0][1], "voice_prediction":str(audio_prediction[0][0])}}, 200
@@ -376,7 +390,7 @@ def audio():
         audio_file = request.files['audio']
 
         if audio_file.filename != '':
-            request.files['audio'].save("app/ramat/temp.wav")
+            request.files['audio'].save("app/ramat/voice.wav")
         else:
             # if frontend sends no file return error
             return {"msg": "No audio sent!"}, 415
