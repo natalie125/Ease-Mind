@@ -80,15 +80,21 @@ const ImageAudio = (props) => {
 			setDisplayMessage("A server error has occurred. Please try again.")
 
 			return
-		}		
+		}else if(serverResponse.status === 200){
 
-		if(face_prediction < 30 && speech_prediction < 30){
-			setDisplayMessage("You are not displaying any signs of facial droop or slurring.")
+			if(face_prediction < 30 && speech_prediction < 30){
+				setDisplayMessage("You are not displaying any signs of facial droop or slurring.")
+			}else{
+				setDisplayMessage(<><p>You seem to be displaying symptoms of a stroke. Call 999 immediately! </p> <p> Facial droop likelihood: {face_prediction}%</p> <p> Dysarthria (slurred speech) likelihood: {speech_prediction}%</p></>)
+				await setTimeout(5000);
+				call999()
+			}
 		}else{
-			setDisplayMessage(<><p>You seem to be displaying symptoms of a stroke. Call 999 immediately! </p> <p> Facial droop likelihood: {face_prediction}%</p> <p> Dysarthria (slurred speech) likelihood: {speech_prediction}%</p></>)
-			await setTimeout(5000);
-			call999()
+			setDisplayMessage("An issue has occurred. Please try again.")
 		}
+
+
+		
 	}
 
 	useEffect(() => {
