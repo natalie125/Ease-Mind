@@ -1,10 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {default as Camera} from "./ParalysisAnalysisCamera";
 import AudioRecorder from "../AudioRecorder";
 import {SpinnerCircularFixed} from "spinners-react";
 import InfoPanel from "./InfoPanel";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import "../App/App.css";
 
 let BASEURL = "";
@@ -15,7 +14,6 @@ process.env.NODE_ENV === "development"
 //This component is used to take pictures
 //pictures are stored in the imageSrc variable after taking it
 const ImageAudio = (props) => {
-	const webcamRef = useRef(null);
 	const [image, setImage] = useState(null);
 	const [showAudio, setShowAudio] = useState(false);
 	const [audio, setAudio] = useState(false);
@@ -61,33 +59,34 @@ const ImageAudio = (props) => {
 		window.open('tel:+447846054321');
 	}
 
-	const getDisplayMessage = () => {
+	const getDisplayMessage = async () => {
 		const jsonResponse = JSON.stringify(serverResponse.data.msg)
-		const droop_prediction = jsonResponse.face_prediction
-		const dys_prediction = jsonResponse.voice_prediction
-		console.log(serverResponse)
-		console.log(jsonResponse)
-		console.log(droop_prediction)
-		console.log("-------------------------------")
+		const face_prediction = Math.trunc(JSON.stringify(serverResponse.data.msg.face_prediction) / 0.01)
+		const speech_prediction = Math.trunc(JSON.stringify(serverResponse.data.msg.speech_prediction) / 0.01)
 
 		if(serverResponse.status === 422){
-			setDisplayMessage(jsonResponse)
+			if(jsonResponse === "multiple faces detected"){
+				setDisplayMessage("Multiple faces have been deteected in your picture. Please take and submit a photo of one face.")
+			}else if(jsonResponse === "no face detected"){
+				setDisplayMessage("No face was detected in your submitted image. Please try again. Ensure you are in a well-lit environment when taking your picture.")
+			}else if(jsonResponse === "face unclear"){
+				setDisplayMessage("The submitted image was unclear. Please try again. Ensure you are in a well-lit environment when taking your picture.")
+			}else{
+				setDisplayMessage("The server could not process your request. Please try again.")
+			}
+
 			return
-		}
+		}else if(serverResponse.status === 500){
+			setDisplayMessage("A server error has occurred. Please try again.")
 
-		setDisplayMessage(jsonResponse)
-		return
+			return
+		}		
 
-		if(droop_prediction === "no droop" && dys_prediction < 75){
+		if(face_prediction < 30 && speech_prediction < 30){
 			setDisplayMessage("You are not displaying any signs of facial droop or slurring.")
-		}else if(droop_prediction === "droop" && dys_prediction < 75){
-			setDisplayMessage("Uh oh, you seem to be displaying a symptom of stroke with a certainty of 56%. Call 999 immediately!")
-			call999()
-		}else if(droop_prediction === "no_droop" && dys_prediction > 75){
-			setDisplayMessage("Uh oh, you seem to be displaying a symptom of stroke with a certainty of 90%. Call 999 immediately!")
-			call999()
-		}else if(droop_prediction === "droop" && dys_prediction > 75){
-			setDisplayMessage("Uh oh, you seem to be displaying two symptom of stroke with a certainty of 50%. Call 999 immediately!")
+		}else{
+			setDisplayMessage(<><p>You seem to be displaying symptoms of a stroke. Call 999 immediately! </p> <p> Facial droop likelihood: {face_prediction}%</p> <p> Dysarthria (slurred speech) likelihood: {speech_prediction}%</p></>)
+			await setTimeout(5000);
 			call999()
 		}
 	}
@@ -175,33 +174,5 @@ const ImageAudio = (props) => {
 		</div>
 	);
 };
-
-// Found at:
-// https://usehooks.com/useWindowSize/
-function useWindowSize() {
-	// Initialize state with undefined width/height so server and client renders match
-	// Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
-	const [windowSize, setWindowSize] = React.useState({
-		width: undefined,
-		height: undefined,
-	});
-	React.useEffect(() => {
-		// Handler to call on window resize
-		function handleResize() {
-			// Set window width/height to state
-			setWindowSize({
-				width: window.innerWidth,
-				height: window.innerHeight,
-			});
-		}
-		// Add event listener
-		window.addEventListener("resize", handleResize);
-		// Call handler right away so state gets updated with initial window size
-		handleResize();
-		// Remove event listener on cleanup
-		return () => window.removeEventListener("resize", handleResize);
-	}, []); // Empty array ensures that effect is only run on mount
-	return windowSize;
-}
 
 export default ImageAudio;

@@ -4,11 +4,6 @@ import Webcam from "react-webcam";
 import "../App/App.css";
 import "./ParalysisAnalysis.css";
 
-let BASEURL = "";
-process.env.NODE_ENV === "development"
-	? (BASEURL = process.env.REACT_APP_DEV)
-	: (BASEURL = process.env.REACT_APP_PROD);
-
 //This component is used to take pictures
 //pictures are stored in the imageSrc variable after taking it
 const ParalysisAnalysisCamera = (props) => {
