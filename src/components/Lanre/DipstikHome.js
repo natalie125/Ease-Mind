@@ -34,6 +34,7 @@ const DipstikInstructions = () =>  {
 				<h1 className="dipstik-title">Welcome to dipstik</h1>
 
                 <div className="instructions-container">
+                {/* FIRST INSTRUCTIONS */}
                 {instructions <= 1 && (
 				<>
                         <h3 className="instructions-title">Disclaimer! (1/3)</h3>
@@ -61,10 +62,10 @@ const DipstikInstructions = () =>  {
                         {/* <button onClick={HandlePreviousInstructions}className="start-button"> Back </button> */}
                         <button onClick={HandleNextInstructions} className="instructions-button"> Continue </button>
                     </div>
-
 				</>
                 )}
 
+                {/* SECOND INSTRUCTIONS */}
                 {instructions === 2 && (
                     <>
                         <h3 className="instructions-title">Instructions (2/3)</h3>
@@ -89,6 +90,7 @@ const DipstikInstructions = () =>  {
                     </>
                 )}
 
+                {/* THIRD INSTRUCTIONS */}
                 {instructions === 3 && (
                     <>
                         <h3 className="instructions-title">Wait 60 seconds! (3/3)</h3>
@@ -96,7 +98,8 @@ const DipstikInstructions = () =>  {
                             <p className="timer-instructions">
                                 Dip your dipstick and hold it horizontally! <br/>
                                 Start the 60 second timer! <br/>
-                                Camera will open up when timer is over!
+                                Camera will open up when timer is over! <br/>
+                                <b>(For best experience, use a mobile device!)</b>
                             </p>
                             <DipstikTimer />
                         </div>

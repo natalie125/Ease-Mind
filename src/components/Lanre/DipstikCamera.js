@@ -14,7 +14,6 @@ process.env.NODE_ENV === "development"
 
 //This component is used to take pictures
 //pictures are stored in the imageSrc variable after taking it
-//Not sure what to do after picture is stored in the imageSrc variable
 const DipstikCamera = () => {
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
@@ -32,7 +31,7 @@ const DipstikCamera = () => {
   context = context.toString();
 
 
-
+// Handle what happens when image is submitted
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -113,10 +112,10 @@ const detectDipstick = async () => {
 };
 
 
-//  // //**************************************************************** 
-//  // // COMBINED
+//**************************************************************** 
+  // COMBINED
   // 	Trying to do the dimensions stuff.
-	// Rounded to floats to ensure dimensions used here make sense, only issue I see right now - the videos will record in different format each time.
+	// Rounded to floats to ensure dimensions used here make sense, only issue I see right now
 	const size = useWindowSize();
 	var cameraHeight = Math.round(size.height);
   var cameraWidth = Math.round(size.width);
@@ -216,17 +215,14 @@ const detectDipstick = async () => {
               </div>
               </>
             )}
-
-            
-            
-            
           </div>
         </div>
 
         
       </> 
 		)}
-
+    
+    {/* SHOW A MESSAGE IS THE CAMERA DOES NOT LOAD */}
     {!cameraWorking && ( 
           <h4> Failed to load camera. <br/><br/> Please refresh your browser!</h4>
         )}
@@ -253,7 +249,7 @@ const detectDipstick = async () => {
                   <p className="detecting-dipstick-message failure"> Dipstick not detected </p>)}
 
 
-
+                {/* SEND BUTTON */}
                 <div>
                   <button onClick={handleRetakePicture} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
 

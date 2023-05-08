@@ -19,6 +19,7 @@
     display: flex;
     flex-direction: column;
     /* justify-content: center; */
+    align-items: center;
     /* border: 1px solid blue; */
     height: 390px;
 }
@@ -34,8 +35,6 @@
 }
 
 /* Instructions 2 */
-
-
 .instructions{
     /* border: 1px solid blue; */
     margin-top: 10px;
@@ -48,10 +47,8 @@
 .timer-instructions{
     /* border: 1px solid blue; */
     color: rgb(87, 87, 87);
-    line-height: 28px;
+    line-height: 24px;
 }
-
-
 
 .instructions-button {
     border: 1px solid #ed444a;
@@ -75,7 +72,7 @@
 
 
 /* **********************
-** LANRE CAMERA STYLES
+** DIPSTIK CAMERA STYLES
 *************************/
 .camera-container{
     /* border: 2px solid green; */
@@ -111,6 +108,7 @@
 
 .lanre-webcam {
     width: 100%;
+    border: 2px solid red;
 }
 
 .camera-instructions {
@@ -133,7 +131,6 @@
     height: 155px;
     z-index: 3;
 }
-
 
 .camera-button {
     height: 80px;
@@ -298,7 +295,7 @@ video {
 }
 
 /* **********************
-** RESULTS STYLES
+** RESULTS PAGE STYLES
 *************************/
 .results-container {
     display: flex;
