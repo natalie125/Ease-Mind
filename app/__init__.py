@@ -4,6 +4,10 @@ from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from pathlib import Path
+
+import tensorflow as tf
+import pickle
+
 # define the app
 app = Flask(__name__)
 
@@ -29,6 +33,10 @@ else:
 
 # define the database
 db = SQLAlchemy(app)
+
+# load paralysis analysis models
+pa_face_model = pickle.load(open("app/ramat/face_model.sav", 'rb'))
+pa_speech_model = tf.keras.models.load_model('app/ramat/speech_model.h5')
 
 # import these python files from /app directory
 from app import views, models
