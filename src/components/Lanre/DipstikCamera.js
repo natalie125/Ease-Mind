@@ -221,10 +221,12 @@ const detectDipstick = async () => {
         
       </> 
 		)}
-    
+
     {/* SHOW A MESSAGE IS THE CAMERA DOES NOT LOAD */}
     {!cameraWorking && ( 
-          <h4> Failed to load camera. <br/><br/> Please refresh your browser!</h4>
+          <h4> Failed to load camera. <br/><br/> Please refresh your browser! <br/> <br/>
+          Please ensure you are on a mobile device!
+          </h4>
         )}
     </div>
 
