@@ -45,7 +45,7 @@ const DipstikCamera = () => {
       method: "post",
       data: formData,
       headers: {
-        "Access-Control-Allow-Origin": "*",
+        // "Access-Control-Allow-Origin": "*",
         //add authorization header
 				Authorization: "Bearer " + token,
 				"Content-Type": "multipart/form-data",
