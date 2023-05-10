@@ -1,6 +1,5 @@
-import RecordRTC, { StereoAudioRecorder, invokeSaveAsDialog } from "recordrtc";
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import axios from "axios";
+import RecordRTC, { StereoAudioRecorder } from "recordrtc";
+import React, { useState, useEffect } from "react";
 import { SpinnerRoundFilled } from "spinners-react";
 import mic from "../../images/mic.png";
 import "../Ramat/ParalysisAnalysis.css";
@@ -96,10 +95,6 @@ const VoiceRecorder = (props) => {
 
 					audio.muted = true;
 					audio.srcObject = microphone;
-
-					alert(
-						"Please click startRecording button again. First time we tried to access your microphone. Now we will record it."
-					);
 				}
 			});
 		}
@@ -177,16 +172,17 @@ const VoiceRecorder = (props) => {
 
 	return (
 		<>
-			<div className="paralysis-mic-container">
+			<div className="paralysis-mic-container" data-cy="audioContainer">
 				<div className="paralysis-mic-status-container">
 					<img src={mic} className="paralysis-mic-img" alt="Microphone" />
-					<div className="paralysis-mic-loader">
+					<div className="paralysis-layered-container paralysis-component-container {">
 						<SpinnerRoundFilled
-							color="#17b978"
-							size={"120%"}
+							color="#0B603E"
+							size={"100%"}
 							enabled={isRecording}
 							aria-label="Audio Spinner"
 							data-testid="loader"
+							style={{minWidth: "90%"}}
 						/>
 					</div>
 				</div>
@@ -198,26 +194,30 @@ const VoiceRecorder = (props) => {
 
 					<button
 						id="btn-start-recording"
-						className="paralysis-cam-button"
+						className="paralysis-mic-button"
 						onClick={startRecording}
 						disabled={isRecording}
+						data-cy="startVoiceRecording"
 					>
 						Start Recording
 					</button>
 					<button
 						id="btn-stop-recording"
-						className="paralysis-cam-button"
+						className="paralysis-mic-button"
 						onClick={stopRecording}
 						disabled={!isRecording}
+						data-cy="stopVoiceRecording"
 					>
 						Stop Recording
 					</button>
 
 					<button
 						id="btn-submit"
-						className="paralysis-cam-button"
+						className="paralysis-mic-button"
 						onClick={handleSubmit}
 						disabled={isRecording !== false}
+						data-cy="submitVoiceRecording"
+
 					>
 						Submit
 					</button>

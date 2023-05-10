@@ -20,7 +20,7 @@ export var elements = {
 		Logout_Button: "[data-cy=logoutBttn]",
 		shreyasAppLogo: "[data-cy=shreyasAppLogo]",
 		lanreAppLogo: "[data-cy=lanreAppLogo]",
-		ramatAppLogo: "[data-cy=ramatAppLogo]",
+		ramatAppLogo: "[data-cy=paralysisAnalysisLogo]",
 		kevinAppLogo: "[data-cy=kevinAppLogo]",
 		alexAppLogo: "[data-cy=alexAppLogo]",
 	},
@@ -35,5 +35,33 @@ export var elements = {
 		indexContinue: "[data-cy=indexContinue]",
 		checkbox: "[data-cy=instructionsCheckbox]",
 		subConfirm: "[data-cy=subConfirm]"
+	},
+
+	// Paralysis Alanysis elements
+	PA: {
+		Link:"[data-cy=paralysisAnalysisLink]",
+		Logo:"[data-cy=paralysisAnalysisLogo]",
+
+		// Image elements
+		Image: {
+			Active_Camera:"[data-cy=activeCamera]",
+			Take_Pic_Button: "[data-cy=takePicBttn]",
+			Switch_Cam_Button: "[data-cy=switchCamBttn]",
+			Captured_Image: "[data-cy=capturedImage]",
+			Retake_Button: "[data-cy=retakeBttn]",
+			Submit_Button: "[data-cy=submitPicBttn]",
+		},
+		
+		// Audio elements
+		Voice: {
+			Audio_Container: "[data-cy=audioContainer]",
+			Start_Button: "[data-cy=startVoiceRecording]",
+			Stop_Button: "[data-cy=stopVoiceRecording]",
+			Submit_Button: "[data-cy=submitVoiceRecording]",
+		}
+		
+
+
+
 	},
 };

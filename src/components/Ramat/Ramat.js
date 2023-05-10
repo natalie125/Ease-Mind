@@ -1,9 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import ImageAudio from "./ImageAudio";
-
-// import WebcamStreamCapture from "../Webcam";
-
 import Header from "../Header/Header";
 
 import "../App/App.css";
