@@ -20,7 +20,6 @@ import os
 import numpy as np
 import pandas as pd
 import time
-import csv
 
 # load face mesh
 mp_face_mesh = mp.solutions.face_mesh
@@ -189,15 +188,6 @@ def voice_feature_extraction():
     os.remove(voice_path)
 
     return mfcc_coeffs.to_numpy().reshape(-1,16,8,1)
-
-# function used in development to write the time taken to perform certain processes
-def times_to_csv(filename, face_extraction, total, voice_extraction=float("nan")):
-    # field names 
-    header = ['face_extraction_time', 'voice_extraction_time', 'total_time'] 
-
-    with open(filename, 'a', newline='') as file: 
-        writer = csv.writer(file)
-        writer.writerow([face_extraction, voice_extraction, total])
 
 #############################################################
 # ROUTE FOR RAMAT'S APP
