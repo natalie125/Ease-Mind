@@ -65,11 +65,13 @@ const ImageAudio = (props) => {
 		const speech_prediction = Math.trunc(JSON.stringify(serverResponse.data.msg.speech_prediction) / 0.01)
 
 		if(serverResponse.status === 422){
-			if(jsonResponse === "multiple faces detected"){
-				setDisplayMessage("Multiple faces have been deteected in your picture. Please take and submit a photo of one face.")
-			}else if(jsonResponse === "no face detected"){
+			console.log(jsonResponse)
+			console.log()
+			if(serverResponse.data.msg === "multiple faces detected"){
+				setDisplayMessage("Multiple faces have been detected in your picture. Please take and submit a photo of one face.")
+			}else if(serverResponse.data.msg === "no face detected"){
 				setDisplayMessage("No face was detected in your submitted image. Please try again. Ensure you are in a well-lit environment when taking your picture.")
-			}else if(jsonResponse === "face unclear"){
+			}else if(serverResponse.data.msg === "face unclear"){
 				setDisplayMessage("The submitted image was unclear. Please try again. Ensure you are in a well-lit environment when taking your picture.")
 			}else{
 				setDisplayMessage("The server could not process your request. Please try again.")
@@ -85,7 +87,7 @@ const ImageAudio = (props) => {
 			if(face_prediction < 30 && speech_prediction < 30){
 				setDisplayMessage("You are not displaying any signs of facial droop or slurring.")
 			}else{
-				setDisplayMessage(<><p>You seem to be displaying symptoms of a stroke. Call 999 immediately! </p> <p> Facial droop likelihood: {face_prediction}%</p> <p> Dysarthria (slurred speech) likelihood: {speech_prediction}%</p></>)
+				setDisplayMessage(<><p>You seem to be displaying symptoms of a stroke. Call 999 immediately! </p> <p> Facial palsy (droop) likelihood: {face_prediction}%</p> <p> Dysarthria (slurred speech) likelihood: {speech_prediction}%</p></>)
 				await setTimeout(5000);
 				call999()
 			}
@@ -154,7 +156,7 @@ const ImageAudio = (props) => {
 				)}
 				{serverResponse && (
 					<>
-						<h2 style={{ paddingTop: "3%", paddingBottom: "3%" }}>{displayMessage}</h2>
+						<h2 style={{ padding: "2%"}}>{displayMessage}</h2>
 						<a href="tel:+447846054321">
 							Call Emergency Services
 						</a>
