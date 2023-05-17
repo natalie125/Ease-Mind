@@ -191,7 +191,7 @@ def voice_feature_extraction():
     return mfcc_coeffs.to_numpy().reshape(-1,16,8,1)
 
 # function used in development to write the time taken to perform certain processes
-def times_to_csv(filename, face_extraction, voice_extraction, total):
+def times_to_csv(filename, face_extraction, total, voice_extraction=float("nan")):
     # field names 
     header = ['face_extraction_time', 'voice_extraction_time', 'total_time'] 
 
@@ -225,27 +225,16 @@ def image_and_audio():
 
         # removes header of base 64 encoded string and decodes it
         image = image.split("base64,")[1]
-        imageStr = base64.b64decode(image)
+        image_str = base64.b64decode(image)
         
         #convert image string to array of bytes
-        image_bytes = np.fromstring(imageStr, np.uint8)
-
-        image_feature_extraction_start = time.time()
+        image_bytes = np.fromstring(image_str, np.uint8)
 
         # get the calculations for the inputted image
         face_extract_result = face_feature_extraction(image_bytes)
 
-        image_feature_extraction_end = time.time()
-        face_extraction_time = image_feature_extraction_end - image_feature_extraction_start
-
         # check the status of the calculations before generating a prediction
         if (face_extract_result[0] == "ERROR"):
-            total_time_end = time.time()
-            total_time = total_time_end - total_time_start
-
-            # write times of processes to csv
-            times_to_csv("app/ramat/v2.csv", face_extraction_time, voice_extraction_time, total_time)
-
             return {"msg": face_extract_result[1]}, 422
         elif (face_extract_result[0] == "SUCCESS"):
             # face prediction as probability
@@ -253,27 +242,32 @@ def image_and_audio():
 
             ###########################
             # Handle audio
-            # -----------
-
-            # only start voice extraction if image is valid
-            voice_feature_extraction_start = time.time()
+            # -----------)
 
             # get the mfccs for the inputted audio
             voice_extract_result = voice_feature_extraction()
 
-            voice_feature_extraction_end = time.time()
-            voice_extraction_time = voice_feature_extraction_end - voice_feature_extraction_start
-
             # voice prediction as probability
             audio_prediction = speech_model.predict(voice_extract_result)
-
-            total_time_end = time.time()
-            total_time = total_time_end - total_time_start
-
-            times_to_csv("app/ramat/v2.csv", face_extraction_time, voice_extraction_time, total_time)
 
             # return probability of droop being present
             return {"msg": {"face_prediction": face_prediction[0][1], "speech_prediction": np.float64(audio_prediction[0][0])}}, 200
     else:
         # return 'not implemented' status code for any other request method
         return "", 501
+
+
+@app.route('/pay', methods=['GET', 'POST'])
+def cw2_l():
+    if request.method == 'POST':
+        print(request)
+        print(request.form)
+        return {"transaction_id": "32323" }, 201
+
+
+
+@app.route('/get_transaction_details', methods=['GET', 'POST'])
+def cw2_j():
+    if request.method == 'GET':
+        print(request)
+        return {"name": "ooh", "sortcode": "32323" }, 200
