@@ -207,7 +207,6 @@ def image_and_audio():
     if request.method == 'GET':
         return "Ramat's App has been Requested"
     elif request.method == 'POST':
-        total_time_start = time.time()
 
         # get the image and audio from the request
         image = request.form['image']
@@ -255,19 +254,3 @@ def image_and_audio():
     else:
         # return 'not implemented' status code for any other request method
         return "", 501
-
-
-@app.route('/pay', methods=['GET', 'POST'])
-def cw2_l():
-    if request.method == 'POST':
-        print(request)
-        print(request.form)
-        return {"transaction_id": "32323" }, 201
-
-
-
-@app.route('/get_transaction_details', methods=['GET', 'POST'])
-def cw2_j():
-    if request.method == 'GET':
-        print(request)
-        return {"name": "ooh", "sortcode": "32323" }, 200
