@@ -20,7 +20,6 @@ import os
 import numpy as np
 import pandas as pd
 import time
-import csv
 
 # load face mesh
 mp_face_mesh = mp.solutions.face_mesh
