@@ -1,0 +1,30 @@
+{
+	"applicationName": "FinalProject",
+	"autoRollbackConfiguration": {
+		"enabled": true,
+		"events": ["DEPLOYMENT_FAILURE", "DEPLOYMENT_STOP_ON_REQUEST"]
+	},
+	"deploymentGroupName": "FinalProject",
+	"fileExistsBehavior": "DISALLOW",
+	"revision": {
+		"revisionType": "S3",
+		"s3Location": {
+			"bucket": "larks-final-project",
+			"bundleType": "zip",
+			"key": "temp_app.tar.gz"
+		}
+	},
+	"targetInstances": {
+		"ec2TagSet": {
+			"ec2TagSetList": [
+				[
+					{
+						"Key": "Name",
+						"Type": "KEY_AND_VALUE",
+						"Value": "LARKS Web Server"
+					}
+				]
+			]
+		}
+	}
+}

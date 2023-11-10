@@ -1,0 +1,17 @@
+[
+    {
+        "email": "lanre@dipstik.com",
+        "results": {
+            "leukocytes": "neg",
+            "nitrite": "neg",
+            "urobilinogen": "1",
+            "protein": "+30",
+            "ph": "6",
+            "blood": "trace",
+            "specific_gravity": "1.020",
+            "ketones": "neg",
+            "bilirubin": "neg",
+            "glucose": "+250"
+        }
+    }
+]
