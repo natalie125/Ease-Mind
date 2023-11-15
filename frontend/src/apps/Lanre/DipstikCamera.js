@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCamera, faArrowsRotate, faPaperPlane, faUpload, faCameraRotate, faCameraAlt, faCameraRetro, faVideoCamera, faPlaneArrival, faPlaneCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import {faArrowsRotate, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router-dom";
-import Header from "../Header/Header";
+import Header from "../../components/Header/Header";
 import * as cvstfjs from "@microsoft/customvision-tfjs";
 
 let BASEURL = "";
@@ -14,31 +14,48 @@ process.env.NODE_ENV === "development"
 
 //This component is used to take pictures
 //pictures are stored in the imageSrc variable after taking it
-//Not sure what to do after picture is stored in the imageSrc variable
-const LanreWebcamCapture = () => {
+const DipstikCamera = () => {
   const webcamRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
   const [imageSent, setImageSent] = useState(false);
-  const [backFacing, setBackFacing] = React.useState(true);
+  // eslint-disable-next-line
+  const [backFacing, setBackFacing] = useState(true);
+  const [dipstickDetected , setDipstickDetected ] = useState(0);
+  const [cameraWorking , setCameraWorking ] = useState(true);
 	let navigate = useNavigate();
 
+  //get the json from the memory
+	const token_JSON = JSON.parse(sessionStorage.getItem("token"));
+
+  let context = 'lanre'; 
+  context = context.toString();
+
+
+// Handle what happens when image is submitted
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
+    //get the specific token string
+		const token = token_JSON.data.token;
+
     formData.append("image", imageSrc);
+    formData.append("email", sessionStorage.getItem("email"));
     setImageSent(true);
-    const response = await axios(BASEURL+"dipstik/upload",{
-      method: 'post',
+    const response = await axios(BASEURL + context,{
+      method: "post",
       data: formData,
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        // "Access-Control-Allow-Origin": "*",
+        //add authorization header
+				Authorization: "Bearer " + token,
+				"Content-Type": "multipart/form-data",
+      },
     })
     .then(response => {
       console.log(response);
       console.log(response.data);
-
-      // save the results in session storage
+      
+      // save results in session storage
       sessionStorage.setItem("bilirubin",response.data.bilirubin);
       sessionStorage.setItem("blood", response.data.blood);
       sessionStorage.setItem("glucose", response.data.glucose);
@@ -57,48 +74,51 @@ const LanreWebcamCapture = () => {
     .catch(error=> {
       console.error(error);
     });
-
     console.log(response);
-
   }
+
 
 //takes pictures without flash
   const handleTakePicture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImageSrc(imageSrc);
+    detectDipstick();
+    console.log(window.location.href)
   };
 
 //resets picture source and retakes picture
 const handleRetakePicture = () => {
   setImageSrc(null);
+  setDipstickDetected(0);
 };
 
 
+// dipstick object detection model
+const detectDipstick = async () => {
+  let model = new cvstfjs.ObjectDetectionModel();
+  // load the tensorflow  model hosted on aws s3
+  await model.loadModelAsync('https://dipstick-model.s3.eu-west-2.amazonaws.com/model.json');
+  const image = document.getElementById('image');
+  const result = await model.executeAsync(image);
+  console.log("*************Detecting Dipstick in image*************");
+  console.log(result);
 
-  // Using button to change what camera is being used
-	// Should work based on MDN documentation: https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints/facingMode
-	// But I cannot test properly as its running on a laptop.
-	// const switchCameraFacing = React.useCallback(() => {
-  const switchCameraFacing = React.useCallback(() => {
-		if (backFacing){
-			setBackFacing(false);
-		}
-		else{
-			setBackFacing(true);
-		}
-	
-	},[backFacing]);
+  if (result[1][0] > 0.5) {
+    setDipstickDetected(1);
 
-  
-//  // //**************************************************************** 
-//  // // COMBINED
+  }else{
+    setDipstickDetected(-1);
+  }
+};
+
+
+//**************************************************************** 
+  // COMBINED
   // 	Trying to do the dimensions stuff.
-	// Rounded to floats to ensure dimensions used here make sense, only issue I see right now - the videos will record in different format each time.
+	// Rounded to floats to ensure dimensions used here make sense, only issue I see right now
 	const size = useWindowSize();
 	var cameraHeight = Math.round(size.height);
   var cameraWidth = Math.round(size.width);
-
-
 
 	// This code attempts for the dimensions of the camera to be in a 1:1 aspect ratio, by taking the previous measurements of the size of the screen.
 	// Takes the smaller of the two calcs of width and height, to ensure it will fit on the screen.
@@ -116,7 +136,7 @@ const handleRetakePicture = () => {
       minValue = cameraHeight;
       cameraWidth = minValue;
   }else{
-      cameraHeight = cameraHeight;
+      // cameraHeight = cameraHeight;
       cameraWidth = cameraWidth * 0.9;
   };
 
@@ -134,8 +154,7 @@ const handleRetakePicture = () => {
 				// max: cameraHeight,
 			},
 			facingMode: { exact: "environment" },
-		};
-		
+		};	
 	} else {
     var x = "user";
 		cameraConstraints = {
@@ -150,41 +169,96 @@ const handleRetakePicture = () => {
 			facingMode: { x },
 		};
 	}
+
+  // console.log(cameraConstraints)
+  // console.log(cameraHeight)
+ 
+// Checks if webcam is working
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (webcamRef.current && webcamRef.current.video) {
+        if (webcamRef.current.video.readyState === 4) {
+          setCameraWorking(true);
+        } else {
+          setCameraWorking(false);
+        }
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  console.log(cameraWorking);
+  
+
 // // // COMBINED END
 // // //****************************************************************
 
-
-//two buttons, one for taking pictures with flash and one for without
   return (
     <>
+
     {/* Show camera */}
     <div>
-    {!imageSrc && imageSent == false &&  (
+
+    {!imageSrc && imageSent === false &&  (
 			<>
+        {/* Display message if camera not working */}
         <div className="camera-container">
           <div className="overlay-ancestor">
-            <div className="camera-overlay"></div>
             <Webcam className="lanre-webcam" videoConstraints={cameraConstraints} ref={webcamRef} marginWidth={"0px"} screenshotQuality="1" />
-            <div className="camera-buttons-container">
-              {/* <button onClick={switchCameraFacing} className="camera-button"><FontAwesomeIcon icon={faCameraRotate} className="camera-icon"/></button> */}
-              {/* <button onClick={handleTakePicture} className="camera-button"><FontAwesomeIcon icon={faCamera} className="camera-icon"/></button> */}
-              <button onClick={handleTakePicture} className="camera-button"></button>
-            </div>
+            
+            {cameraWorking && ( 
+              <>
+              <div className="camera-overlay" id="camera-overlay"></div>
+              <div className="camera-buttons-container">
+                <p className="camera-instructions">Fit the dipstick within the guides</p>
+                <button onClick={handleTakePicture} className="camera-button"></button>
+              </div>
+              </>
+            )}
           </div>
         </div>
-      </>
+
+        
+      </> 
 		)}
+
+    {/* SHOW A MESSAGE IS THE CAMERA DOES NOT LOAD */}
+    {!cameraWorking && ( 
+          <h4> Failed to load camera. <br/><br/> Please refresh your browser! <br/> <br/>
+          Please ensure you are on a mobile device!
+          </h4>
+        )}
     </div>
 
-    {/* Show taken image */}
+    {/* Show the taken image */}
       <div>
-        {imageSrc && imageSent == false && (
+        {imageSrc && imageSent === false && (
           <>
             <div className="taken-pic-container">
-              <img src={imageSrc} width={minValue} alt="Captured photo" />
+              <div>
+                {/* <p className="detecting-dipstick-message"> Detecting dipstick....</p> */}
+              </div>
+              <img id="image" src={imageSrc} width={minValue} alt="Captured Dipstick" />
               <div className="taken-pic-buttons-overlay-container">
-                <button onClick={handleRetakePicture} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
-                <button onClick={handleSubmit} className="camera-button"><FontAwesomeIcon icon={faPaperPlane} className="camera-icon"/></button>
+                {/* Show a message that dipstick is being detected */}
+                {dipstickDetected === 0 && (
+                  <p className="detecting-dipstick-message"> Detecting dipstick... </p>)}
+
+                {dipstickDetected === 1 && (
+                  <p className="detecting-dipstick-message success"> Dipstick detected </p>)}
+
+                {dipstickDetected === -1 && (
+                  <p className="detecting-dipstick-message failure"> Dipstick not detected </p>)}
+
+
+                {/* SEND BUTTON */}
+                <div>
+                  <button onClick={handleRetakePicture} className="camera-button"><FontAwesomeIcon icon={faArrowsRotate} className="camera-icon"/></button>
+
+                  {dipstickDetected === 1 && (
+                  <button onClick={handleSubmit} className="camera-button"><FontAwesomeIcon icon={faPaperPlane} className="camera-icon"/></button>)}
+                </div>
+
               </div>
             </div>
           </>
@@ -193,22 +267,19 @@ const handleRetakePicture = () => {
 
       {/* Show a message that results are being processed */}
       <div>
-        {imageSrc && imageSent == true  && (
+        {imageSrc && imageSent === true  && (
           <>
-            
               <Header />
-            <div >
+            <div>
               <div className="loader-container">
+                <h2 className="processing-results-text"> Processing your results...</h2>
                 <div className="spinner"></div>
               </div>
-              <h1> Processing your results</h1>
+              
             </div>
           </>
         )}
       </div>
-
-
-
     </>
   );
 };
@@ -243,4 +314,4 @@ function useWindowSize() {
 	return windowSize;
   }
 
-export default LanreWebcamCapture;
+export default DipstikCamera;

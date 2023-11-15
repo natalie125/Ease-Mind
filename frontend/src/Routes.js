@@ -37,10 +37,10 @@ import TonsPhotoInstructions from "./components/Shreyas/TonsPhotoInstructions";
 import TonsillitisOutcome1 from "./components/Shreyas/TonsillitsOutcome1";
 import TonsillitisOutcome2 from "./components/Shreyas/TonsillitisOutcome2";
 
-import DipstikInstructions from "./components/Lanre/DipstikHome";
-import DipstikTimer from "./components/Lanre/DipstikTimer";
-import DipstikCamera from "./components/Lanre/DipstikCamera";
-import DipstikResults from "./components/Lanre/DipstikResults";
+import DipstikInstructions from "./apps/Lanre/DipstikHome";
+import DipstikTimer from "./apps/Lanre/DipstikTimer";
+import DipstikCamera from "./apps/Lanre/DipstikCamera";
+import DipstikResults from "./apps/Lanre/DipstikResults";
 
 const Main = () => (
 	<Routes>

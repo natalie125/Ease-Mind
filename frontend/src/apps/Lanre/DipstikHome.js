@@ -1,7 +1,7 @@
 import React, { useState} from "react";
-import "../App/App.css";
+import "../../components/App/App.css";
 import "../Lanre/dipstik.css";
-import Header from "../Header/Header";
+import Header from "../../components/Header/Header";
 import DipstikTimer from "./DipstikTimer";
 
 const DipstikInstructions = () =>  {

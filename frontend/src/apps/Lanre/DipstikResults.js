@@ -1,8 +1,8 @@
 import React, { useState,Component } from "react";
 import { Link } from "react-router-dom";
-import "../App/App.css";
+import "../../components/App/App.css";
 
-import Header from "../Header/Header";
+import Header from "../../components/Header/Header";
 import DipstickTimer from "./DipstikTimer";
 
 const DipstikResults = () => {
