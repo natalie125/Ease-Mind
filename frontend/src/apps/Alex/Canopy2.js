@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import "../App/App.css";
+import "../../components/App/App.css";
 
 class Canopy2 extends Component {
 	render() {

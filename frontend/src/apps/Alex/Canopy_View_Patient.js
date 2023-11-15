@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-import "../App/App.css";
+import "../../components/App/App.css";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"

@@ -7,7 +7,7 @@ import { NodeDetails } from "./NodeDetails.tsx";
 import { NODE_WIDTH, NODE_HEIGHT } from "./const.ts";
 import { getNodeStyle } from "./utils.ts";
 
-import "../App/App.css";
+import "../../components/App/App.css";
 import "./Canopy.css"
 
 let BASEURL = "";
