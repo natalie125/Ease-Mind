@@ -1,7 +1,6 @@
 from app import db
 from sqlalchemy.orm import validates
 
-
 # Definition of the table named "User_Login" for storing user login information
 # emails are unique, passwords are not
 class User_Login(db.Model):
@@ -9,7 +8,8 @@ class User_Login(db.Model):
     email = db.Column(db.String(500), index=True, unique=True)
     password = db.Column(db.String(500))
 
-    # Going off of this tutorial: https://ed-a-nunes.medium.com/field-validation-for-backend-apis-with-python-flask-and-sqlalchemy-30e8cc0d260c
+    # Going off of this tutorial:
+    # https://ed-a-nunes.medium.com/field-validation-for-backend-apis-with-python-flask-and-sqlalchemy-30e8cc0d260c
     @validates('email')
     def validate_email(self, key, email):
         # Check for empty email
@@ -71,38 +71,46 @@ class User_Login_Test(db.Model):
 # during the create_all() process
 
 
-# join table for the relationship of "a tree owns a patient" or "a patient belongs to a tree"
-tree_patient = db.Table('tree_patient',
-                        db.Column('tree_id', db.Integer, db.ForeignKey('pedigree_tree.id'), primary_key=True),
-                        db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
-                        bind_key='canopy'
-                        )
+# join table for the relationship of "a tree owns a patient" or
+# "a patient belongs to a tree"
+tree_patient = db.Table(
+    'tree_patient',
+    db.Column('tree_id', db.Integer, db.ForeignKey('pedigree_tree.id'), primary_key=True),
+    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
+    bind_key='canopy'
+)
 
 
-# join table for the relationship of "a patient is the parent of another patient" or "a patient is the child of another patient"
-parent_child = db.Table('parent_child',
-                        db.Column('parent_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
-                        db.Column('child_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
-                        bind_key='canopy'
-                        )
+# join table for the relationship of "a patient is the parent of another
+# patient" or "a patient is the child of another patient"
+parent_child = db.Table(
+    'parent_child',
+    db.Column('parent_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
+    db.Column('child_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
+    bind_key='canopy'
+)
 
-# join table for the relationship of "a patient has this health condition" or "this health condition affects this patient"
-patient_condition = db.Table('patient_condition',
-                             db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
-                             db.Column('condition_id', db.Integer, db.ForeignKey('pedigree_health_condition.id'), primary_key=True),
-                             bind_key='canopy'
-                             )
+# join table for the relationship of "a patient has this health condition" or
+# "this health condition affects this patient"
+patient_condition = db.Table(
+    'patient_condition',
+    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
+    db.Column('condition_id', db.Integer, db.ForeignKey('pedigree_health_condition.id'), primary_key=True),
+    bind_key='canopy'
+)
 
 # join table for the relationship of "a patient has this fh health condition" or "this fh health condition affects this patient"
-patient_fh_condition = db.Table('patient_fh_condition',
-                             db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
-                             db.Column('fh_condition_id', db.Integer, db.ForeignKey('pedigree_health_condition.fh_condition_id'), primary_key=True),
-                             bind_key='canopy'
-                             )
+patient_fh_condition = db.Table(
+    'patient_fh_condition',
+    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
+    db.Column('fh_condition_id', db.Integer, db.ForeignKey('pedigree_health_condition.fh_condition_id'), primary_key=True),
+    bind_key='canopy'
+)
 
 
 # join table for the relationship of "a patient has these spouses" or "this patient is a spouse of this patient"
-patient_spouse = db.Table('patient_spouse',
+patient_spouse = db.Table(
+    'patient_spouse',
     db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
     db.Column('spouse_id', db.Integer, db.ForeignKey('pedigree_patient.id'), primary_key=True),
     bind_key='canopy'
@@ -167,36 +175,41 @@ class Pedigree_Health_Condition(db.Model):
 
 # Test tables for the family pedigree app
 # join table for the relationship of "a tree owns a patient" or "a patient belongs to a tree"
-tree_patient_test = db.Table('tree_patient_test',
-                             db.Column('tree_id', db.Integer, db.ForeignKey('pedigree_tree_test.id'), primary_key=True),
-                             db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
-                             bind_key='canopy_test'
-                             )
+tree_patient_test = db.Table(
+    'tree_patient_test',
+    db.Column('tree_id', db.Integer, db.ForeignKey('pedigree_tree_test.id'), primary_key=True),
+    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
+    bind_key='canopy_test'
+)
 
 # join table for the relationship of "a patient is the parent of another patient" or "a patient is the child of another patient"
-parent_child_test = db.Table('parent_child_test',
-                             db.Column('parent_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
-                             db.Column('child_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
-                             bind_key='canopy_test'
-                             )
+parent_child_test = db.Table(
+    'parent_child_test',
+    db.Column('parent_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
+    db.Column('child_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
+    bind_key='canopy_test'
+)
 
 # join table for the relationship of "a patient has this health condition" or "this health condition affects this patient"
-patient_condition_test = db.Table('patient_condition_test',
-                                  db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
-                                  db.Column('condition_id', db.Integer, db.ForeignKey('pedigree_health_condition_test.id'), primary_key=True),
-                                  bind_key='canopy_test'
-                                  )
+patient_condition_test = db.Table(
+    'patient_condition_test',
+    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
+    db.Column('condition_id', db.Integer, db.ForeignKey('pedigree_health_condition_test.id'), primary_key=True),
+    bind_key='canopy_test'
+)
 
 # join table for the relationship of "a patient has this fh health condition" or "this fh health condition affects this patient"
-patient_fh_condition_test = db.Table('patient_fh_condition_test',
-                             db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
-                             db.Column('fh_condition_id', db.Integer, db.ForeignKey('pedigree_health_condition_test.fh_condition_id'), primary_key=True),
-                             bind_key='canopy_test'
-                             )
+patient_fh_condition_test = db.Table(
+    'patient_fh_condition_test',
+    db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
+    db.Column('fh_condition_id', db.Integer, db.ForeignKey('pedigree_health_condition_test.fh_condition_id'), primary_key=True),
+    bind_key='canopy_test'
+)
 
 
 # join table for the relationship of "a patient has these spouses" or "this patient is a spouse of this patient"
-patient_spouse_test = db.Table('patient_spouse_test',
+patient_spouse_test = db.Table(
+    'patient_spouse_test',
     db.Column('patient_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
     db.Column('spouse_id', db.Integer, db.ForeignKey('pedigree_patient_test.id'), primary_key=True),
     bind_key='canopy_test'
