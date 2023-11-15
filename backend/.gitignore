@@ -17,3 +17,4 @@ flask/
 # databases
 app.db
 canopy_test.db
+test.db
