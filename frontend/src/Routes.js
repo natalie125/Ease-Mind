@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes } from "react-router-dom";
+import { Routes as Router } from "react-router-dom";
 import { Route } from "react-router";
 
 import Login from "./components/Login/Login";
@@ -42,8 +42,8 @@ import DipstikTimer from "./apps/Lanre/DipstikTimer";
 import DipstikCamera from "./apps/Lanre/DipstikCamera";
 import DipstikResults from "./apps/Lanre/DipstikResults";
 
-const Main = () => (
-	<Routes>
+const Routes = () => (
+	<Router>
 		<Route path="/" element={<Home />}></Route>
 		<Route exact path="/home" element={<Home />}></Route>
 		<Route exact path="/signup" element={<SignUp />}></Route>
@@ -87,7 +87,7 @@ const Main = () => (
 		<Route exact path="/dipstik/dipstik-results" element={<DipstikResults />}></Route>
 
 		<Route path="*" element={<Error404 />}></Route>
-	</Routes>
+	</Router>
 );
 
-export default Main;
+export default Routes;
