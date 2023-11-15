@@ -2,8 +2,8 @@ import React, { Component}  from "react";
 import { Link } from "react-router-dom";
 import WebcamCapture from "./Camera_Kevin.js";
 
-import "../App/App.css";
-import Header from "../Header/Header";
+import "../../components/App/App.css";
+import Header from "../../components/Header/Header";
 
 class Kevin extends Component {
 	render() {

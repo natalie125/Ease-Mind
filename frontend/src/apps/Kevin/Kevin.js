@@ -2,9 +2,9 @@ import React, { Component} from "react";
 import { Link } from "react-router-dom";
 
 
-import "../App/App.css";
+import "../../components/App/App.css";
 import "./Kevin.css";
-import Header from "../Header/Header";
+import Header from "../../components/Header/Header";
 
 // const [is,setIs] = false;
 // const handleCheckboxChange = (event) => {

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Instructions from "./Instructions_Component";
 
-import "../App/App.css";
+import "../../components/App/App.css";
 import "./Kevin.css";
-import Header from "../Header/Header";
+import Header from "../../components/Header/Header";
 
     
 

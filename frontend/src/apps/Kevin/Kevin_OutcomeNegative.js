@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import "../App/App.css";
-import Header from "../Header/Header";
+import "../../components/App/App.css";
+import Header from "../../components/Header/Header";
 import Webcam from "react-webcam";
 
 class Kevin extends Component {

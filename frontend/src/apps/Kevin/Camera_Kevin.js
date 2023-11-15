@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../App/App.css";
+import "../../components/App/App.css";
 import "./Kevin.css";
 
 

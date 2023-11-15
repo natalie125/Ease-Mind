@@ -26,11 +26,11 @@ import Canopy_New_Condition from "./apps/Alex/Canopy_New_Condition";
 
 import Ramat from "./components/Ramat/Ramat";
 
-import Kevin from "./components/Kevin/Kevin";
-import Kevin_Take_Photo from "./components/Kevin/Kevin_Take_Photo";
-import Kevin_Outcome_Positive from "./components/Kevin/Kevin_Outcome_Positive";
-import Kevin_Outcome_Negative from "./components/Kevin/Kevin_OutcomeNegative";
-import Kevin_Instructions from "./components/Kevin/Kevin_Instructions";
+import Kevin from "./apps/Kevin/Kevin";
+import Kevin_Take_Photo from "./apps/Kevin/Kevin_Take_Photo";
+import Kevin_Outcome_Positive from "./apps/Kevin/Kevin_Outcome_Positive";
+import Kevin_Outcome_Negative from "./apps/Kevin/Kevin_OutcomeNegative";
+import Kevin_Instructions from "./apps/Kevin/Kevin_Instructions";
 
 import Shreyas from "./components/Shreyas/Shreyas";
 import TonsPhotoInstructions from "./components/Shreyas/TonsPhotoInstructions";
