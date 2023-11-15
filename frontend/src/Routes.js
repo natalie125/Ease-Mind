@@ -24,7 +24,7 @@ import Canopy_New_Node_2 from "./apps/Alex/Canopy_New_Node_2";
 import Canopy_New_Tree from "./apps/Alex/Canopy_New_Tree";
 import Canopy_New_Condition from "./apps/Alex/Canopy_New_Condition";
 
-import Ramat from "./components/Ramat/Ramat";
+import Ramat from "./apps/Ramat/Ramat";
 
 import Kevin from "./apps/Kevin/Kevin";
 import Kevin_Take_Photo from "./apps/Kevin/Kevin_Take_Photo";

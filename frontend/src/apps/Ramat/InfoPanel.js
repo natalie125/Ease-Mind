@@ -1,6 +1,6 @@
 import React from "react";
 import close from "../../images/close.png"
-import "../App/App.css";
+import "../../components/App/App.css";
 
 
 const InfoPanel = (props) => {

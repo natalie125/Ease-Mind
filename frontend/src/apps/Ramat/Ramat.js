@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import ImageAudio from "./ImageAudio";
-import Header from "../Header/Header";
+import Header from "../../components/Header/Header";
 
-import "../App/App.css";
+import "../../components/App/App.css";
 
 class Ramat extends Component {
 	constructor(props) {

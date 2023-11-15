@@ -2,7 +2,7 @@ import RecordRTC, { StereoAudioRecorder } from "recordrtc";
 import React, { useState, useEffect } from "react";
 import { SpinnerRoundFilled } from "spinners-react";
 import mic from "../../images/mic.png";
-import "../Ramat/ParalysisAnalysis.css";
+import "../../apps/Ramat/ParalysisAnalysis.css";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {default as Camera} from "./ParalysisAnalysisCamera";
-import AudioRecorder from "../AudioRecorder";
+import AudioRecorder from "../../components/AudioRecorder";
 import {SpinnerCircularFixed} from "spinners-react";
 import InfoPanel from "./InfoPanel";
 import axios from "axios";
-import "../App/App.css";
+import "../../components/App/App.css";
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
