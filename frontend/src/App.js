@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Routes from "./Routes";
 import "./App.css";
 import Header from "./components/Header/Header";
@@ -16,12 +16,10 @@ function GetCurrentPage() {
 
 function App() {
 	const { token, setToken } = useToken();
-	const { tokenVerify, setTokenVerify } = useVerifyToken(token);
-	const token_verification = setTokenVerify;
-	//console.log("token is " + token);
-	console.log("tokenverify is " + token_verification);
+	const { tokenVerify } = useVerifyToken(token);
+
 	// If a user does not have an authentication token, a login page is displayed to them
-	if (!token || !token_verification) {
+	if (!token || !tokenVerify) {
 		const location = GetCurrentPage();
 		console.log("the location is " + location);
 
@@ -30,6 +28,7 @@ function App() {
 			return <Login setToken={setToken} />;
 		}
 	}
+
 	return (
 		<div className="App">
 			<Header />

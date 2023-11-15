@@ -27,6 +27,6 @@ export default function useVerifyToken(token) {
 	const [tokenVerify, setTokenVerify] = useState(getTokenVerification());
 
 	return {
-		setTokenVerify: tokenVerify,
+		tokenVerify: tokenVerify,
 	};
 }
