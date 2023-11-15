@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import exampleImg from "./images/example.jpg";
-import Header from "../Header/Header";
+import Header from "../../components/Header/Header";
 
-import "../App/App.css";
+import "../../components/App/App.css";
 
 //commented code below webcam capture is an example of how to send to '/shreyas' endpoint instead of '/upload' endpoint
 class TonsPhotoInstructions extends Component {

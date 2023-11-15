@@ -32,10 +32,10 @@ import Kevin_Outcome_Positive from "./apps/Kevin/Kevin_Outcome_Positive";
 import Kevin_Outcome_Negative from "./apps/Kevin/Kevin_OutcomeNegative";
 import Kevin_Instructions from "./apps/Kevin/Kevin_Instructions";
 
-import Shreyas from "./components/Shreyas/Shreyas";
-import TonsPhotoInstructions from "./components/Shreyas/TonsPhotoInstructions";
-import TonsillitisOutcome1 from "./components/Shreyas/TonsillitsOutcome1";
-import TonsillitisOutcome2 from "./components/Shreyas/TonsillitisOutcome2";
+import Shreyas from "./apps/Shreyas/Shreyas";
+import TonsPhotoInstructions from "./apps/Shreyas/TonsPhotoInstructions";
+import TonsillitisOutcome1 from "./apps/Shreyas/TonsillitsOutcome1";
+import TonsillitisOutcome2 from "./apps/Shreyas/TonsillitisOutcome2";
 
 import DipstikInstructions from "./apps/Lanre/DipstikHome";
 import DipstikTimer from "./apps/Lanre/DipstikTimer";
