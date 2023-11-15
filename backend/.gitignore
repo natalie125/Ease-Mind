@@ -10,3 +10,4 @@ shots/
 ngrok
 model_versions/
 app/lanre/submitted_images/user_evaluation_results.json
+flask/
