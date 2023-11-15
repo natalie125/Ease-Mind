@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import "../../components/App/App.css";
 import Dropdown from "./Dropdown";
 import "./Canopy.css"
 

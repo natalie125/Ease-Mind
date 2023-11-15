@@ -4,7 +4,7 @@ import AudioRecorder from "../../components/AudioRecorder";
 import {SpinnerCircularFixed} from "spinners-react";
 import InfoPanel from "./InfoPanel";
 import axios from "axios";
-import "../../components/App/App.css";
+
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"

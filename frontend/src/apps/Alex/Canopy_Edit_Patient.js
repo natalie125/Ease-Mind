@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-import "../../components/App/App.css";
-
 let BASEURL = "";
 process.env.NODE_ENV === "development"
 	? (BASEURL = process.env.REACT_APP_DEV)

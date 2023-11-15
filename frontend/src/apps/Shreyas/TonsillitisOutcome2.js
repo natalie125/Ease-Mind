@@ -1,16 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import Header from "../../components/Header/Header";
-
-import "../../components/App/App.css";
-
 //commented code below webcam capture is an example of how to send to '/shreyas' endpoint instead of '/upload' endpoint
 class TonsillitisOutcome2 extends Component {
 	render() {
 		return (
 			<div className="App">
-				<Header />
 				<div className="tons-page-container">
 					<h1 className="tons-page-header">Outcome of your results</h1>
 					<div>

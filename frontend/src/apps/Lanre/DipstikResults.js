@@ -1,15 +1,11 @@
 import React, { useState,Component } from "react";
 import { Link } from "react-router-dom";
-import "../../components/App/App.css";
-
-import Header from "../../components/Header/Header";
 import DipstickTimer from "./DipstikTimer";
 
 const DipstikResults = () => {
 	const [view, setView] = useState(1);
 	const [paramStyling, setParamStyling] = useState("results-button selected");
 	const [healthStyling, setHealthStyling] = useState("results-button");
-
 
 	//Used to Switch the user's view to Parameters 
 	const handleSwitchToParameters = () => {
@@ -462,7 +458,6 @@ const DipstikResults = () => {
 
 	return (
 		<div className="dipstik-results">
-			<Header />
 			<h1>Dipstik Results</h1>
 
 			{ email.includes('@dipstik.com') && ( 

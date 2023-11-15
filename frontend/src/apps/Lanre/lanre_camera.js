@@ -4,7 +4,6 @@ import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCamera, faArrowsRotate, faPaperPlane, faUpload, faCameraRotate, faCameraAlt, faCameraRetro, faVideoCamera, faPlaneArrival, faPlaneCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/Header/Header";
 import * as cvstfjs from "@microsoft/customvision-tfjs";
 
 let BASEURL = "";
@@ -73,8 +72,6 @@ const handleRetakePicture = () => {
   setImageSrc(null);
 };
 
-
-
   // Using button to change what camera is being used
 	// Should work based on MDN documentation: https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints/facingMode
 	// But I cannot test properly as its running on a laptop.
@@ -97,8 +94,6 @@ const handleRetakePicture = () => {
 	const size = useWindowSize();
 	var cameraHeight = Math.round(size.height);
   var cameraWidth = Math.round(size.width);
-
-
 
 	// This code attempts for the dimensions of the camera to be in a 1:1 aspect ratio, by taking the previous measurements of the size of the screen.
 	// Takes the smaller of the two calcs of width and height, to ensure it will fit on the screen.
@@ -194,26 +189,17 @@ const handleRetakePicture = () => {
       {/* Show a message that results are being processed */}
       <div>
         {imageSrc && imageSent == true  && (
-          <>
-            
-              <Header />
-            <div >
-              <div className="loader-container">
-                <div className="spinner"></div>
-              </div>
-              <h1> Processing your results</h1>
+          <div >
+            <div className="loader-container">
+              <div className="spinner"></div>
             </div>
-          </>
+            <h1> Processing your results</h1>
+          </div>
         )}
       </div>
-
-
-
     </>
   );
 };
-
-
 
 // Found at:
 // https://usehooks.com/useWindowSize/

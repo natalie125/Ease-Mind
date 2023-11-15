@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import "../../components/App/App.css";
 import "./Canopy.css"
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
 	? (BASEURL = process.env.REACT_APP_DEV)
 	: (BASEURL = process.env.REACT_APP_PROD);
-
 
 function Canopy_Edit_Condition(props) {
 	const navigate = useNavigate();

@@ -2,14 +2,10 @@ import React, { Component}  from "react";
 import { Link } from "react-router-dom";
 import WebcamCapture from "./Camera_Kevin.js";
 
-import "../../components/App/App.css";
-import Header from "../../components/Header/Header";
-
 class Kevin extends Component {
 	render() {
 		return (
 			<div className="Kevin">
-				<Header />
 				<h1>Skin Scan</h1>
 				<div className="App-body">
                     <div className="image_page">

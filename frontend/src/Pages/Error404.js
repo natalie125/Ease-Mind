@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Home from "../components/Home/Home";
 
-import "../components/App/App.css";
 import { Link } from "react-router-dom";
 
 class Error404 extends Component {

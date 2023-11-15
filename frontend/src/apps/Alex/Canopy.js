@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import "../../components/App/App.css";
-import Header from "../../components/Header/Header";
 import "./Canopy.css"
 
 function Canopy(props) {
@@ -28,7 +26,6 @@ function Canopy(props) {
 
 	return (
 		<div className="App">
-			<Header />
 			<h1>Welcome To The Canopy App {user_email}!</h1>
 			<br/>
 			<div>

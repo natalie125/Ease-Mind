@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import ImageAudio from "./ImageAudio";
-import Header from "../../components/Header/Header";
-
-import "../../components/App/App.css";
 
 class Ramat extends Component {
 	constructor(props) {
@@ -20,12 +17,9 @@ class Ramat extends Component {
 
 	render() {
 		return (
-			<>
-				<Header />
-				<div className="App-body">
-					<ImageAudio />
-				</div>
-			</>
+			<div className="App-body">
+				<ImageAudio />
+			</div>
 		);
 	}
 }

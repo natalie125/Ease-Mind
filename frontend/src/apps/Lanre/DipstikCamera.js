@@ -4,7 +4,6 @@ import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faArrowsRotate, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/Header/Header";
 import * as cvstfjs from "@microsoft/customvision-tfjs";
 
 let BASEURL = "";
@@ -268,23 +267,17 @@ const detectDipstick = async () => {
       {/* Show a message that results are being processed */}
       <div>
         {imageSrc && imageSent === true  && (
-          <>
-              <Header />
-            <div>
-              <div className="loader-container">
-                <h2 className="processing-results-text"> Processing your results...</h2>
-                <div className="spinner"></div>
-              </div>
-              
+          <div>
+            <div className="loader-container">
+              <h2 className="processing-results-text"> Processing your results...</h2>
+              <div className="spinner"></div>
             </div>
-          </>
+          </div>
         )}
       </div>
     </>
   );
 };
-
-
 
 // Found at:
 // https://usehooks.com/useWindowSize/
@@ -312,6 +305,6 @@ function useWindowSize() {
 	  return () => window.removeEventListener("resize", handleResize);
 	}, []); // Empty array ensures that effect is only run on mount
 	return windowSize;
-  }
+}
 
 export default DipstikCamera;

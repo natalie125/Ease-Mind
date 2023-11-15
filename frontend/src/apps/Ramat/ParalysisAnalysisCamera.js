@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import {isMobile} from 'react-device-detect';
 import Webcam from "react-webcam";
-import "../../components/App/App.css";
+
 import "./ParalysisAnalysis.css";
 
 //This component is used to take pictures

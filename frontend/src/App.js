@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Routes from "../../Routes";
-import "../App/App.css";
-import Login from "../Login/Login";
-import useToken from "../App/useToken";
-import useVerifyToken from "./useVerifyToken";
+import Routes from "./Routes";
+import "./App.css";
+import Header from "./components/Header/Header";
+import Login from "./components/Login/Login";
+import useToken from "./hooks/useToken";
+import useVerifyToken from "./hooks/useVerifyToken";
 import { useLocation } from "react-router-dom";
 
 // This function Returns the current page the user is on
@@ -31,6 +32,7 @@ function App() {
 	}
 	return (
 		<div className="App">
+			<Header />
 			<Routes />
 		</div>
 	);

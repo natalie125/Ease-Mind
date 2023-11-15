@@ -1,14 +1,10 @@
 import React, { Component } from "react";
-import "../../components/App/App.css";
-import Header from "../../components/Header/Header";
-import Webcam from "react-webcam";
 
 class Kevin extends Component {
 	render() {
 		const prediction = sessionStorage.getItem('prediction-skin-cancer')
 		return (
 			<div className="Kevin">
-				<Header />
 				<h1>Skin Scan</h1>
 				<div className="App-body">
 					<div className="results_page">
@@ -19,7 +15,6 @@ class Kevin extends Component {
 						<p> This result was calculated based on the information our Machine Learning Algorithm was trained on, from which it has deduced that this image is not likely to contain a malignant skin cancer.</p>
 						<p> Please do not use this information as an alternative to professional diagnosis. If you have any doubts about your health and/or well-being, please visit a medical professional. </p>
 					</div>
-					
 				</div>
 			</div>
 		);

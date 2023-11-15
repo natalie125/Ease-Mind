@@ -1,7 +1,6 @@
 import React, { useState} from "react";
-import "../../components/App/App.css";
+
 import "../Lanre/dipstik.css";
-import Header from "../../components/Header/Header";
 import DipstikTimer from "./DipstikTimer";
 
 const DipstikInstructions = () =>  {
@@ -30,7 +29,6 @@ const DipstikInstructions = () =>  {
 		return (
             <>
 			<div className="Lanre">
-				<Header />
 				<h1 className="dipstik-title">Welcome to dipstik</h1>
 
                 <div className="instructions-container">

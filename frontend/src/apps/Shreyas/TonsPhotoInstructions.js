@@ -1,16 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import exampleImg from "./images/example.jpg";
-import Header from "../../components/Header/Header";
-
-import "../../components/App/App.css";
 
 //commented code below webcam capture is an example of how to send to '/shreyas' endpoint instead of '/upload' endpoint
 class TonsPhotoInstructions extends Component {
 	render() {
 		return (
 			<div className="App">
-				<Header />
 				<h1 className="tons-page-header">Instructions for using the tonsillitis detector</h1>
 				<div className="tons-page-container bullet-point shreyas-disclaimer">
 					Disclaimer: This diagnostic tool has been found to have 88% accuracy in testing. Please

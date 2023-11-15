@@ -1,22 +1,13 @@
 import React, { Component} from "react";
 import { Link } from "react-router-dom";
 
-
-import "../../components/App/App.css";
 import "./Kevin.css";
-import Header from "../../components/Header/Header";
-
-// const [is,setIs] = false;
-// const handleCheckboxChange = (event) => {
-//     setIs(event.target.checked);}
-
 
 class Kevin extends Component {	
 	render() {
 		
 		return (
 			<div className="Kevin">
-				<Header />
 				<h1 className="h1_kevin">Skin Scan</h1>
 				<div className="App-body">
 					<div className="landing_page_kevin">

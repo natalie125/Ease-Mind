@@ -3,8 +3,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-import "../App/App.css";
-
 const INVALIDDETAILS = 0;
 const USEREXISTS = 1;
 const SUCCESS = 2;
