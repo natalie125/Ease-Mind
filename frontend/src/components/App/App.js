@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Main from "../../Main";
+import Routes from "../../Routes";
 import "../App/App.css";
 import Login from "../Login/Login";
 import useToken from "../App/useToken";
@@ -31,7 +31,7 @@ function App() {
 	}
 	return (
 		<div className="App">
-			<Main />
+			<Routes />
 		</div>
 	);
 }
