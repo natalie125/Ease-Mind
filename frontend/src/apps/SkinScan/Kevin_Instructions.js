@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Instructions from "./Instructions_Component";
-import "./Kevin.css";
+import "./SkinScan.css";
 
 class Kevin extends Component {
 	render() {

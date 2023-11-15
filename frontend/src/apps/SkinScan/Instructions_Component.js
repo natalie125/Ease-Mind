@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import "./Kevin.css";
+import "./SkinScan.css";
 
 // Instructions corresponding to Instructions headings.
 const instructions_body = [

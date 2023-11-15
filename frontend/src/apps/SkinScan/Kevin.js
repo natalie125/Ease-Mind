@@ -1,7 +1,7 @@
 import React, { Component} from "react";
 import { Link } from "react-router-dom";
 
-import "./Kevin.css";
+import "./SkinScan.css";
 
 class Kevin extends Component {	
 	render() {

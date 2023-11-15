@@ -3,7 +3,7 @@ import Webcam from "react-webcam";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-import "./Kevin.css";
+import "./SkinScan.css";
 
 
 let BASEURL = "";
