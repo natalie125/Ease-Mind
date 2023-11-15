@@ -2,9 +2,7 @@ import React, { useState, useRef } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
 import "./SkinScan.css";
-
 
 let BASEURL = "";
 process.env.NODE_ENV === "development"
@@ -29,22 +27,21 @@ const WebcamCapture = (props) => {
   let context = props.context || "upload";
   context = context.toString();
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-		const formData = new FormData();
-		//get the specific token string
-		const token = token_JSON.data.token;
-		formData.append("image", imageSrc);
+    const formData = new FormData();
+    //get the specific token string
+    const token = token_JSON.data.token;
+    formData.append("image", imageSrc);
     setShowSubmission(true);
-		const response = await axios(BASEURL + context, {
-			method: "post",
-			data: formData,
-			headers: {
-				//add authorization header
-				Authorization: "Bearer " + token,
-				"Content-Type": "multipart/form-data",
-			},
+    const response = await axios(BASEURL + context, {
+      method: "post",
+      data: formData,
+      headers: {
+        //add authorization header
+        Authorization: "Bearer " + token,
+        "Content-Type": "multipart/form-data",
+      },
     })
       .then(response => {
         console.log(response);
@@ -68,7 +65,6 @@ const WebcamCapture = (props) => {
     setImageSrc(imageSrc);
   };
 
-  
   // Using button to change what camera is being used
   // Should work based on MDN documentation: https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints/facingMode
   // But I cannot test properly as its running on a laptop.
@@ -81,14 +77,11 @@ const WebcamCapture = (props) => {
     }
   }, [frontFacing]);
 
-
   // Trying to do the dimensions stuff.
   // Rounded to floats to ensure dimensions used here make sense, only issue I see right now - the videos will record in different format each time.
   const size = useWindowSize();
   var cameraWidth = Math.round(size.width * 0.8);
   var cameraHeight = Math.round(size.height * 0.5);
-  
-
 
   // This code attempts for the dimensions of the camera to be in a 1:1 aspect ratio, by taking the previous measurements of the size of the screen.
   // Takes the smaller of the two calcs of width and height, to ensure it will fit on the screen.
@@ -100,7 +93,6 @@ const WebcamCapture = (props) => {
   } else {
     cameraHeight = minValue;
   };
-
 
   // Code below dictates which camera is being used by device
   // Useful for running on mobile applicaton
@@ -132,86 +124,82 @@ const WebcamCapture = (props) => {
     };
   }
 
-
   // Following Shreyas' Implementation of rerouting user based on backend reponse
 
   const skin_outcome = (serverResponse) => {
-    
+
     // Store the ML Backend Algorithm prediction in SessionStorage, to allow for easy access on outcome page.
-    sessionStorage.setItem('prediction-skin-cancer',prediction)
-    if (serverResponse === 0) navigate("/kevin/outcome_negative", { replace: true});
-    else navigate("/kevin/outcome_positive", { replace: true});
+    sessionStorage.setItem('prediction-skin-cancer', prediction)
+    if (serverResponse === 0) navigate("/skin-scan/outcome_negative", { replace: true });
+    else navigate("/skin-scan/outcome_positive", { replace: true });
+  }
 
- 
- }
-
- const handleRetake = () => {
-  setImageSrc(null);
- }
+  const handleRetake = () => {
+    setImageSrc(null);
+  }
 
   return (
     <>
-    {(showSubmission) ? (
-      <div>
-        <h3 data-cy="subConfirm"> Image submission being processed</h3>
-        <p>Please remain on this page whilst your image is being analysed. Once complete, you will automatically be relocated to your results page.</p>
-        <p>Leaving this page will lead to the results of this submission being lost.</p>
-      </div>
-    ) : (
-
-
-      <div>
-
-      {(imageSrc) ? (
-        <div className= "cam-page-kevin">
-          <div className="cam-container-kevin">
-            <div className="cam-box-kevin">
-              <p> Captured image displayed below:</p>
-              <img src={imageSrc} style={{ width: cameraWidth, borderRadius: "5px" }} alt="User's capture" />
-            </div>
-            <div className="gap-camera-kevin"></div>
-            <div className="bttn-container-kevin">
-              <button className="cam-button-kevin" data-cy="cameraSubmit" disabled={imageSrc === null} onClick={handleSubmit}>Submit Image</button>
-              <button className="cam-button-kevin" data-cy="cameraRetakePhoto" onClick={handleRetake}>Retake Picture</button>
-            </div>
-            
-          </div>
-          <p> Please ensure the image captured is clear and in focus, with the lesion to be analysed positioned in the center of the image.</p>
+      {(showSubmission) ? (
+        <div>
+          <h3 data-cy="subConfirm"> Image submission being processed</h3>
+          <p>Please remain on this page whilst your image is being analysed. Once complete, you will automatically be relocated to your results page.</p>
+          <p>Leaving this page will lead to the results of this submission being lost.</p>
         </div>
-
       ) : (
-        <div className= "cam-page-kevin">
-          <div className="cam-container-kevin">
-          <div className="cam-box-kevin">
-            <p> Use camera window to capture lesion image:</p>
-          <Webcam className = "webcam-kevin" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} audio={false} ref={webcamRef} />
-          </div>
-          <div className="gap-camera-kevin"></div>
-          <div className="bttn-container-kevin">
-            <button className="cam-button-kevin" data-cy="cameraTakePhoto" onClick={handleTakePicture}>Take Picture</button>
-              <button className="cam-button-kevin" data-cy="cameraSwitch" onClick={switchCameraFacing}>Change Camera</button>
-          </div>
-        </div>
-      </div>
-      )}
-      </div>
-      
-    )}
 
-    <div>
-      {/* Implementation of Skin Cancer tool using shreyas' routing approach */}
-      {context === "kevin" && serverResponse === 0 && (
-        skin_outcome(serverResponse)
+
+        <div>
+
+          {(imageSrc) ? (
+            <div className="cam-page-kevin">
+              <div className="cam-container-kevin">
+                <div className="cam-box-kevin">
+                  <p> Captured image displayed below:</p>
+                  <img src={imageSrc} style={{ width: cameraWidth, borderRadius: "5px" }} alt="User's capture" />
+                </div>
+                <div className="gap-camera-kevin"></div>
+                <div className="bttn-container-kevin">
+                  <button className="cam-button-kevin" data-cy="cameraSubmit" disabled={imageSrc === null} onClick={handleSubmit}>Submit Image</button>
+                  <button className="cam-button-kevin" data-cy="cameraRetakePhoto" onClick={handleRetake}>Retake Picture</button>
+                </div>
+
+              </div>
+              <p> Please ensure the image captured is clear and in focus, with the lesion to be analysed positioned in the center of the image.</p>
+            </div>
+
+          ) : (
+            <div className="cam-page-kevin">
+              <div className="cam-container-kevin">
+                <div className="cam-box-kevin">
+                  <p> Use camera window to capture lesion image:</p>
+                  <Webcam className="webcam-kevin" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} audio={false} ref={webcamRef} />
+                </div>
+                <div className="gap-camera-kevin"></div>
+                <div className="bttn-container-kevin">
+                  <button className="cam-button-kevin" data-cy="cameraTakePhoto" onClick={handleTakePicture}>Take Picture</button>
+                  <button className="cam-button-kevin" data-cy="cameraSwitch" onClick={switchCameraFacing}>Change Camera</button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
       )}
-      {context === "kevin" && serverResponse === 1 && (
-        skin_outcome(serverResponse)
-      )}
-    </div>
+
+      <div>
+        {/* Implementation of Skin Cancer tool using shreyas' routing approach */}
+        {context === "kevin" && serverResponse === 0 && (
+          skin_outcome(serverResponse)
+        )}
+        {context === "kevin" && serverResponse === 1 && (
+          skin_outcome(serverResponse)
+        )}
+      </div>
 
     </>
   );
 };
-
 
 // Found at:
 // https://usehooks.com/useWindowSize/
@@ -229,8 +217,6 @@ function useWindowSize() {
       setWindowSize({
         width: window.innerWidth,
         height: window.innerHeight,
-
-
       });
     }
     // Add event listener
@@ -242,9 +228,5 @@ function useWindowSize() {
   }, []); // Empty array ensures that effect is only run on mount
   return windowSize;
 }
-
-
-
-
 
 export default WebcamCapture;

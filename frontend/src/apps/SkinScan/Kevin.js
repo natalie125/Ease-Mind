@@ -26,7 +26,7 @@ class Kevin extends Component {
 							<button className="instructions-button-kevin"> Back </button>
 						</Link>
 
-						<Link to="/kevin/instructions">
+						<Link to="/skin-scan/instructions">
 							<button data-cy="indexContinue" className="instructions-button-kevin"> Continue </button>
 						</Link>
 					

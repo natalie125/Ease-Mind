@@ -43,7 +43,7 @@ class Home extends Component {
 							/>
 						</Link>
 
-						<Link className="link" to="/kevin">
+						<Link className="link" to="/skin-scan">
 							<img data-cy="kevinAppLogo" className="homepage-button" src={skinscan_logo} alt="Skin-Scan_App_Kevin" />
 						</Link>
 

@@ -50,7 +50,7 @@ const navigate = useNavigate();
   // navigate the user to image taking page if continue button has been pressed.
   const handleContinue = () => {
     // Once all instructions have been displayed on screen, navigate user to photo taking screen.
-    navigate("/kevin/take_photo", { replace: true });
+    navigate("/skin-scan/take_photo", { replace: true });
   };
 
   return (

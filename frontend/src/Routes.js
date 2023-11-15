@@ -69,12 +69,11 @@ const Routes = () => (
 
 		<Route exact path="/ramat" element={<Ramat />}></Route>
 
-		<Route exact path="/kevin" element={<Kevin />}></Route>
-
-		<Route exact path="/kevin/take_photo" element={<Kevin_Take_Photo />}></Route>
-		<Route exact path="/kevin/outcome_positive" element={<Kevin_Outcome_Positive />}></Route>
-		<Route exact path="/kevin/outcome_negative" element={<Kevin_Outcome_Negative />}></Route>
-		<Route exact path="kevin/instructions" element={<Kevin_Instructions />}></Route>
+		<Route exact path="/skin-scan" element={<Kevin />}></Route>
+		<Route exact path="/skin-scan/take_photo" element={<Kevin_Take_Photo />}></Route>
+		<Route exact path="/skin-scan/outcome_positive" element={<Kevin_Outcome_Positive />}></Route>
+		<Route exact path="/skin-scan/outcome_negative" element={<Kevin_Outcome_Negative />}></Route>
+		<Route exact path="/skin-scan/instructions" element={<Kevin_Instructions />}></Route>
 
 		<Route exact path="/shreyas/shreyas" element={<TonsillitisDetector />}></Route>
 		<Route exact path="/shreyas/tonsillitis_instructions" element={<TonsPhotoInstructions />}></Route>
