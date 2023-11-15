@@ -15,5 +15,5 @@ app/lanre/submitted_images/user_evaluation_results.json
 flask/
 
 # databases
-./app.db
-./canopy_test.db
+app.db
+canopy_test.db
