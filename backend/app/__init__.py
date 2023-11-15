@@ -11,7 +11,6 @@ import pickle
 # define the app
 app = Flask(__name__)
 
-
 # added for hashing the passwords
 bcrypt = Bcrypt(app)
 
