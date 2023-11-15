@@ -24,7 +24,7 @@ import Canopy_New_Node_2 from "./apps/Canopy/Canopy_New_Node_2";
 import Canopy_New_Tree from "./apps/Canopy/Canopy_New_Tree";
 import Canopy_New_Condition from "./apps/Canopy/Canopy_New_Condition";
 
-import Ramat from "./apps/ParalysisAnalysis/Ramat";
+import ParalysisAnalysis from "./apps/ParalysisAnalysis/ParalysisAnalysis";
 
 import Kevin from "./apps/SkinScan/Kevin";
 import Kevin_Take_Photo from "./apps/SkinScan/Kevin_Take_Photo";
@@ -67,7 +67,7 @@ const Routes = () => (
 		<Route exact path="/canopy/canopy_new_tree" element={<Canopy_New_Tree />}></Route>
 		<Route exact path="/canopy/canopy_new_condition" element={<Canopy_New_Condition />}></Route>
 
-		<Route exact path="/ramat" element={<Ramat />}></Route>
+		<Route exact path="/paralysis-analysis" element={<ParalysisAnalysis />}></Route>
 
 		<Route exact path="/skin-scan" element={<Kevin />}></Route>
 		<Route exact path="/skin-scan/take_photo" element={<Kevin_Take_Photo />}></Route>

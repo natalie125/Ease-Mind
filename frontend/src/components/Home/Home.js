@@ -51,7 +51,7 @@ class Home extends Component {
 							<img data-cy="lanreAppLogo" className="homepage-button" src={dipstik_logo} alt="Dipstik_App_Lanre" />
 						</Link>
 
-						<Link className="link" to="/ramat" data-cy="paralysisAnalysisLink"
+						<Link className="link" to="/paralysis-analysis" data-cy="paralysisAnalysisLink"
 >
 							<img
 								className="homepage-button"

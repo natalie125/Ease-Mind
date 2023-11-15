@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ImageAudio from "./ImageAudio";
 
-class Ramat extends Component {
+class ParalysisAnalysis extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { responseMessage: "", responseStatus: "" };
@@ -24,4 +24,4 @@ class Ramat extends Component {
 	}
 }
 
-export default Ramat;
+export default ParalysisAnalysis;
