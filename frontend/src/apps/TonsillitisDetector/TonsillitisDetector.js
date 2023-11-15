@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import WebcamCapture from "../../components/camera/camera";
 
 //commented code below webcam capture is an example of how to send to '/shreyas' endpoint instead of '/upload' endpoint
-class Shreyas extends Component {
+class TonsillitisDetector extends Component {
 	render() {
 		return (
 			<div className="App">
@@ -25,4 +25,4 @@ class Shreyas extends Component {
 	}
 }
 
-export default Shreyas;
+export default TonsillitisDetector;

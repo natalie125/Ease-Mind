@@ -32,7 +32,7 @@ import Kevin_Outcome_Positive from "./apps/SkinScan/Kevin_Outcome_Positive";
 import Kevin_Outcome_Negative from "./apps/SkinScan/Kevin_OutcomeNegative";
 import Kevin_Instructions from "./apps/SkinScan/Kevin_Instructions";
 
-import Shreyas from "./apps/TonsillitisDetector/Shreyas";
+import TonsillitisDetector from "./apps/TonsillitisDetector/TonsillitisDetector";
 import TonsPhotoInstructions from "./apps/TonsillitisDetector/TonsPhotoInstructions";
 import TonsillitisOutcome1 from "./apps/TonsillitisDetector/TonsillitsOutcome1";
 import TonsillitisOutcome2 from "./apps/TonsillitisDetector/TonsillitisOutcome2";
@@ -76,7 +76,7 @@ const Routes = () => (
 		<Route exact path="/kevin/outcome_negative" element={<Kevin_Outcome_Negative />}></Route>
 		<Route exact path="kevin/instructions" element={<Kevin_Instructions />}></Route>
 
-		<Route exact path="/shreyas/shreyas" element={<Shreyas />}></Route>
+		<Route exact path="/shreyas/shreyas" element={<TonsillitisDetector />}></Route>
 		<Route exact path="/shreyas/tonsillitis_instructions" element={<TonsPhotoInstructions />}></Route>
 		<Route exact path="/shreyas/tonsillitis_outcome_1" element={<TonsillitisOutcome1 />}></Route>
 		<Route exact path="/shreyas/tonsillitis_outcome_2" element={<TonsillitisOutcome2 />}></Route>
