@@ -1,6 +1,6 @@
 import React, { useState} from "react";
 
-import "../Lanre/dipstik.css";
+import "./dipstik.css";
 import DipstikTimer from "./DipstikTimer";
 
 const DipstikInstructions = () =>  {

@@ -8,39 +8,39 @@ import Home from "./components/Home/Home";
 import Error400 from "./Pages/Error400";
 import Error404 from "./Pages/Error404";
 
-import Canopy from "./apps/Alex/Canopy";
-import Canopy2 from "./apps/Alex/Canopy2";
-import Canopy_View_Tree from "./apps/Alex/Canopy_View_Tree";
-import Canopy_Edit_Tree from "./apps/Alex/Canopy_Edit_Tree";
-import Canopy_View_Patient from "./apps/Alex/Canopy_View_Patient";
-import Canopy_Edit_Patient from "./apps/Alex/Canopy_Edit_Patient";
-import Canopy_View_Condition from "./apps/Alex/Canopy_View_Condition";
-import Canopy_Edit_Condition from "./apps/Alex/Canopy_Edit_Condition";
-import Canopy_Show_Trees from "./apps/Alex/Canopy_Show_Trees";
-import Canopy_Show_Conditions from "./apps/Alex/Canopy_Show_Conditions";
-import Canopy_Edit_Node from "./apps/Alex/Canopy_Edit_Node";
-import Canopy_New_Node from "./apps/Alex/Canopy_New_Node";
-import Canopy_New_Node_2 from "./apps/Alex/Canopy_New_Node_2";
-import Canopy_New_Tree from "./apps/Alex/Canopy_New_Tree";
-import Canopy_New_Condition from "./apps/Alex/Canopy_New_Condition";
+import Canopy from "./apps/Canopy/Canopy";
+import Canopy2 from "./apps/Canopy/Canopy2";
+import Canopy_View_Tree from "./apps/Canopy/Canopy_View_Tree";
+import Canopy_Edit_Tree from "./apps/Canopy/Canopy_Edit_Tree";
+import Canopy_View_Patient from "./apps/Canopy/Canopy_View_Patient";
+import Canopy_Edit_Patient from "./apps/Canopy/Canopy_Edit_Patient";
+import Canopy_View_Condition from "./apps/Canopy/Canopy_View_Condition";
+import Canopy_Edit_Condition from "./apps/Canopy/Canopy_Edit_Condition";
+import Canopy_Show_Trees from "./apps/Canopy/Canopy_Show_Trees";
+import Canopy_Show_Conditions from "./apps/Canopy/Canopy_Show_Conditions";
+import Canopy_Edit_Node from "./apps/Canopy/Canopy_Edit_Node";
+import Canopy_New_Node from "./apps/Canopy/Canopy_New_Node";
+import Canopy_New_Node_2 from "./apps/Canopy/Canopy_New_Node_2";
+import Canopy_New_Tree from "./apps/Canopy/Canopy_New_Tree";
+import Canopy_New_Condition from "./apps/Canopy/Canopy_New_Condition";
 
-import Ramat from "./apps/Ramat/Ramat";
+import Ramat from "./apps/ParalysisAnalysis/Ramat";
 
-import Kevin from "./apps/Kevin/Kevin";
-import Kevin_Take_Photo from "./apps/Kevin/Kevin_Take_Photo";
-import Kevin_Outcome_Positive from "./apps/Kevin/Kevin_Outcome_Positive";
-import Kevin_Outcome_Negative from "./apps/Kevin/Kevin_OutcomeNegative";
-import Kevin_Instructions from "./apps/Kevin/Kevin_Instructions";
+import Kevin from "./apps/SkinScan/Kevin";
+import Kevin_Take_Photo from "./apps/SkinScan/Kevin_Take_Photo";
+import Kevin_Outcome_Positive from "./apps/SkinScan/Kevin_Outcome_Positive";
+import Kevin_Outcome_Negative from "./apps/SkinScan/Kevin_OutcomeNegative";
+import Kevin_Instructions from "./apps/SkinScan/Kevin_Instructions";
 
-import Shreyas from "./apps/Shreyas/Shreyas";
-import TonsPhotoInstructions from "./apps/Shreyas/TonsPhotoInstructions";
-import TonsillitisOutcome1 from "./apps/Shreyas/TonsillitsOutcome1";
-import TonsillitisOutcome2 from "./apps/Shreyas/TonsillitisOutcome2";
+import Shreyas from "./apps/TonsillitisDetector/Shreyas";
+import TonsPhotoInstructions from "./apps/TonsillitisDetector/TonsPhotoInstructions";
+import TonsillitisOutcome1 from "./apps/TonsillitisDetector/TonsillitsOutcome1";
+import TonsillitisOutcome2 from "./apps/TonsillitisDetector/TonsillitisOutcome2";
 
-import DipstikInstructions from "./apps/Lanre/DipstikHome";
-import DipstikTimer from "./apps/Lanre/DipstikTimer";
-import DipstikCamera from "./apps/Lanre/DipstikCamera";
-import DipstikResults from "./apps/Lanre/DipstikResults";
+import DipstikInstructions from "./apps/Dipstik/DipstikHome";
+import DipstikTimer from "./apps/Dipstik/DipstikTimer";
+import DipstikCamera from "./apps/Dipstik/DipstikCamera";
+import DipstikResults from "./apps/Dipstik/DipstikResults";
 
 const Routes = () => (
 	<Router>
