@@ -1,8 +1,8 @@
 import React from "react";
 import Routes from "./Routes";
 import "./App.css";
-import Header from "./components/Header/Header";
-import Login from "./components/Login/Login";
+import Header from "./components/Header";
+import Login from "./components/Login";
 import useToken from "./hooks/useToken";
 import useVerifyToken from "./hooks/useVerifyToken";
 import { useLocation } from "react-router-dom";

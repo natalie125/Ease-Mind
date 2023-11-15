@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import canopy_logo from "../../images/canopy-logo.png";
-import dipstik_logo from "../../images/dipstik-logo.png";
-import paralysis_analysis_logo from "../../images/paralysis-analysis-logo.png";
-import tonsilitis_detector_logo from "../../images/tonsilitis-detector-logo.png";
-import skinscan_logo from "../../images/skinscan_logo.png";
+import canopy_logo from "../images/canopy-logo.png";
+import dipstik_logo from "../images/dipstik-logo.png";
+import paralysis_analysis_logo from "../images/paralysis-analysis-logo.png";
+import tonsilitis_detector_logo from "../images/tonsilitis-detector-logo.png";
+import skinscan_logo from "../images/skinscan_logo.png";
 
 const Home = () => (
   <div className="Home">

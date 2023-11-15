@@ -2,9 +2,9 @@ import React from "react";
 import { Link, Routes as Router } from "react-router-dom";
 import { Route } from "react-router";
 
-import Login from "./components/Login/Login";
+import Login from "./components/Login";
 import SignUp from "./components/SignUp";
-import Home from "./components/Home/Home";
+import Home from "./components/Home";
 import Error from "./components/Error";
 
 import Canopy from "./apps/Canopy/Canopy";
@@ -87,7 +87,7 @@ const Routes = () => (
     <Route path="*" element={
       <Error code="404">
         <p>Page Not Found</p>
-        <p> Here is the home link:</p>
+        <p>Here is the home link:</p>
         <Link to="/home">Home</Link>
       </Error>
     } />
