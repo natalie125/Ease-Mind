@@ -1,9 +1,10 @@
 ---
 name: Issue
-about: Add an issue
-title: Please remember to add the issue to the larks project
+about: issue with project set up already
+title: new issue
 labels: ''
 assignees: ''
+projects: ["Archie-Adams/3"]
 
 ---
 
