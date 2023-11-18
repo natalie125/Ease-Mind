@@ -2,9 +2,7 @@
 
 ## Wiki
 
-[Wiki is here until this repo is upgraded](https://github.com/marilenaManoli/DigitalHealthAppRepo/wiki)
-
-(I will upgrade the repo as soon as GitHub verify my student status - Archie)
+[The LARKS Wiki](https://github.com/Archie-Adams/larks/wiki)
 
 ## Repository Project
 
