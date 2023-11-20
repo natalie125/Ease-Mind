@@ -1,15 +1,13 @@
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { AuthTokenContext } from "../App";
 
 const Header = () => {
-  const navigate = useNavigate();
+  const location = useLocation();
+  useEffect(()=>{}, [location]);
 
-  const logout = () => {
-    // Clear the session storage to remove the token that keeps us logged in.
-    sessionStorage.clear();
-    navigate("/", { replace: true });
-    window.location.reload();
-  };
+  const {token, setToken} = useContext(AuthTokenContext);
+  if (!token) return null;
 
   return (
     <header className="App-header-primary">
@@ -24,7 +22,7 @@ const Header = () => {
           data-cy="logoutBttn"
           id="logout_button"
           className="header-button"
-          onClick={logout}
+          onClick={() => setToken(null)}
         >
           Logout
         </button>

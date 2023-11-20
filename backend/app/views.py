@@ -170,7 +170,8 @@ def register():
                     email=data['email'], password=hashed_password)
             db.session.add(new_user)
             db.session.commit()
-            return {"msg": "New User Added!"}, 200
+            access_token = create_access_token(identity=new_user.id)
+            return {"msg": "New User Added!", "token": access_token}, 200
 
 
 #############################################################

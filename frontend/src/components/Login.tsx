@@ -1,56 +1,49 @@
-import React from "react";
+import React, { useRef, useContext } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { AuthTokenContext } from "../App";
 
-let BASEURL = "";
-process.env.NODE_ENV === "development"
-  ? (BASEURL = process.env.REACT_APP_DEV)
-  : (BASEURL = process.env.REACT_APP_PROD);
+let BASEURL = process.env.NODE_ENV === "development"
+  ? process.env.REACT_APP_DEV
+  : process.env.REACT_APP_PROD;
 
-const loginUser = async (credentials) => {
-  const response = await axios
-    .post(BASEURL + "login", JSON.stringify({ credentials }), {
-      headers: { "Content-Type": "application/json" },
-    })
-    .then((response) => {
-      console.log(response);
-      console.log(response.status);
-
-      if (response) {
-        console.log("User logged in");
-        console.log(response);
-        sessionStorage.setItem("token", JSON.stringify(response.data.token));
-        sessionStorage.setItem("email", JSON.stringify(response.data.email)); // added by Alex to track email of logged in user
-      }
-      return response;
-    });
-  console.log(response);
-  return response;
-};
-
-function Login({ setToken }) {
+function Login() {
+  const {token, setToken} = useContext(AuthTokenContext);
   const navigate = useNavigate();
+  
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
-  const [isFilled, setIsFilled] = React.useState(null);
-  const [isValid, setIsValid] = React.useState(null);
+  // TODO: Refactor these to be the inputs using states for value.
+  const [isFilled, setIsFilled] = React.useState(false);
+  const [isValid, setIsValid] = React.useState(false);
 
-  const handleSubmit = async (e) => {
-    const email = document.getElementById("login_email").value;
-    const password = document.getElementById("login_password").value;
+  if (token) return <Navigate to="/home"/>;
+  
+  const handleSubmit = async () => {
+    const email = emailRef.current?.value ?? "";
+    const password = passwordRef.current?.value ?? "";
 
     if (email.length > 0 && password.length > 0) {
       setIsFilled(true);
-      const token = await loginUser({ email, password });
-      token.data.token === undefined ? setIsValid(false) : setIsValid(true);
-
-      // Set the users auth token.
-      setToken(token);
-
-      // Go to home page after successful login.
-      navigate("/home", { replace: true });
-
-      return;
+      await axios
+        .post(BASEURL + "login", JSON.stringify({credentials: { email, password }}), {
+          headers: { "Content-Type": "application/json" },
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            console.log("200 response")
+            setToken(response.data.token);
+            // TODO: If this is continued to be used then it should be added to
+            //       a user context along with the auth token, setting session
+            //       storage should ideally only be done in one place.
+            sessionStorage.setItem("email", JSON.stringify(response.data.email));
+            navigate("/home");
+          } else {
+            setIsValid(false);
+          }
+        });
     }
 
     setIsFilled(false);
@@ -79,6 +72,7 @@ function Login({ setToken }) {
             <input
               data-cy="loginEmail"
               id="login_email"
+              ref={emailRef}
               className="authentication-form-input"
               type="text"
               placeholder="Email"
@@ -87,6 +81,7 @@ function Login({ setToken }) {
 
             <input
               id="login_password"
+              ref={passwordRef}
               className="authentication-form-input"
               type="password"
               placeholder="Password"

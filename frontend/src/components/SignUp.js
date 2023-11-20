@@ -1,7 +1,8 @@
+import React, { useContext } from "react";
 import axios from "axios";
-import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { AuthTokenContext } from "../App";
 
 const INVALIDDETAILS = 0;
 const USEREXISTS = 1;
@@ -32,6 +33,8 @@ const handleSubmit = async (email, password) => {
 };
 
 const SignUp = () => {
+  const {token, setToken} = useContext(AuthTokenContext);
+
 	const [isValid, setIsValid] = React.useState(null);
 
 	const navigate = useNavigate();
@@ -49,6 +52,8 @@ const SignUp = () => {
 				if (passwordRules.test(password)) {
 					const response = await handleSubmit(email, password);
 					if (response.status === 200) {
+						console.log("200 status: token: " + response.data.token)
+						setToken(response.data.token);
 						setIsValid(SUCCESS);
 					} else setIsValid(USEREXISTS);
 					return;
@@ -60,11 +65,7 @@ const SignUp = () => {
 		console.log("isValid");
 	};
 
-	React.useEffect(() => {
-		if (isValid === SUCCESS) {
-			navigate("/");
-		}
-	});
+  if (token) return <Navigate to="/home"/>;
 
 	return (
 		<div className="authentication-container">
