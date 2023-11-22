@@ -21,7 +21,7 @@ To run the functional tests open a terminal in the project's directory and run:
 * Operating System: macOS
 * Python Version: 3.8
 
-# Error Handling
+## Error Handling
 
 When using Python versions above 3.8, Flask might encounter compatibility issues that lead to errors in the backend functionality. To ensure a smooth experience, it is recommended to use Python 3.8 for this project.
 
