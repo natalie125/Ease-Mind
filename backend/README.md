@@ -27,3 +27,6 @@ When using Python versions above 3.8, Flask might encounter compatibility issues
 
 Note on Python Version Compatibility
 Please note that the backend is designed to work specifically with Python version 3.8. Attempting to run it on a Python version higher than 3.8 may result in errors, particularly with Flask. If the Python version is higher than 3.8, you will need to create a virtual environment with Python 3.8.
+
+Due to the size of the file, while cloning mac user might need to install lfs.
+`brew install git-lfs`
