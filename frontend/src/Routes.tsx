@@ -1,6 +1,9 @@
-import React from "react";
-import { Link, Routes as Router } from "react-router-dom";
-import { Route } from "react-router";
+import React, { useContext } from "react";
+import {
+  Link, Routes as Router, Navigate, Outlet, Route
+} from "react-router-dom";
+
+import { AuthTokenContext } from "./App";
 
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
@@ -41,48 +44,62 @@ import DipstikTimer from "./apps/Dipstik/DipstikTimer";
 import DipstikCamera from "./apps/Dipstik/DipstikCamera";
 import DipstikResults from "./apps/Dipstik/DipstikResults";
 
+// If we want to check each time? Maybe it could be a use memo for when the token changes only?
+// https://stackoverflow.com/questions/60017604/react-router-check-that-jwt-is-valid-before-rendering-a-private-route
+
+const RouteProtector = () => {
+  const authorised = useContext(AuthTokenContext).token;
+  return authorised ? <Outlet/> : <Navigate to="/signin"/>;
+}
+
 const Routes = () => (
   <Router>
-    <Route path="/" element={<Home />} />
-    <Route path="/home" element={<Home />} />
+    <Route path="/signin" element={<Login />} />
     <Route path="/signup" element={<SignUp />} />
-    <Route path="/login" element={<Login setToken={null} />} />
 
-    <Route path="/error400" element={<Error code="400"><p>Bad HTTP Request</p></Error>} />
+    <Route path="/" element={<RouteProtector />}>
+      <Route path="/" element={<Navigate to="/home"/>} />
+      <Route path="/home" element={<Home />} />
 
-    <Route path="/canopy" element={<Canopy />} />
-    <Route path="/canopy/canopy2" element={<Canopy2 />} />
-    <Route path="/canopy/canopy_view_patient" element={<Canopy_View_Patient />} />
-    <Route path="/canopy/canopy_edit_patient" element={<Canopy_Edit_Patient />} />
-    <Route path="/canopy/canopy_view_tree" element={<Canopy_View_Tree />} />
-    <Route path="/canopy/canopy_edit_tree" element={<Canopy_Edit_Tree />} />
-    <Route path="/canopy/canopy_view_condition" element={<Canopy_View_Condition />} />
-    <Route path="/canopy/canopy_edit_condition" element={<Canopy_Edit_Condition />} />
-    <Route path="/canopy/canopy_show_trees" element={<Canopy_Show_Trees />} />
-    <Route path="/canopy/canopy_show_conditions" element={<Canopy_Show_Conditions />} />
-    <Route path="/canopy/canopy_edit_node" element={<Canopy_Edit_Node />} />
-    <Route path="/canopy/canopy_new_node" element={<Canopy_New_Node />} />
-    <Route path="/canopy/canopy_new_node_2" element={<Canopy_New_Node_2 />} />
-    <Route path="/canopy/canopy_new_tree" element={<Canopy_New_Tree />} />
-    <Route path="/canopy/canopy_new_condition" element={<Canopy_New_Condition />} />
+      <Route path="/canopy" element={<Canopy />} />
+      <Route path="/canopy/canopy2" element={<Canopy2 />} />
+      <Route path="/canopy/canopy_view_patient" element={<Canopy_View_Patient />} />
+      <Route path="/canopy/canopy_edit_patient" element={<Canopy_Edit_Patient />} />
+      <Route path="/canopy/canopy_view_tree" element={<Canopy_View_Tree />} />
+      <Route path="/canopy/canopy_edit_tree" element={<Canopy_Edit_Tree />} />
+      <Route path="/canopy/canopy_view_condition" element={<Canopy_View_Condition />} />
+      <Route path="/canopy/canopy_edit_condition" element={<Canopy_Edit_Condition />} />
+      <Route path="/canopy/canopy_show_trees" element={<Canopy_Show_Trees />} />
+      <Route path="/canopy/canopy_show_conditions" element={<Canopy_Show_Conditions />} />
+      <Route path="/canopy/canopy_edit_node" element={<Canopy_Edit_Node />} />
+      <Route path="/canopy/canopy_new_node" element={<Canopy_New_Node />} />
+      <Route path="/canopy/canopy_new_node_2" element={<Canopy_New_Node_2 />} />
+      <Route path="/canopy/canopy_new_tree" element={<Canopy_New_Tree />} />
+      <Route path="/canopy/canopy_new_condition" element={<Canopy_New_Condition />} />
 
-    <Route path="/paralysis-analysis" element={<ParalysisAnalysis />} />
+      <Route path="/paralysis-analysis" element={<ParalysisAnalysis />} />
 
-    <Route path="/skin-scan" element={<Kevin />} />
-    <Route path="/skin-scan/take_photo" element={<Kevin_Take_Photo />} />
-    <Route path="/skin-scan/outcome_positive" element={<Kevin_Outcome_Positive />} />
-    <Route path="/skin-scan/outcome_negative" element={<Kevin_Outcome_Negative />} />
-    <Route path="/skin-scan/instructions" element={<Kevin_Instructions />} />
+      <Route path="/skin-scan" element={<Kevin />} />
+      <Route path="/skin-scan/take_photo" element={<Kevin_Take_Photo />} />
+      <Route path="/skin-scan/outcome_positive" element={<Kevin_Outcome_Positive />} />
+      <Route path="/skin-scan/outcome_negative" element={<Kevin_Outcome_Negative />} />
+      <Route path="/skin-scan/instructions" element={<Kevin_Instructions />} />
 
-    <Route path="/shreyas/shreyas" element={<TonsillitisDetector />} />
-    <Route path="/shreyas/tonsillitis_instructions" element={<TonsPhotoInstructions />} />
-    <Route path="/shreyas/tonsillitis_outcome_1" element={<TonsillitisOutcome1 />} />
-    <Route path="/shreyas/tonsillitis_outcome_2" element={<TonsillitisOutcome2 />} />
+      <Route path="/shreyas/shreyas" element={<TonsillitisDetector />} />
+      <Route path="/shreyas/tonsillitis_instructions" element={<TonsPhotoInstructions />} />
+      <Route path="/shreyas/tonsillitis_outcome_1" element={<TonsillitisOutcome1 />} />
+      <Route path="/shreyas/tonsillitis_outcome_2" element={<TonsillitisOutcome2 />} />
 
-    <Route path="/dipstik" element={<DipstikInstructions />} />
-    <Route path="/dipstik/dipstik-timer" element={<DipstikTimer />} />
-    <Route path="/dipstik/dipstik-camera" element={<DipstikCamera />} />
-    <Route path="/dipstik/dipstik-results" element={<DipstikResults />} />
+      <Route path="/dipstik" element={<DipstikInstructions />} />
+      <Route path="/dipstik/dipstik-timer" element={<DipstikTimer />} />
+      <Route path="/dipstik/dipstik-camera" element={<DipstikCamera />} />
+      <Route path="/dipstik/dipstik-results" element={<DipstikResults />} />
+    </Route>
+
+    {/* TODO: We need to add a proper error page or pages. */}
+    <Route path="/error400" element={
+      <Error code="400"><p>Bad HTTP Request</p></Error>
+    } />
 
     <Route path="*" element={
       <Error code="404">
