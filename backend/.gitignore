@@ -13,6 +13,7 @@ app/lanre/submitted_images/user_evaluation_results.json
 
 # venv folder
 flask/
+venv/
 
 # databases
 app.db
