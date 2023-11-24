@@ -6,7 +6,6 @@ import dipstik_logo from "../images/dipstik-logo.png";
 import paralysis_analysis_logo from "../images/paralysis-analysis-logo.png";
 import tonsilitis_detector_logo from "../images/tonsilitis-detector-logo.png";
 import skinscan_logo from "../images/skinscan_logo.png";
-import EaseMindLogo from '../images/easelogo.png'; 
 
 import EaseMindLogo from '../images/easelogo.png'; 
 import autism_logo from '../images/autism-logo.png'; 
