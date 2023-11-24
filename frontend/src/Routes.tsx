@@ -44,6 +44,8 @@ import DipstikTimer from "./apps/Dipstik/DipstikTimer";
 import DipstikCamera from "./apps/Dipstik/DipstikCamera";
 import DipstikResults from "./apps/Dipstik/DipstikResults";
 
+import RootsRadar from "./apps/RootsRadar/RootsRadar";
+
 // If we want to check each time? Maybe it could be a use memo for when the token changes only?
 // https://stackoverflow.com/questions/60017604/react-router-check-that-jwt-is-valid-before-rendering-a-private-route
 
@@ -94,6 +96,8 @@ const Routes = () => (
       <Route path="/dipstik/dipstik-timer" element={<DipstikTimer />} />
       <Route path="/dipstik/dipstik-camera" element={<DipstikCamera />} />
       <Route path="/dipstik/dipstik-results" element={<DipstikResults />} />
+
+      <Route path="/roots-radar" element={<RootsRadar />} />
     </Route>
 
     {/* TODO: We need to add a proper error page or pages. */}
