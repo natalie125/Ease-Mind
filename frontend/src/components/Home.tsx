@@ -6,6 +6,7 @@ import dipstik_logo from "../images/dipstik-logo.png";
 import paralysis_analysis_logo from "../images/paralysis-analysis-logo.png";
 import tonsilitis_detector_logo from "../images/tonsilitis-detector-logo.png";
 import skinscan_logo from "../images/skinscan_logo.png";
+import EaseMindLogo from '../images/easelogo.png'; 
 
 const Home = () => (
   <div className="Home">
@@ -43,6 +44,10 @@ const Home = () => (
           <img data-cy="shreyasAppLogo" className="homepage-button" src={tonsilitis_detector_logo} alt="Tonsilitis_App_Shreyas" />
         </Link>
         {/* <button onClick={this.getEC2}> Get EC2 </button> */}
+        <Link className="link" to="/new-app">
+          <img data-cy="easelogo" className="homepage-button" src={EaseMindLogo} alt="EaseMind_App_Logo" />
+        </Link>
+
       </div>
     </div>
   </div>
