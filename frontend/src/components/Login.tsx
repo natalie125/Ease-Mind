@@ -1,55 +1,66 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, useState } from "react";
 import axios from "axios";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AuthTokenContext } from "../App";
 
 let BASEURL = process.env.NODE_ENV === "development"
-  ? process.env.REACT_APP_DEV
-  : process.env.REACT_APP_PROD;
+    ? process.env.REACT_APP_DEV
+    : process.env.REACT_APP_PROD;
 
 function Login() {
   const {token, setToken} = useContext(AuthTokenContext);
   const navigate = useNavigate();
-  
+
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   // TODO: Refactor these to be the inputs using states for value.
-  const [isFilled, setIsFilled] = React.useState(false);
-  const [isValid, setIsValid] = React.useState(false);
+  // State to manage form fill status and error message
+  const [isFilled, setIsFilled] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   if (token) return <Navigate to="/home"/>;
-  
+
   const handleSubmit = async () => {
     const email = emailRef.current?.value ?? "";
     const password = passwordRef.current?.value ?? "";
 
-    if (email.length > 0 && password.length > 0) {
-      setIsFilled(true);
-      await axios
-        .post(BASEURL + "login", JSON.stringify({credentials: { email, password }}), {
-          headers: { "Content-Type": "application/json" },
-        })
-        .then((response) => {
-          console.log(response);
-          if (response.status === 200) {
-            console.log("200 response")
-            setToken(response.data.token);
-            // TODO: If this is continued to be used then it should be added to
-            //       a user context along with the auth token, setting session
-            //       storage should ideally only be done in one place.
-            sessionStorage.setItem("email", JSON.stringify(response.data.email));
-            navigate("/home");
-          } else {
-            setIsValid(false);
-          }
-        });
+    // Check for empty fields
+    if (email.length === 0 || password.length === 0) {
+      setIsFilled(false);
+      setError("Please enter a username and password");
+      return;
     }
 
-    setIsFilled(false);
+    setIsFilled(true);
+    try {
+      // Attempt to perform a POST request to the login endpoint using Axios
+      const response = await axios.post( BASEURL + "login", JSON.stringify({ credentials: { email, password } }),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      console.log(response);
+      if (response.status === 200) {
+        console.log("200 response");
+        setToken(response.data.token);
+        // TODO: If this is continued to be used then it should be added to
+        //       a user context along with the auth token, setting session
+        //       storage should ideally only be done in one place.
+        sessionStorage.setItem("email", JSON.stringify(response.data.email));
+        navigate("/home");
+      } else {
+        setIsFilled(false);
+        setError("Your username or password is incorrect. Please try again.");
+      }
+    } catch (error) {
+      setIsFilled(false);
+      setError("Something went wrong. Please try again later.");
+    }
   };
 
-  // The Login form that is displayed to the user.
+    // The Login form that is displayed to the user.
   return (
     <div className="authentication-container">
       <div className="authentication-background">
@@ -76,7 +87,7 @@ function Login() {
               className="authentication-form-input"
               type="text"
               placeholder="Email"
-              aria-label="Enter Password"
+              aria-label="Enter Email"
             />
 
             <input
@@ -104,13 +115,7 @@ function Login() {
 
             {isFilled === false && (
               <p data-cy="loginError" className="error-message">
-                Please enter a username and password
-              </p>
-            )}
-
-            {isValid === false && (
-              <p data-cy="loginError" className="error-message">
-                Your username or password is incorrect. Please try again.
+                {error || "Please enter a username and password"}
               </p>
             )}
 

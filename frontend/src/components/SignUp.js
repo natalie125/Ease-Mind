@@ -126,7 +126,7 @@ const SignUp = () => {
 						)}
 
 						<div className="signup-link-container">
-							<Link to="/login">
+							<Link to="/signin">
 								<p className="login-link" data-cy="signUpLoginBttn" id="login_button">
 									{" "}
 									Already have an account? <b>Log In</b>{" "}
