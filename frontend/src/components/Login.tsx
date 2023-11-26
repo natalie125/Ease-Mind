@@ -31,9 +31,7 @@ function Login() {
           headers: { "Content-Type": "application/json" },
         })
         .then((response) => {
-          console.log(response);
           if (response.status === 200) {
-            console.log("200 response")
             setToken(response.data.token);
             // TODO: If this is continued to be used then it should be added to
             //       a user context along with the auth token, setting session
