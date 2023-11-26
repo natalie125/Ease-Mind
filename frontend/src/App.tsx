@@ -20,7 +20,6 @@ const App = () => {
 
   useEffect(() => {
     sessionStorage.setItem("token", token ? token : "");
-    console.log("token:" + token);
   }, [token]);
 
   return (
