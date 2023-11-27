@@ -23,11 +23,10 @@ axios.interceptors.response.use(
 );
 
 const SignUp = () => {
-  const { token, setToken } = useContext(AuthTokenContext);
-  const [isValid, setIsValid] = React.useState(null);
-  const [errorType, setErrorType] = React.useState(null); // New state for specific error type
-  const [networkError, setNetworkError] = React.useState(false);
-  const navigate = useNavigate();
+	const { token, setToken } = useContext(AuthTokenContext);
+	const [isError, setIsError] = React.useState(null);
+	const [networkError, setNetworkError] = React.useState(false);
+	const navigate = useNavigate();
 
   const handleSubmit = async (email, password) => {
     try {
@@ -44,7 +43,7 @@ const SignUp = () => {
   const validateSignup = async () => {
     if (!navigator.onLine) {
       setNetworkError(true);
-      setIsValid(null); // Reset validation state when network error occurs
+      setIsError(null); // Reset error state when network error occurs
       return;
     }
 
@@ -53,8 +52,7 @@ const SignUp = () => {
 
     var passwordRules = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
-    // Reset errorType when attempting signup
-    setErrorType(null);
+    setIsError(null); // Reset error state when attempting signup
 
     if (email.length > 0 && password.length > 0) {
       if (email.includes("@") && passwordRules.test(password)) {
@@ -62,17 +60,17 @@ const SignUp = () => {
 
         if (response.status === 200) {
           setToken(response.data.token);
-          setIsValid(SUCCESS);
+          setIsError(null); // Reset error state on successful signup
           navigate("/home");
         } else if (response.status === 409) {
-          setIsValid(USEREXISTS);
+          setIsError(USEREXISTS);
         } else {
-          setIsValid(INVALIDDETAILS);
+          setIsError(INVALIDDETAILS);
         }
         return;
       }
     }
-    setIsValid(INVALIDDETAILS);
+    setIsError(INVALIDDETAILS);
   };
 
   if (token) return <Navigate to="/home" />;
@@ -123,20 +121,20 @@ const SignUp = () => {
               </button>
             </div>
 
-            {isValid === INVALIDDETAILS && errorType !== "network" && !networkError && (
-              <p data-cy="signUpError" className="error-message">
-                Please enter a valid email and password. Passwords need to have minimum 10
-                characters, uppercase, lowercase, and a special character.
-              </p>
-            )}
-            {isValid === USEREXISTS && errorType !== "network" && !networkError && (
-              <p data-cy="signUpError" className="error-message">
-                A user with this email already exists.
-              </p>
-            )}
-            {networkError && (
-              <p className="error-message">Network error. Please check your internet connection.</p>
-            )}
+			{isError === INVALIDDETAILS && !networkError && (
+      <p data-cy="signUpError" className="error-message">
+        Please enter a valid email and password. Passwords need to have a minimum of 10
+        characters, including uppercase, lowercase, and a special character.
+      </p>
+    )}
+    {isError === USEREXISTS && !networkError && (
+      <p data-cy="signUpError" className="error-message">
+        A user with this email already exists.
+      </p>
+    )}
+    {networkError && (
+      <p className="error-message">Network error. Please check your internet connection.</p>
+    )}
 
             <div className="signup-link-container">
               <Link to="/signin">
