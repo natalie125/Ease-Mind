@@ -11,6 +11,8 @@ import skinscan_logo from "../images/skinscan_logo.png";
 import EaseMindLogo from '../images/easelogo.png'; 
 import autism_logo from '../images/autism-logo.png'; 
 
+import chatbot_logo from '../images/chatbot.png'
+
 const Home = () => (
   <div className="Home">
     <h1 className="homepage-title">Home</h1>
@@ -59,6 +61,11 @@ const Home = () => (
         <Link className="link" to="/autism_instructions">
           <img data-cy="ayeshasAppLogo" className="homepage-button" src={autism_logo} alt="Autism_App_Logo" />
         </Link>
+
+         <Link className="link" to="/food_allergy_chatbot">
+          <img data-cy="chatbotlogo" className="homepage-button" src={chatbot_logo} alt="chatbot_Logo" />
+        </Link>
+
       </div>
     </div>
   </div>
