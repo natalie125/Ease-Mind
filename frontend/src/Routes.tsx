@@ -44,6 +44,8 @@ import DipstikTimer from "./apps/Dipstik/DipstikTimer";
 import DipstikCamera from "./apps/Dipstik/DipstikCamera";
 import DipstikResults from "./apps/Dipstik/DipstikResults";
 
+import RootsRadar from "./apps/RootsRadar/RootsRadar";
+
 
 
 import EaseMind from './apps/EaseMind/EaseMind'; 
@@ -99,6 +101,7 @@ const Routes = () => (
       <Route path="/dipstik/dipstik-camera" element={<DipstikCamera />} />
       <Route path="/dipstik/dipstik-results" element={<DipstikResults />} />
 
+      <Route path="/roots-radar" element={<RootsRadar />} />
       <Route path="/EaseMind" element={<EaseMind />} />
     </Route>
 

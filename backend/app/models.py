@@ -63,6 +63,11 @@ class User_Login_Test(db.Model):
             raise AssertionError('No password provided')
         return password
 
+
+class RootRadarMVPTest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(500))
+
 ########################################
 # FAMILY PEDIGREE TABLES
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
