@@ -1,143 +1,154 @@
 import React, { useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { Link, Navigate } from "react-router-dom";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 import { AuthTokenContext } from "../App";
 
 const INVALIDDETAILS = 0;
 const USEREXISTS = 1;
 const SUCCESS = 2;
+
 let BASEURL = "";
 process.env.NODE_ENV === "development"
-	? (BASEURL = process.env.REACT_APP_DEV)
-	: (BASEURL = process.env.REACT_APP_PROD);
+  ? (BASEURL = process.env.REACT_APP_DEV)
+  : (BASEURL = process.env.REACT_APP_PROD);
 
-axios.interceptors.response.use(undefined, (err) => {
-	const error = err.response;
-	return error;
-});
-
-const handleSubmit = async (email, password) => {
-	var data = {
-		email: email,
-		password: password,
-	};
-
-	const response = await axios.post(BASEURL + "register", data, {
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
-
-	return response;
-};
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (!error.response) {
+      return Promise.reject({ status: 500, message: "Network Error" });
+    }
+    return Promise.reject(error);
+  }
+);
 
 const SignUp = () => {
-  const {token, setToken} = useContext(AuthTokenContext);
-
-	const [isValid, setIsValid] = React.useState(null);
-
+	const { token, setToken } = useContext(AuthTokenContext);
+	const [isError, setIsError] = React.useState(null);
+	const [networkError, setNetworkError] = React.useState(false);
 	const navigate = useNavigate();
 
-	const validateSignup = async () => {
-		const email = document.getElementById("signup_email").value;
-		const password = document.getElementById("signup_password").value;
+  const handleSubmit = async (email, password) => {
+    try {
+      const response = await axios.post(BASEURL + "register", {
+        email: email,
+        password: password,
+      });
+      return response;
+    } catch (error) {
+      return error.response || error;
+    }
+  };
 
-		//min 8 letter password, with at least a symbol, upper and lower case letters and a number
-		var passwordRules = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  const validateSignup = async () => {
+    if (!navigator.onLine) {
+      setNetworkError(true);
+      setIsError(null); // Reset error state when network error occurs
+      return;
+    }
 
-		if (email.length > 0 && password.length > 0) {
-			console.log(email.length);
-			if (email.includes("@")) {
-				if (passwordRules.test(password)) {
-					const response = await handleSubmit(email, password);
-					if (response.status === 200) {
-						console.log("200 status: token: " + response.data.token)
-						setToken(response.data.token);
-						setIsValid(SUCCESS);
-					} else setIsValid(USEREXISTS);
-					return;
-				}
-			}
-		}
-		setIsValid(INVALIDDETAILS);
+    const email = document.getElementById("signup_email").value;
+    const password = document.getElementById("signup_password").value;
 
-		console.log("isValid");
-	};
+    var passwordRules = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
-  if (token) return <Navigate to="/home"/>;
+    setIsError(null); // Reset error state when attempting signup
 
-	return (
-		<div className="authentication-container">
-			<div className="authentication-background">
-				<div className="App-body">
-					<header className="authentication-header">
-						<nav className="navbar navbar-dark bg-dark" id="navbar">
-							{/* <a className="navbar-brand" href="#"></a> */}
-							<h1 className="authentication-page-title"> LARKS APP</h1>
-						</nav>
-					</header>
+    if (email.length > 0 && password.length > 0) {
+      if (email.includes("@") && passwordRules.test(password)) {
+        const response = await handleSubmit(email, password);
 
-					<div className="signup-form">
-						<div>
-							<h2 className="signup-title">Sign Up</h2>
-							<p className="signup-subtitle">Create a new account below </p>
-						</div>
+        if (response.status === 200) {
+          setToken(response.data.token);
+          setIsError(null); // Reset error state on successful signup
+          navigate("/home");
+        } else if (response.status === 409) {
+          setIsError(USEREXISTS);
+        } else {
+          setIsError(INVALIDDETAILS);
+        }
+        return;
+      }
+    }
+    setIsError(INVALIDDETAILS);
+  };
 
-						<input
-							data-cy="signUpEmail"
-							id="signup_email"
-							className="authentication-form-input"
-							type="text"
-							placeholder="Email"
-							aria-label="Enter Email"
-						/>
+  if (token) return <Navigate to="/home" />;
 
-						<input
-							data-cy="signUpPasswd"
-							id="signup_password"
-							className="authentication-form-input"
-							type="password"
-							placeholder="Password"
-							aria-label="Enter Password"
-						></input>
+  return (
+    <div className="authentication-container">
+      <div className="authentication-background">
+        <div className="App-body">
+          <header className="authentication-header">
+            <nav className="navbar navbar-dark bg-dark" id="navbar">
+              {/* <a className="navbar-brand" href="#"></a> */}
+              <h1 className="authentication-page-title"> LARKS APP</h1>
+            </nav>
+          </header>
 
-						<div>
-							<button
-								data-cy="signUpBttn"
-								id="signup_button"
-								className="authentication-button"
-								onClick={validateSignup}
-							>
-								Sign Up
-							</button>
-						</div>
+          <div className="signup-form">
+            <div>
+              <h2 className="signup-title">Sign Up</h2>
+              <p className="signup-subtitle">Create a new account below </p>
+            </div>
 
-						{isValid === INVALIDDETAILS && (
-							<p data-cy="signUpError" className="error-message">
-								Please enter a valid email and password. Passwords need to have minimum 10
-								characters, uppercase, lowercase and special character.
-							</p>
-						)}
-						{isValid === USEREXISTS && (
-							<p data-cy="signUpError" className="error-message">
-								A user with this email already exists.
-							</p>
-						)}
+            <input
+              data-cy="signUpEmail"
+              id="signup_email"
+              className="authentication-form-input"
+              type="text"
+              placeholder="Email"
+              aria-label="Enter Email"
+            />
 
-						<div className="signup-link-container">
-							<Link to="/login">
-								<p className="login-link" data-cy="signUpLoginBttn" id="login_button">
-									{" "}
-									Already have an account? <b>Log In</b>{" "}
-								</p>
-							</Link>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+            <input
+              data-cy="signUpPasswd"
+              id="signup_password"
+              className="authentication-form-input"
+              type="password"
+              placeholder="Password"
+              aria-label="Enter Password"
+            ></input>
+
+            <div>
+              <button
+                data-cy="signUpBttn"
+                id="signup_button"
+                className="authentication-button"
+                onClick={validateSignup}
+              >
+                Sign Up
+              </button>
+            </div>
+
+			{isError === INVALIDDETAILS && !networkError && (
+      <p data-cy="signUpError" className="error-message">
+        Please enter a valid email and password. Passwords need to have a minimum of 10
+        characters, including uppercase, lowercase, and a special character.
+      </p>
+    )}
+    {isError === USEREXISTS && !networkError && (
+      <p data-cy="signUpError" className="error-message">
+        A user with this email already exists.
+      </p>
+    )}
+    {networkError && (
+      <p className="error-message">Network error. Please check your internet connection.</p>
+    )}
+
+            <div className="signup-link-container">
+              <Link to="/signin">
+                <p className="login-link" data-cy="signUpLoginBttn" id="login_button">
+                  {" "}
+                  Already have an account? <b>Log In</b>{" "}
+                </p>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default SignUp;

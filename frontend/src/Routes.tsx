@@ -46,6 +46,10 @@ import DipstikResults from "./apps/Dipstik/DipstikResults";
 
 import RootsRadar from "./apps/RootsRadar/RootsRadar";
 
+import AutismDetector from "./apps/AutismDetector/AutismDetector";
+import PersonalDetails from "./apps/AutismDetector/personaldetails";
+
+
 
 
 import EaseMind from './apps/EaseMind/EaseMind'; 
@@ -103,6 +107,8 @@ const Routes = () => (
 
       <Route path="/roots-radar" element={<RootsRadar />} />
       <Route path="/EaseMind" element={<EaseMind />} />
+      <Route path="/autism_instructions" element={<AutismDetector/>} />
+      <Route path="/autism_instructions/personaldetails" element={<PersonalDetails/>} />
     </Route>
 
     {/* TODO: We need to add a proper error page or pages. */}

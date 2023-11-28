@@ -1,51 +1,88 @@
-import React, { useRef, useContext } from "react";
-import axios from "axios";
+import React, { useEffect, useRef, useContext, useState } from "react";
+import axios, { AxiosError } from 'axios';
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AuthTokenContext } from "../App";
 
 let BASEURL = process.env.NODE_ENV === "development"
-  ? process.env.REACT_APP_DEV
-  : process.env.REACT_APP_PROD;
+    ? process.env.REACT_APP_DEV
+    : process.env.REACT_APP_PROD;
 
 function Login() {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const {token, setToken} = useContext(AuthTokenContext);
   const navigate = useNavigate();
-  
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const [isFilled, setIsFilled] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // TODO: Refactor these to be the inputs using states for value.
-  const [isFilled, setIsFilled] = React.useState(false);
-  const [isValid, setIsValid] = React.useState(false);
+  useEffect(() => {
+    function handleOnline() {
+      setIsOnline(true);
+    }
+
+    function handleOffline() {
+      setIsOnline(false);
+    }
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
 
   if (token) return <Navigate to="/home"/>;
-  
+
   const handleSubmit = async () => {
+    if (!isOnline) {
+      setIsFilled(false);
+      setError("Network error. Please check your internet connection.");
+      return;
+    }
+
     const email = emailRef.current?.value ?? "";
     const password = passwordRef.current?.value ?? "";
 
-    if (email.length > 0 && password.length > 0) {
-      setIsFilled(true);
-      await axios
-        .post(BASEURL + "login", JSON.stringify({credentials: { email, password }}), {
-          headers: { "Content-Type": "application/json" },
-        })
-        .then((response) => {
-          if (response.status === 200) {
-            setToken(response.data.token);
-            // TODO: If this is continued to be used then it should be added to
-            //       a user context along with the auth token, setting session
-            //       storage should ideally only be done in one place.
-            sessionStorage.setItem("email", JSON.stringify(response.data.email));
-            navigate("/home");
-          } else {
-            setIsValid(false);
-          }
-        });
+    if (email.length === 0 || password.length === 0) {
+      setIsFilled(false);
+      setError("Please enter a username and password");
+      return;
     }
 
-    setIsFilled(false);
+    setIsFilled(true);
+    try {
+      const response = await axios.post(BASEURL + "login", JSON.stringify({ credentials: { email, password } }), {
+        headers: { "Content-Type": "application/json" },
+        timeout: 5000,
+      });
+  
+      if (response.status === 200) {
+        setToken(response.data.token);
+        sessionStorage.setItem("email", JSON.stringify(response.data.email));
+        navigate("/home");
+      } else {
+        setIsFilled(false);
+        setError("Your username or password is incorrect. Please try again.");
+      }
+    } catch (error: any) {
+      setIsFilled(false);
+      const axiosError = error as AxiosError;
+  
+      if (axiosError.response && axiosError.response.status === 401) {
+        setError("Incorrect email or password. Please try again."); // Handle incorrect credentials
+      } else if (axiosError.response) {
+        setError("Server error. Please try again later."); // Other server errors
+      } else if (axiosError.request) {
+        setError("Network error. Please check your internet connection.");
+      } else {
+        setError("An error occurred. Please try again.");
+      }
+    }
   };
+  
 
   // The Login form that is displayed to the user.
   return (
@@ -74,7 +111,7 @@ function Login() {
               className="authentication-form-input"
               type="text"
               placeholder="Email"
-              aria-label="Enter Password"
+              aria-label="Enter Email"
             />
 
             <input
@@ -102,13 +139,7 @@ function Login() {
 
             {isFilled === false && (
               <p data-cy="loginError" className="error-message">
-                Please enter a username and password
-              </p>
-            )}
-
-            {isValid === false && (
-              <p data-cy="loginError" className="error-message">
-                Your username or password is incorrect. Please try again.
+                {error || "Please enter a username and password"}
               </p>
             )}
 

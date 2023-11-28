@@ -158,7 +158,7 @@ def register():
                 email=data['email']).first()
         if username_database_check:
             print("Username already exists!")
-            return {"msg": "Username taken"}, 401
+            return {"msg": "Username taken"}, 409
         else:
             print("Valid!")
             hashed_password = bcrypt.generate_password_hash(
