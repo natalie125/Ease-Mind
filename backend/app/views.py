@@ -17,8 +17,10 @@ from app.kevin.kevin import *  # noqa: F403, F401
 from app.lanre.lanre import *  # noqa: F403, F401
 from app.ramat.ramat import *  # noqa: F403, F401
 from app.shreyas.shreyas import *  # noqa: F403, F401
+from app.rootsRadar.rootsRadar import *  # noqa: F403, F401
 
 # Setup the Flask-JWT-Extended extension
+# FIXME: The secret key needs to be .gitignored and saved in a secrets env not in the repo
 app.config["JWT_SECRET_KEY"] = "comp3931-larks"  # Change this!
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 jwt = JWTManager(app)
@@ -156,7 +158,7 @@ def register():
                 email=data['email']).first()
         if username_database_check:
             print("Username already exists!")
-            return {"msg": "Username taken"}, 401
+            return {"msg": "Username taken"}, 409
         else:
             print("Valid!")
             hashed_password = bcrypt.generate_password_hash(
@@ -170,7 +172,8 @@ def register():
                     email=data['email'], password=hashed_password)
             db.session.add(new_user)
             db.session.commit()
-            return {"msg": "New User Added!"}, 200
+            access_token = create_access_token(identity=new_user.id)
+            return {"msg": "New User Added!", "token": access_token}, 200
 
 
 #############################################################
