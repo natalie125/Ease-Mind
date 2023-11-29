@@ -54,7 +54,7 @@ const Home = () => (
         </Link>
         {/* <button onClick={this.getEC2}> Get EC2 </button> */}
 
-        <Link className="link" to="/new-app">
+        <Link className="link" to="/EaseMind">
           <img data-cy="easelogo" className="homepage-button" src={EaseMindLogo} alt="EaseMind_App_Logo" />
         </Link>
 

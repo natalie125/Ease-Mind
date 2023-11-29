@@ -1,0 +1,29 @@
+.easeMindContainer {
+    background-color: #E0F2F1; 
+    padding: 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  .easeMindButton {
+    background-color: #64B5F6; 
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .easeMindButton:hover {
+    background-color: #42A5F5;
+  }
+  
+  .easeMindTitle {
+    color: #1565C0; 
+    margin-bottom: 30px;
+  }
+  body{
+    background-color: #E0F2F1; 
+  }
