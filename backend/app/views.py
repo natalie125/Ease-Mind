@@ -87,93 +87,82 @@ def index():
 ############################################################
 # ROUTE FOR LOGIN
 # ^^^^^^^^^^^^^^^^^^^^^^^
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
-    if request.method == "POST":
-        print("Request is POST!")
-        print(request.data)
-        # to convert byte data into utf characters
-        data = json.loads(request.data.decode('utf-8'))
+    print("Request is POST!")
+    print(request.data)
+    # to convert byte data into utf characters
+    data = json.loads(request.data.decode('utf-8'))
 
-        print(data)
-        print(data.get('credentials'))
+    print(data)
+    print(data.get('credentials'))
 
-        # flash(request)
-        # return {"type": "POST"}
-        if (testing):
-            u = models.User_Login_Test.query.filter_by(
-                email=data['credentials']['email']).first()
+    # flash(request)
+    # return {"type": "POST"}
+    if (testing):
+        u = models.User_Login_Test.query.filter_by(
+            email=data['credentials']['email']).first()
+    else:
+        u = models.User_Login.query.filter_by(
+            email=data['credentials']['email']).first()
+    # check username and password
+    if u:
+        if bcrypt.check_password_hash(u.password, data['credentials']['password']):
+            # response = {"token": "test123"}
+            print('Login Successful!', 'success')
+            # access_token = create_access_token(identity=data['credentials']['email'])
+            access_token = create_access_token(identity=u.id)
+            print(access_token)
+            response = {"token": access_token,
+                        "email": u.email}   # added by Alex in order to track the email of the logged in user
+            return jsonify(response), 200
         else:
-            u = models.User_Login.query.filter_by(
-                email=data['credentials']['email']).first()
-        # check username and password
-        if u:
-            if bcrypt.check_password_hash(u.password, data['credentials']['password']):
-                # response = {"token": "test123"}
-                print('Login Successful!', 'success')
-                # access_token = create_access_token(identity=data['credentials']['email'])
-                access_token = create_access_token(identity=u.id)
-                print(access_token)
-                response = {"token": access_token,
-                            "email": u.email}   # added by Alex in order to track the email of the logged in user
-                return jsonify(response), 200
-            else:
-                print("Wrong Password")
-                response = {"msg": "Bad Password"}
-                return jsonify(response), 401
-
-        else:
-            print("Wrong username")
-            response = {"msg": "Bad Username"}
+            print("Wrong Password")
+            response = {"msg": "Bad Password"}
             return jsonify(response), 401
 
-    elif request.method == "GET":
-        return {"type": "GET"}, 405
     else:
-        # app.logger.info(u.email + " unsuccesfull login at " + now)
-        flash(f'{"Login unsuccessful. Please check email and password"}', 'danger')
-        print(f'{"Login unsuccessful. Please check email and password!"}')
-        response = {"msg": "Login unsuccessful"}
+        print("Wrong username")
+        response = {"msg": "Bad Username"}
         return jsonify(response), 401
 
 
 ############################################################
 # ROUTE FOR REGISTER
 # ^^^^^^^^^^^^^^^^^^^^^^^
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():
-    if request.method == "POST":
-        print(testing)
-        print(request.data)
-        data = json.loads(request.data.decode('utf-8'))
-        print(data['email'])
-        if (data['email'] == '' or data['password'] == ''):
-            return {"msg": "One or more credentials not provided"}, 401
+    print(testing)
+    print(request.data)
+    data = json.loads(request.data.decode('utf-8'))
+    print(data['email'])
+    if (data['email'] == '' or data['password'] == ''):
+        return {"msg": "One or more credentials not provided"}, 401
 
+    if (testing):
+        username_database_check = models.User_Login_Test.query.filter_by(
+            email=data['email']).first()
+    else:
+        username_database_check = models.User_Login.query.filter_by(
+            email=data['email']).first()
+    if username_database_check:
+        print("Username already exists!")
+        return {"msg": "Username taken"}, 409
+    else:
+        print("Valid!")
+        hashed_password = bcrypt.generate_password_hash(
+            data['password']).decode('utf-8')
+        # check if we're in testing mode
         if (testing):
-            username_database_check = models.User_Login_Test.query.filter_by(
-                email=data['email']).first()
+            new_user = User_Login_Test(
+                email=data['email'], password=hashed_password)
         else:
-            username_database_check = models.User_Login.query.filter_by(
-                email=data['email']).first()
-        if username_database_check:
-            print("Username already exists!")
-            return {"msg": "Username taken"}, 409
-        else:
-            print("Valid!")
-            hashed_password = bcrypt.generate_password_hash(
-                data['password']).decode('utf-8')
-            # check if we're in testing mode
-            if (testing):
-                new_user = User_Login_Test(
-                    email=data['email'], password=hashed_password)
-            else:
-                new_user = User_Login(
-                    email=data['email'], password=hashed_password)
-            db.session.add(new_user)
-            db.session.commit()
-            access_token = create_access_token(identity=new_user.id)
-            return {"msg": "New User Added!", "token": access_token}, 200
+            new_user = User_Login(
+                email=data['email'], password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+        access_token = create_access_token(identity=new_user.id)
+        return {"msg": "New User Added!", "token": access_token}, 200
 
 
 #############################################################
