@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
-import Header from "./components/Header";
+import Header from "./components/Header/Header";
 import Routes from "./Routes";
+import "./App.scss"
 
 type Token = string | null;
 
@@ -24,7 +25,7 @@ const App = () => {
 
   return (
     <AuthTokenContext.Provider value={{token, setToken}}>
-      <div className="App">
+      <div className="app">
         <Header />
         <Routes />
       </div>

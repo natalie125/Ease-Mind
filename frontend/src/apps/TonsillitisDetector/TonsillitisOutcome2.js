@@ -23,7 +23,7 @@ class TonsillitisOutcome2 extends Component {
 							<li>Do you have a temperature more than 38%</li>
 							<li>Is there an ABSCENCE of a cough</li>
 							<li>Are you under the age of 15?</li>
-							<h4 className="shreyas-disclaimer">
+							<h4 style={{color: '#a40000'}}>
 								If you have answered YES to 3 or more of the above questions, there is a high
 								probability you have contracted Bacterial Tonsillitis. Please contact your GP
 								immediately.
