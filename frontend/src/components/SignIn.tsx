@@ -7,7 +7,7 @@ let BASEURL = process.env.NODE_ENV === "development"
   ? process.env.REACT_APP_DEV
   : process.env.REACT_APP_PROD;
 
-function Login() {
+function SignIn() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const { token, setToken } = useContext(AuthTokenContext);
   const navigate = useNavigate();
@@ -155,4 +155,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignIn;

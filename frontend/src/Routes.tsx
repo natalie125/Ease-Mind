@@ -6,7 +6,7 @@ import {
 import { AuthTokenContext } from "./App";
 
 import AuthenticationLayout from "./components/AuthenticationLayout/AuthenticationLayout";
-import Login from "./components/Login";
+import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import Home from "./components/Home/Home";
 import Error from "./components/Error";
@@ -64,7 +64,7 @@ const RouteProtector = () => {
 const Routes = () => (
   <Router>
     <Route path="/auth" element={<AuthenticationLayout />}>
-      <Route path="signin" element={<Login />} />
+      <Route path="signin" element={<SignIn />} />
       <Route path="signup" element={<SignUp />} />
     </Route>
 
