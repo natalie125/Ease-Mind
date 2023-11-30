@@ -51,7 +51,8 @@ import AutismDetector from "./apps/AutismDetector/AutismDetector";
 
 import PersonalDetails from "./apps/AutismDetector/personaldetails";
 
-import EaseMind from './apps/EaseMind/EaseMind';
+import EaseMind from './apps/EaseMind/EaseMind'; 
+import EaseMindPersonaldetails from './apps/EaseMind/EaseMind_personal_details'; 
 
 // If we want to check each time? Maybe it could be a use memo for when the token changes only?
 // https://stackoverflow.com/questions/60017604/react-router-check-that-jwt-is-valid-before-rendering-a-private-route
@@ -117,7 +118,7 @@ const Routes = () => (
       <Route path="/roots-radar" element={<RootsRadar />} />
 
       <Route path="/EaseMind" element={<EaseMind />} />
-
+      <Route path="/EaseMind_personal_details" element={<EaseMindPersonaldetails />} />
       <Route path="/autism_instructions" element={<AutismDetector/>} />
       <Route path="/autism_instructions/personaldetails" element={<PersonalDetails/>} />
     </Route>

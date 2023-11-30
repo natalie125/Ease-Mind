@@ -13,7 +13,7 @@ const EaseMind = () => {
       <h1 className="easeMindTitle">Welcome!</h1>
 
       <div>
-        <Link to="/create-my-details">
+        <Link to="/EaseMind_personal_details">
           <button className="easeMindButton">Create My Details</button>
         </Link>
         <Link to="/anxiety-level-test">
