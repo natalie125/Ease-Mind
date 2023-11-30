@@ -8,7 +8,10 @@ class TonsPhotoInstructions extends Component {
 		return (
 			<div className="App">
 				<h1 className="tons-page-header">Instructions for using the tonsillitis detector</h1>
-				<div className="tons-page-container bullet-point shreyas-disclaimer">
+				<div
+					className="tons-page-container bullet-point"
+					style={{color: '#a40000'}}
+				>
 					Disclaimer: This diagnostic tool has been found to have 88% accuracy in testing. Please
 					consult a Local Health Facility upon completion as results may be inaccurate.
 				</div>
@@ -37,11 +40,9 @@ class TonsPhotoInstructions extends Component {
 					<div className="image-container">
 						<img src={exampleImg} alt="Example picture" />
 					</div>
-					<div className="btn-container">
 						<Link to="/shreyas/shreyas">
 							<button className="tons-page-button"> Continue </button>
 						</Link>
-					</div>
 				</div>
 			</div>
 		);

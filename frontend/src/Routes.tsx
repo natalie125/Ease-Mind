@@ -5,9 +5,10 @@ import {
 
 import { AuthTokenContext } from "./App";
 
+import AuthenticationLayout from "./components/AuthenticationLayout/AuthenticationLayout";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
-import Home from "./components/Home";
+import Home from "./components/Home/Home";
 import Error from "./components/Error";
 
 import Canopy from "./apps/Canopy/Canopy";
@@ -47,10 +48,8 @@ import DipstikResults from "./apps/Dipstik/DipstikResults";
 import RootsRadar from "./apps/RootsRadar/RootsRadar";
 
 import AutismDetector from "./apps/AutismDetector/AutismDetector";
+
 import PersonalDetails from "./apps/AutismDetector/personaldetails";
-
-
-
 
 import EaseMind from './apps/EaseMind/EaseMind'; 
 
@@ -59,13 +58,15 @@ import EaseMind from './apps/EaseMind/EaseMind';
 
 const RouteProtector = () => {
   const authorised = useContext(AuthTokenContext).token;
-  return authorised ? <Outlet/> : <Navigate to="/signin"/>;
+  return authorised ? <Outlet/> : <Navigate to="/auth/signin"/>;
 }
 
 const Routes = () => (
   <Router>
-    <Route path="/signin" element={<Login />} />
-    <Route path="/signup" element={<SignUp />} />
+    <Route path="/auth" element={<AuthenticationLayout />}>
+      <Route path="signin" element={<Login />} />
+      <Route path="signup" element={<SignUp />} />
+    </Route>
 
     <Route path="/" element={<RouteProtector />}>
       <Route path="/" element={<Navigate to="/home"/>} />
@@ -106,7 +107,9 @@ const Routes = () => (
       <Route path="/dipstik/dipstik-results" element={<DipstikResults />} />
 
       <Route path="/roots-radar" element={<RootsRadar />} />
+
       <Route path="/EaseMind" element={<EaseMind />} />
+
       <Route path="/autism_instructions" element={<AutismDetector/>} />
       <Route path="/autism_instructions/personaldetails" element={<PersonalDetails/>} />
     </Route>
