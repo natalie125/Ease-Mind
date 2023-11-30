@@ -1,0 +1,30 @@
+.home {
+  h1 {
+    color: #005eb8;
+    margin: 10px 0px;
+  }
+
+  >div {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    max-width: fit-content;
+    margin: auto;
+
+    .app-link {
+      display: flex;
+      width: fit-content;
+      margin: 16px 16px;
+      max-width: 150px;
+    
+      img {
+        max-width: 130px;
+        font-size: 16px;
+        transition: 0.3s;
+        cursor: pointer;
+        border-radius: 20px;
+        border: 1px solid rgb(204, 204, 204);
+      }
+    }
+  }
+
+}

@@ -7,7 +7,6 @@ class Kevin extends Component {
 		return (
 			<div className="Kevin">
 				<h1 className="h1_kevin">Skin Scan</h1>
-				<div className="App-body">
 					<div className="landing_page_kevin">
 						<h2> Instructions:</h2>
 						<p>
@@ -16,7 +15,6 @@ class Kevin extends Component {
 						</p>
 						<Instructions/>
 					</div>
-				</div>
 			</div>
 		);
 	}

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { AuthTokenContext } from "../App";
+import { AuthTokenContext } from "../../App";
+import "./Header.scss";
 
 const Header = () => {
   const location = useLocation();
@@ -10,20 +11,15 @@ const Header = () => {
   if (!token) return null;
 
   return (
-    <header className="App-header-primary">
-      <h1 id="header_name"> LARKS APP</h1>
-      <div id="header_buttons">
+    <header className="header">
+      <h1>LARKS APP</h1>
+      <div>
         {window.location.pathname !== "/home" && (
           <Link style={{ width: "100%" }} to="/home">
-            <button className="header-button"> Home </button>
+            <button>Home</button>
           </Link>
         )}
-        <button
-          data-cy="logoutBttn"
-          id="logout_button"
-          className="header-button"
-          onClick={() => setToken(null)}
-        >
+        <button data-cy="logoutBtn" onClick={() => setToken(null)}>
           Logout
         </button>
       </div>

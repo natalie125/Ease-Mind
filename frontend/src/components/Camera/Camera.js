@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,7 @@ const WebcamCapture = (props) => {
 	const [serverResponse, setServerResponse] = React.useState(null);
 	const navigate = useNavigate();
 	//get the json from the memory
-	const token_JSON = JSON.parse(sessionStorage.getItem("token"));
+	const token_JSON = sessionStorage.getItem("token");
 	//pass endpoint in as a props to the component whichever endpoint you want to send the image to.
 	//if in doubt how to do that please refer to shreyas.js
 	//if no context is provided it will send to /upload endpoint
