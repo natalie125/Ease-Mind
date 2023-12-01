@@ -1,4 +1,4 @@
-//interactivearea.js
+//InteractiveArea.js
 
 import React from 'react';
 

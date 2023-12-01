@@ -1,12 +1,17 @@
-// MainContent.js
+//MainContent.js
 import React from 'react';
+import InteractiveArea from './InteractiveArea';
+import userProfileLogo from '../../images/userinformation-logo.png';
+import supportChatLogo from '../../images/supportchat-logo.png';
+import questionnaireLogo from '../../images/questionnaire-logo.png';
+import onlineResourcesLogo from '../../images/onlineresources-logo.png';
 
 const MainContent = () => {
   return (
-    <main className="main-content">
-      <h2>Welcome to DepressiLess</h2>
-      {/* Add additional content here */}
-    </main>
+    <div>
+      <InteractiveArea title="User Profile" icon={userProfileLogo} onClick={() => {/* handle click */}} />
+      {/* Repeat for other areas using InteractiveArea */}
+    </div>
   );
 };
 

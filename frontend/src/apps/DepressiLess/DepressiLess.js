@@ -1,6 +1,9 @@
+//DepressiLess.js
+
 import React from 'react';
 import { Link } from "react-router-dom";
 import Header from '../../components/Header'
+import MainContent from './MainContent';
 
 import userProfileLogo from '../../images/userinformation-logo.png';
 import supportChatLogo from '../../images/supportchat-logo.png';
