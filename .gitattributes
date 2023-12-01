@@ -1,2 +1,2 @@
 backend/app/shreyas/tonsil_detector.h5 filter=lfs diff=lfs merge=lfs -text
-backend/app/lanre/model_notebooks/dipstick_model_v12.ipynb -linguist-vendored
+*.ipynb linguist-detectable=false
