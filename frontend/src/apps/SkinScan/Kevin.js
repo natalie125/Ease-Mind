@@ -9,7 +9,7 @@ class Kevin extends Component {
 		return (
 			<div className="Kevin">
 				<h1 className="h1_kevin">Skin Scan</h1>
-				<div className="App-body">
+				<div className="app-body">
 					<div className="landing_page_kevin">
 
 						<h2 className="h2_kevin">Product Disclaimer </h2>

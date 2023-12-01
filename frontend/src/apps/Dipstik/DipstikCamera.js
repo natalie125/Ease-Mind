@@ -24,7 +24,7 @@ const DipstikCamera = () => {
 	let navigate = useNavigate();
 
   //get the json from the memory
-	const token_JSON = JSON.parse(sessionStorage.getItem("token"));
+	const token_JSON = sessionStorage.getItem("token");
 
   let context = 'lanre'; 
   context = context.toString();

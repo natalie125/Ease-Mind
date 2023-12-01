@@ -1,0 +1,113 @@
+/* Right now webcam is using the whole page size for resizing, not the element that it is within */
+.webcam {
+  width: fit-content;
+  height: fit-content;
+  border-radius: 5px;
+}
+
+.webcam-capture-holder {
+  margin: 0 auto;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.flash {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  z-index: 2;
+}
+
+.tons-page-container {
+  max-width: 70%;
+  margin: 0 auto;
+  text-align: left;
+  padding-bottom: 20px;
+}
+
+.tons-page-camera-container {
+  max-width: 70%;
+  margin: 0 auto;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.bullet-point {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.bullet-point-container {
+  margin-bottom: 30px;
+}
+
+.image-container {
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.image-container img {
+  display: block;
+  /* make the image a block element */
+  width: 100%;
+  /* set the width of the image to 100% */
+  height: auto;
+  /* set the height of the image to auto */
+  /* add other styles as needed */
+  border-radius: 5px;
+}
+
+.tons-page-button {
+  border: 1px solid #004585;
+  padding: 5px;
+  height: 30px;
+  background-color: #005eb8;
+  border-radius: 30px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.tons-page-header {
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+
+.tons-page-subheader {
+  padding-bottom: 10px;
+}
+
+.cam-horizontal-container {
+  display: flex;
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.cam-button {
+  background-color: #005eb8;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.cam-button-container {
+  width: 20%;
+  padding-left: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

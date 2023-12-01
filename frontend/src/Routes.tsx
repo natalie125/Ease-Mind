@@ -5,9 +5,10 @@ import {
 
 import { AuthTokenContext } from "./App";
 
-import Login from "./components/Login";
+import AuthenticationLayout from "./components/AuthenticationLayout/AuthenticationLayout";
+import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
-import Home from "./components/Home";
+import Home from "./components/Home/Home";
 import Error from "./components/Error";
 
 import Canopy from "./apps/Canopy/Canopy";
@@ -47,9 +48,11 @@ import DipstikResults from "./apps/Dipstik/DipstikResults";
 import RootsRadar from "./apps/RootsRadar/RootsRadar";
 
 import AutismDetector from "./apps/AutismDetector/AutismDetector";
+
 import PersonalDetails from "./apps/AutismDetector/personaldetails";
 
 import EaseMind from './apps/EaseMind/EaseMind'; 
+import EaseMindPersonaldetails from './apps/EaseMind/EaseMind_personal_details'; 
 
 import DepressiLess from './apps/DepressiLess/DepressiLess';
 
@@ -59,54 +62,66 @@ import DepressiLess from './apps/DepressiLess/DepressiLess';
 
 const RouteProtector = () => {
   const authorised = useContext(AuthTokenContext).token;
-  return authorised ? <Outlet/> : <Navigate to="/signin"/>;
+  return authorised ? <Outlet/> : <Navigate to="/auth/signin"/>;
 }
 
 const Routes = () => (
   <Router>
-    <Route path="/signin" element={<Login />} />
-    <Route path="/signup" element={<SignUp />} />
+    <Route path="/auth" element={<AuthenticationLayout />}>
+      <Route path="signin" element={<SignIn />} />
+      <Route path="signup" element={<SignUp />} />
+    </Route>
 
     <Route path="/" element={<RouteProtector />}>
       <Route path="/" element={<Navigate to="/home"/>} />
       <Route path="/home" element={<Home />} />
 
-      <Route path="/canopy" element={<Canopy />} />
-      <Route path="/canopy/canopy2" element={<Canopy2 />} />
-      <Route path="/canopy/canopy_view_patient" element={<Canopy_View_Patient />} />
-      <Route path="/canopy/canopy_edit_patient" element={<Canopy_Edit_Patient />} />
-      <Route path="/canopy/canopy_view_tree" element={<Canopy_View_Tree />} />
-      <Route path="/canopy/canopy_edit_tree" element={<Canopy_Edit_Tree />} />
-      <Route path="/canopy/canopy_view_condition" element={<Canopy_View_Condition />} />
-      <Route path="/canopy/canopy_edit_condition" element={<Canopy_Edit_Condition />} />
-      <Route path="/canopy/canopy_show_trees" element={<Canopy_Show_Trees />} />
-      <Route path="/canopy/canopy_show_conditions" element={<Canopy_Show_Conditions />} />
-      <Route path="/canopy/canopy_edit_node" element={<Canopy_Edit_Node />} />
-      <Route path="/canopy/canopy_new_node" element={<Canopy_New_Node />} />
-      <Route path="/canopy/canopy_new_node_2" element={<Canopy_New_Node_2 />} />
-      <Route path="/canopy/canopy_new_tree" element={<Canopy_New_Tree />} />
-      <Route path="/canopy/canopy_new_condition" element={<Canopy_New_Condition />} />
+      <Route path="/canopy" element={<Outlet />}>
+        <Route path="" element={<Canopy />} />
+        <Route path="canopy2" element={<Canopy2 />} />
+        <Route path="canopy_view_patient" element={<Canopy_View_Patient />} />
+        <Route path="canopy_edit_patient" element={<Canopy_Edit_Patient />} />
+        <Route path="canopy_view_tree" element={<Canopy_View_Tree />} />
+        <Route path="canopy_edit_tree" element={<Canopy_Edit_Tree />} />
+        <Route path="canopy_view_condition" element={<Canopy_View_Condition />} />
+        <Route path="canopy_edit_condition" element={<Canopy_Edit_Condition />} />
+        <Route path="canopy_show_trees" element={<Canopy_Show_Trees />} />
+        <Route path="canopy_show_conditions" element={<Canopy_Show_Conditions />} />
+        <Route path="canopy_edit_node" element={<Canopy_Edit_Node />} />
+        <Route path="canopy_new_node" element={<Canopy_New_Node />} />
+        <Route path="canopy_new_node_2" element={<Canopy_New_Node_2 />} />
+        <Route path="canopy_new_tree" element={<Canopy_New_Tree />} />
+        <Route path="canopy_new_condition" element={<Canopy_New_Condition />} />
+      </Route>
 
       <Route path="/paralysis-analysis" element={<ParalysisAnalysis />} />
 
-      <Route path="/skin-scan" element={<Kevin />} />
-      <Route path="/skin-scan/take_photo" element={<Kevin_Take_Photo />} />
-      <Route path="/skin-scan/outcome_positive" element={<Kevin_Outcome_Positive />} />
-      <Route path="/skin-scan/outcome_negative" element={<Kevin_Outcome_Negative />} />
-      <Route path="/skin-scan/instructions" element={<Kevin_Instructions />} />
+      <Route path="/skin-scan" element={<Outlet />}>
+        <Route path="" element={<Kevin />} />
+        <Route path="take_photo" element={<Kevin_Take_Photo />} />
+        <Route path="outcome_positive" element={<Kevin_Outcome_Positive />} />
+        <Route path="outcome_negative" element={<Kevin_Outcome_Negative />} />
+        <Route path="instructions" element={<Kevin_Instructions />} />
+      </Route>
 
-      <Route path="/shreyas/shreyas" element={<TonsillitisDetector />} />
-      <Route path="/shreyas/tonsillitis_instructions" element={<TonsPhotoInstructions />} />
-      <Route path="/shreyas/tonsillitis_outcome_1" element={<TonsillitisOutcome1 />} />
-      <Route path="/shreyas/tonsillitis_outcome_2" element={<TonsillitisOutcome2 />} />
+      <Route path="/shreyas" element={<Outlet />}>
+        <Route path="shreyas" element={<TonsillitisDetector />} />
+        <Route path="tonsillitis_instructions" element={<TonsPhotoInstructions />} />
+        <Route path="tonsillitis_outcome_1" element={<TonsillitisOutcome1 />} />
+        <Route path="tonsillitis_outcome_2" element={<TonsillitisOutcome2 />} />
+      </Route>
 
-      <Route path="/dipstik" element={<DipstikInstructions />} />
-      <Route path="/dipstik/dipstik-timer" element={<DipstikTimer />} />
-      <Route path="/dipstik/dipstik-camera" element={<DipstikCamera />} />
-      <Route path="/dipstik/dipstik-results" element={<DipstikResults />} />
+      <Route path="/dipstik" element={<Outlet />}>
+        <Route path="" element={<DipstikInstructions />} />
+        <Route path="dipstik-timer" element={<DipstikTimer />} />
+        <Route path="dipstik-camera" element={<DipstikCamera />} />
+        <Route path="dipstik-results" element={<DipstikResults />} />
+      </Route>
 
       <Route path="/roots-radar" element={<RootsRadar />} />
+
       <Route path="/EaseMind" element={<EaseMind />} />
+      <Route path="/EaseMind_personal_details" element={<EaseMindPersonaldetails />} />
       <Route path="/autism_instructions" element={<AutismDetector/>} />
       <Route path="/autism_instructions/personaldetails" element={<PersonalDetails/>} />
 

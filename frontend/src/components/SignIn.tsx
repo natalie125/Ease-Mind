@@ -4,12 +4,12 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AuthTokenContext } from "../App";
 
 let BASEURL = process.env.NODE_ENV === "development"
-    ? process.env.REACT_APP_DEV
-    : process.env.REACT_APP_PROD;
+  ? process.env.REACT_APP_DEV
+  : process.env.REACT_APP_PROD;
 
-function Login() {
+function SignIn() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const {token, setToken} = useContext(AuthTokenContext);
+  const { token, setToken } = useContext(AuthTokenContext);
   const navigate = useNavigate();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -34,7 +34,7 @@ function Login() {
     };
   }, []);
 
-  if (token) return <Navigate to="/home"/>;
+  if (token) return <Navigate to="/home" />;
 
   const handleSubmit = async () => {
     if (!isOnline) {
@@ -58,7 +58,7 @@ function Login() {
         headers: { "Content-Type": "application/json" },
         timeout: 5000,
       });
-  
+
       if (response.status === 200) {
         setToken(response.data.token);
         sessionStorage.setItem("email", JSON.stringify(response.data.email));
@@ -70,7 +70,7 @@ function Login() {
     } catch (error: any) {
       setIsFilled(false);
       const axiosError = error as AxiosError;
-  
+
       if (axiosError.response && axiosError.response.status === 401) {
         setError("Incorrect email or password. Please try again."); // Handle incorrect credentials
       } else if (axiosError.response) {
@@ -82,74 +82,72 @@ function Login() {
       }
     }
   };
-  
+
 
   // The Login form that is displayed to the user.
   return (
     <div className="authentication-container">
       <div className="authentication-background">
-        <div className="App-body">
 
-          {/* LOGIN HEADER */}
-          <header className="authentication-header">
-            <nav className="navbar navbar-dark bg-dark" id="navbar">
-              <h1 className="authentication-page-title">LARKS APP</h1>
-            </nav>
-          </header>
+        {/* LOGIN HEADER */}
+        <header className="authentication-header">
+          <nav className="navbar navbar-dark bg-dark" id="navbar">
+            <h1 className="authentication-page-title">LARKS APP</h1>
+          </nav>
+        </header>
 
-          {/* LOGIN FORM */}
-          <div className="login-form">
-            <div>
-              <h2 className="login-title">Login</h2>
-              <p className="login-subtitle">Please login to your account below </p>
-            </div>
+        {/* LOGIN FORM */}
+        <div className="authentication-form">
+          <div>
+            <h2 className="login-title">Login</h2>
+            <p className="login-subtitle">Please login to your account below </p>
+          </div>
 
-            <input
-              data-cy="loginEmail"
-              id="login_email"
-              ref={emailRef}
-              className="authentication-form-input"
-              type="text"
-              placeholder="Email"
-              aria-label="Enter Email"
-            />
+          <input
+            data-cy="loginEmail"
+            id="login_email"
+            ref={emailRef}
+            className="authentication-form-input"
+            type="text"
+            placeholder="Email"
+            aria-label="Enter Email"
+          />
 
-            <input
-              id="login_password"
-              ref={passwordRef}
-              className="authentication-form-input"
-              type="password"
-              placeholder="Password"
-              data-cy="loginPassword"
-              aria-label="Enter Password"
-            />
+          <input
+            id="login_password"
+            ref={passwordRef}
+            className="authentication-form-input"
+            type="password"
+            placeholder="Password"
+            data-cy="loginPassword"
+            aria-label="Enter Password"
+          />
 
-            <div>
-              <button
-                className="authentication-button"
-                data-cy="loginBttn"
-                type="submit"
-                onClick={async () => {
-                  await handleSubmit();
-                }}
-              >
-                Login
-              </button>
-            </div>
+          <div>
+            <button
+              className="authentication-button"
+              data-cy="loginBtn"
+              type="submit"
+              onClick={async () => {
+                await handleSubmit();
+              }}
+            >
+              Login
+            </button>
+          </div>
 
-            {isFilled === false && (
-              <p data-cy="loginError" className="error-message">
-                {error || "Please enter a username and password"}
+          {isFilled === false && (
+            <p data-cy="loginError" className="error-message">
+              {error || "Please enter a username and password"}
+            </p>
+          )}
+
+          <div className="signup-link-container">
+            <Link to="/auth/signup">
+              <p className="signup-link" data-cy="loginSignUpBttn">
+                Don't have an account? <b>Sign Up</b>
               </p>
-            )}
-
-            <div className="signup-link-container">
-              <Link to="/signup">
-                <p className="sigup-link" data-cy="loginSignUpBttn">
-                  Don't have an account? <b>Sign Up</b>
-                </p>
-              </Link>
-            </div>
+            </Link>
           </div>
         </div>
       </div>
@@ -157,4 +155,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignIn;
