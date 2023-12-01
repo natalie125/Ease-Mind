@@ -1,33 +1,28 @@
 header.header {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background: #005eb8;
+  justify-content: space-between;
+  background: #233342;
   color: white;
-  height: 70px;
-  font-size: 16px;
+  height: 140px;
+  font-size: 24px;
 
-  >h1 {
-    position: absolute;
-    left: 0;
-    padding-left: 2%;
-    color: white;
+  .title-link {
     text-decoration: none;
+    color: white;
+
+    .title {
+      font-size: 60px;
+      margin: 20px;
+    }
   }
 
-  >div {
-    position: absolute;
-    right: 0;
-    padding-left: 2%;
-    padding-right: 1%;
-    min-width: 30%;
-    max-width: 40%;
-    text-align: right;
+  .header-buttons {
+    display: flex;
+    align-items: center;
 
     button {
       border: 1px solid #004585;
-      width: 90px;
       height: 30px;
       background-color: white;
       border-radius: 30px;
@@ -35,11 +30,55 @@ header.header {
       cursor: pointer;
       font-weight: bold;
       font-size: 16px;
-      margin-left: 5%;
+      margin-left: 10px;
+      position: relative;
     }
 
     button:hover {
       border: 2px solid #004585;
+    }
+
+    .dropdown {
+      position: relative;
+      margin-left: 10px;
+
+      .dropdown-button {
+        background-color: white;
+        color: #005eb8;
+        padding: 6px 10px;
+        border: 1px solid #004585;
+        border-radius: 30px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 16px;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px #233342;
+        z-index: 2; /* Increase z-index to ensure it appears above logos container */
+
+        a {
+          color: #233342;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+        }
+
+        a:hover {
+          background-color: #f1f1f1;
+        }
+      }
+
+      &:hover .dropdown-content {
+        display: block;
+      }
     }
   }
 }
