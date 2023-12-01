@@ -28,7 +28,8 @@ class RegisterForm(FlaskForm):
 
     # validate username
     def validate_email(self, email):
-
+        # Strip trailing spaces from the email input
+        email.data = email.data.strip()
         # get first instance of this username in the database
         # changer "User" to model name
         user = models.User_Login.query.filter_by(email=email.data).first()

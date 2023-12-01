@@ -45,18 +45,19 @@ const SignUp = () => {
       setIsError(null); // Reset error state when network error occurs
       return;
     }
-
-    const email = document.getElementById("signup_email").value;
-    const password = document.getElementById("signup_password").value;
-
+  
+    // Trim whitespace from email and password inputs
+    const email = document.getElementById("signup_email").value.trim();
+    const password = document.getElementById("signup_password").value.trim();
+  
     var passwordRules = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-
+  
     setIsError(null); // Reset error state when attempting signup
-
+  
     if (email.length > 0 && password.length > 0) {
       if (email.includes("@") && passwordRules.test(password)) {
         const response = await handleSubmit(email, password);
-
+  
         if (response.status === 200) {
           setToken(response.data.token);
           setIsError(null); // Reset error state on successful signup
@@ -71,7 +72,7 @@ const SignUp = () => {
     }
     setIsError(INVALIDDETAILS);
   };
-
+  
   if (token) return <Navigate to="/home" />;
 
   return (
