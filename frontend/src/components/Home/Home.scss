@@ -101,7 +101,33 @@ body {
 
   .home-image {
     width: 100%;
-    position: fixed;
+    position: bottom;
     z-index: 0; /* Ensure the image is behind other elements */
+  }
+}
+
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  .home {
+    padding-top: 10px; /* Adjust top padding for smaller screens */
+
+    .app-links-container {
+      display: flex;
+      flex-direction: column; /* Change direction to vertical for mobile */
+      align-items: center; /* Center-align items */
+      padding: 20px; /* Add padding for better spacing */
+    }
+
+    .app-link {
+      width: 80%; /* Adjust width for better mobile view */
+    }
+
+    .home-image {
+      position: static; /* Change the position to static for smaller screens */
+      width: 100%; /* Adjust image width */
+    }
+
+    /* Additional mobile-specific styles can be added here */
   }
 }
