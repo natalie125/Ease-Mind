@@ -11,6 +11,7 @@ import skinscan_logo from "./logos/skinscan.png";
 import ease_mind_logo from "./logos/ease-mind.png";
 import autism_detector_logo from "./logos/autism-detector.png";
 import chatbot_logo from "./logos/chatbot.png"
+import DepressiLess_logo from "./logos/DepressiLess-logo.png"
 
 interface IAppLink {
   to: string;
@@ -90,6 +91,13 @@ const Home = () => (
         logo={chatbot_logo}
         alt="chatbot_Logo"
         dataCy="chatbotlogo"
+      />
+
+      <AppLink
+        to="/DepressiLess"
+        logo={DepressiLess_logo}
+        alt="DepressiLess App"
+        dataCy="DepressiLessLogo"
       />
     </div>
   </div>

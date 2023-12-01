@@ -17,9 +17,9 @@ const interactiveAreaStyle = {
 };
 
 const iconStyle = {
-  marginBottom: '10px', // space between icon and title
-  width: '50px', // adjust size as needed
-  height: '50px', // adjust size as needed
+  marginBottom: '10px', 
+  width: '50px', 
+  height: '50px', 
 };
 
 const InteractiveArea = ({ title, icon, onClick }) => {
