@@ -1,55 +1,34 @@
-html,
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: Arial, sans-serif;
-  /* Add background gradient from top right to bottom left */
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: Arial, sans-serif;
-  /* Add background gradient from top right to bottom left */
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* Align items to the top of the screen */
-}
-
 .home {
-  height: 95vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start; /* Align content to the top of the container */
-  padding-top: 20px; /* Add padding to the top */
-  position: relative; /* Ensure positioning context for child elements */
-
   h1 {
     color: #005eb8;
     margin: 10px 0;
   }
 
   .app-links-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 15px;
-    margin-top: 20px;
-    background-color: #233342; /* Set a solid background color */
-    padding: 10px; /* Add some padding */
-    border-radius: 10px; /* Add rounded corners */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add box shadow */
-    position: relative; /* Ensure positioning context for child elements */
-    z-index: 1; /* Ensure links are clickable */
+    margin: 1.5rem;
+    background-color: #233342;
+    /* Set a solid background color */
+    padding: 10px;
+    /* Add some padding */
+    border-radius: 10px;
+    /* Add rounded corners */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    /* Add box shadow */
+    /* Ensure positioning context for child elements */
+    z-index: 1;
+    /* Ensure links are clickable */
 
     .app-link {
       text-decoration: none;
       color: inherit;
-      width: 100%;
-      box-sizing: border-box;
+      max-width: 200px;
+      // min-width: 200px;
+      // box-sizing: border-box;
+      // margin: auto;
 
       .logo-container {
         display: flex;
@@ -57,12 +36,15 @@ body {
         align-items: center;
         padding: 10px;
         border-radius: 10px;
-        background-color: #fff; /* Set a solid background color */
+        background-color: #fff;
+        /* Set a solid background color */
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         transition: transform 0.3s, box-shadow 0.3s;
-        max-width: 70%;
+        width: 200px;
+        height: 200px;
         position: relative;
-        z-index: 1; /* Ensure logos are clickable */
+        z-index: 1;
+        /* Ensure logos are clickable */
 
         &:hover {
           transform: translateY(-5px);
@@ -70,7 +52,8 @@ body {
         }
 
         img {
-          max-width: 80%;
+          width: 170px;
+          height: 170px;
           border-radius: 15px;
         }
 
@@ -79,8 +62,9 @@ body {
           position: absolute;
           /* Adjust position to the right of the logo container */
           top: 50%;
-          left: calc(100% + 10px); /* Adjust as needed */
-          transform: translateY(-50%);
+          left: calc(100% + 10px);
+          /* Adjust as needed */
+          transform: translateY(-30%);
           padding: 5px 10px;
           border-radius: 5px;
           font-size: 12px;
@@ -88,44 +72,34 @@ body {
           opacity: 0;
           transition: opacity 0.3s, transform 0.3s;
         }
+
         &:hover .slogan {
           display: block;
           opacity: 1;
+          top: 20%
         }
       }
     }
-  }
 
-  /* Add background gradient from top right to bottom left */
-  background: linear-gradient(to bottom left, #ffffff, #51b8e7);
+    /* Add background gradient from top right to bottom left */
+    background: linear-gradient(to bottom left, #ffffff, #51b8e7);
+  }
 
   .home-image {
     width: 100%;
-    position: bottom;
-    z-index: 0; /* Ensure the image is behind other elements */
+    /* Ensure the image is behind other elements */
+    z-index: 0;
   }
 }
-
 
 /* Media query for mobile devices */
 @media (max-width: 768px) {
   .home {
-    padding-top: 10px; /* Adjust top padding for smaller screens */
-
-    .app-links-container {
-      display: flex;
-      flex-direction: column; /* Change direction to vertical for mobile */
-      align-items: center; /* Center-align items */
-      padding: 20px; /* Add padding for better spacing */
-    }
-
-    .app-link {
-      width: 80%; /* Adjust width for better mobile view */
-    }
-
     .home-image {
-      position: static; /* Change the position to static for smaller screens */
-      width: 100%; /* Adjust image width */
+      position: static;
+      /* Change the position to static for smaller screens */
+      width: 100%;
+      /* Adjust image width */
     }
 
     /* Additional mobile-specific styles can be added here */
