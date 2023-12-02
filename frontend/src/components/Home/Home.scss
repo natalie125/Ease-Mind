@@ -1,30 +1,133 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  /* Add background gradient from top right to bottom left */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  /* Add background gradient from top right to bottom left */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align items to the top of the screen */
+}
+
 .home {
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Align content to the top of the container */
+  padding-top: 20px; /* Add padding to the top */
+  position: relative; /* Ensure positioning context for child elements */
+
   h1 {
     color: #005eb8;
-    margin: 10px 0px;
+    margin: 10px 0;
   }
 
-  >div {
+  .app-links-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    max-width: fit-content;
-    margin: auto;
+    grid-template-columns: repeat(5, 1fr);
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    background-color: #233342; /* Set a solid background color */
+    padding: 10px; /* Add some padding */
+    border-radius: 10px; /* Add rounded corners */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add box shadow */
+    position: relative; /* Ensure positioning context for child elements */
+    z-index: 1; /* Ensure links are clickable */
 
     .app-link {
-      display: flex;
-      width: fit-content;
-      margin: 16px 16px;
-      max-width: 150px;
-    
-      img {
-        max-width: 130px;
-        font-size: 16px;
-        transition: 0.3s;
-        cursor: pointer;
-        border-radius: 20px;
-        border: 1px solid rgb(204, 204, 204);
+      text-decoration: none;
+      color: inherit;
+      width: 100%;
+      box-sizing: border-box;
+
+      .logo-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: #fff; /* Set a solid background color */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s, box-shadow 0.3s;
+        max-width: 70%;
+        position: relative;
+        z-index: 1; /* Ensure logos are clickable */
+
+        &:hover {
+          transform: translateY(-5px);
+          box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        img {
+          max-width: 80%;
+          border-radius: 15px;
+        }
+
+        .slogan {
+          display: none;
+          position: absolute;
+          /* Adjust position to the right of the logo container */
+          top: 50%;
+          left: calc(100% + 10px); /* Adjust as needed */
+          transform: translateY(-50%);
+          padding: 5px 10px;
+          border-radius: 5px;
+          font-size: 12px;
+          white-space: nowrap;
+          opacity: 0;
+          transition: opacity 0.3s, transform 0.3s;
+        }
+        &:hover .slogan {
+          display: block;
+          opacity: 1;
+        }
       }
     }
   }
 
+  /* Add background gradient from top right to bottom left */
+  background: linear-gradient(to bottom left, #ffffff, #51b8e7);
+
+  .home-image {
+    width: 100%;
+    position: bottom;
+    z-index: 0; /* Ensure the image is behind other elements */
+  }
+}
+
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  .home {
+    padding-top: 10px; /* Adjust top padding for smaller screens */
+
+    .app-links-container {
+      display: flex;
+      flex-direction: column; /* Change direction to vertical for mobile */
+      align-items: center; /* Center-align items */
+      padding: 20px; /* Add padding for better spacing */
+    }
+
+    .app-link {
+      width: 80%; /* Adjust width for better mobile view */
+    }
+
+    .home-image {
+      position: static; /* Change the position to static for smaller screens */
+      width: 100%; /* Adjust image width */
+    }
+
+    /* Additional mobile-specific styles can be added here */
+  }
 }

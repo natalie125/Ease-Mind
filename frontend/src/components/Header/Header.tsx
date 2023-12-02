@@ -1,24 +1,35 @@
-import React, { useContext, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { AuthTokenContext } from "../../App";
 import "./Header.scss";
 
 const Header = () => {
-  const location = useLocation();
-  useEffect(()=>{}, [location]);
+  const { token, setToken } = useContext(AuthTokenContext);
 
-  const {token, setToken} = useContext(AuthTokenContext);
   if (!token) return null;
 
   return (
     <header className="header">
-      <h1>LARKS APP</h1>
-      <div>
-        {window.location.pathname !== "/home" && (
-          <Link style={{ width: "100%" }} to="/home">
-            <button>Home</button>
-          </Link>
-        )}
+      <Link to="/home" className="title-link">
+        <h1 className="title">LARKS APP</h1>
+      </Link>
+      <div className="header-buttons">
+        <div className="dropdown">
+          <button className="dropdown-button">
+            Apps
+            <div className="dropdown-content">
+              <Link to="/canopy">Canopy</Link>
+              <Link to="/skin-scan">Skin Scan</Link>
+              <Link to="/dipstik">Dipstik</Link>
+              <Link to="/paralysis-analysis">Paralysis Analysis</Link>
+              <Link to="/shreyas/tonsillitis_instructions">Tonsillitis Detector</Link>
+              <Link to="/roots-radar">Roots Radar App</Link>
+              <Link to="/EaseMind">EaseMind</Link>
+              <Link to="/autism_instructions">Autism Detector</Link>
+              <Link to="/food_allergy_chatbot">Food Allergy Chatbot</Link>
+              </div>
+          </button>
+        </div>
         <button data-cy="logoutBtn" onClick={() => setToken(null)}>
           Logout
         </button>
@@ -28,3 +39,4 @@ const Header = () => {
 };
 
 export default Header;
+
