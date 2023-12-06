@@ -9,7 +9,7 @@ process.env.NODE_ENV === "development"
 	? (BASEURL = process.env.REACT_APP_DEV)
 	: (BASEURL = process.env.REACT_APP_PROD);
 
-function Canopy_Edit_Condition(props) {
+function EditCondition(props) {
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -259,4 +259,4 @@ function Canopy_Edit_Condition(props) {
 	);
 }
 
-export default Canopy_Edit_Condition;
+export default EditCondition;

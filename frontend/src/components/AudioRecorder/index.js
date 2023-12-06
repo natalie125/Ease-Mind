@@ -1,2 +1,3 @@
-import AudioRecorder from "./VoiceRecorder";
+import AudioRecorder from './VoiceRecorder';
+
 export default AudioRecorder;

@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import { AuthTokenContext } from "../../App";
-import "./Header.scss";
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { AuthTokenContext } from '../../App';
+import './Header.scss';
 
-const Header = () => {
+function Header() {
   const { token, setToken } = useContext(AuthTokenContext);
 
   if (!token) return null;
@@ -15,7 +15,7 @@ const Header = () => {
       </Link>
       <div className="header-buttons">
         <div className="dropdown">
-          <button className="dropdown-button">
+          <button className="dropdown-button" type="button">
             Apps
             <div className="dropdown-content">
               <Link to="/canopy">Canopy</Link>
@@ -27,16 +27,15 @@ const Header = () => {
               <Link to="/EaseMind">EaseMind</Link>
               <Link to="/autism_instructions">Autism Detector</Link>
               <Link to="/food_allergy_chatbot">Food Allergy Chatbot</Link>
-              </div>
+            </div>
           </button>
         </div>
-        <button data-cy="logoutBtn" onClick={() => setToken(null)}>
+        <button data-cy="logoutBtn" onClick={() => setToken(null)} type="button">
           Logout
         </button>
       </div>
     </header>
   );
-};
+}
 
 export default Header;
-

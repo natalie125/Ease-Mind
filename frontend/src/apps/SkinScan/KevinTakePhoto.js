@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import WebcamCapture from "./Camera_Kevin.js";
+import WebcamCapture from "./CameraKevin.js";
 
 class Kevin extends Component {
 	render() {

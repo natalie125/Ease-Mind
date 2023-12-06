@@ -1,2 +1,3 @@
-import WebcamStreamCapture from "./Webcam.js";
+import WebcamStreamCapture from './Webcam.js';
+
 export default WebcamStreamCapture;

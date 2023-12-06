@@ -1,7 +1,9 @@
-import React, { createContext, useState, useEffect } from "react";
-import Header from "./components/Header/Header";
-import Routes from "./Routes";
-import "./App.scss"
+import React, {
+  createContext, useState, useEffect, useMemo,
+} from 'react';
+import Header from './components/Header/Header';
+import Routes from './Routes';
+import './App.scss';
 
 type Token = string | null;
 
@@ -12,26 +14,30 @@ interface ITokenContext {
 
 const AuthTokenContext = createContext<ITokenContext>({
   token: null,
-  setToken: () => {},
+  setToken: () => { throw new Error('AuthTokenContext uninitialised.'); },
 });
 
-const App = () => {
-  const tokenString = sessionStorage.getItem("token");
-  const [token, setToken] = useState<Token>(tokenString ? tokenString : null);
+function App() {
+  const tokenString = sessionStorage.getItem('token');
+  const [token, setToken] = useState<Token>(tokenString || null);
 
   useEffect(() => {
-    sessionStorage.setItem("token", token ? token : "");
+    sessionStorage.setItem('token', token || '');
   }, [token]);
 
+  const authTokenContext = useMemo(() => (
+    { token, setToken }
+  ), [token, setToken]);
+
   return (
-    <AuthTokenContext.Provider value={{token, setToken}}>
+    <AuthTokenContext.Provider value={authTokenContext}>
       <div className="app">
         <Header />
         <Routes />
       </div>
     </AuthTokenContext.Provider>
   );
-};
+}
 
 export { AuthTokenContext };
 export default App;

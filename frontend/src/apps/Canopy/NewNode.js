@@ -10,7 +10,7 @@ process.env.NODE_ENV === "development"
 	? (BASEURL = process.env.REACT_APP_DEV)
 	: (BASEURL = process.env.REACT_APP_PROD);
 
-function Canopy_New_Node(props) {
+function NewNode(props) {
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -245,7 +245,7 @@ function Canopy_New_Node(props) {
 						}
 						console.log("validity: " + validity);
 						if(validity) {
-							navigate('/canopy/canopy_new_node_2/', {state:{ tree_id: location.state?.tree_id, name: name, dob: dob, dod: dod, gender: gender.label, ethnicity: ethnicity, selected_conditions: selected_conditions }})
+							navigate('/canopy/newnode_2/', {state:{ tree_id: location.state?.tree_id, name: name, dob: dob, dod: dod, gender: gender.label, ethnicity: ethnicity, selected_conditions: selected_conditions }})
 						}
 					}}>
 						Proceed to Choosing Parents, Children, and Spouses
@@ -264,4 +264,4 @@ function Canopy_New_Node(props) {
 	);
 }
 
-export default Canopy_New_Node;
+export default NewNode;

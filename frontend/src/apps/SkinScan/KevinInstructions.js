@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Instructions from "./Instructions_Component";
+import Instructions from "./InstructionsComponent";
 import "./SkinScan.css";
 
 class Kevin extends Component {

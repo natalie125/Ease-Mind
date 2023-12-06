@@ -1,1 +1,5 @@
-src/components/Alex/*
+src/apps/Canopy/*
+src/apps/Dipstik/*
+src/apps/ParalysisAnalysis/*
+src/apps/SkinScan/*
+src/apps/TonsillitisDetector/*

@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useContext, useState } from "react";
+import React, {
+  useEffect, useRef, useContext, useState,
+} from 'react';
 import axios, { AxiosError } from 'axios';
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { AuthTokenContext } from "../App";
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { AuthTokenContext } from '../App';
 
-let BASEURL = process.env.NODE_ENV === "development"
+const BASEURL = process.env.NODE_ENV === 'development'
   ? process.env.REACT_APP_DEV
   : process.env.REACT_APP_PROD;
 
@@ -25,12 +27,12 @@ function SignIn() {
       setIsOnline(false);
     }
 
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
 
     return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
     };
   }, []);
 
@@ -39,50 +41,49 @@ function SignIn() {
   const handleSubmit = async () => {
     if (!isOnline) {
       setIsFilled(false);
-      setError("Network error. Please check your internet connection.");
+      setError('Network error. Please check your internet connection.');
       return;
     }
 
-    const email = emailRef.current?.value ?? "";
-    const password = passwordRef.current?.value ?? "";
+    const email = emailRef.current?.value ?? '';
+    const password = passwordRef.current?.value ?? '';
 
     if (email.length === 0 || password.length === 0) {
       setIsFilled(false);
-      setError("Please enter a username and password");
+      setError('Please enter a username and password');
       return;
     }
 
     setIsFilled(true);
     try {
-      const response = await axios.post(BASEURL + "login", JSON.stringify({ credentials: { email, password } }), {
-        headers: { "Content-Type": "application/json" },
+      const response = await axios.post(`${BASEURL}login`, JSON.stringify({ credentials: { email, password } }), {
+        headers: { 'Content-Type': 'application/json' },
         timeout: 5000,
       });
 
       if (response.status === 200) {
         setToken(response.data.token);
-        sessionStorage.setItem("email", JSON.stringify(response.data.email));
-        navigate("/home");
+        sessionStorage.setItem('email', JSON.stringify(response.data.email));
+        navigate('/home');
       } else {
         setIsFilled(false);
-        setError("Your username or password is incorrect. Please try again.");
+        setError('Your username or password is incorrect. Please try again.');
       }
-    } catch (error: any) {
+    } catch (err) {
       setIsFilled(false);
-      const axiosError = error as AxiosError;
+      const axiosError = err as AxiosError;
 
       if (axiosError.response && axiosError.response.status === 401) {
-        setError("Incorrect email or password. Please try again."); // Handle incorrect credentials
+        setError('Incorrect email or password. Please try again.'); // Handle incorrect credentials
       } else if (axiosError.response) {
-        setError("Server error. Please try again later."); // Other server errors
+        setError('Server error. Please try again later.'); // Other server errors
       } else if (axiosError.request) {
-        setError("Network error. Please check your internet connection.");
+        setError('Network error. Please check your internet connection.');
       } else {
-        setError("An error occurred. Please try again.");
+        setError('An error occurred. Please try again.');
       }
     }
   };
-
 
   // The Login form that is displayed to the user.
   return (
@@ -138,14 +139,16 @@ function SignIn() {
 
           {isFilled === false && (
             <p data-cy="loginError" className="error-message">
-              {error || "Please enter a username and password"}
+              {error || 'Please enter a username and password'}
             </p>
           )}
 
           <div className="signup-link-container">
             <Link to="/auth/signup">
               <p className="signup-link" data-cy="loginSignUpBttn">
-                Don't have an account? <b>Sign Up</b>
+                Don&apos;t have an account?
+                {' '}
+                <b>Sign Up</b>
               </p>
             </Link>
           </div>

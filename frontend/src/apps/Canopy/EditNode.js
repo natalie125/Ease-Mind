@@ -65,7 +65,7 @@ function linkPatientCondition(url_input, patient_condition_data) {
 	}) 
 }
 
-function Canopy_Edit_Node(props) {
+function EditNode(props) {
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -694,4 +694,4 @@ function Canopy_Edit_Node(props) {
 	);
 }
 
-export default Canopy_Edit_Node;
+export default EditNode;

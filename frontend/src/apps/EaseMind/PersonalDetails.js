@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { Link, useHistory, useNavigate } from 'react-router-dom'; // Import useHistory
+import { Link, useNavigate } from 'react-router-dom';
 import './EaseMind.css';
 
-const EaseMindPersonaldetails = () => {
+function PersonalDetails() {
   const [userDetails, setUserDetails] = useState({
-    firstName: "",
-    lastName: "",
-    DOB: "",
-    gender: "",
-    address: "",
+    firstName: '',
+    lastName: '',
+    DOB: '',
+    gender: '',
+    address: '',
   });
+  // FIXME
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isDetailsSaved, setIsDetailsSaved] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
 
@@ -20,15 +22,17 @@ const EaseMindPersonaldetails = () => {
 
   const saveDetails = () => {
     setIsDetailsSaved(true);
-    navigate('/EaseMind'); 
+    navigate('/EaseMind');
   };
 
   return (
     <div className="easeMindContainer">
-      <h2 className='easeMindTitle'>Please fill in the details below:</h2>
+      <h2 className="easeMindTitle">Please fill in the details below:</h2>
 
       {/* User details input fields */}
       <div>
+        {/* FIXME */}
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label>
           First Name:
           <input
@@ -39,6 +43,8 @@ const EaseMindPersonaldetails = () => {
           />
         </label>
 
+        {/* FIXME */}
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label>
           Last Name:
           <input
@@ -49,6 +55,8 @@ const EaseMindPersonaldetails = () => {
           />
         </label>
 
+        {/* FIXME */}
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label>
           Date of Birth:
           <input
@@ -59,6 +67,8 @@ const EaseMindPersonaldetails = () => {
           />
         </label>
 
+        {/* FIXME */}
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label>
           Gender:
           <select name="gender" value={userDetails.gender} onChange={handleUserDetailsChange}>
@@ -69,6 +79,8 @@ const EaseMindPersonaldetails = () => {
           </select>
         </label>
 
+        {/* FIXME */}
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label>
           Address:
           <input
@@ -83,11 +95,11 @@ const EaseMindPersonaldetails = () => {
       {/* Button to save personal details */}
       <div>
         <Link to="/EaseMind/EaseMind_personal_details/save">
-          <button className='easeMindButton' onClick={saveDetails}>Save Details</button>
+          <button type="button" className="easeMindButton" onClick={saveDetails}>Save Details</button>
         </Link>
       </div>
     </div>
   );
-};
+}
 
-export default EaseMindPersonaldetails;
+export default PersonalDetails;

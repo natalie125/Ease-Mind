@@ -9,7 +9,7 @@ process.env.NODE_ENV === "development"
 	? (BASEURL = process.env.REACT_APP_DEV)
 	: (BASEURL = process.env.REACT_APP_PROD);
 
-function Canopy_New_Tree(props) {
+function NewTree(props) {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const user_email = sessionStorage.getItem("email").substring(1, sessionStorage.getItem("email").length - 1);
@@ -66,4 +66,4 @@ function Canopy_New_Tree(props) {
 	);
 }
 
-export default Canopy_New_Tree;
+export default NewTree;

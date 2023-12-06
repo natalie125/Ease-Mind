@@ -1,27 +1,27 @@
-import React, { useContext } from "react";
-import axios from "axios";
-import { useNavigate, Link, Navigate } from "react-router-dom";
-import { AuthTokenContext } from "../App";
+import React, { useContext } from 'react';
+import axios from 'axios';
+import { useNavigate, Link, Navigate } from 'react-router-dom';
+import { AuthTokenContext } from '../App';
 
 const INVALIDDETAILS = 0;
 const USEREXISTS = 1;
 
-let BASEURL = "";
-process.env.NODE_ENV === "development"
-  ? (BASEURL = process.env.REACT_APP_DEV)
-  : (BASEURL = process.env.REACT_APP_PROD);
+const BASEURL = process.env.NODE_ENV === 'development'
+  ? process.env.REACT_APP_DEV
+  : process.env.REACT_APP_PROD;
 
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (!error.response) {
-      return Promise.reject({ status: 500, message: "Network Error" });
+      // eslint-disable-next-line
+      return Promise.reject({ status: 500, message: 'Network Error' });
     }
     return Promise.reject(error);
-  }
+  },
 );
 
-const SignUp = () => {
+function SignUp() {
   const { token, setToken } = useContext(AuthTokenContext);
   const [isError, setIsError] = React.useState(null);
   const [networkError, setNetworkError] = React.useState(false);
@@ -29,9 +29,9 @@ const SignUp = () => {
 
   const handleSubmit = async (email, password) => {
     try {
-      const response = await axios.post(BASEURL + "register", {
-        email: email,
-        password: password,
+      const response = await axios.post(`${BASEURL}register`, {
+        email,
+        password,
       });
       return response;
     } catch (error) {
@@ -45,23 +45,23 @@ const SignUp = () => {
       setIsError(null); // Reset error state when network error occurs
       return;
     }
-  
+
     // Trim whitespace from email and password inputs
-    const email = document.getElementById("signup_email").value.trim();
-    const password = document.getElementById("signup_password").value.trim();
-  
-    var passwordRules = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-  
+    const email = document.getElementById('signup_email').value.trim();
+    const password = document.getElementById('signup_password').value.trim();
+
+    const passwordRules = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
     setIsError(null); // Reset error state when attempting signup
-  
+
     if (email.length > 0 && password.length > 0) {
-      if (email.includes("@") && passwordRules.test(password)) {
+      if (email.includes('@') && passwordRules.test(password)) {
         const response = await handleSubmit(email, password);
-  
+
         if (response.status === 200) {
           setToken(response.data.token);
           setIsError(null); // Reset error state on successful signup
-          navigate("/home");
+          navigate('/home');
         } else if (response.status === 409) {
           setIsError(USEREXISTS);
         } else {
@@ -72,7 +72,7 @@ const SignUp = () => {
     }
     setIsError(INVALIDDETAILS);
   };
-  
+
   if (token) return <Navigate to="/home" />;
 
   return (
@@ -106,7 +106,7 @@ const SignUp = () => {
             type="password"
             placeholder="Password"
             aria-label="Enter Password"
-          ></input>
+          />
 
           <div>
             <button
@@ -114,6 +114,7 @@ const SignUp = () => {
               id="signup_button"
               className="authentication-button"
               onClick={validateSignup}
+              type="button"
             >
               Sign Up
             </button>
@@ -137,8 +138,11 @@ const SignUp = () => {
           <div className="signup-link-container">
             <Link to="/auth/signin">
               <p className="login-link" data-cy="signUpLoginBtn" id="login_button">
-                {" "}
-                Already have an account? <b>Log In</b>{" "}
+                {' '}
+                Already have an account?
+                {' '}
+                <b>Log In</b>
+                {' '}
               </p>
             </Link>
           </div>
@@ -146,6 +150,6 @@ const SignUp = () => {
       </div>
     </div>
   );
-};
+}
 
 export default SignUp;

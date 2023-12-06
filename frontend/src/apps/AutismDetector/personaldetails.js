@@ -1,15 +1,17 @@
-import React, { useState, ChangeEvent } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const Personaldetails = () => {
+function PersonalDetails() {
   // State for user details
   const [userDetails, setUserDetails] = useState({
-    firstName: "",
-    lastName: "",
-    dob: "",
-    gender: "",
+    firstName: '',
+    lastName: '',
+    dob: '',
+    gender: '',
     // Add other user details fields as needed
   });
+  // TODO: Fix following lint errors
+  // eslint-disable-next-line
   const [isDetailsSaved, setIsDetailsSaved] = useState(false);
 
   // Function to handle user details input changes
@@ -28,9 +30,11 @@ const Personaldetails = () => {
   return (
     <div className="Personaldetails">
       <h2>Please put in your personal details below:</h2>
-      
+
       {/* User details input */}
       <div>
+        {/* TODO: Fix following lint errors */}
+        {/* eslint-disable-next-line */}
         <label>
           First Name:
           <input
@@ -41,6 +45,8 @@ const Personaldetails = () => {
           />
         </label>
 
+        {/* TODO: Fix following lint errors */}
+        {/* eslint-disable-next-line */}
         <label>
           Last Name:
           <input
@@ -51,6 +57,8 @@ const Personaldetails = () => {
           />
         </label>
 
+        {/* TODO: Fix following lint errors */}
+        {/* eslint-disable-next-line */}
         <label>
           Date of Birth:
           <input
@@ -61,6 +69,8 @@ const Personaldetails = () => {
           />
         </label>
 
+        {/* TODO: Fix following lint errors */}
+        {/* eslint-disable-next-line */}
         <label>
           Gender:
           <select name="gender" value={userDetails.gender} onChange={handleUserDetailsChange}>
@@ -74,11 +84,11 @@ const Personaldetails = () => {
       {/* Button to save personal details */}
       <div>
         <Link to="/autismdetector/personaldetails/save">
-          <button onClick={saveDetails}>Save Details</button>
+          <button type="button" onClick={saveDetails}>Save Details</button>
         </Link>
       </div>
     </div>
   );
-};
+}
 
-export default Personaldetails;
+export default PersonalDetails;

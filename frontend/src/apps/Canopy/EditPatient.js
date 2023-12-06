@@ -7,7 +7,7 @@ process.env.NODE_ENV === "development"
 	? (BASEURL = process.env.REACT_APP_DEV)
 	: (BASEURL = process.env.REACT_APP_PROD);
 
-class Canopy_Edit_Patient extends Component {
+class EditPatient extends Component {
 	// form methods
 	constructor(props) {
 		super(props);
@@ -337,4 +337,4 @@ class Canopy_Edit_Patient extends Component {
 	}
 }
 
-export default Canopy_Edit_Patient;
+export default EditPatient;

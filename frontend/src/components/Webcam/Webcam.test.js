@@ -2,12 +2,12 @@
  * @jest-environment jsdom
  */
 
-import renderer from "react-test-renderer";
-import { render, fireEvent, waitFor, screen } from "@testing-library/react";
-import Webcam from "../Webcam";
+import React from 'react';
+import renderer from 'react-test-renderer';
+import Webcam from '.';
 
-it("changes the class when hovered", () => {
-	const component = renderer.create(<Webcam />);
-	let tree = component.toJSON();
-	expect(tree).toMatchSnapshot();
+it('changes the class when hovered', () => {
+  const component = renderer.create(<Webcam />);
+  const tree = component.toJSON();
+  expect(tree).toMatchSnapshot();
 });

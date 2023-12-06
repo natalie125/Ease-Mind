@@ -2,43 +2,39 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import "./Canopy.css"
-
 let BASEURL = "";
 process.env.NODE_ENV === "development"
 	? (BASEURL = process.env.REACT_APP_DEV)
 	: (BASEURL = process.env.REACT_APP_PROD);
 
-function Canopy_Show_Conditions(props) {
+function ShowTrees(props) {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const user_email = sessionStorage.getItem("email").substring(1, sessionStorage.getItem("email").length - 1);
 
-	const [conditions, setConditions] = useState({
+	const [owner, setOwner] = useState(user_email);
+	const [owned_trees, setOwnedTrees] = useState({
 													ids: [],
 													names: [],
-													'hereditary?':[],
-													male_parents: [],
-													female_parents: [],
-													male_grandparents: [],
-													female_grandparents: []
+													owners:[]
 												});
 
 	// methods for receiving data from the Flask app
-	// get data from the conditions table
-	const getConditions = async (url_input, condition_data) => {
+	// get data from the tree table
+	const getTree = async (url_input, tree_data) => {
 		// check if email is admin@gmail.com, if so pull ALL TREES
 		let data = {
 			ids: [],
 			names: [],
-			'hereditary?':[],
-			male_parents: [],
-			female_parents: [],
-			male_grandparents: [],
-			female_grandparents: []
+			owners:[]
 		};
-		data = await axios.get(url_input, {params: {}});
-		// console.log(data);
-		setConditions(data.data);
+		if (user_email == "admin@gmail.com") {
+			data = await axios.get(url_input, {params: {}});
+		}
+		else {
+			data = await axios.get(url_input, {params: tree_data});
+		}
+		setOwnedTrees(data.data);
 	}
 
 	// function for generating a table from the JSON response
@@ -63,12 +59,7 @@ function Canopy_Show_Conditions(props) {
 					}
 					else if(j < Object.keys(response).length) {
 						if(Object.keys(response)[j] != "ids") {
-							if(Object.keys(response)[j] == "hereditarys") {	// catch when we're naming a column hereditarys in the 1st row
-								columns.push(<td>hereditary?</td>)	// name it hereditary? instead
-							}
-							else {	// generic key name
-								columns.push(<td>{Object.keys(response)[j]}</td>)
-							}
+							columns.push(<td>{Object.keys(response)[j]}</td>)
 						}
 					}
 					else {
@@ -84,12 +75,12 @@ function Canopy_Show_Conditions(props) {
 					else if(j < Object.keys(response).length) {
 						// we're not on the first or last column
 						if(Object.keys(response)[j] != "ids") {
-							columns.push(<td>{String(response[Object.keys(response)[j]][i])}</td>)
+							columns.push(<td>{response[Object.keys(response)[j]][i]}</td>)
 						}
 					}
 					else {
 						columns.push(<td>
-										<Link to='/canopy/canopy_edit_condition/' 
+										<Link to='/canopy/canopy_edit_tree/' 
 										state={{ id: response.ids[i] }}>
 													<button> Edit </button>
 										</Link>
@@ -108,38 +99,44 @@ function Canopy_Show_Conditions(props) {
 	}
 
 	useEffect(() => {
-		getConditions(BASEURL + "canopy/condition/prod", {})
+		getTree(BASEURL + "canopy/tree/prod", {owner: owner})
 	}, []);
 
 	return (
 		<div className="App">
 			<header className="App-header-primary">
-				<h1>Show Health Conditions</h1>
+				<h1>Trees Owned by: {owner}</h1>
 			</header>
+
+			<p>Owned Trees:</p>
 
 			<div>
 				<table border="1" className="canopy-table">
-					{generateTable(conditions)}
+					{generateTable(owned_trees)}
 				</table>
 			</div>
 
 			<br/>
 
-			<Link to="/canopy/canopy_new_condition/">
-				<button>
-					Add New Condition
+			<div>
+				<button onClick={() => {
+					navigate('/canopy/canopy_new_tree');
+				}}> 
+					Add New Tree
 				</button>
-			</Link>
+			</div>
 
-			<br/><br/>
+			<br/>
 
-			<button onClick={() => {
-				navigate('/canopy/');
-			}}> 
-				Back 
-			</button>
+			<div>
+				<button onClick={() => {
+					navigate('/canopy/');
+				}}> 
+					Back 
+				</button>
+			</div>
 		</div>
 	);
 }
 
-export default Canopy_Show_Conditions;
+export default ShowTrees;

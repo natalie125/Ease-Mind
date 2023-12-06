@@ -7,7 +7,7 @@ process.env.NODE_ENV === "development"
 	? (BASEURL = process.env.REACT_APP_DEV)
 	: (BASEURL = process.env.REACT_APP_PROD);
 
-class Canopy_View_Tree extends Component {
+class ViewTree extends Component {
 	// form methods
 	constructor(props) {
 		super(props);
@@ -104,4 +104,4 @@ class Canopy_View_Tree extends Component {
 	}
 }
 
-export default Canopy_View_Tree;
+export default ViewTree;

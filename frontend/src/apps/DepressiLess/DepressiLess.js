@@ -28,15 +28,22 @@ const messageStyle = {
   color: 'blue', // Change the text color
 };
 
-
-const DepressiLess = () => {
-  const userEmail = sessionStorage.getItem('email') ? sessionStorage.getItem('email').substring(1, sessionStorage.getItem('email').length - 1) : 'User';
+function DepressiLess() {
+  const userEmail = sessionStorage.getItem('email')
+    ? sessionStorage.getItem('email').substring(1, sessionStorage.getItem('email').length - 1)
+    : 'User';
 
   return (
     <div className="DepressiLess" style={containerStyle}>
       <div>
-      <div style={{ textAlign: 'center', ...messageStyle }}>
-          <b><h1>Welcome {userEmail}!</h1></b>
+        <div style={{ textAlign: 'center', ...messageStyle }}>
+          <b>
+            <h1>
+              Welcome
+              {userEmail}
+              !
+            </h1>
+          </b>
         </div>
         <br />
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -56,6 +63,6 @@ const DepressiLess = () => {
       </div>
     </div>
   );
-};
+}
 
 export default DepressiLess;

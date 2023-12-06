@@ -2,10 +2,10 @@ import React, { useMemo, useEffect, useState, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ReactFamilyTree from "react-family-tree";
-import { FamilyNode } from "./FamilyNode.tsx";
-import { NodeDetails } from "./NodeDetails.tsx";
-import { NODE_WIDTH, NODE_HEIGHT } from "./const.ts";
-import { getNodeStyle } from "./utils.ts";
+import { FamilyNode } from "./FamilyNode";
+import { NodeDetails } from "./NodeDetails";
+import { NODE_WIDTH, NODE_HEIGHT } from "./const";
+import { getNodeStyle } from "./utils";
 
 import "./Canopy.css"
 
@@ -51,7 +51,7 @@ function refreshTree(url_input, tree_data) {
 	}) 
 }
 
-function Canopy_Edit_Node(props) {
+function EditNode(props) {
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -340,4 +340,4 @@ function Canopy_Edit_Node(props) {
 	);
 }
 
-export default Canopy_Edit_Node;
+export default EditNode;
