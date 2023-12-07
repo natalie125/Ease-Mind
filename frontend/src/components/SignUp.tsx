@@ -5,6 +5,7 @@ import { AuthTokenContext } from '../App';
 
 const INVALIDDETAILS = 0;
 const USEREXISTS = 1;
+const FRONTENDERROR = 2;
 
 const BASEURL = process.env.NODE_ENV === 'development'
   ? process.env.REACT_APP_DEV
@@ -23,19 +24,21 @@ axios.interceptors.response.use(
 
 function SignUp() {
   const { token, setToken } = useContext(AuthTokenContext);
-  const [isError, setIsError] = React.useState(null);
+  const [isError, setIsError] = React.useState<null | number>(null);
   const [networkError, setNetworkError] = React.useState(false);
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (email, password) => {
+  const handleSubmit = async () => {
     try {
       const response = await axios.post(`${BASEURL}register`, {
-        email,
-        password,
+        email: email.trim(),
+        password: password.trim(),
       });
       return response;
     } catch (error) {
-      return error.response || error;
+      return null;
     }
   };
 
@@ -46,19 +49,17 @@ function SignUp() {
       return;
     }
 
-    // Trim whitespace from email and password inputs
-    const email = document.getElementById('signup_email').value.trim();
-    const password = document.getElementById('signup_password').value.trim();
-
     const passwordRules = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
     setIsError(null); // Reset error state when attempting signup
 
     if (email.length > 0 && password.length > 0) {
       if (email.includes('@') && passwordRules.test(password)) {
-        const response = await handleSubmit(email, password);
+        const response = await handleSubmit();
 
-        if (response.status === 200) {
+        if (response === null) {
+          setIsError(FRONTENDERROR);
+        } else if (response.status === 200) {
           setToken(response.data.token);
           setIsError(null); // Reset error state on successful signup
           navigate('/home');
@@ -92,7 +93,8 @@ function SignUp() {
 
           <input
             data-cy="signUpEmail"
-            id="signup_email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="authentication-form-input"
             type="text"
             placeholder="Email"
@@ -101,7 +103,8 @@ function SignUp() {
 
           <input
             data-cy="signUpPasswd"
-            id="signup_password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="authentication-form-input"
             type="password"
             placeholder="Password"
