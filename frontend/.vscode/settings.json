@@ -1,8 +1,0 @@
-{
-    "workbench.colorCustomizations": {
-        "activityBar.background": "#370B83",
-        "titleBar.activeBackground": "#4C10B7",
-        "titleBar.activeForeground": "#FDFDFF"
-    },
-    "typescript.tsdk": "node_modules\\typescript\\lib"
-}
