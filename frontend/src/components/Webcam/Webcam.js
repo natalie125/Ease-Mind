@@ -1,5 +1,5 @@
 import React from 'react';
-import Webcam from 'react-webcam';
+import { Webcam as ReactWebcam } from 'react-webcam';
 
 // Found at:
 // https://usehooks.com/useWindowSize/
@@ -30,7 +30,7 @@ function useWindowSize() {
   return windowSize;
 }
 
-function WebcamStreamCapture() {
+export default function Webcam() {
   const webcamRef = React.useRef(null);
   const mediaRecorderRef = React.useRef(null);
   const [capturing, setCapturing] = React.useState(false);
@@ -111,7 +111,7 @@ function WebcamStreamCapture() {
   // className added to webcam to allow edits with css
   return (
     <>
-      <Webcam className="webcam" videoConstraints={videoConstraints} width={cameraWidth} height={cameraHeight} audio={false} ref={webcamRef} />
+      <ReactWebcam className="webcam" videoConstraints={videoConstraints} width={cameraWidth} height={cameraHeight} audio={false} ref={webcamRef} />
       <div style={{ width: '100%' }}>
         {capturing ? (
           <button type="button" style={{ width: minValue }} onClick={handleStopCaptureClick}>Stop Capture</button>
@@ -138,5 +138,3 @@ function WebcamStreamCapture() {
     </>
   );
 }
-
-export default WebcamStreamCapture;

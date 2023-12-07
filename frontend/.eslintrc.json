@@ -106,7 +106,10 @@
                 "devDependencies": [
                     "**/cypress.config.js",
                     "**/cypress/**",
-                    "**/*.test.js"
+                    "**/*.test.js",
+                    "**/*.test.ts",
+                    "**/*.test.jsx",
+                    "**/*.test.tsx"
                 ]
             }
         ]
