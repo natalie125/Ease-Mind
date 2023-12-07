@@ -1,7 +1,7 @@
 # Based on:
 # https://profy.dev/article/continuous-integration-with-github-actions
 
-name: CI
+name: Frontend CI
 
 on:
   # runs on pushes to the main branch
@@ -10,6 +10,10 @@ on:
   # also runs inside pull requests that target the main branch
   pull_request:
     branches: [main]
+
+defaults:
+  run:
+    working-directory: ./frontend
 
 jobs:
   frontend:
@@ -22,7 +26,6 @@ jobs:
         with:
           node-version: "18"
           cache: "npm"
-      working-directory: ./frontend
       # install dependencies
       - run: npm ci
       # run ESLint

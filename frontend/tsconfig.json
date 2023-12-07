@@ -22,6 +22,10 @@
   },
   "include": [
     "src",
-    "./declaration.d.ts"
-  ]
+    "cypress",
+    "./declaration.d.ts",
+    "./babel.config.js",
+    "./cypress.config.js"
+  ],
+  "exclude": ["node_modules"]
 }

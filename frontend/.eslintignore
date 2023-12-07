@@ -3,3 +3,5 @@ src/apps/Dipstik/*
 src/apps/ParalysisAnalysis/*
 src/apps/SkinScan/*
 src/apps/TonsillitisDetector/*
+node_modules/*
+build*
