@@ -12,6 +12,23 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 - `npm run eject` - Irreversibly removes the react-scripts build dependency. (Don't do this)
+- `npm run lint` - Runs the ESLinter.
+
+## Note on ESLint
+
+The `.eslintrc.json` file in the frontend directory is setup to look for
+`tsconfig.json` at the same directory level, however your editor (VSCode in
+this example) may give lint warnings based on the root directory.
+eg. `could not find ...\larks\tsconfig.json` error.
+This can be solved by adding the following setting to your
+`frontend/.vscode/settings.json` file - (or other editor equivalent).
+```json
+{
+  "eslint.workingDirectories": [
+    "./frontend"
+  ]
+}
+```
 
 ## Running Tests
 
