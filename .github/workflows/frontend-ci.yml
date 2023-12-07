@@ -3,11 +3,8 @@
 
 name: Frontend CI
 
+# Run inside pull requests that target the main branch.
 on:
-  # runs on pushes to the main branch
-  push:
-    branches: [main]
-  # also runs inside pull requests that target the main branch
   pull_request:
     branches: [main]
 
@@ -16,23 +13,28 @@ defaults:
     working-directory: ./frontend
 
 jobs:
-  frontend:
-    # uses a Ubuntu Docker image (like a virtual machine)
+  frontend_ci:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: "18"
           cache: "npm"
           cache-dependency-path: frontend/package-lock.json
-      # install dependencies
-      - run: npm ci
-      # run ESLint
-      - run: npm run lint
-      # verify that there are no build errors
-      - run: npm run build
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Check build is successful
+        run: npm run build
 
       # TODO: Run tests with jest too.
 
