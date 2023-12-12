@@ -46,7 +46,3 @@ Then you need to sync what you have locally with the S3 bucket using:
 ## EaseMind
 
 If you haven't already, you need to install prop-types in your project. Run `npm i -S prop-types` in your project directory.
-
-After that, you need to create an invalidation for ther cloudront which will clear it's cache for the app build and allow the changes made to the S3 to be visible. For this run:
-
-`npm run create-cloudfront-invalidation`
