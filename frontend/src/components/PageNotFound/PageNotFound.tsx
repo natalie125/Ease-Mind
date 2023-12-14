@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import pageNotFoundImage from './pageNotFound.png';
+import pageNotFoundImage from './PageNotFound.png';
 import './PageNotFound.scss';
 
 function PageNotFound() {
