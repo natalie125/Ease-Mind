@@ -11,17 +11,6 @@ const BASEURL = process.env.NODE_ENV === 'development'
   ? process.env.REACT_APP_DEV
   : process.env.REACT_APP_PROD;
 
-axios.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (!error.response) {
-      // eslint-disable-next-line
-      return Promise.reject({ status: 500, message: 'Network Error' });
-    }
-    return Promise.reject(error);
-  },
-);
-
 function SignUp() {
   const { token, setToken } = useContext(AuthTokenContext);
   const [isError, setIsError] = React.useState<null | number>(null);
