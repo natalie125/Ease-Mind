@@ -45,4 +45,23 @@ describe('Header', () => {
     fireEvent.click(screen.getByText('Logout'));
     expect(contextValues.setToken).toHaveBeenCalledWith(null);
   });
+
+  it('does not render header when token is null', () => {
+    // Mock the context values with a null token
+    const contextValues = {
+      token: null,
+      setToken: jest.fn(),
+    };
+
+    render(
+      <AuthTokenContext.Provider value={contextValues}>
+        <BrowserRouter>
+          <Header />
+        </BrowserRouter>
+      </AuthTokenContext.Provider>,
+    );
+
+    // Expect the header not to be present in the document
+    expect(screen.queryByTestId('header')).toBeNull();
+  });
 });

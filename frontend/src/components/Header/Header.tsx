@@ -9,7 +9,7 @@ function Header() {
   if (!token) return null;
 
   return (
-    <header className="header">
+    <header className="header" data-testid="header">
       <Link to="/home" className="title-link">
         <h1 className="title">LARKS APP</h1>
       </Link>
