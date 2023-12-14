@@ -4,7 +4,7 @@ import { SpinnerRoundFilled } from 'spinners-react';
 import mic from '../../images/mic.png';
 import '../../apps/ParalysisAnalysis/ParalysisAnalysis.css';
 
-function VoiceRecorder(props) {
+function AudioRecorder(props) {
   let audio = document.querySelector('audio');
 
   const isEdge = navigator.userAgent.indexOf('Edge') !== -1
@@ -231,4 +231,4 @@ function VoiceRecorder(props) {
   );
 }
 
-export default VoiceRecorder;
+export default AudioRecorder;
