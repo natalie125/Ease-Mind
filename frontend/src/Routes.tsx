@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import {
-  Link, Routes as Router, Navigate, Outlet, Route,
+  Routes as Router, Navigate, Outlet, Route,
 } from 'react-router-dom';
 
 import { AuthTokenContext } from './App';
@@ -10,6 +10,7 @@ import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import Home from './components/Home/Home';
 import Error from './components/Error';
+import PageNotFound from './components/PageNotFound/PageNotFound';
 
 import ParalysisAnalysis from './apps/ParalysisAnalysis/ParalysisAnalysis';
 
@@ -106,13 +107,7 @@ function Routes() {
 
       <Route
         path="*"
-        element={(
-          <Error code="404">
-            <p>Page Not Found</p>
-            <p>Here is the home link:</p>
-            <Link to="/home">Home</Link>
-          </Error>
-        )}
+        element={<PageNotFound />}
       />
     </Router>
   );
