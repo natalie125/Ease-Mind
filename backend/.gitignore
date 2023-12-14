@@ -17,3 +17,5 @@ venv/
 
 # databases
 *.db
+
+./pytest_cache

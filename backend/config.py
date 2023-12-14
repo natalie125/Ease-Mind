@@ -9,8 +9,6 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
 # here we can define the binds (other databases) that will be created by the app
 SQLALCHEMY_BINDS = {
     'test': 'sqlite:///' + os.path.join(basedir, 'test.db'),
-    'canopy': 'sqlite:///' + os.path.join(basedir, 'canopy.db'),  # production database for Alex's app
-    'canopy_test': 'sqlite:///' + os.path.join(basedir, 'canopy_test.db'),  # test database for Alex's app
 }
 
 SQLALCHEMY_TRACK_MODIFICATIONS = True

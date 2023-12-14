@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.scss';
 
-import canopyLogo from './logos/canopy.png';
 import dipstikLogo from './logos/dipstik.png';
 import paralysisAnalysisLogo from './logos/paralysis-analysis.png';
 import tonsillitisDetectorLogo from './logos/tonsillitis-detector.png';
@@ -44,12 +43,6 @@ function AppLink({
 
 function Home() {
   const appLinks: IAppLink[] = [
-    {
-      to: '/canopy',
-      logo: canopyLogo,
-      alt: 'Canopy_App_Alex',
-      slogan: 'Empowering healthcare solutions.',
-    },
     {
       to: '/skin-scan',
       logo: skinscanLogo,

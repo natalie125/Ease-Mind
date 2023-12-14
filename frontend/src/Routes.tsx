@@ -11,22 +11,6 @@ import SignUp from './components/SignUp';
 import Home from './components/Home/Home';
 import Error from './components/Error';
 
-import Canopy from './apps/Canopy/Canopy';
-import Canopy2 from './apps/Canopy/Canopy2';
-import ViewTree from './apps/Canopy/ViewTree';
-import EditTree from './apps/Canopy/EditTree';
-import ViewPatient from './apps/Canopy/ViewPatient';
-import EditPatient from './apps/Canopy/EditPatient';
-import ViewCondition from './apps/Canopy/ViewCondition';
-import EditCondition from './apps/Canopy/EditCondition';
-import ShowTrees from './apps/Canopy/ShowTrees';
-import ShowConditions from './apps/Canopy/ShowConditions';
-import EditNode from './apps/Canopy/EditNode';
-import NewNode from './apps/Canopy/NewNode';
-import NewNode2 from './apps/Canopy/NewNode2';
-import NewTree from './apps/Canopy/NewTree';
-import NewCondition from './apps/Canopy/NewCondition';
-
 import ParalysisAnalysis from './apps/ParalysisAnalysis/ParalysisAnalysis';
 
 import SkinScan from './apps/SkinScan/Kevin';
@@ -75,24 +59,6 @@ function Routes() {
       <Route path="/" element={<RouteProtector />}>
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<Home />} />
-
-        <Route path="/canopy" element={<Outlet />}>
-          <Route path="" element={<Canopy />} />
-          <Route path="canopy2" element={<Canopy2 />} />
-          <Route path="canopy_view_patient" element={<ViewPatient />} />
-          <Route path="canopy_edit_patient" element={<EditPatient />} />
-          <Route path="canopy_view_tree" element={<ViewTree />} />
-          <Route path="canopy_edit_tree" element={<EditTree />} />
-          <Route path="canopy_view_condition" element={<ViewCondition />} />
-          <Route path="canopy_edit_condition" element={<EditCondition />} />
-          <Route path="canopy_show_trees" element={<ShowTrees />} />
-          <Route path="canopy_show_conditions" element={<ShowConditions />} />
-          <Route path="canopy_edit_node" element={<EditNode />} />
-          <Route path="canopy_new_node" element={<NewNode />} />
-          <Route path="canopy_new_node_2" element={<NewNode2 />} />
-          <Route path="canopy_new_tree" element={<NewTree />} />
-          <Route path="canopy_new_condition" element={<NewCondition />} />
-        </Route>
 
         <Route path="/paralysis-analysis" element={<ParalysisAnalysis />} />
 

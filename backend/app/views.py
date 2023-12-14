@@ -12,7 +12,6 @@ from flask_jwt_extended import JWTManager
 from datetime import timedelta
 
 # import everyone's individual python files
-from app.alex.alex import *  # noqa: F403, F401
 from app.kevin.kevin import *  # noqa: F403, F401
 from app.lanre.lanre import *  # noqa: F403, F401
 from app.ramat.ramat import *  # noqa: F403, F401
