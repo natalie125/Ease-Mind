@@ -33,10 +33,12 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
+      - name: Run Jest tests
+        run: npm run test
+
       - name: Check build is successful
         run: npm run build
 
-      # TODO: Run tests with jest too.
 
       # run tests with Cypress
       # TODO: Make tests pass and then reactivate.
