@@ -48,7 +48,7 @@ jobs:
 
   deploy-frontend:
     name: Deploy Frontend
-    needs: build
+    needs: build-frontend
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/prod'
 
