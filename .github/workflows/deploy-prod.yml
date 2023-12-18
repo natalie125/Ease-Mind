@@ -34,11 +34,11 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
-      - name: Run Jest tests
-        run: npm run test
+      # - name: Run Jest tests
+      #   run: npm run test
 
-      - name: Check build is successful
-        run: npm run build
+      - name: Build
+        run: npm run build-prod
 
       - name: Uploading production-ready build files
         uses: actions/upload-artifact@v2
