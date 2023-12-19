@@ -68,6 +68,7 @@ function Routes() {
   return (
     <Router>
       <Route path="/auth" element={<AuthenticationLayout />}>
+        <Route path="" element={<Navigate to="/auth/signin" />} />
         <Route path="signin" element={<SignIn />} />
         <Route path="signup" element={<SignUp />} />
       </Route>
