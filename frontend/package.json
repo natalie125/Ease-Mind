@@ -50,7 +50,7 @@
 	},
 	"scripts": {
 		"start": "react-scripts start",
-		"build": "react-scripts build",
+		"build": "react-scripts build && cp build/index.html build/404.html",
 		"test": "jest",
 		"eject": "react-scripts eject",
 		"client-s3-deploy": "aws s3 sync build/ s3://deploy-larks-ui/",
