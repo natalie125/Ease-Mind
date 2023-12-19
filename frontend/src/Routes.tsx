@@ -3,6 +3,8 @@ import {
   Link, Routes as Router, Navigate, Outlet, Route,
 } from 'react-router-dom';
 
+import { devPublicUrl, prodPublicUrl } from './utils/urls';
+
 import { AuthTokenContext } from './App';
 
 import AuthenticationLayout from './components/AuthenticationLayout/AuthenticationLayout';
@@ -138,6 +140,9 @@ function Routes() {
           <Error code="400"><p>Bad HTTP Request</p></Error>
         }
       />
+
+      <Route path={devPublicUrl} element={<Navigate to="/home" />} />
+      <Route path={prodPublicUrl} element={<Navigate to="/home" />} />
 
       <Route
         path="*"
