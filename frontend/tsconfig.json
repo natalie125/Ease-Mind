@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "lib": [
       "dom",
       "dom.iterable",
@@ -18,14 +18,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
   },
   "include": [
     "src",
     "cypress",
+    "__mocks__",
     "./declaration.d.ts",
-    "./babel.config.js",
-    "./cypress.config.js"
+    "./cypress.config.js",
+    "jest.config.ts"
   ],
   "exclude": ["node_modules"]
 }

@@ -9,7 +9,7 @@ function Header() {
   if (!token) return null;
 
   return (
-    <header className="header">
+    <header className="header" data-testid="header">
       <Link to="/home" className="title-link">
         <h1 className="title">LARKS APP</h1>
       </Link>
@@ -18,7 +18,6 @@ function Header() {
           <button className="dropdown-button" type="button">
             Apps
             <div className="dropdown-content">
-              <Link to="/canopy">Canopy</Link>
               <Link to="/skin-scan">Skin Scan</Link>
               <Link to="/dipstik">Dipstik</Link>
               <Link to="/paralysis-analysis">Paralysis Analysis</Link>
