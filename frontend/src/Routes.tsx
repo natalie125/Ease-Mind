@@ -3,6 +3,8 @@ import {
   Routes as Router, Navigate, Outlet, Route,
 } from 'react-router-dom';
 
+import { devPublicUrl, prodPublicUrl } from './utils/urls';
+
 import { AuthTokenContext } from './App';
 
 import AuthenticationLayout from './components/AuthenticationLayout/AuthenticationLayout';
@@ -53,6 +55,7 @@ function Routes() {
   return (
     <Router>
       <Route path="/auth" element={<AuthenticationLayout />}>
+        <Route path="" element={<Navigate to="/auth/signin" />} />
         <Route path="signin" element={<SignIn />} />
         <Route path="signup" element={<SignUp />} />
       </Route>
@@ -104,6 +107,9 @@ function Routes() {
           <Error code="400"><p>Bad HTTP Request</p></Error>
         }
       />
+
+      <Route path={devPublicUrl} element={<Navigate to="/home" />} />
+      <Route path={prodPublicUrl} element={<Navigate to="/home" />} />
 
       <Route
         path="*"

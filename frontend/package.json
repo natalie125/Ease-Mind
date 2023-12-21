@@ -54,9 +54,9 @@
 	},
 	"scripts": {
 		"start": "react-scripts start",
+		"build": "react-scripts build && cp build/index.html build/404.html",
 		"lint": "npx eslint .",
 		"test": "npx jest",
-		"build": "react-scripts build",
 		"eject": "react-scripts eject",
 		"client-s3-deploy": "aws s3 sync build/ s3://deploy-larks-ui/",
 		"create-cloudfront-invalidation": "aws cloudfront create-invalidation --distribution-id E1KMTDTJ1HCMXR --paths /*",
@@ -79,5 +79,6 @@
 			"last 1 firefox version",
 			"last 1 safari version"
 		]
-	}
+	},
+	"homepage": "/larks"
 }
