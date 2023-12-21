@@ -57,6 +57,7 @@
 		"build": "react-scripts build && cp build/index.html build/404.html",
 		"lint": "npx eslint .",
 		"test": "npx jest",
+		"coverage": "npx jest --coverage",
 		"eject": "react-scripts eject",
 		"client-s3-deploy": "aws s3 sync build/ s3://deploy-larks-ui/",
 		"create-cloudfront-invalidation": "aws cloudfront create-invalidation --distribution-id E1KMTDTJ1HCMXR --paths /*",

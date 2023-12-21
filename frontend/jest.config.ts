@@ -6,4 +6,10 @@ export default {
     '<rootDir>/__mocks__/fileMock.ts',
     '\\.(css|less|scss)$': '<rootDir>/__mocks__/styleMock.ts',
   },
+  coveragePathIgnorePatterns: [
+    'src/apps/Dipstik',
+    'src/apps/ParalysisAnalysis',
+    'src/apps/SkinScan',
+    'src/apps/TonsillitisDetector',
+  ],
 };
