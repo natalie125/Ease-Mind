@@ -63,3 +63,25 @@ Then you need to sync what you have locally with the S3 bucket using:
 After that, you need to create an invalidation for ther cloudront which will clear it's cache for the app build and allow the changes made to the S3 to be visible. For this run:
 
 `npm run create-cloudfront-invalidation`
+
+### 1. Installing Jest
+- Installing Node.js and npm.
+- Creating a new Node.js project (`npm init`).
+- Installing Jest in your project (`npm install --save-dev jest`).
+
+## Writing and Running Tests with Jest
+### 1. Creating Your First Test
+- Structure of a Jest test file.
+- Writing a simple test.
+
+### 2. Running Tests with `npx`
+- Using `npx jest` to run all tests.
+- Running specific tests with `npx jest [test-name-or-pattern]`.
+
+### 3. Coverage Reports with `npx`
+- Generating test coverage reports (`npx jest --coverage`).
+
+## Best Practices, Tips, and `npx`
+- Effective use of `npx` with Jest.
+- Structuring and organizing test files.
+- Running tests in watch mode (`npx jest --watch`).
