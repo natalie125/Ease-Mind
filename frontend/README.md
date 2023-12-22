@@ -5,8 +5,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Available Scripts
 
 - `npm start` Runs the app in the development mode.
-- `npm test` Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Use `npm run test` to run all tests.
+- Use `npm run test-coverage` to run all tests and get a coverage report
+- Use `npm run test-watch` to run tests in watch mode - aka only run tests that have changed.
 - `npm run build` Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 The build is minified and the filenames include the hashes.
@@ -34,7 +35,12 @@ This can be solved by adding the following setting to your
 
 ### Unit Tests
 
-`npm run test` to run unit tests.
+Run `npm install` to update your package list in case of changes.
+
+- Use `npm run test` to run all tests.
+- Use `npm run test-coverage` to run all tests and get a coverage report
+- Use `npm run test-watch` to run tests in watch mode - aka only run tests that have changed.
+- Run specific tests with `npx jest [test-name-or-pattern]`. If you encounter errors be sure your global jest version is the same as what is being used in the `package.json`.
 
 ### Functional Tests
 
@@ -63,24 +69,3 @@ Then you need to sync what you have locally with the S3 bucket using:
 After that, you need to create an invalidation for ther cloudront which will clear it's cache for the app build and allow the changes made to the S3 to be visible. For this run:
 
 `npm run create-cloudfront-invalidation`
-
-
-
-## Writing and Running Tests with Jest
-
-### 1. Installing Jest
-- Installing Node.js and npm.
-- Creating a new Node.js project (`npm init`).
-- Installing Jest in your project (`npm install --save-dev jest`).
-
-### 2. Running Tests with `npx`
-- Using `npx jest` to run all tests.
-- Running specific tests with `npx jest [test-name-or-pattern]`.
-
-### 3. Coverage Reports with `npx`
-- Generating test coverage reports (`npx jest --coverage`).
-
-## Best Practices, Tips, and `npx`
-- Effective use of `npx` with Jest.
-- Structuring and organizing test files.
-- Running tests in watch mode (`npx jest --watch`).
