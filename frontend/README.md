@@ -64,15 +64,14 @@ After that, you need to create an invalidation for ther cloudront which will cle
 
 `npm run create-cloudfront-invalidation`
 
+
+
+## Writing and Running Tests with Jest
+
 ### 1. Installing Jest
 - Installing Node.js and npm.
 - Creating a new Node.js project (`npm init`).
 - Installing Jest in your project (`npm install --save-dev jest`).
-
-## Writing and Running Tests with Jest
-### 1. Creating Your First Test
-- Structure of a Jest test file.
-- Writing a simple test.
 
 ### 2. Running Tests with `npx`
 - Using `npx jest` to run all tests.
