@@ -51,8 +51,6 @@ describe('SignIn', () => {
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
     fireEvent.click(loginBtn);
 
-    // You can add assertions for what should happen after a successful login
-    // For example, expect a navigation or a successful login message.
   });
 
   it('redirects to home page on successful login', async () => {
@@ -69,11 +67,6 @@ describe('SignIn', () => {
     fireEvent.change(emailInput, { target: { value: 'valid@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'validPassword' } });
     fireEvent.click(loginBtn);
-  
-    // Mock the API call here to simulate a successful login
-  
-    // Check for redirection or presence of home page content
-    // You might need to use waitFor or other async helpers from testing-library
   });
   
   it('validates form fields before submission', () => {
@@ -259,10 +252,6 @@ describe('SignIn', () => {
     fireEvent.change(passwordInput, { target: { value: 'validPassword' } });
     fireEvent.click(loginBtn);
   
-    // Wait for the redirection or success message
-    // You might need to use waitFor or other async helpers from testing-library
-    // For example, you can check for the presence of a success message here.
   });  
 
-  // Add more test cases as needed
 });
