@@ -1,8 +1,10 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import {
+  render, screen, fireEvent, waitFor,
+} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import SignIn from './SignIn';
 
 describe('SignIn', () => {
@@ -32,7 +34,7 @@ describe('SignIn', () => {
     fireEvent.click(loginBtn);
 
     expect(
-      screen.getByText('Please enter a username and password')
+      screen.getByText('Please enter a username and password'),
     ).toBeInTheDocument();
   });
 
@@ -58,39 +60,39 @@ describe('SignIn', () => {
         <SignIn />
       </BrowserRouter>,
     );
-  
+
     const emailInput = screen.getByPlaceholderText('Email');
     const passwordInput = screen.getByPlaceholderText('Password');
     const loginBtn = screen.getByRole('button', { name: 'Login' });
-  
+
     fireEvent.change(emailInput, { target: { value: 'valid@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'validPassword' } });
     fireEvent.click(loginBtn);
   });
-  
+
   it('validates form fields before submission', () => {
     render(
       <BrowserRouter>
         <SignIn />
       </BrowserRouter>,
     );
-  
+
     fireEvent.click(screen.getByRole('button', { name: 'Login' }));
-  
+
     expect(screen.getByText('Please enter a username and password')).toBeInTheDocument();
   });
-  
+
   it('contains a sign-up link that navigates to the sign-up page', () => {
     render(
       <BrowserRouter>
         <SignIn />
       </BrowserRouter>,
     );
-  
+
     // Find the 'Sign Up' text
-    const signUpText = screen.getByText("Sign Up");
+    const signUpText = screen.getByText('Sign Up');
     expect(signUpText).toBeInTheDocument();
-  
+
     // Find the parent <a> of the 'Sign Up' text
     const parentLink = signUpText.closest('a');
     expect(parentLink).toHaveAttribute('href', '/auth/signup');
@@ -101,26 +103,26 @@ describe('SignIn', () => {
     jest.spyOn(axios, 'post').mockRejectedValueOnce({
       response: { status: 500 },
     });
-  
+
     render(
       <BrowserRouter>
         <SignIn />
       </BrowserRouter>,
     );
-  
+
     const emailInput = screen.getByPlaceholderText('Email');
     const passwordInput = screen.getByPlaceholderText('Password');
     const loginBtn = screen.getByRole('button', { name: 'Login' });
-  
+
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
     fireEvent.click(loginBtn);
-  
+
     // Wait for the error message to appear
     await screen.findByText('Server error. Please try again later.');
-  
+
     expect(
-      screen.getByText('Server error. Please try again later.')
+      screen.getByText('Server error. Please try again later.'),
     ).toBeInTheDocument();
   });
 
@@ -129,26 +131,26 @@ describe('SignIn', () => {
     jest.spyOn(axios, 'post').mockRejectedValueOnce({
       response: { status: 401 },
     });
-  
+
     render(
       <BrowserRouter>
         <SignIn />
       </BrowserRouter>,
     );
-  
+
     const emailInput = screen.getByPlaceholderText('Email');
     const passwordInput = screen.getByPlaceholderText('Password');
     const loginBtn = screen.getByRole('button', { name: 'Login' });
-  
+
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
     fireEvent.click(loginBtn);
-  
+
     // Wait for the error message to appear
     await screen.findByText('Incorrect email or password. Please try again.');
-  
+
     expect(
-      screen.getByText('Incorrect email or password. Please try again.')
+      screen.getByText('Incorrect email or password. Please try again.'),
     ).toBeInTheDocument();
   });
 
@@ -172,7 +174,7 @@ describe('SignIn', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('Network error. Please check your internet connection.')
+        screen.getByText('Network error. Please check your internet connection.'),
       ).toBeInTheDocument();
     });
   });
@@ -197,12 +199,12 @@ describe('SignIn', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('An error occurred. Please try again.')
+        screen.getByText('An error occurred. Please try again.'),
       ).toBeInTheDocument();
     });
   });
 
-    it('displays an error message when the API request fails with an unknown error', async () => {
+  it('displays an error message when the API request fails with an unknown error', async () => {
     // Mocking an unknown error for the API call
     jest.spyOn(axios, 'post').mockRejectedValueOnce(new Error('Unknown Error'));
 
@@ -222,7 +224,7 @@ describe('SignIn', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('An error occurred. Please try again.')
+        screen.getByText('An error occurred. Please try again.'),
       ).toBeInTheDocument();
     });
   });
@@ -236,20 +238,19 @@ describe('SignIn', () => {
         email: 'test@example.com',
       },
     });
-  
+
     render(
       <BrowserRouter>
         <SignIn />
       </BrowserRouter>,
     );
-  
+
     const emailInput = screen.getByPlaceholderText('Email');
     const passwordInput = screen.getByPlaceholderText('Password');
     const loginBtn = screen.getByRole('button', { name: 'Login' });
-  
+
     fireEvent.change(emailInput, { target: { value: 'valid@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'validPassword' } });
     fireEvent.click(loginBtn);
-  });  
-
+  });
 });
