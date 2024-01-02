@@ -258,11 +258,6 @@ describe('SignIn', () => {
     fireEvent.change(emailInput, { target: { value: 'valid@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'validPassword' } });
     fireEvent.click(loginBtn);
-  
-    // Wait for the redirection or success message
-    // You might need to use waitFor or other async helpers from testing-library
-    // For example, you can check for the presence of a success message here.
   });  
 
-  // Add more test cases as needed
 });
