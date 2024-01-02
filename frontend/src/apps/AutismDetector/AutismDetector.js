@@ -1,173 +1,262 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'; // Import useState and useEffect from React
 import { Link } from 'react-router-dom';
 import autismHomeImage from '../../images/autism-home.png';
 import greenImage from '../../images/green.png';
 import greyImage from '../../images/grey.png';
-import linesImage from '../../images/lines.png';
 
 function AutismDetector() {
   const userEmail = sessionStorage.getItem('email')
     ? sessionStorage.getItem('email').substring(1, sessionStorage.getItem('email').length - 1)
     : 'User';
 
-  // Style objects
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check if the window matches the mobile resolution
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    setIsMobile(mediaQuery.matches);
+
+    // Listen for changes in the media query
+    const handleMediaQueryChange = (e) => {
+      setIsMobile(e.matches);
+    };
+
+    mediaQuery.addListener(handleMediaQueryChange);
+
+    // Cleanup the listener when the component unmounts
+    return () => {
+      mediaQuery.removeListener(handleMediaQueryChange);
+    };
+  }, []);
+
+  // Updated Responsive Style Objects
   const pageStyle = {
     fontFamily: 'Arial, sans-serif',
     color: '#000',
     textAlign: 'center',
-    padding: '20px',
+    padding: isMobile ? '2%' : '2vw', // Adjust padding for mobile
   };
 
   const autismHomeImageStyle = {
-    width: '50%',
-    height: '350%',
-    marginTop: '150px', // Adjust the top margin to move the image downwards
+    width: '60%',
+    height: 'auto',
+    float: 'left',
+    marginTop: '2vh',
+    position: 'relative',
+    zIndex: 3, // Highest z-index
   };
 
   const imageContainerStyle = {
-    position: 'relative',
-    float: 'right',
-    width: '850px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
   };
 
   const greenImageStyle = {
-    width: '100%',
-    height: '100%',
+    position: 'relative',
+    right: '20%',
+    width: '143%', // Adjust the width to make it smaller
+    height: isMobile ? '400px' : '580px', // Adjust the height for mobile and non-mobile
+    marginTop: '3vh',
+    zIndex: 2, // Increase the z-index to bring it behind the content
   };
 
   const greyImageStyle = {
     position: 'absolute',
-    top: '20%',
-    left: '20%',
-    width: '82%',
-    height: '60%',
-    borderTop: '20px solid white',
-    borderBottom: '20px solid white',
-    borderLeft: '20px solid white',
+    top: '31%',
+    right: '0%', // Move to the right
+    width: '40%',
+    height: `${autismHomeImageStyle.height}`, // Set the height to match autismHomeImage height
+    borderTop: '10px solid white',
+    borderBottom: '10px solid white',
+    borderLeft: '15px solid white',
+    borderRight: '10px solid white',
     boxSizing: 'border-box',
+    zIndex: 2, // Higher z-index to bring it to front
   };
 
-  const greyImageStyle2 = {
+  const textContainerStyle = {
     position: 'absolute',
-    top: '0%',
-    left: '0%', // Align to the left edge of the container
-    width: '82%',
-    height: '100%',
-    borderTop: '20px solid white',
-    borderBottom: '20px solid white',
-    borderLeft: '20px solid white',
-    boxSizing: 'border-box',
+    top: '35%', // Adjust the top position as needed
+    left: '40%', // Adjust the left position as needed
+    width: '80%', // Adjust the width as needed
+    color: '#013220',
+    fontSize: '3vw',
+    fontWeight: 'bold',
+    zIndex: 3, // Higher z-index to bring it to front
+    textAlign: 'center',
   };
 
   const taskbarStyle = {
     display: 'flex',
-    justifyContent: 'space-around', // This will space out the items evenly
-    alignItems: 'center',
+    flexWrap: 'wrap', // Allow items to wrap as needed
+    justifyContent: 'center', // Center items horizontally
+    alignItems: 'center', // Align items vertically
     backgroundColor: '#ccdcc1',
     borderRadius: '15px',
     border: 'solid white',
-    padding: '10px 0',
+    padding: '1vw',
   };
 
   const taskbarItemStyle = {
-    margin: '0 10px',
-    padding: '10px 15px',
+    margin: '0 1vw',
+    padding: '1vw 1.5vw',
     cursor: 'pointer',
-    backgroundColor: '#e0e0e0', // Button background color
-    borderRadius: '15px', // Rounded corners for buttons
+    backgroundColor: '#e0e0e0',
+    borderRadius: '15px',
     border: 'solid white',
-    textDecoration: 'none', // Remove underline from links
+    textDecoration: 'none',
     color: '#013220',
     fontWeight: 'bold',
   };
 
   const welcomeMessageStyle = {
     textAlign: 'center',
-    marginRight: '20px', // Add some right margin
+    marginRight: '2vw',
     color: '#013220',
-  };
-
-  const textOnImageStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '63%',
-    transform: 'translate(-50%, -50%)',
-    color: '#013220',
-    fontSize: '50px',
-    fontWeight: 'bold',
-  };
-
-  const textOnImageStyle2 = {
-    textAlign: 'left',
-    position: 'absolute',
-    top: '50%',
-    left: '35%',
-    transform: 'translate(-50%, -50%)',
-    color: '#013220',
-    fontSize: '30px',
-    fontWeight: 'bold',
-  };
-
-  const secondImageContainerStyle = {
-    position: 'relative',
-    width: '100%',
-    height: '600px',
-    marginTop: '40px',
   };
 
   const buttonStyle = {
     backgroundColor: '#013220',
     color: 'white',
-    padding: '10px 20px',
-    margin: '20px 0',
+    padding: '1vw 2vw',
+    margin: '2vh 0',
     borderRadius: '5px',
     border: 'none',
     cursor: 'pointer',
     textDecoration: 'none',
     display: 'inline-block',
-    fontSize: '25px',
+    fontSize: '2vw',
   };
 
   const helplineContainerStyle = {
+    position: 'absolute',
     backgroundColor: '#013220',
     color: 'white',
-    padding: '20px',
+    padding: '2vh',
     borderRadius: '5px',
-    position: 'absolute',
-    right: '20px',
-    top: '1110px',
-    width: '500px',
-    fontSize: '25px',
+    left: '5%', // Adjust the right position to align with the grey.png
+    width: '90%', // Full width on mobile
+    fontSize: '2vw',
     boxSizing: 'border-box',
-    textAlign: 'left',
+    textAlign: 'center', // Center-align the content
+    zIndex: 2, // Higher z-index to bring it to the front
   };
+
+  const adviceContainerStyle = {
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    padding: '2rem',
+    borderRadius: '10px',
+    textAlign: 'center',
+    position: 'absolute', // Make it positioned absolutely
+    top: isMobile ? 'calc(80% + 20px)' : '125%', // Adjust the top position based on resolution
+    left: '50%',
+    width: '90%',
+    height: '40%',
+    transform: 'translate(-50%, -50%)', // Center it horizontally and vertically
+    zIndex: 4,
+    color: '#013220',
+    fontSize: isMobile ? 'calc(40% + 10px)' : '1.5vw',
+  };
+
+  const mediaQueries = `
+    @media (max-width: 768px) {
+      .imageContainerStyle {
+        flexDirection: 'column';
+      }
+      .greyImageStyle, .greyImageStyle2 {
+        width: 80%; // Adjust the width for smaller screens
+        height: auto; // Maintain aspect ratio
+        top: 0; // Adjust top position if needed
+        right: 0; // Adjust right position if needed
+        left: 10%; // Adjust left position if needed
+        border: none; // Remove the borders if desired
+      }
+      .taskbarStyle {
+        flexDirection: 'column'; /* Stack items vertically on small screens */
+        alignItems: 'center'; /* Center-align items */
+      }
+      .taskbar-link {
+        flex: 0 0 50%; /* Make each item take 50% of the available width */
+        margin: '5px'; /* Adjust margin for smaller screens */
+        font-size: '4vw'; /* Responsive font size */
+      }
+      .helplineContainerStyle {
+        position: absolute;
+        backgroundColor: '#013220';
+        color: 'white';
+        padding: 2vh;
+        borderRadius: 5px;
+        right: 0%;
+        width: 100%; // Full width on mobile
+        fontSize: 2vw;
+        boxSizing: border-box;
+        textAlign: center;
+        zIndex: 2;
+      }
+      .adviceContainerStyle {
+        top: 20%;
+        position: absolute;
+        backgroundColor: '#013220';
+        color: 'white';
+        padding: 2vh;
+        borderRadius: 5px;
+        right: 0%;
+        width: 100%; // Full width on mobile
+        fontSize: 2vw;
+        boxSizing: border-box;
+        textAlign: center;
+        zIndex: 2;
+      }
+    }
+  `;
 
   return (
     <div style={pageStyle}>
+      <style>{mediaQueries}</style>
       <div style={taskbarStyle}>
         <div>
-          <Link to="/autism_instructions/personaldetails" style={taskbarItemStyle}>Personal Details</Link>
-          <Link to="/autism_instructions/questionnaire" style={taskbarItemStyle}>Questionnaire</Link>
-          <Link to="/autism_instructions/feedback" style={taskbarItemStyle}>Feedback</Link>
-          <Link to="/autism_instructions/trackingandnotes" style={taskbarItemStyle}>Tracking & Notes</Link>
+          <Link to="/autism_instructions/personaldetails" style={taskbarItemStyle} className="taskbar-link">Personal Details</Link>
+          <Link to="/autism_instructions/questionnaire" style={taskbarItemStyle} className="taskbar-link">Questionnaire</Link>
+          <Link to="/autism_instructions/feedback" style={taskbarItemStyle} className="taskbar-link">Feedback</Link>
+          <Link to="/autism_instructions/trackingandnotes" style={taskbarItemStyle} className="taskbar-link">Tracking & Notes</Link>
         </div>
         <div style={welcomeMessageStyle}>
-          <b>
-            <h1>
-              Welcome
-              !
-              <br />
-              {userEmail}
-              !
-            </h1>
-          </b>
+          <br />
+          <h1>
+            Welcome
+            <br />
+            {userEmail}
+            !
+          </h1>
         </div>
       </div>
       <img src={autismHomeImage} alt="Autism Home" style={autismHomeImageStyle} />
       <div style={imageContainerStyle}>
+        <div style={adviceContainerStyle}>
+          <strong><u>Advice:</u></strong>
+          <br />
+          1. Understanding: Educate yourself about autism to better understand yourself.
+          <br />
+          2. Support: Seek support groups and communities for both individuals with autism and their families.
+          <br />
+          3. Routine: (As a family) Maintain a consistent routine, as it can be comforting for individuals with autism.
+          <br />
+          4. Record and take notes: Maintain a diary or a note pad to mention small parts of your life to keep track.
+          <br />
+          5. Communication: (As a family) Adapt communication methods and be patient in understanding the individuals way of communication.
+          <br />
+          6. Therapies: Explore therapies and interventions that can assist with managing symptoms and improving quality of life.
+          <br />
+          <Link to="/autism_instructions/trackingandnotes" style={buttonStyle}>
+            <u>Tracking Notes</u>
+          </Link>
+        </div>
         <img src={greenImage} alt="Decorative Green" style={greenImageStyle} />
         <img src={greyImage} alt="Decorative Grey" style={greyImageStyle} />
-        <div style={textOnImageStyle}>
+        <div style={textContainerStyle}>
           <u>A</u>
           lways
           <br />
@@ -185,28 +274,10 @@ function AutismDetector() {
           <br />
           <u>M</u>
           ysterious
+          <br />
           <Link to="/autism_instructions/questionnaire" style={buttonStyle}>
             <u>Take a Questionnaire</u>
           </Link>
-        </div>
-      </div>
-      <img src={linesImage} alt="Decorative Lines" style={{ maxWidth: '100%', height: 'auto' }} />
-      <div style={secondImageContainerStyle}>
-        <img src={greyImage} alt="Additional Decorative Grey" style={greyImageStyle2} />
-        <div style={textOnImageStyle2}>
-          <u>Advice:</u>
-          <br />
-          1. Understanding: Educate yourself about autism to better understand yourself.
-          <br />
-          2. Support: Seek support groups and communities for both individuals with autism and their families.
-          <br />
-          3. Routine: (As family) Maintain a consistent routine, as it can be comforting for individuals with autism.
-          <br />
-          4. Record and take notes: Maintain a diary or a note pad to mention small parts of your life to keep track.
-          <br />
-          5. Communication: (As family) Adapt communication methods and be patient in understanding the individuals way of communication.
-          <br />
-          6. Therapies: Explore therapies and interventions that can assist with managing symtoms and improving quality of life.
         </div>
       </div>
       <div style={helplineContainerStyle}>
@@ -217,7 +288,7 @@ function AutismDetector() {
         <br />
         0808 800 4104
         <br />
-        (Monday to Thursday: 10aam to 4pm, Friday: 9am to 3pm)
+        (Monday to Thursday: 10am to 4pm, Friday: 9am to 3pm)
         <br />
         2. Autism Helpline by Ambitious about Autism:
         <br />
