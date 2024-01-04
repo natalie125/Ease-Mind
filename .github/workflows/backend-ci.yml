@@ -34,6 +34,12 @@ jobs:
       - name: Install Requirements.txt
         run: pip3 install -r requirements.txt
 
+      - name: Create Database
+        run: python3 scripts/create_database.py
+
+      - name: Setup Admin Login
+        run: python3 scripts/create_admin_login.py
+
       - name: Run Unit Tests
         run: python3 -m pytest tests/unit_tests
 
