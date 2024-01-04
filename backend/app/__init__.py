@@ -38,7 +38,7 @@ pa_face_model = pickle.load(open("app/ramat/face_model.sav", 'rb'))
 pa_speech_model = tf.keras.models.load_model('app/ramat/speech_model.h5')
 
 # import these python files from /app directory
-from app import views, models
+from app import endpoints, models
 
 # helps us handle migrations
 migrate = Migrate(app, db)
