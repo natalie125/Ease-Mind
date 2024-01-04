@@ -3,12 +3,7 @@ from app import db, models
 from pathlib import Path
 import datetime
 
-
 @pytest.mark.unit
-def test1():
-    assert 5 == 5
-
-
 def test_login_database():
     error0 = True
     # test that the login database can be created

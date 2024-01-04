@@ -18,7 +18,7 @@ def client():
     yield client
 
 
-@pytest.mark.functional
+@pytest.mark.unit
 def test_register_new_client(client):
     """
     GIVEN: A POST request to the /register endpoint with login credentials
@@ -51,7 +51,7 @@ def test_register_new_client(client):
         db.session.commit()
 
 
-@pytest.mark.functional
+@pytest.mark.unit
 def test_register_existing_client(client):
     """
     GIVEN: A POST request to the /register endpoint with existing login credentials
@@ -77,6 +77,7 @@ def test_register_existing_client(client):
             assert response.json['msg'] == "Username taken"
 
 
+@pytest.mark.unit
 def test_register_missing_details(client):
     with client:
         mimetype = 'application/json'

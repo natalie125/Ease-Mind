@@ -13,7 +13,7 @@ def client():
     yield client
 
 
-@pytest.mark.functional
+@pytest.mark.unit
 def test_GET_request(client):
     """
     GIVEN: A GET request to the / endpoint
@@ -28,7 +28,7 @@ def test_GET_request(client):
     assert response2.status_code == 200
 
 
-@pytest.mark.functional
+@pytest.mark.unit
 def test_GET_request_to_login_route(client):
     """
     GIVEN: A GET request to the /login endpoint
@@ -42,7 +42,7 @@ def test_GET_request_to_login_route(client):
     assert response.json['type'] == 'GET'
 
 
-@pytest.mark.functional
+@pytest.mark.unit
 def test_token_generated(client):
     """
     GIVEN: A valid username and valid password
@@ -75,7 +75,7 @@ def test_token_generated(client):
         assert response.json['token'] != ''
 
 
-@pytest.mark.functional
+@pytest.mark.unit
 def test_incorrect_email(client):
     """
     GIVEN: A incorrect email and valid password
@@ -109,7 +109,7 @@ def test_incorrect_email(client):
         assert response.json['msg'] == 'Bad Username'
 
 
-@pytest.mark.functional
+@pytest.mark.unit
 def test_incorrect_password(client):
     """
     GIVEN: A correct email and incorrect password
@@ -143,7 +143,7 @@ def test_incorrect_password(client):
         assert response.json['msg'] == 'Bad Password'
 
 
-@pytest.mark.functional
+@pytest.mark.unit
 def test_incorrect_credentials(client):
     """
     GIVEN: A wrong username and wrong password
