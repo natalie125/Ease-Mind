@@ -40,8 +40,5 @@ jobs:
       - name: Setup Admin Login
         run: python3 scripts/create_admin_login.py
 
-      - name: Run Unit Tests
-        run: python3 -m pytest tests/unit_tests
-
-      - name: Run Functional Tests
-        run: python3 -m pytest tests/functional_tests
+      - name: Run Tests
+        run: python3 -m pytest tests/
