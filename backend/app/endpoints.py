@@ -2,7 +2,7 @@ import os, time, json, base64
 from datetime import timedelta
 from app import app, bcrypt, db
 from flask import request, jsonify
-from .models import User_Login, User_Login_Test
+from .models import Users
 from flask_jwt_extended import JWTManager, get_jwt_identity
 from flask_jwt_extended import create_access_token, jwt_required
 
@@ -21,14 +21,6 @@ from app.rootsRadar.rootsRadar import *  # noqa: F403, F401
 app.config["JWT_SECRET_KEY"] = "comp3931-larks"  # Change this!
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 jwt = JWTManager(app)
-
-# ---------------------------------------------------------------------------- #
-
-# FIXME: This is awful and should be done with env variable or a test db.
-#        It may also be useless if we can set up a proper test database that
-#        doesn't require us to duplicate models.
-USE_TEST_DATABASE = False # Set true to use the test database tables.
-users = User_Login_Test if USE_TEST_DATABASE else User_Login
 
 # ---------------------------------------------------------------------------- #
 
@@ -53,7 +45,7 @@ def login():
     password = data['credentials']['password'];
     if password == '': return {"msg": "No password was provided."}, 400
 
-    user = users.query.filter_by(email=email).first()
+    user = Users.query.filter_by(email=email).first()
 
     if not user or not bcrypt.check_password_hash(user.password, password):
         return jsonify({"msg": "Incorrect username or password."}), 401
@@ -74,13 +66,13 @@ def register():
     password = data['password'];
     if password == '': return {"msg": "No password was provided."}, 400
 
-    username_is_taken = users.query.filter_by(email=email).first()
+    username_is_taken = Users.query.filter_by(email=email).first()
     if username_is_taken: return {"msg": "Username taken."}, 409
 
     hashed_password = bcrypt.generate_password_hash(
         data['password']).decode('utf-8')
 
-    new_user = users(email=email, password=hashed_password)
+    new_user = Users(email=email, password=hashed_password)
 
     db.session.add(new_user)
     db.session.commit()
