@@ -1,7 +1,5 @@
 # flake8: noqa
 from flask import request
-#from app import pa_face_model as face_model, pa_speech_model as speech_model
-
 from app.endpoints import auth_bp
 
 # face processing imports
