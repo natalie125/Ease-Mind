@@ -27,18 +27,11 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: 'pip'
 
-      # You can test your matrix by printing the current Python version
       - name: Display Python version
         run: python3 -c "import sys; print(sys.version)"
 
       - name: Install Requirements.txt
         run: pip3 install -r requirements.txt
-
-      - name: Create Database
-        run: python3 scripts/create_database.py
-
-      - name: Setup Admin Login
-        run: python3 scripts/create_admin_login.py
 
       - name: Run Tests
         run: python3 -m pytest tests/
