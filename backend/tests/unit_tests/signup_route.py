@@ -1,9 +1,8 @@
 import pytest
 import json
 import time
-from app import app
 
-def post_register(email, password):
+def post_register(app, email, password):
     return app.test_client().post(
         '/register',
         data=json.dumps({
@@ -17,26 +16,26 @@ def post_register(email, password):
     )
 
 @pytest.mark.unit
-def test_post_register_new_user():
-    response = post_register(str(int(time.time())) + '@gmail.com', 'admin')
+def test_post_register_new_user(app):
+    response = post_register(app, str(int(time.time())) + '@gmail.com', 'admin')
     assert response.status_code == 200
     assert response.json["msg"] == "New user added."
     assert response.json["token"] != None
 
 @pytest.mark.unit
-def test_post_register_existing_user():
-    response = post_register('admin@gmail.com', 'admin')
+def test_post_register_existing_user(app):
+    response = post_register(app, 'admin@gmail.com', 'admin')
     assert response.status_code == 409
     assert response.json['msg'] == "Username taken."
 
 @pytest.mark.unit
-def test_post_register_invalid_email():
-    response = post_register('', 'admin')
+def test_post_register_invalid_email(app):
+    response = post_register(app, '', 'admin')
     assert response.status_code == 400
     assert response.json['msg'] == "No email was provided."
 
 @pytest.mark.unit
-def test_post_register_invalid_password():
-    response = post_register('admin@gmail.com', '')
+def test_post_register_invalid_password(app):
+    response = post_register(app, 'admin@gmail.com', '')
     assert response.status_code == 400
     assert response.json['msg'] == "No password was provided."

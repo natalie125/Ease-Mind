@@ -1,10 +1,12 @@
 import os, time, json, base64
 from datetime import timedelta
-from app import app, bcrypt, db
-from flask import request, jsonify
+from app import bcrypt, db
+from flask import request, jsonify, Blueprint, current_app
 from .models import Users
 from flask_jwt_extended import JWTManager, get_jwt_identity
 from flask_jwt_extended import create_access_token, jwt_required
+
+auth_bp = Blueprint('auth', __name__)
 
 # import individual project python files
 from app.kevin.kevin import *  # noqa: F403, F401
@@ -15,27 +17,7 @@ from app.rootsRadar.rootsRadar import *  # noqa: F403, F401
 
 # ---------------------------------------------------------------------------- #
 
-# Setup the Flask-JWT-Extended extension
-# FIXME: The secret key needs to be .gitignored and saved in a secrets env not
-#        in the repo.
-app.config["JWT_SECRET_KEY"] = "comp3931-larks"  # Change this!
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
-jwt = JWTManager(app)
-
-# ---------------------------------------------------------------------------- #
-
-# FOLLOWING RESPONSE HEADERS ARE ADDED IN THE RESPONSE TO EVERY REQUEST TO
-# PREVENT CLICKJACKING, XSS, ETC
-@app.after_request
-def add_header(response):
-    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
-    response.headers['X-Content-Type-Options'] = 'nosniff'
-    response.headers['X-XSS-Protection'] = '1; mode=block'
-    return response
-
-# ---------------------------------------------------------------------------- #
-
-@app.route('/login', methods=['POST'])
+@auth_bp.route('/login', methods=['POST'])
 def login():
     data = json.loads(request.data.decode('utf-8'))
 
@@ -50,13 +32,13 @@ def login():
     if not user or not bcrypt.check_password_hash(user.password, password):
         return jsonify({"msg": "Incorrect username or password."}), 401
 
-    access_token = create_access_token(identity=user.id)
+    token = create_access_token(user.id, expires_delta=timedelta(hours=1))
 
-    return jsonify({"token": access_token, "email": user.email}), 200
+    return jsonify({"token": token, "email": user.email}), 200
 
 # ---------------------------------------------------------------------------- #
 
-@app.route('/register', methods=['POST'])
+@auth_bp.route('/register', methods=['POST'])
 def register():
     data = json.loads(request.data.decode('utf-8'))
 
@@ -84,7 +66,7 @@ def register():
 
 # PROOF OF CONCEPT OF UPLOADING IMAGES TO SERVER
 # CURRENTLY SAVES IMAGE TO SHOTS FOLDER, BUT COULD BE EXTENDED TO PROCESS IMAGES
-@app.route('/upload', methods=['POST'])
+@auth_bp.route('/upload', methods=['POST'])
 @jwt_required()
 def upload():
     image = request.form['image']
@@ -110,7 +92,7 @@ def upload():
 
 # ROUTE USED TO VERIFY A JWT SO MALICIOUS ACTORS CAN'T MANUALLY ADD A RANDOM
 # SESSION STORAGE VARIABLE IN THE BROWSER ALLOWING THEM TO LOGIN
-@app.route('/verification', methods=['POST'])
+@auth_bp.route('/verification', methods=['POST'])
 @jwt_required()
 def verification():
     return {'user': get_jwt_identity()}

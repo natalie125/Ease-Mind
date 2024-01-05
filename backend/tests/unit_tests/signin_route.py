@@ -1,9 +1,8 @@
 import pytest
 import json
 import time
-from app import app
 
-def post_login(email, password):
+def post_login(app, email, password):
     return app.test_client().post(
         '/login',
         data=json.dumps({
@@ -19,33 +18,33 @@ def post_login(email, password):
     )
 
 @pytest.mark.unit
-def test_post_login_invalid_email():
-    response = post_login('', 'admin')
+def test_post_login_invalid_email(app):
+    response = post_login(app, '', 'admin')
     assert response.status_code == 400
     assert response.json['msg'] == "No email was provided."
 
 @pytest.mark.unit
-def test_post_login_invalid_password():
-    response = post_login('admin@gmail.com', '')
+def test_post_login_invalid_password(app):
+    response = post_login(app, 'admin@gmail.com', '')
     assert response.status_code == 400
     assert response.json['msg'] == "No password was provided."
 
 @pytest.mark.unit
-def test_post_login_incorrect_username():
-    response = post_login('incorrect_email', 'admin')
+def test_post_login_incorrect_username(app):
+    response = post_login(app, 'incorrect_email', 'admin')
     assert response.status_code == 401
     assert response.json['msg'] == "Incorrect username or password."
 
 @pytest.mark.unit
-def test_post_login_incorrect_password():
-    response = post_login('admin@gmail.com', 'incorrect_password')
+def test_post_login_incorrect_password(app):
+    response = post_login(app, 'admin@gmail.com', 'incorrect_password')
     assert response.status_code == 401
     assert response.json['msg'] == "Incorrect username or password."
 
 @pytest.mark.unit
-def test_post_login_valid_user():
+def test_post_login_valid_user(app):
     email = 'admin@gmail.com'
-    response = post_login(email, 'admin')
+    response = post_login(app, email, 'admin')
     assert response.status_code == 200
     assert response.json['token'] != None
     assert response.json['email'] == email
