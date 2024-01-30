@@ -29,6 +29,7 @@
 		"serve": "^14.2.0",
 		"slick-carousel": "^1.8.1",
 		"spinners-react": "^1.0.7",
+		"uuid": "^9.0.1",
 		"web-vitals": "^2.1.4"
 	},
 	"devDependencies": {

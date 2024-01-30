@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'; // Import useState and useEffect from React
 import { Link } from 'react-router-dom';
+import Chatbot from './Chatbot'; // Import the Chatbot component
 import autismHomeImage from '../../images/autism-home.png';
 import greenImage from '../../images/green.png';
 import greyImage from '../../images/grey.png';
@@ -8,6 +9,12 @@ function AutismDetector() {
   const userEmail = sessionStorage.getItem('email')
     ? sessionStorage.getItem('email').substring(1, sessionStorage.getItem('email').length - 1)
     : 'User';
+
+  const [showChatbot, setShowChatbot] = useState(false);
+
+  const toggleChatbot = () => {
+    setShowChatbot(!showChatbot);
+  };
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -161,6 +168,20 @@ function AutismDetector() {
     fontSize: isMobile ? 'calc(40% + 10px)' : '1.5vw',
   };
 
+  const chatbotIconStyle = {
+    position: 'fixed',
+    bottom: isMobile ? '10px' : '20px', // Adjust the bottom position for mobile
+    right: isMobile ? '145px' : '20px', // Adjust the right position for mobile
+    backgroundColor: '#013220', // Example background color
+    color: 'white', // Text color
+    padding: '15px', // Padding around the button
+    borderRadius: '50%', // Circular button
+    cursor: 'pointer', // Cursor changes to pointer on hover
+    fontSize: isMobile ? '15px' : '20px', // Adjust font size for mobile
+    zIndex: 4,
+    border: 'solid white',
+  };
+
   const mediaQueries = `
     @media (max-width: 768px) {
       .imageContainerStyle {
@@ -308,6 +329,10 @@ function AutismDetector() {
         <br />
         (Monday to Friday: 9am to 5pm)
       </div>
+      <button type="button" style={chatbotIconStyle} onClick={toggleChatbot}>
+        Click to Chat
+      </button>
+      {showChatbot && <Chatbot />}
     </div>
   );
 }
