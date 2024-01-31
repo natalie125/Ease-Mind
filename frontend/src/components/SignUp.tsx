@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { AuthTokenContext } from '../App';
@@ -18,6 +18,7 @@ function SignUp() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const navigate = useNavigate();
+  const [passwordShown, setPasswordShown] = useState(false);
 
   const handleSubmit = async () => {
     try {
@@ -29,6 +30,9 @@ function SignUp() {
     } catch (error) {
       return null;
     }
+  };
+  const togglePasswordVisibility = () => {
+    setPasswordShown(!passwordShown);
   };
 
   const validateSignup = async () => {
@@ -79,28 +83,35 @@ function SignUp() {
             <h2 className="signup-title">Sign Up</h2>
             <p className="signup-subtitle">Create a new account below </p>
           </div>
+          <div className="password-field-container">
+            <input
+              data-cy="signUpEmail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="authentication-form-input"
+              type="text"
+              placeholder="Email"
+              aria-label="Enter Email"
+            />
 
-          <input
-            data-cy="signUpEmail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="authentication-form-input"
-            type="text"
-            placeholder="Email"
-            aria-label="Enter Email"
-          />
-
-          <input
-            data-cy="signUpPasswd"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="authentication-form-input"
-            type="password"
-            placeholder="Password"
-            aria-label="Enter Password"
-          />
-
-          <div>
+            <div className="password-field-container">
+              <input
+                data-cy="signUpPasswd"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="authentication-form-input"
+                type={passwordShown ? 'text' : 'password'}
+                placeholder="Password"
+                aria-label="Enter Password"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="password-toggle-button"
+              >
+                {passwordShown ? 'Hide' : 'Show'}
+              </button>
+            </div>
             <button
               data-cy="signUpBttn"
               id="signup_button"

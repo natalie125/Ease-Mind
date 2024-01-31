@@ -17,6 +17,7 @@ function SignIn() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const [isFilled, setIsFilled] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [passwordShown, setPasswordShown] = useState(false);
 
   useEffect(() => {
     function handleOnline() {
@@ -35,6 +36,11 @@ function SignIn() {
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
+
+  const togglePasswordVisibility = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setPasswordShown(!passwordShown);
+  };
 
   if (token) return <Navigate to="/home" />;
 
@@ -114,16 +120,23 @@ function SignIn() {
             aria-label="Enter Email"
           />
 
-          <input
-            id="login_password"
-            ref={passwordRef}
-            className="authentication-form-input"
-            type="password"
-            placeholder="Password"
-            data-cy="loginPassword"
-            aria-label="Enter Password"
-          />
-
+          <div className="password-field-container">
+            <input
+              id="login_password"
+              ref={passwordRef}
+              className="authentication-form-input"
+              type={passwordShown ? 'text' : 'password'}
+              placeholder="Password"
+              aria-label="Enter Password"
+            />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="password-toggle-button"
+            >
+              {passwordShown ? 'Hide' : 'Show'}
+            </button>
+          </div>
           <div>
             <button
               className="authentication-button"

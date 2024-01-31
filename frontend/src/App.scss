@@ -28,3 +28,63 @@ html {
   min-height: 100%;
   min-height: 100vh;
 }
+
+.authentication-container {
+  max-width: 400px; 
+  height: auto;
+  max-height: 450px;
+  margin: 30px auto;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 90%;
+}
+
+.authentication-form-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  .authentication-container {
+    margin: 20px auto;
+    max-width: 90%;
+    max-height: 90%;
+    padding: 15px;
+  }
+
+}
+
+.authentication-form-input {
+    margin-bottom: 10px;
+}
+
+.password-field-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.password-toggle-button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  color: #0073b1;
+  cursor: pointer;
+  outline: none;
+}
+
+::placeholder {
+  color: #adb5bd;
+}
