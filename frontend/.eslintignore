@@ -4,3 +4,4 @@ src/apps/SkinScan/*
 src/apps/TonsillitisDetector/*
 node_modules/*
 build*
+coverage/*
