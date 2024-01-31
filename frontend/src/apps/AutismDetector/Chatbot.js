@@ -30,6 +30,14 @@ function Chatbot() {
     borderRadius: '5px',
   };
 
+  const button1 = {
+    border: '2px solid black', // Change border to black
+    borderRadius: '5px', // Adjust border radius as needed
+    padding: '5px 15px',
+    margin: '5px 0', // Add margin to separate each button vertically
+    display: 'block', // Display each button as a block element
+  };
+
   const handleSubmit = (message) => {
     let botResponse;
     let followUpOptions = [];
@@ -167,18 +175,18 @@ function Chatbot() {
   const renderOptions = () => {
     if (chatMessages.length === 1) {
       return initialQuestions.map((question) => (
-        <button key={question} type="button" onClick={() => handleSubmit(question)}>
+        <button1 key={question} style={button1} type="button1" onClick={() => handleSubmit(question)}>
           {question}
-        </button>
+        </button1>
       ));
     }
     const lastMessage = chatMessages[chatMessages.length - 1];
 
     if (lastMessage?.sender === 'user' && lastMessage.text === 'Yes') {
       return initialQuestions.map((question) => (
-        <button key={question} type="button" onClick={() => handleSubmit(question)}>
+        <button1 key={question} style={button1} type="button1" onClick={() => handleSubmit(question)}>
           {question}
-        </button>
+        </button1>
       ));
     }
 
@@ -186,9 +194,9 @@ function Chatbot() {
     // Ensure that 'Yes' and 'No' buttons are displayed only once
     if (options.length > 0 && options[0].text !== 'Yes' && options[0].text !== 'No') {
       return options.map((msg) => (
-        <button key={msg.id} type="button" onClick={() => handleSubmit(msg.text)}>
+        <button1 key={msg.id} type="button1" style={button1} onClick={() => handleSubmit(msg.text)}>
           {msg.text}
-        </button>
+        </button1>
       ));
     }
 
@@ -249,32 +257,27 @@ function Chatbot() {
     width: 'calc(100% - 90px)',
   };
 
-  const buttonStyle = {
-    flexGrow: 0,
-    padding: '5px 15px',
-  };
-
   return (
     showChat && (
       <div style={chatbotStyle}>
         <div style={chatbotHeaderStyle}>
           <span style={titleStyle}>Chatbot</span>
-          <button type="button" onClick={handleClose} style={closeButtonStyle}>
+          <button1 type="button1" onClick={handleClose} style={closeButtonStyle}>
             X
-          </button>
+          </button1>
         </div>
         <div style={{ overflowY: 'auto', flexGrow: 1 }}>
           {chatMessages.map((msg) => {
             if (msg.sender === 'bot-option') {
               return (
-                <button
+                <button1
                   key={msg.id}
-                  type="button"
+                  type="button1"
                   onClick={() => handleSubmit(msg.text)}
-                  style={buttonStyle}
+                  style={button1}
                 >
                   {msg.text}
-                </button>
+                </button1>
               );
             }
             return (
@@ -295,9 +298,9 @@ function Chatbot() {
             style={inputStyle}
             disabled
           />
-          <button type="button" style={buttonStyle} onClick={() => handleSubmit(input)}>
+          <button1 type="button1" style={button1} onClick={() => handleSubmit(input)}>
             Send
-          </button>
+          </button1>
         </div>
       </div>
     )
