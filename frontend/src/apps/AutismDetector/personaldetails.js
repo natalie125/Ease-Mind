@@ -26,8 +26,6 @@ function PersonalDetailsForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Submitted details:', details);
-    // Here you would typically send the details to a server or process them further
   };
 
   const handleGoBack = () => {
