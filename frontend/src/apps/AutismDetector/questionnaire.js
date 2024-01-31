@@ -33,8 +33,6 @@ function Questionnaire() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // eslint-disable-next-line no-console
-    console.log(answers); // Process answers here
   };
 
   const handleGoBack = () => {
