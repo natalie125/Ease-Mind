@@ -29,7 +29,7 @@
     width: 100%; /* Sets the width of the form */
   }
   
-  button {
+  button2 {
     background-color: #034d32;
     color: white;
     padding: 10px 15px;
@@ -42,7 +42,7 @@
     font-weight: bold;
   }
   
-  button:hover {
+  button2:hover {
     background-color: green;
   }
 

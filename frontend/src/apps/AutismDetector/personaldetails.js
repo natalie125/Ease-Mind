@@ -37,7 +37,7 @@ function PersonalDetailsForm() {
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit}>
-        <button type="button" className="go-back-button" onClick={handleGoBack}>&larr;</button>
+        <button2 type="button2" className="go-back-button" onClick={handleGoBack}>&larr;</button2>
         <div className="form-row">
           <label htmlFor="firstName" className="label-box">First Name:</label>
           <input
@@ -188,7 +188,7 @@ function PersonalDetailsForm() {
             <option value="South American">Australian</option>
           </select>
         </div>
-        <button type="submit">Submit</button>
+        <button2 type="submit">Submit</button2>
       </form>
     </div>
   );

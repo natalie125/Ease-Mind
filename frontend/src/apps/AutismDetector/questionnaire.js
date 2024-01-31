@@ -43,7 +43,7 @@ function Questionnaire() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <button type="button" className="go-back-button" onClick={handleGoBack}>&larr;</button>
+      <button2 type="button2" className="go-back-button" onClick={handleGoBack}>&larr;</button2>
       <div className="instruction-text">
         Please select options for all the questions below.
       </div>
@@ -59,7 +59,7 @@ function Questionnaire() {
           </select>
         </div>
       ))}
-      <button type="submit" className="submit-button">Submit</button>
+      <button2 type="submit" className="submit-button1">Submit</button2>
     </form>
   );
 }
