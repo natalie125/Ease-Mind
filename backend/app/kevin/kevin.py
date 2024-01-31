@@ -1,5 +1,6 @@
 from flask import Flask, render_template, Response, request, flash, redirect, url_for, session, jsonify
-from app import app, models, bcrypt, db
+from app import models, bcrypt, db
+from app.endpoints import auth_bp
 import base64
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,7 +16,7 @@ from flask_jwt_extended import jwt_required
 #############################################################
 # ROUTE FOR Kevin's APP
 # ^^^^^^^^^^^^^^^^^^^^^^^
-@app.route('/kevin', methods=['GET', 'POST'])
+@auth_bp.route('/kevin', methods=['GET', 'POST'])
 @jwt_required()
 def kevin():
 
@@ -24,46 +25,46 @@ def kevin():
     # if frontend sends no image return error
     if image == "null":
         return {"msg": "No image sent!"}, 415
-    
-    
-    
+
+
+
     # removes header of base 64 encoded string i.e. first 22 chars and decodes the rest
     image = image[22:]
     image_decoded = base64.b64decode(image)
     img = Image.open(io.BytesIO(image_decoded))
     # resize img - size based on model being used.
     IMG_DIMS = 224
-    
-    
-    
+
+
+
     # resize image and convert to numpy array
     pil_image = img.resize((IMG_DIMS, IMG_DIMS))
     img_arr = np.array(pil_image)
 
     # convert do data used by model
     img_arr = img_arr.astype('uint8')
-    
-    
-   
+
+
+
     # apply CLAHE - Contrast Limited Adaptive Histogram Equalisation
     img_arr = clahe(img_arr)
-    
+
 
     # apply SoG - Shades of Gray algorithm.
     img_arr = SoG(img_arr)
-    
+
 
     # reshape img_arr to have correct dimensions wanted by ML model
     img_arr_reshaped = np.reshape(img_arr, (-1, IMG_DIMS, IMG_DIMS, 3))
-   
-    
+
+
     # Load model
     model = tf.keras.models.load_model('app\kevin\TL-210-effNet.h5')
-    
-    
+
+
     # perform prediction on preprocessed image
     pred = model.predict(img_arr_reshaped)
-    
+
 
     # print(f'prediction made from the image itself{pred[0][0]}')
 
@@ -72,15 +73,15 @@ def kevin():
         msg = 1
     else:
         msg = 0
-    
+
 
     #  format prediction
     pred = pred[0][0] * 100
     pred = str(pred)
     pred = pred[:5] + "%"
-    
+
     return  {"msg": msg, "pred": pred}, 200
-    
+
 
 
 def clahe(image):
@@ -125,7 +126,7 @@ def SoG(img,power=6, gamma=None):
 
     # Andrew Anikin suggestion
     img = np.clip(img, a_min=0, a_max=255)
-    
+
     return img.astype(img_dtype)
 
 

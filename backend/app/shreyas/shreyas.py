@@ -1,6 +1,6 @@
 # flake8: noqa
-from flask import Flask, render_template, Response, request, flash, redirect, url_for, session, jsonify
-from app import app, models, bcrypt, db
+from flask import Flask, render_template, Response, request, flash, redirect, url_for, session, jsonify, current_app
+from app import models, bcrypt, db
 import base64
 import matplotlib.pyplot as plt
 import numpy as np
@@ -125,7 +125,7 @@ def decode_image_json(image):
 # GIVEN AN INPUT OF AN IMAGE, RETURNS A BINARY VALUE OF THE SCORE GIVEN BY THE MODEL WHETHER ITS TONSILLITIS OR NOT
 # ^^^^^^^^^^^^^^^^^^^^^^^
 
-@app.route('/shreyas', methods=['GET', 'POST'])
+@current_app.route('/shreyas', methods=['GET', 'POST'])
 @jwt_required()
 def shreyas():
     if request.method == 'POST':

@@ -1,6 +1,7 @@
 # flake8: noqa
 from flask import request, jsonify
-from app import app, models, bcrypt, db
+from app import models, bcrypt, db
+from app.endpoints import auth_bp
 import base64
 import os
 import time
@@ -13,9 +14,9 @@ from rembg import remove
 import json
 from flask_jwt_extended import jwt_required
 # instructions
-# add opencv to flask - pip install opencv-python 
+# add opencv to flask - pip install opencv-python
 # add rembg to flask - pip install rembg
-# 
+#
 
 #############################################################
 # ROUTE FOR LANRE'S APP
@@ -45,13 +46,13 @@ from flask_jwt_extended import jwt_required
 #     # saves decoded base 64 string to that image
 #     with open(os.path.join("app/lanre/model_versions/dataset/training/", filename), "wb") as f:
 #         f.write(image_decoded)
-    
-    
+
+
 #     # read decoded image
 #     current_dir = os.getcwd()
 #     submitted_folder = current_dir + '/app/lanre/model_versions/dataset/training/'
 #     image_path = submitted_folder + filename
-#     im = Image.open(image_path) # read in image 
+#     im = Image.open(image_path) # read in image
 
 #     im = im.convert("RGB")
 #     # im.save(f"converted-{filename}", "JPEG")
@@ -95,12 +96,12 @@ from flask_jwt_extended import jwt_required
 # #############################################################
 # # THE MAIN ROUTE THAT HANDLES THE PREPROCESSING OF DETA AND RETURNING THE RESULT
 # # ^^^^^^^^^^^^^^^^^^^^^^^
-@app.route('/lanre', methods=['GET', 'POST'])
+@auth_bp.route('/lanre', methods=['GET', 'POST'])
 def dipstick_image_upload():
     if request.method == "POST":
         # if request.method == 'GET' or request.method == 'POST':
         #     return "Lanre's App Requested"
-        
+
         image = request.form['image']
 
         email = request.form['email']
@@ -116,7 +117,7 @@ def dipstick_image_upload():
         # gets string of curr time and names file that
         timestamp = str(int(time.time()))
         filename = timestamp+".png"
-        
+
         # saves decoded base 64 string to that image
         with open(os.path.join("app/lanre/submitted_images", "image.png"), "wb") as f:
             f.write(image_decoded)
@@ -133,7 +134,7 @@ def dipstick_image_upload():
         cropped_image = cv2.cvtColor(cropped_image,cv2.COLOR_RGB2HSV)
         print("Background removed!")
         print(type(cropped_image))
-        save_image_to_file(cropped_image)    
+        save_image_to_file(cropped_image)
         print("Cropped Image saved!")
 
         # slice image
@@ -166,7 +167,7 @@ def dipstick_image_upload():
 
 # TODO: For debugging purposed - Remove later
 def save_image_to_file(image):
-    # saves to directory decoded base 64 string to that image 
+    # saves to directory decoded base 64 string to that image
     im = Image.fromarray(image)
     im.save("/Users/lanresodeinde/Desktop/final_year_app/backend/app/lanre/submitted_images/output.png")
     # with open(os.path.join("app/lanre/shots", "output.png"), "wb") as f:
@@ -175,7 +176,7 @@ def save_image_to_file(image):
 
 # define function to remove backgroup from dipstick using rembg
 def remove_background(image_path):
-    input = Image.open(image_path) # read in image 
+    input = Image.open(image_path) # read in image
     output = remove(input) # crop backgroud using the remove function
     return output
 
@@ -189,7 +190,7 @@ def slice_image(image):
     # Convert image to grayscale
     h, s, v = cv2.split(image)
     gray = v
-    
+
     # Apply threshold to the image
     ret, thresh = cv2.threshold(gray,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
 
@@ -206,7 +207,7 @@ def slice_image(image):
         if x != 0 and y !=0:
             print(x,y, w, h)
             break
-    
+
     # use these values obtained to slice out only the dipstick
     image_sliced = image[y:y+h, x:x+w]
     return image_sliced
@@ -285,7 +286,7 @@ def draw_rectangles_and_extract_colours(image):
     colour = extract_colour(image, x1, y1, x2, y2)
     extracted_colours[parameter_names[index]] = colour
     index+=1
-    
+
     # draw_rectangle on the sixth pad
     x1,y1 = 10,170
     x2,y2 = x1+10, y1+10
@@ -341,20 +342,20 @@ reference_chart = {
         '++125':[167,  79, 163],
         '+++500': [154,  81, 139],
     },
-    
+
     'nitrite' : {
     'neg': [21,  77, 204],
     'trace': [171,  46, 208],
     'pos': [166, 163, 165],
-    }, 
-    
+    },
+
     'urobilinogen': {
         '0.1'  : [14, 135, 202],
         '1' : [  3,  95, 203],
         '2' : [  1, 116, 189],
         '4' : [  1, 138, 195],
         '8' : [176, 158, 190],
-    }, 
+    },
     'protein' :{
         'neg': [ 28, 146, 186],
         'trace': [ 34, 140, 172],
@@ -389,7 +390,7 @@ reference_chart = {
         '1.020': [ 28, 163, 117],
         '1.025' : [ 23, 205, 148],
         '1.030' : [ 20, 229, 169],
-    }, 
+    },
     'ketones' : {
         'neg': [10,  70, 188],
         '+5': [6,  76, 188],
@@ -417,7 +418,7 @@ reference_chart = {
 # # function for calculting the distance between the two colours
 def eucledian_distance(extracted, reference):
     ed = (extracted[0] - reference[0])**2  + (extracted[1] - reference[1])**2 + (extracted[2] - reference[2])**2
-    return ed 
+    return ed
 
 # this function takes the colour on one pad and the dictionary containing the reference colour for that pad and returns closest match
 def check_parameter(colour_on_pad, reference_colours_for_pad):
@@ -456,7 +457,7 @@ def check_dipstick(extracted_colours,reference_chart):
     for parameter_name in extracted_colours:
         result = check_parameter(extracted_colours.get(parameter_name), reference_chart.get(parameter_name))
         diagnoses[parameter_name] = result
-    
+
     return diagnoses
 
 diagnoses = check_dipstick(extracted_colours, reference_chart)
@@ -476,12 +477,12 @@ def save_diagnoses_result(email, diagnoses):
     # added user's email
     user_diagnoses = {'email': email,
                       'results' : diagnoses}
-    
+
 
     # read the contents of the file
     with open("app/lanre/submitted_images/user_evaluation_results.json", "r") as file:
         file_data = json.load(file)
-    
+
     # append new diagnoses
     file_data.append(user_diagnoses)
 
@@ -489,5 +490,5 @@ def save_diagnoses_result(email, diagnoses):
     with open("app/lanre/submitted_images/user_evaluation_results.json", "w") as file:
         # file.seek(0)
         json.dump(file_data, file, indent = 4)
-    
+
     print("Saving user evaluation result... completed...")

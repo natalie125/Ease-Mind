@@ -1,0 +1,37 @@
+# Based on:
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Backend CI
+
+# Run inside pull requests that target the main branch.
+on:
+  pull_request:
+    branches: [main]
+
+defaults:
+  run:
+    working-directory: ./backend
+
+jobs:
+  backedn_ci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Display Python version
+        run: python3 -c "import sys; print(sys.version)"
+
+      - name: Install Requirements.txt
+        run: pip3 install -r requirements.txt
+
+      - name: Run Tests
+        run: python3 -m pytest tests/

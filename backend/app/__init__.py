@@ -4,41 +4,56 @@ from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from pathlib import Path
+from flask_jwt_extended import JWTManager
 
-import tensorflow as tf
-import pickle
+# Globals defined here so they can be imported.
+db = SQLAlchemy()
+migrate = Migrate()
+bcrypt = Bcrypt()
+jwt = JWTManager()
 
-# define the app
-app = Flask(__name__)
+# Application factory based on:
+# https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xv-a-better-application-structure
+def create_app(testing=False):
+    app = Flask(__name__)
+    app.app_context().push()
+    app.config.from_object('config')
 
-# added for hashing the passwords
-bcrypt = Bcrypt(app)
+    if testing:
+        app.config.update({
+            "TESTING": True,
+            "SQLALCHEMY_DATABASE_URI": "sqlite://",
+        })
 
-# added to fix RuntimeError: Working outside of application context.
-app.app_context().push()
+    # If "app.py" exists in the outside folder we are in the EC2 instance and
+    # we DO NOT want to include the CORS(app).
+    path = Path("app.py")
+    if not Path.is_file(path):
+        CORS(app) # Enables CORS
+        print("Running locally - CORS has been enabled.")
+    else:
+        print("Running on EC2 - CORS not enabled in __init__.py")
 
-# read configuration from config.py file
-app.config.from_object('config')
+    bcrypt.init_app(app)
+    db.init_app(app)
+    migrate.init_app(app, db)
+    jwt.init_app(app)
 
-# check if there is a file called "app.py" in the outside folder
-# if so we are in the EC2 instance and we DO NOT want to include the CORS(app) line below
-path = Path("app.py")
-if not Path.is_file(path):
-    # added to enable cors
-    CORS(app)
-    print("CORS included, we're on local because there's no app.py")
-else:
-    print("app.py detected, we're on EC2, don't include CORS in __init__.py")
+    db.create_all()
 
-# define the database
-db = SQLAlchemy(app)
+    from app.endpoints import auth_bp
+    app.register_blueprint(auth_bp)
 
-# load paralysis analysis models
-pa_face_model = pickle.load(open("app/ramat/face_model.sav", 'rb'))
-pa_speech_model = tf.keras.models.load_model('app/ramat/speech_model.h5')
+    # TODO: Logging
 
-# import these python files from /app directory
-from app import views, models
+    # Add headers to every request to prevent clickjacking, XSS, etc.
+    @app.after_request
+    def add_header(response):
+        response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+        response.headers['X-Content-Type-Options'] = 'nosniff'
+        response.headers['X-XSS-Protection'] = '1; mode=block'
+        return response
 
-# helps us handle migrations
-migrate = Migrate(app, db)
+    return app
+
+from app import models

@@ -1,8 +1,9 @@
 from flask import request, jsonify, make_response
 from flask_jwt_extended import jwt_required
-from app import app, models, db
+from app import models, db
+from app.endpoints import auth_bp
 
-@app.route('/api/roots-radar/mvp-string', methods=['GET', 'POST'])
+@auth_bp.route('/api/roots-radar/mvp-string', methods=['GET', 'POST'])
 @jwt_required()
 def mvpString():
   if request.method == 'GET':

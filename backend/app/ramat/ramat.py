@@ -1,6 +1,6 @@
 # flake8: noqa
-from flask import  request
-from app import app, pa_face_model as face_model, pa_speech_model as speech_model
+from flask import request
+from app.endpoints import auth_bp
 
 # face processing imports
 import cv2
@@ -20,6 +20,12 @@ import os
 import numpy as np
 import pandas as pd
 import time
+import tensorflow as tf
+import pickle
+
+# Load paralysis analysis models.
+face_model = pickle.load(open("app/ramat/face_model.sav", 'rb'))
+speech_model = tf.keras.models.load_model('app/ramat/speech_model.h5')
 
 # load face mesh
 mp_face_mesh = mp.solutions.face_mesh
@@ -34,14 +40,14 @@ facial_features = {
     'right_cheek_line':[358, 423, 426, 436, 432],
     'left_cheek_line':[129, 203, 206, 216, 212],
     'mouth_corners': [61, 291],  # left -> right
-    'inner_mouth': [62, 78, 191, 80, 81, 82, 13, 312, 311, 310, 415, 308, 
+    'inner_mouth': [62, 78, 191, 80, 81, 82, 13, 312, 311, 310, 415, 308,
                     292, 324, 318, 402, 317, 14, 87, 178, 88, 95, 78],
     'right_mouth_outer': [0, 17, 314, 405, 321, 375, 291, 409, 270, 269, 267, 0],
-    'left_mouth_outer' : [0, 17, 84, 181, 91, 146, 61, 185, 40, 39, 37 , 0], 
-    'mid_line': [10, 151, 9, 200, 199, 175, 152]                             
+    'left_mouth_outer' : [0, 17, 84, 181, 91, 146, 61, 185, 40, 39, 37 , 0],
+    'mid_line': [10, 151, 9, 200, 199, 175, 152]
 }
 
-# function to return the coordinates of landmark points 
+# function to return the coordinates of landmark points
 def landmarks_to_coords(landmarks, facial_area, zipped=True):
     x_ords = []
     y_ords = []
@@ -55,7 +61,7 @@ def landmarks_to_coords(landmarks, facial_area, zipped=True):
         return zip(x_ords, y_ords)
     else:
         return np.vstack((x_ords, y_ords)).T
-    
+
 # function to return the line of best fit using the least squares method when given landmark points
 def get_line(coordinates):
     x_ords, y_ords = np.split(coordinates,2,axis=1)
@@ -80,7 +86,7 @@ def reflect_points(coordinates, m, c):
     return reflected_coordinates
 
 # function to calculate the symmetry between a feature on the left and the same feature on right side of the face
-# reflects the feature on the right side to the left side over the mid-line of the face and 
+# reflects the feature on the right side to the left side over the mid-line of the face and
 # gets the difference between the reflected right coordinates and the corresponsing left coordinates
 def get_feature_symmetry(landmarks, mid_face, right_landmarks, left_landmarks):
     diff = 0
@@ -112,7 +118,7 @@ def calculate_gradient(landmarks, facial_area):
 
     return ((coordinates[0][1] - coordinates[1][1]) / (coordinates[0][0] - coordinates[1][0]))
 
-# function to calculate ratio of area of feature 
+# function to calculate ratio of area of feature
 def calculate_area_ratio(right_area, left_area):
     areas = [right_area, left_area]
 
@@ -128,13 +134,13 @@ def face_feature_extraction(raw_image):
     # extract faces from image, also regularises it by making the face 224 x 224 and straightening it
     faces = DeepFace.extract_faces(image, grayscale = True,
                                             enforce_detection = False, detector_backend ="mtcnn")
-    
-    
+
+
     if (len(faces) > 1): # check there is more than 1 face in the image
         return ["ERROR", "multiple faces detected"]
-    elif (len(faces) < 1 or (faces[0])['confidence'] == 0.0): # check if no face was detected  
+    elif (len(faces) < 1 or (faces[0])['confidence'] == 0.0): # check if no face was detected
         return ["ERROR", "no face detected"]
-    
+
     raw_face = (faces[0])['face']
     face = np.array(raw_face * 255, dtype = np.uint8)
 
@@ -146,32 +152,32 @@ def face_feature_extraction(raw_image):
         landmarks = results.multi_face_landmarks[0]
     except TypeError:
         return ["ERROR", "face unclear"]
-    
+
     # perform feature extraction
     right_eye_gradient = calculate_gradient(landmarks, facial_features['right_eye_corners'])
     left_eye_gradient = calculate_gradient(landmarks, facial_features['left_eye_corners'])
     right_eye_area = calculate_feature_area(landmarks, facial_features['right_eye_inner'])
     left_eye_area = calculate_feature_area(landmarks, facial_features['left_eye_inner'])
-    
+
     mouth_gradient = calculate_gradient(landmarks, facial_features['mouth_corners'])
     inner_mouth_area = calculate_feature_area(landmarks, facial_features['inner_mouth'])
     right_mouth_area = calculate_feature_area(landmarks, facial_features['right_mouth_outer'])
     left_mouth_area = calculate_feature_area(landmarks, facial_features['left_mouth_outer'])
 
-    cheek_line_sim = get_feature_symmetry(landmarks, facial_features['mid_line'], 
+    cheek_line_sim = get_feature_symmetry(landmarks, facial_features['mid_line'],
                                             facial_features['right_cheek_line'], facial_features['left_cheek_line'])
-    
-    eye_sim = get_feature_symmetry(landmarks, facial_features['mid_line'], 
+
+    eye_sim = get_feature_symmetry(landmarks, facial_features['mid_line'],
                                             facial_features['right_eye_inner'], facial_features['left_eye_inner'])
-    
-    mouth_sim = get_feature_symmetry(landmarks, facial_features['mid_line'], 
+
+    mouth_sim = get_feature_symmetry(landmarks, facial_features['mid_line'],
                                             facial_features['right_mouth_outer'], facial_features['left_mouth_outer'])
 
     eye_area_ratio = calculate_area_ratio(right_eye_area, left_eye_area)
     mouth_area_ratio = calculate_area_ratio(right_mouth_area, left_mouth_area)
 
     return ["SUCCESS", [cheek_line_sim, eye_area_ratio, right_eye_gradient, left_eye_gradient, mouth_area_ratio, mouth_gradient, inner_mouth_area]]
-    
+
 
 def voice_feature_extraction():
     # get the voice file
@@ -192,7 +198,7 @@ def voice_feature_extraction():
 #############################################################
 # ROUTE FOR RAMAT'S APP
 # ^^^^^^^^^^^^^^^^^^^^^^^
-@app.route('/ramat', methods=['GET', 'POST'])
+@auth_bp.route('/ramat', methods=['GET', 'POST'])
 def image_and_audio():
     if request.method == 'GET':
         return "Ramat's App has been Requested"
@@ -205,7 +211,7 @@ def image_and_audio():
         # if frontend sends no image return error
         if image == "null":
             return {"msg": "No image sent!"}, 415
-        
+
         if audio_file.filename != '':
             request.files['audio'].save("app/ramat/voice.wav")
         else:
@@ -215,7 +221,7 @@ def image_and_audio():
         # removes header of base 64 encoded string and decodes it
         image = image.split("base64,")[1]
         image_str = base64.b64decode(image)
-        
+
         #convert image string to array of bytes
         image_bytes = np.fromstring(image_str, np.uint8)
 
