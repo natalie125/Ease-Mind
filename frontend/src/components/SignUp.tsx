@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import axios from 'axios';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { AuthTokenContext } from '../App';
@@ -6,6 +6,7 @@ import { AuthTokenContext } from '../App';
 const INVALIDDETAILS = 0;
 const USEREXISTS = 1;
 const FRONTENDERROR = 2;
+const PASSWORDMISMATCH = 3;
 
 const BASEURL = process.env.NODE_ENV === 'development'
   ? process.env.REACT_APP_DEV
@@ -17,8 +18,8 @@ function SignUp() {
   const [networkError, setNetworkError] = React.useState(false);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState(''); // for confirm password
   const navigate = useNavigate();
-  const [passwordShown, setPasswordShown] = useState(false);
 
   const handleSubmit = async () => {
     try {
@@ -31,9 +32,6 @@ function SignUp() {
       return null;
     }
   };
-  const togglePasswordVisibility = () => {
-    setPasswordShown(!passwordShown);
-  };
 
   const validateSignup = async () => {
     if (!navigator.onLine) {
@@ -45,6 +43,11 @@ function SignUp() {
     const passwordRules = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
     setIsError(null); // Reset error state when attempting signup
+
+    if (password !== confirmPassword) {
+      setIsError(PASSWORDMISMATCH); // Set the error state for password mismatch
+      return; // Stop the function if the passwords don't match
+    }
 
     if (email.length > 0 && password.length > 0) {
       if (email.includes('@') && passwordRules.test(password)) {
@@ -83,35 +86,38 @@ function SignUp() {
             <h2 className="signup-title">Sign Up</h2>
             <p className="signup-subtitle">Create a new account below </p>
           </div>
-          <div className="password-field-container">
-            <input
-              data-cy="signUpEmail"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="authentication-form-input"
-              type="text"
-              placeholder="Email"
-              aria-label="Enter Email"
-            />
 
-            <div className="password-field-container">
-              <input
-                data-cy="signUpPasswd"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="authentication-form-input"
-                type={passwordShown ? 'text' : 'password'}
-                placeholder="Password"
-                aria-label="Enter Password"
-              />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="password-toggle-button"
-              >
-                {passwordShown ? 'Hide' : 'Show'}
-              </button>
-            </div>
+          <input
+            data-cy="signUpEmail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="authentication-form-input"
+            type="text"
+            placeholder="Email"
+            aria-label="Enter Email"
+          />
+
+          <input
+            data-cy="signUpPasswd"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="authentication-form-input"
+            type="password"
+            placeholder="Password"
+            aria-label="Enter Password"
+          />
+
+          <input
+            data-cy="confirmSignUpPasswd"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="authentication-form-input"
+            type="password"
+            placeholder="Confirm Password"
+            aria-label="Confirm Password"
+          />
+
+          <div>
             <button
               data-cy="signUpBttn"
               id="signup_button"
@@ -137,7 +143,11 @@ function SignUp() {
           {networkError && (
             <p className="error-message">Network error. Please check your internet connection.</p>
           )}
-
+          {isError === PASSWORDMISMATCH && (
+            <p data-cy="passwordMismatchError" className="error-message">
+              The passwords do not match.
+            </p>
+          )}
           <div className="signup-link-container">
             <Link to="/auth/signin">
               <p className="login-link" data-cy="signUpLoginBtn" id="login_button">
