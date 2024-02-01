@@ -123,3 +123,24 @@
   font-size: calc(5px + 2vmin);
   text-align: center;
 }
+
+.password-field-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.password-toggle-button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  color: #0073b1;
+  cursor: pointer;
+  outline: none;
+}
+
+::placeholder {
+  color: #adb5bd;
+}
