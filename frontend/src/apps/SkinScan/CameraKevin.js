@@ -44,16 +44,16 @@ const WebcamCapture = (props) => {
       },
     })
       .then(response => {
-        console.log(response);
-        console.log(response.data);
+        // console.log(response);
+        // console.log(response.data);
         setServerResponse(response.data['msg']); // msg variable: whether user should be routed to positive or negative outcome page.
         setPrediction(response.data['pred']); // Raw prediciton value of ML algorithm on backend
         // Code above gets text from backend response, to be used in next pages seen by user
 
       })
       .catch(error => {
-        console.log("error with response");
-        console.error(error);
+        // console.log("error with response");
+        // console.error(error);
       });
   }
 
@@ -173,7 +173,8 @@ const WebcamCapture = (props) => {
               <div className="cam-container-kevin">
                 <div className="cam-box-kevin">
                   <p> Use camera window to capture lesion image:</p>
-                  <Webcam className="webcam-kevin" videoConstraints={cameraConstraints} width={cameraWidth} height={cameraHeight} audio={false} ref={webcamRef} />
+                  {/* HACK: 0 When route testing, but we don't care about this components function when testing routes, and won't unit test legacy code. */}
+                  <Webcam className="webcam-kevin" videoConstraints={cameraConstraints} width={isNaN(cameraWidth) ? 0 : cameraWidth} height={isNaN(cameraHeight) ? 0 : cameraHeight} audio={false} ref={webcamRef} />
                 </div>
                 <div className="gap-camera-kevin"></div>
                 <div className="bttn-container-kevin">
