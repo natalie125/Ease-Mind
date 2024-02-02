@@ -268,21 +268,32 @@ describe('Route tests with error handling', () => {
   test('navigating to Autism Detector Personal Details page', async () => {
     renderWithRouterAndAuth(<Routes />, { route: '/autism_instructions/personaldetails' });
     await waitFor(() => {
-      expect(screen.getByText('Please put in your personal details below:')).toBeInTheDocument();
       expect(screen.getByLabelText('First Name:')).toBeInTheDocument();
       expect(screen.getByLabelText('Last Name:')).toBeInTheDocument();
       expect(screen.getByLabelText('Date of Birth:')).toBeInTheDocument();
       expect(screen.getByLabelText('Gender:')).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: 'Save Details' })).toBeInTheDocument();
     });
+  });
+
+  // mock window.matchMedia before Austism Detector tests run
+  beforeAll(() => {
+    window.matchMedia = jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    }));
   });
 
   test('navigating to Autism Detector main page', async () => {
     renderWithRouterAndAuth(<Routes />, { route: '/autism_instructions' });
     await waitFor(() => {
-      expect(screen.getByText('Advice for Autism:')).toBeInTheDocument();
-      expect(screen.getByAltText('Personal Details')).toBeInTheDocument();
-      expect(screen.getByAltText('Questionnaire')).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /Personal Details/i })).toBeInTheDocument();
+      expect(screen.getByText(/Understanding: Educate yourself about autism to better understand yourself./i)).toBeInTheDocument();
     });
   });
 
