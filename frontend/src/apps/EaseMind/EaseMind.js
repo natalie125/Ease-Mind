@@ -52,7 +52,7 @@ function EaseMind() {
         <Link to="/EaseMind_personal_details">
           <button type="button" className="easeMindButton">Create My Details</button>
         </Link>
-        <Link to="/anxiety-level-test">
+        <Link to="/EaseMind_anxiety-level-test">
           <button type="button" className="easeMindButton">Anxiety Level Test</button>
         </Link>
         <ChatBox />
