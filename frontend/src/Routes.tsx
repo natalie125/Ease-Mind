@@ -41,6 +41,8 @@ import AutismDetectorQuestionnaire from './apps/AutismDetector/questionnaire';
 
 import EaseMind from './apps/EaseMind/EaseMind';
 import EaseMindPersonalDetails from './apps/EaseMind/PersonalDetails';
+import AnxietyLevelTest from './apps/EaseMind/AnxietyLevelTest';
+import ChatBox from './apps/EaseMind/ChatBox';
 
 import DepressiLess from './apps/DepressiLess/DepressiLess';
 
@@ -93,6 +95,8 @@ function Routes() {
 
         <Route path="/EaseMind" element={<EaseMind />} />
         <Route path="/EaseMind_personal_details" element={<EaseMindPersonalDetails />} />
+        <Route path="/anxiety-level-test" element={<AnxietyLevelTest />} />
+        <Route path="/chatbox" element={<ChatBox />} />
 
         <Route path="/autism_instructions" element={<AutismDetector />} />
         <Route path="/autism_instructions/personaldetails" element={<AutismDetectorPersonalDetails />} />

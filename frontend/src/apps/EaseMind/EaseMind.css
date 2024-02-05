@@ -1,23 +1,59 @@
 .easeMindContainer {
-  background-color: #E0F2F1; 
-  padding: 20px;
+  background-color: #E0F2F1;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.easeMindTitle {
+  color: #333;
   text-align: center;
-  font-family: Arial, sans-serif;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: .5rem;
+  color: #333;
+}
+
+input[type="text"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus {
+  border-color: #42A5F5;
+  outline: none;
 }
 
 .easeMindButton {
-  background-color: #64B5F6; 
+  width: 100%;
+  background-color: #42A5F5; 
   color: white;
-  padding: 10px 20px;
+  padding: 15px 20px;
   border: none;
-  border-radius: 5px;
-  margin: 10px;
+  border-radius: 4px;
+  margin-top: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .easeMindButton:hover {
-  background-color: #42A5F5;
+  background-color: #1E88E5; 
 }
 
 .easeMindTitle {

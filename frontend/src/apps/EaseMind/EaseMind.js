@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import './EaseMind.css';
+import ChatBox from './ChatBox';
 
 // Pop up
 function PopUp({ show, onClose }) {
@@ -54,6 +55,7 @@ function EaseMind() {
         <Link to="/anxiety-level-test">
           <button type="button" className="easeMindButton">Anxiety Level Test</button>
         </Link>
+        <ChatBox />
       </div>
 
       <PopUp show={showPopUp} onClose={() => setShowPopUp(false)} />

@@ -1,0 +1,57 @@
+.anxietyLevelTestContainer {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #E0F2F1;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+  
+  .anxietyLevelTestContainer h1 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .anxietyLevelTestContainer form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .anxietyLevelTestContainer label {
+    margin-top: 1rem;
+  }
+  
+  .anxietyLevelTestContainer select {
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .anxietyLevelTestContainer button {
+    padding: 1rem;
+    margin-top: 1rem;
+    background-color: #64B5F6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .anxietyLevelTestContainer button:hover {
+    background-color: #2196F3;
+  }
+  
+  .result-display {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f8f8f8;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+  }
+
+  body {
+    background-color: #E0F2F1;
+  }
+  
