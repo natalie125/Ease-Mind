@@ -1,6 +1,7 @@
-// SignUp.test.js
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import {
+  render, screen, fireEvent, waitFor,
+} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import axios from 'axios';
 import { BrowserRouter } from 'react-router-dom';
@@ -21,8 +22,10 @@ const renderSignUp = () => render(
   <BrowserRouter>
     <AuthTokenContext.Provider value={{ token: null, setToken: mockSetToken }}>
       <SignUp />
+      ,
     </AuthTokenContext.Provider>
-  </BrowserRouter>
+    ,
+  </BrowserRouter>,
 );
 
 describe('SignUp Component', () => {
@@ -67,7 +70,7 @@ describe('SignUp Component', () => {
     await waitFor(() => {
       expect(mockedAxios.post).toHaveBeenCalledWith(expect.any(String), {
         email: 'test@example.com',
-        password: 'SecurePass123!',
+        password: 'SecurePass123!', // Added trailing comma
       });
     });
   });
