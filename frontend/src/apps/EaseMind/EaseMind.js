@@ -1,36 +1,8 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import './EaseMind.css';
 import ChatBox from './ChatBox';
-
-// Pop up
-function PopUp({ show, onClose }) {
-  if (!show) {
-    return null;
-  }
-
-  return (
-    <div className="popupBackground">
-      <div className="popupContent">
-        <button type="button" className="popupClose" onClick={onClose}>&times;</button>
-        <h1>Warning:</h1>
-        <br />
-        <p>
-          This website is a project developed by a computer science student and is not a professional resource
-          for individuals with anxiety issues. If you are experiencing anxiety, please consult with qualified
-          professionals. Be aware that the content on this site might cause discomfort for some users.
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// Define PropTypes for PopUp
-PopUp.propTypes = {
-  show: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
+import PopUp from './PopUp';
 
 function EaseMind() {
   const [showPopUp, setShowPopUp] = useState(true);
@@ -58,7 +30,7 @@ function EaseMind() {
         <ChatBox />
       </div>
 
-      <PopUp show={showPopUp} onClose={() => setShowPopUp(false)} />
+      {showPopUp && <PopUp onClose={() => setShowPopUp(false)} />}
     </div>
   );
 }
