@@ -108,3 +108,7 @@ select:focus {
   cursor: pointer;
   font-size: 24px; 
 }
+
+.compulsory-field {
+  color: red;
+}

@@ -21,13 +21,13 @@
     width: 200px; /* Uniform width for inputs and selects */
   }
   
-  form {
+  /* form {
     display: flex;
     flex-direction: column;
     align-items: center; /* Centers the form contents vertically */
-    justify-content: center;
-    width: 100%; /* Sets the width of the form */
-  }
+/*  */
+ /* Sets the width of the form */
+  /* } */ 
   
   button2 {
     background-color: #034d32;
