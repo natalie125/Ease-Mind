@@ -1,24 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './AnxietyLevelTest.css';
+import { AuthTokenContext } from '../../App';
 
 function AnxietyLevelTest() {
-  const initialAnswers = {
-    q1: 0, q2: 0, q3: 0, q4: 0, q5: 0, q6: 0, q7: 0,
-  };
-  const [answers, setAnswers] = useState(initialAnswers);
+  const [questions, setQuestions] = useState([]);
+  const [answers, setAnswers] = useState({});
   const [resultMessage, setResultMessage] = useState('');
+  const [error, setError] = useState(''); // Add this state to store potential error messages
+  const { token } = useContext(AuthTokenContext);
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      const response = await fetch('http://127.0.0.1:5000/EAquestions', {
+        method: 'GET', // Explicitly specify the method for clarity
+        headers: {
+          Authorization: `Bearer ${token}`, // Assuming token is correctly obtained here
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setQuestions(data);
+        const initialAnswers = data.reduce((acc, question) => {
+          acc[question.id] = 0;
+          return acc;
+        }, {});
+        setAnswers(initialAnswers);
+      } else {
+        setError('Failed to fetch questions. Please try again later.');
+      }
+    };
+
+    if (token) {
+      fetchQuestions();
+    } else {
+      setError('Authentication token is not available.');
+    }
+  }, [token]);
 
   const handleSelectChange = (event) => {
-    setAnswers({ ...answers, [event.target.name]: parseInt(event.target.value, 10) });
+    const { name, value } = event.target;
+    setAnswers((prev) => ({ ...prev, [name]: parseInt(value, 10) }));
   };
 
   const calculateScore = () => Object.values(answers).reduce((total, current) => total + current, 0);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const score = calculateScore();
-    let result = '';
+    const score = calculateScore(); // Calculate the score based on answers
 
+    // Determine the level of anxiety based on the score
+    let result;
     if (score >= 15) {
       result = 'Severe anxiety';
     } else if (score >= 10) {
@@ -29,91 +60,58 @@ function AnxietyLevelTest() {
       result = 'Minimal or no anxiety';
     }
 
-    setResultMessage(`Your score is ${score}. Level of anxiety: ${result}`);
+    // Attempt to submit the test score and set the result message
+    try {
+      const response = await fetch('http://127.0.0.1:5000/submit_etest_result', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, // Ensure you have the token
+        },
+        body: JSON.stringify({ score }), // Send the score to your backend
+      });
+
+      if (response.ok) {
+        // If the score was successfully saved, display the result to the user
+        setResultMessage(`Your score is ${score}. Level of anxiety: ${result}.`);
+      } else {
+        // If there was a problem saving the score, notify the user
+        setError('Failed to submit test score. Please try again later.');
+      }
+    } catch (submissionError) {
+      setError('An error occurred. Please try again later.');
+    }
   };
 
   return (
     <div className="anxietyLevelTestContainer">
       <h1>Anxiety Level Test</h1>
+      <h2 className="timeframe-note">In the past 2 weeks:</h2>
       <form onSubmit={handleSubmit}>
-        {/* Questions 1 */}
-        <div>
-          <label htmlFor="q1">Feeling nervous, anxious or on edge?</label>
-          <select name="q1" id="q1" value={answers.q1} onChange={handleSelectChange}>
-            <option value="0">Not at all</option>
-            <option value="1">Several days</option>
-            <option value="2">More than half the days</option>
-            <option value="3">Nearly every day</option>
-          </select>
-        </div>
-        {/* Question 2 */}
-        <div>
-          <label htmlFor="q2">Not being able to stop or control worrying?</label>
-          <select id="q2" name="q2" value={answers.q2} onChange={handleSelectChange}>
-            <option value="0">Not at all</option>
-            <option value="1">Several days</option>
-            <option value="2">More than half the days</option>
-            <option value="3">Nearly every day</option>
-          </select>
-        </div>
-        {/* Question 3 */}
-        <div>
-          <label htmlFor="q3">Worrying too much about different things?</label>
-          <select id="q3" name="q3" value={answers.q3} onChange={handleSelectChange}>
-            <option value="0">Not at all</option>
-            <option value="1">Several days</option>
-            <option value="2">More than half the days</option>
-            <option value="3">Nearly every day</option>
-          </select>
-        </div>
-        {/* Question 4 */}
-        <div>
-          <label htmlFor="q4">Trouble relaxing?</label>
-          <select id="q4" name="q4" value={answers.q4} onChange={handleSelectChange}>
-            <option value="0">Not at all</option>
-            <option value="1">Several days</option>
-            <option value="2">More than half the days</option>
-            <option value="3">Nearly every day</option>
-          </select>
-        </div>
-        {/* Question 5 */}
-        <div>
-          <label htmlFor="q5">Being so restless that it is hard to sit still?</label>
-          <select id="q5" name="q5" value={answers.q5} onChange={handleSelectChange}>
-            <option value="0">Not at all</option>
-            <option value="1">Several days</option>
-            <option value="2">More than half the days</option>
-            <option value="3">Nearly every day</option>
-          </select>
-        </div>
-        {/* Question 6 */}
-        <div>
-          <label htmlFor="q6">Becoming easily annoyed or irritable?</label>
-          <select id="q6" name="q6" value={answers.q6} onChange={handleSelectChange}>
-            <option value="0">Not at all</option>
-            <option value="1">Several days</option>
-            <option value="2">More than half the days</option>
-            <option value="3">Nearly every day</option>
-          </select>
-        </div>
-        {/* Question 7 */}
-        <div>
-          <label htmlFor="q7">Feeling afraid as if something awful might happen?</label>
-          <select id="q7" name="q7" value={answers.q7} onChange={handleSelectChange}>
-            <option value="0">Not at all</option>
-            <option value="1">Several days</option>
-            <option value="2">More than half the days</option>
-            <option value="3">Nearly every day</option>
-          </select>
-        </div>
+        {questions.map((question) => (
+          <div key={question.id}>
+            <label htmlFor={`question-${question.id}`}>{question.text}</label>
+            <select
+              className="anxietyTestSelect"
+              name={question.id.toString()}
+              id={`question-${question.id}`}
+              value={answers[question.id]}
+              onChange={handleSelectChange}
+            >
+              <option value="0">Not at all</option>
+              <option value="1">Several days</option>
+              <option value="2">More than half the days</option>
+              <option value="3">Nearly every day</option>
+            </select>
+          </div>
+        ))}
         <button type="submit">Submit Test</button>
       </form>
       {resultMessage && <div className="result-display">{resultMessage}</div>}
+      {error && <div className="error-message">{error}</div>}
     </div>
-
   );
 }
-
 export default AnxietyLevelTest;
 
 /**

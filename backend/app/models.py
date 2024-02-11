@@ -37,6 +37,7 @@ class RootRadarMVPTest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(500))
 
+# ---------------------------------------------------------------------------- #
 #Personal details for EaseMind
 class EPersonalDetails(db.Model):
     __tablename__ = 'EPersonalDetails'
@@ -68,3 +69,20 @@ class EPersonalDetails(db.Model):
             raise AssertionError('You must be older than 18 to use this service.')
         
         return birth_date
+    
+#Anxiety test result for EaseMind
+class EATestResult(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    score = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user = relationship('Users', backref='test_results')
+
+#anxiety test questions for EaseMind
+class EAQuestion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(500))
+
+    def __repr__(self):
+        return f'<EAQuestion {self.text}>'

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './EaseMind.css';
 import { AuthTokenContext } from '../../App';
 
@@ -17,13 +17,32 @@ function PersonalDetails() {
   });
 
   const [ageValidationMessage, setAgeValidationMessage] = useState('');
-  const [formSubmissionMessage, setFormSubmissionMessage] = useState(''); // State to store form submission status message
+  const [formValidationMessage, setFormValidationMessage] = useState('');
+  const [formSubmissionMessage, setFormSubmissionMessage] = useState('');
+  const [fetchError, setFetchError] = useState(''); // State for fetch errors
   const { token } = useContext(AuthTokenContext);
 
-  const handleUserDetailsChange = (e) => {
-    const { name, value } = e.target;
-    setUserDetails((prevState) => ({ ...prevState, [name]: value }));
-  };
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const endpoint = 'http://127.0.0.1:5000/get_epersonal_details';
+      try {
+        const response = await fetch(endpoint, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch details');
+        }
+        const data = await response.json();
+        setUserDetails(data);
+      } catch (error) {
+        setFetchError('Error fetching user details. Please try again.'); // Update to display error to user
+      }
+    };
+
+    fetchUserDetails();
+  }, [token]);
 
   const isAgeAbove18 = (dob) => {
     const birthDate = new Date(dob);
@@ -34,6 +53,31 @@ function PersonalDetails() {
       return age - 1;
     }
     return age;
+  };
+
+  const handleUserDetailsChange = (e) => {
+    const { name, value } = e.target;
+    setUserDetails((prevState) => ({ ...prevState, [name]: value }));
+    setFormValidationMessage('');
+    setAgeValidationMessage('');
+  };
+
+  const validateForm = () => {
+    // Check if any field is empty
+    const allFieldsFilled = Object.values(userDetails).every((value) => value.trim() !== '');
+    if (!allFieldsFilled) {
+      setFormValidationMessage('All fields are required.');
+      return false;
+    }
+
+    // Check if age is above 18
+    if (isAgeAbove18(userDetails.DOB) < 18) {
+      setAgeValidationMessage('You must be older than 18 to use this service.');
+      return false;
+    }
+
+    // Passes all validations
+    return true;
   };
 
   const saveDetailsToDatabase = async () => {
@@ -62,17 +106,15 @@ function PersonalDetails() {
   const saveDetails = async (e) => {
     e.preventDefault();
     setFormSubmissionMessage('');
+    setFormValidationMessage('');
     setAgeValidationMessage('');
 
-    if (isAgeAbove18(userDetails.DOB) < 18) {
-      setAgeValidationMessage('You must be older than 18 to use this service.');
-    } else {
+    if (validateForm()) {
       try {
-        // Now using `token` directly without calling useContext here
-        const message = await saveDetailsToDatabase(); // Adjusted to not pass token as it's directly accessible
+        const message = await saveDetailsToDatabase();
         setFormSubmissionMessage(message);
       } catch (error) {
-        setFormSubmissionMessage(error.message);
+        setFormSubmissionMessage('Error saving details. Please try again.'); // More user-friendly error message
       }
     }
   };
@@ -83,6 +125,8 @@ function PersonalDetails() {
       <form onSubmit={saveDetails}>
         <label>
           First Name:
+          {' '}
+          <span className="compulsory-field">*</span>
           <input
             type="text"
             name="firstName"
@@ -93,6 +137,8 @@ function PersonalDetails() {
 
         <label>
           Last Name:
+          {' '}
+          <span className="compulsory-field">*</span>
           <input
             type="text"
             name="lastName"
@@ -104,6 +150,8 @@ function PersonalDetails() {
         {/* Date of Birth */}
         <label>
           Date of Birth:
+          {' '}
+          <span className="compulsory-field">*</span>
           <input
             type="date"
             name="DOB"
@@ -115,6 +163,8 @@ function PersonalDetails() {
         {/* Gender */}
         <label>
           Gender:
+          {' '}
+          <span className="compulsory-field">*</span>
           <select name="gender" value={userDetails.gender} onChange={handleUserDetailsChange}>
             <option value="">Select Gender</option>
             <option value="Male">Male</option>
@@ -126,6 +176,8 @@ function PersonalDetails() {
         {/* Address inputs */}
         <label>
           House Number:
+          {' '}
+          <span className="compulsory-field">*</span>
           <input
             type="text"
             name="houseNumber"
@@ -136,6 +188,8 @@ function PersonalDetails() {
 
         <label>
           Street Name:
+          {' '}
+          <span className="compulsory-field">*</span>
           <input
             type="text"
             name="streetName"
@@ -146,6 +200,8 @@ function PersonalDetails() {
 
         <label>
           Post Code:
+          {' '}
+          <span className="compulsory-field">*</span>
           <input
             type="text"
             name="postCode"
@@ -156,6 +212,8 @@ function PersonalDetails() {
 
         <label>
           City:
+          {' '}
+          <span className="compulsory-field">*</span>
           <input
             type="text"
             name="city"
@@ -166,6 +224,8 @@ function PersonalDetails() {
 
         <label>
           Country:
+          {' '}
+          <span className="compulsory-field">*</span>
           <input
             type="text"
             name="country"
@@ -177,6 +237,8 @@ function PersonalDetails() {
         {/* Highest Education Level */}
         <label>
           Highest Education Level:
+          {' '}
+          <span className="compulsory-field">*</span>
           <select name="highestEducation" value={userDetails.highestEducation} onChange={handleUserDetailsChange}>
             <option value="">Select Education Level</option>
             <option value="Early Years">Early Years</option>
@@ -194,11 +256,13 @@ function PersonalDetails() {
         </div>
       </form>
 
-      {/* Display age validation message if present */}
+      {/* Display validation and error messages */}
+      {formValidationMessage && <p className="error">{formValidationMessage}</p>}
       {ageValidationMessage && <p className="error">{ageValidationMessage}</p>}
-
-      {/* Display form submission message if present */}
       {formSubmissionMessage && <p className="message">{formSubmissionMessage}</p>}
+      {fetchError && <p className="error">{fetchError}</p>}
+      {' '}
+      {/* Display fetch error */}
     </div>
   );
 }
