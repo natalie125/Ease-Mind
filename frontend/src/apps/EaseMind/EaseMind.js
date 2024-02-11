@@ -39,7 +39,7 @@ function EaseMind() {
         <ChatBox />
       </div>
 
-      {showPopUp && <PopUp onClose={handlePopUpClose} />}
+      {showPopUp && <PopUp onClose={() => setShowPopUp(false)} />}
     </div>
   );
 }
