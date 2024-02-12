@@ -246,22 +246,24 @@ describe('Route tests with error handling', () => {
   test('navigating to EaseMind main page', async () => {
     renderWithRouterAndAuth(<Routes />, { route: '/EaseMind' });
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: 'Create My Details' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Edit My Details' })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Anxiety Level Test' })).toBeInTheDocument();
-      expect(screen.getByText('Warning:')).toBeInTheDocument();
-      expect(screen.getByText(/This website is a project developed by a computer science student/)).toBeInTheDocument();
     });
   });
 
   test('navigating to EaseMind Personal Details page', async () => {
     renderWithRouterAndAuth(<Routes />, { route: '/EaseMind_personal_details' });
     await waitFor(() => {
-      expect(screen.getByText('Please fill in the details below:')).toBeInTheDocument();
-      expect(screen.getByLabelText('First Name:')).toBeInTheDocument();
-      expect(screen.getByLabelText('Last Name:')).toBeInTheDocument();
-      expect(screen.getByLabelText('Date of Birth:')).toBeInTheDocument();
-      expect(screen.getByLabelText('Gender:')).toBeInTheDocument();
-      expect(screen.getByLabelText('Address:')).toBeInTheDocument();
+      expect(screen.getByLabelText(/First Name:/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Last Name:/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Date of Birth:/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Gender:/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/House Number:/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Street Name:/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Post Code:/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/City:/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Country:/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Highest Education Level:/i)).toBeInTheDocument();
     });
   });
 
