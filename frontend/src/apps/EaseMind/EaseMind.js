@@ -36,6 +36,9 @@ function EaseMind() {
         <Link to="/EaseMind_anxiety-level-test">
           <button type="button" className="easeMindButton">Anxiety Level Test</button>
         </Link>
+        <Link to="/EaseMind_report">
+          <button type="button" className="easeMindButton">Report</button>
+        </Link>
         <ChatBox />
       </div>
 
