@@ -5,6 +5,7 @@ from app import db
 from app.models import EPersonalDetails, EATestResult, EAQuestion
 from app.endpoints import auth_bp
 from datetime import datetime
+from sqlalchemy import extract
 
 app = Flask(__name__)
 CORS(app)
@@ -135,6 +136,46 @@ def submit_test_result():
     db.session.commit()
 
     return jsonify({"message": "Test score saved successfully"}), 201
+
+@auth_bp.route('/get_test_results', methods=['GET'])
+@jwt_required()
+def get_test_results():
+    current_user_id = get_jwt_identity()
+    granularity = request.args.get('granularity', 'monthly')  # Default to monthly if not specified
+
+    # Base query
+    base_query = EATestResult.query.filter_by(user_id=current_user_id)
+
+    # Modify the query based on the granularity
+    if granularity == 'yearly':
+        results = base_query \
+            .with_entities(
+                extract('year', EATestResult.created_at).label('year'),
+                db.func.avg(EATestResult.score).label('average_score')
+            ) \
+            .group_by('year') \
+            .all()
+        formatted_results = [{'date': str(year), 'score': average_score} for year, average_score in results]
+
+    elif granularity == 'monthly':
+        results = base_query \
+            .with_entities(
+                extract('year', EATestResult.created_at).label('year'),
+                extract('month', EATestResult.created_at).label('month'),
+                db.func.avg(EATestResult.score).label('average_score')
+            ) \
+            .group_by('year', 'month') \
+            .all()
+        formatted_results = [{'date': f"{int(year)}-{int(month):02d}", 'score': average_score} for year, month, average_score in results]
+
+    elif granularity == 'daily':
+        results = base_query.all()
+        formatted_results = [{'date': result.created_at.strftime('%Y-%m-%d'), 'score': result.score} for result in results]
+
+    if formatted_results:
+        return jsonify(formatted_results), 200
+    else:
+        return jsonify({"message": "No test results found for the user"}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)
