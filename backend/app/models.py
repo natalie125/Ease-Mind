@@ -22,7 +22,7 @@ class Users(db.Model):
             raise AssertionError('Email address missing "@" symbol')
         # return email field and chain validate the password
         return email
-    
+
     #relationship to EPersonalDetails. uselist=False to ensure one-to-one.
     epersonal_details = relationship('EPersonalDetails', back_populates='user', uselist=False)
 
@@ -38,6 +38,41 @@ class RootRadarMVPTest(db.Model):
     text = db.Column(db.String(500))
 
 # ---------------------------------------------------------------------------- #
+
+class Patient(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    PatientAge = db.Column(db.Float)
+    GenesInMothersSide = db.Column(db.Float)
+    InheritedFromFather = db.Column(db.Float)
+    MaternalGene = db.Column(db.Float)
+    PaternalGene = db.Column(db.Float)
+    BloodCellCount_mcL = db.Column(db.Float)
+    MothersAge = db.Column(db.Float)
+    FathersAge = db.Column(db.Float)
+    RespiratoryRate_breathsPerMin = db.Column(db.Float)
+    HeartRate_ratesPermin = db.Column(db.Float)
+    Gender = db.Column(db.Float)
+    BirthAsphyxia = db.Column(db.Float)
+    FolicAcidDetails_periConceptiona = db.Column(db.Float)
+    HistoryOfSeriousMaternalIllness = db.Column(db.Float)
+    HistoryOfRadiationExposure_xRay = db.Column(db.Float)
+    HistoryOfSubstanceAbuse = db.Column(db.Float)
+    AssistedConception_IVF_ART = db.Column(db.Float)
+    HistoryOfAnomaliesInPreviousPregnancies = db.Column(db.Float)
+    NumberOfPreviousAbortions = db.Column(db.Float)
+    BirthDefects = db.Column(db.Float)
+    WhiteBloodCellCount_thousand_per_microliter = db.Column(db.Float)
+    BloodTestResult = db.Column(db.Float)
+    Symptom1 = db.Column(db.Float)
+    Symptom2 = db.Column(db.Float)
+    Symptom3 = db.Column(db.Float)
+    Symptom4 = db.Column(db.Float)
+    Symptom5 = db.Column(db.Float)
+    DisorderSubclass = db.Column(db.Float)
+    DisorderSubclassPredicted = db.Column(db.Float)
+
+# ---------------------------------------------------------------------------- #
+
 #Personal details for EaseMind
 class EPersonalDetails(db.Model):
     __tablename__ = 'EPersonalDetails'
@@ -62,14 +97,14 @@ class EPersonalDetails(db.Model):
             birth_date = DOB
         else:
             birth_date = datetime.strptime(DOB, "%Y-%m-%d").date()
-        
+
         today = date.today()
         age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
         if age < 18:
             raise AssertionError('You must be older than 18 to use this service.')
-        
+
         return birth_date
-    
+
 #Anxiety test result for EaseMind
 class EATestResult(db.Model):
     id = db.Column(db.Integer, primary_key=True)
