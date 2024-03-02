@@ -105,40 +105,122 @@ def new_patient():
   query = request.get_json()['patients']
   for patient in query:
     patient.insert(0,0) # HACK to fix 1 based index
+    print(f"\n\npatient = {patient}\n\n")
+    # TODO: model validation?
     new_record = models.Patient(
-      PatientAge = patient[1],
-      GenesInMothersSide = patient[2],
-      InheritedFromFather = patient[3],
-      MaternalGene = patient[4],
-      PaternalGene = patient[5],
-      BloodCellCount_mcL = patient[6],
-      MothersAge = patient[7],
-      FathersAge = patient[8],
-      RespiratoryRate_breathsPerMin = patient[9],
-      HeartRate_ratesPermin = patient[10],
-      Gender = patient[11],
-      BirthAsphyxia = patient[12],
-      FolicAcidDetails_periConceptiona = patient[13],
-      HistoryOfSeriousMaternalIllness = patient[14],
-      HistoryOfRadiationExposure_xRay = patient[15],
-      HistoryOfSubstanceAbuse = patient[16],
-      AssistedConception_IVF_ART = patient[17],
-      HistoryOfAnomaliesInPreviousPregnancies = patient[18],
-      NumberOfPreviousAbortions = patient[19],
-      BirthDefects = patient[20],
-      WhiteBloodCellCount_thousand_per_microliter = patient[21],
-      BloodTestResult = patient[22],
-      Symptom1 = patient[23],
-      Symptom2 = patient[24],
-      Symptom3 = patient[25],
-      Symptom4 = patient[26],
-      Symptom5 = patient[27],
-      DisorderSubclass = patient[28],
+      PatientAge = float(patient[1]),
+      GenesInMothersSide = float(patient[2]),
+      InheritedFromFather = float(patient[3]),
+      MaternalGene = float(patient[4]),
+      PaternalGene = float(patient[5]),
+      BloodCellCount_mcL = float(patient[6]),
+      MothersAge = float(patient[7]),
+      FathersAge = float(patient[8]),
+      RespiratoryRate_breathsPerMin = float(patient[9]),
+      HeartRate_ratesPermin = float(patient[10]),
+      Gender = float(patient[11]),
+      BirthAsphyxia = float(patient[12]),
+      FolicAcidDetails_periConceptiona = float(patient[13]),
+      HistoryOfSeriousMaternalIllness = float(patient[14]),
+      HistoryOfRadiationExposure_xRay = float(patient[15]),
+      HistoryOfSubstanceAbuse = float(patient[16]),
+      AssistedConception_IVF_ART = float(patient[17]),
+      HistoryOfAnomaliesInPreviousPregnancies = float(patient[18]),
+      NumberOfPreviousAbortions = float(patient[19]),
+      BirthDefects = float(patient[20]),
+      WhiteBloodCellCount_thousand_per_microliter = float(patient[21]),
+      BloodTestResult = float(patient[22]),
+      Symptom1 = float(patient[23]),
+      Symptom2 = float(patient[24]),
+      Symptom3 = float(patient[25]),
+      Symptom4 = float(patient[26]),
+      Symptom5 = float(patient[27]),
+      DisorderSubclass = float(patient[28]), # TODO Could be '' in which case do None
       DisorderSubclassPredicted = None
     )
     db.session.add(new_record)
 
   db.session.commit()
   response = make_response(jsonify({"msg": "Patient Added"}))
+  response.status_code = 200
+  return response
+
+@auth_bp.route('/api/roots-radar/list-patients', methods=['GET'])
+def list_patients():
+  patients = models.Patient.query.all()
+  r = [{
+        "PatientID": p.id,
+        "PatientAge": p.PatientAge,
+        "GenesInMothersSide": p.GenesInMothersSide,
+        "InheritedFromFather": p.InheritedFromFather,
+        "MaternalGene": p.MaternalGene,
+        "PaternalGene": p.PaternalGene,
+        "BloodCellCount_mcL": p.BloodCellCount_mcL,
+        "MothersAge": p.MothersAge,
+        "FathersAge": p.FathersAge,
+        "RespiratoryRate_breathsPerMin": p.RespiratoryRate_breathsPerMin,
+        "HeartRate_ratesPermin": p.HeartRate_ratesPermin,
+        "Gender": p.Gender,
+        "BirthAsphyxia": p.BirthAsphyxia,
+        "FolicAcidDetails_periConceptiona": p.FolicAcidDetails_periConceptiona,
+        "HistoryOfSeriousMaternalIllness": p.HistoryOfSeriousMaternalIllness,
+        "HistoryOfRadiationExposure_xRay": p.HistoryOfRadiationExposure_xRay,
+        "HistoryOfSubstanceAbuse": p.HistoryOfSubstanceAbuse,
+        "AssistedConception_IVF_ART": p.AssistedConception_IVF_ART,
+        "HistoryOfAnomaliesInPreviousPregnancies": p.HistoryOfAnomaliesInPreviousPregnancies,
+        "NumberOfPreviousAbortions": p.NumberOfPreviousAbortions,
+        "BirthDefects": p.BirthDefects,
+        "WhiteBloodCellCount_thousand_per_microliter": p.WhiteBloodCellCount_thousand_per_microliter,
+        "BloodTestResult": p.BloodTestResult,
+        "Symptom1": p.Symptom1,
+        "Symptom2": p.Symptom2,
+        "Symptom3": p.Symptom3,
+        "Symptom4": p.Symptom4,
+        "Symptom5": p.Symptom5,
+        "DisorderSubclass": p.DisorderSubclass,
+        "DisorderSubclassPredicted": p.DisorderSubclassPredicted
+      } for p in patients
+  ]
+  response = make_response(jsonify({"patients": r}))
+  response.status_code = 200
+  return response
+
+@auth_bp.route('/api/roots-radar/number_of_patients_without_prediction', methods=['GET'])
+def number_of_patients_without_prediction():
+  patients = models.Patient.query.filter_by(DisorderSubclassPredicted=None)
+  r = [{
+        "PatientID": p.id,
+        "PatientAge": p.PatientAge,
+        "GenesInMothersSide": p.GenesInMothersSide,
+        "InheritedFromFather": p.InheritedFromFather,
+        "MaternalGene": p.MaternalGene,
+        "PaternalGene": p.PaternalGene,
+        "BloodCellCount_mcL": p.BloodCellCount_mcL,
+        "MothersAge": p.MothersAge,
+        "FathersAge": p.FathersAge,
+        "RespiratoryRate_breathsPerMin": p.RespiratoryRate_breathsPerMin,
+        "HeartRate_ratesPermin": p.HeartRate_ratesPermin,
+        "Gender": p.Gender,
+        "BirthAsphyxia": p.BirthAsphyxia,
+        "FolicAcidDetails_periConceptiona": p.FolicAcidDetails_periConceptiona,
+        "HistoryOfSeriousMaternalIllness": p.HistoryOfSeriousMaternalIllness,
+        "HistoryOfRadiationExposure_xRay": p.HistoryOfRadiationExposure_xRay,
+        "HistoryOfSubstanceAbuse": p.HistoryOfSubstanceAbuse,
+        "AssistedConception_IVF_ART": p.AssistedConception_IVF_ART,
+        "HistoryOfAnomaliesInPreviousPregnancies": p.HistoryOfAnomaliesInPreviousPregnancies,
+        "NumberOfPreviousAbortions": p.NumberOfPreviousAbortions,
+        "BirthDefects": p.BirthDefects,
+        "WhiteBloodCellCount_thousand_per_microliter": p.WhiteBloodCellCount_thousand_per_microliter,
+        "BloodTestResult": p.BloodTestResult,
+        "Symptom1": p.Symptom1,
+        "Symptom2": p.Symptom2,
+        "Symptom3": p.Symptom3,
+        "Symptom4": p.Symptom4,
+        "Symptom5": p.Symptom5,
+        "DisorderSubclass": p.DisorderSubclass,
+        "DisorderSubclassPredicted": p.DisorderSubclassPredicted
+      } for p in patients
+  ]
+  response = make_response(jsonify({"patients": r}))
   response.status_code = 200
   return response

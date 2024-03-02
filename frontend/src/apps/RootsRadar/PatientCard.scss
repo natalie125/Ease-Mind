@@ -1,0 +1,16 @@
+.PatientCardComponent {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid darkblue;
+  >div {
+    display: flex;
+    gap: 0.2rem;
+    .dots {
+      flex-basis: 1;
+      flex-grow:1;
+      border-bottom: 1px dotted black;
+      margin-bottom: 0.25rem;
+    }
+  }
+}

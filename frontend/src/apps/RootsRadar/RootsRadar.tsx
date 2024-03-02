@@ -49,7 +49,34 @@ function RootsRadar() {
 
   return (
     <div>
+      <br />
       <h1>Roots Radar</h1>
+      <br />
+      <a href="/roots-radar/add-new-patient-basic">Add new patient (basic)</a>
+      <br />
+      <br />
+      <a href="/roots-radar/make-models-from-database">Make Model From Database</a>
+      <br />
+      <br />
+      <a href="/roots-radar/get-patients">List Patients</a>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <hr />
+      <br />
+      <br />
+      <br />
+      <br />
+      <h2>MVP Database Stuff</h2>
+      <br />
+      <br />
       <p>
         id:
         {id}

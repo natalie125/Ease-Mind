@@ -71,6 +71,9 @@ class Patient(db.Model):
     DisorderSubclass = db.Column(db.Float)
     DisorderSubclassPredicted = db.Column(db.Float)
 
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 # ---------------------------------------------------------------------------- #
 
 #Personal details for EaseMind

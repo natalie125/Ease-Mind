@@ -33,6 +33,9 @@ import DipstikCamera from './apps/Dipstik/DipstikCamera';
 import DipstikResults from './apps/Dipstik/DipstikResults';
 
 import RootsRadar from './apps/RootsRadar/RootsRadar';
+import AddNewPatientBasic from './apps/RootsRadar/AddNewPatientBasic';
+import MakeModelFromDatabase from './apps/RootsRadar/MakeModelFromDatabase';
+import GetPatients from './apps/RootsRadar/GetPatients';
 
 import AutismDetector from './apps/AutismDetector/AutismDetector';
 
@@ -93,6 +96,9 @@ function Routes() {
         </Route>
 
         <Route path="/roots-radar" element={<RootsRadar />} />
+        <Route path="/roots-radar/add-new-patient-basic" element={<AddNewPatientBasic />} />
+        <Route path="/roots-radar/make-models-from-database" element={<MakeModelFromDatabase />} />
+        <Route path="/roots-radar/get-patients" element={<GetPatients />} />
 
         <Route path="/EaseMind" element={<EaseMind />} />
         <Route path="/EaseMind_personal_details" element={<EaseMindPersonalDetails />} />

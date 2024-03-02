@@ -1,0 +1,29 @@
+.GetPatientsComponent {
+  padding: 1rem;
+  text-align: left;
+
+  .back-link {
+    text-decoration: none;
+    font-size: medium;
+    font-weight: 600;
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  h2 {
+    margin: 1rem 0;
+    font-size: 2rem;
+  }
+  .patients {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  }
+  #patients_search_input {
+    margin-bottom: 0;
+  }
+  >hr {
+    margin: 1rem 0;
+  }
+}
