@@ -1,5 +1,5 @@
 from app import db
-from sqlalchemy.orm import validates, relationship
+from sqlalchemy.orm import validates, relationship, backref
 from datetime import datetime, date
 
 class Users(db.Model):
@@ -86,3 +86,39 @@ class EAQuestion(db.Model):
 
     def __repr__(self):
         return f'<EAQuestion {self.text}>'
+
+#Social Phobia Inventory Test Question for EaseMind
+class SPINQuestion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(500))  # The text of the question
+
+    def __repr__(self):
+        return f'<SPINQuestion {self.text}>'
+
+#Social Phobia Inventory Test Result for EaseMind
+class SPINTestResult(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    score = db.Column(db.Integer, nullable=False)  # The score from the test
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)  # Timestamp of the test
+
+    user = relationship('Users', backref='spin_test_results') 
+
+#daily question 
+class DailyQuestion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    question_text = db.Column(db.String(500), nullable=False)
+    # Relationship to answers
+    answers = db.relationship('DailyQAnswer', backref='daily_question', lazy=True)
+
+    def __repr__(self):
+        return f'<DailyQuestion {self.question_text}>'
+
+#daily question answers
+class DailyQAnswer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    question_id = db.Column(db.Integer, db.ForeignKey('daily_question.id'), nullable=False)
+    answer = db.Column(db.Text)
+
+    def __repr__(self):
+        return f"<Answer {self.id}>"

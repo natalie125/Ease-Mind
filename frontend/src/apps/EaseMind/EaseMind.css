@@ -112,3 +112,8 @@ select:focus {
 .compulsory-field {
   color: red;
 }
+
+.chatBoxMessages {
+  max-height: 300px; /* Adjust the height as needed */
+  overflow-y: auto; /* Enables vertical scrolling */
+}
