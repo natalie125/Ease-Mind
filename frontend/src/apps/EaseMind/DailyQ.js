@@ -4,8 +4,8 @@ import { AuthTokenContext } from '../../App';
 
 function DailyQuestions() {
   const [currentQuestion, setCurrentQuestion] = useState(null);
-  const [answer, setAnswer] = useState(''); // Temporary storage for the current answer (replaces currentAnswer)
-  const [answers, setAnswers] = useState([]); // Array to hold all answers
+  const [answer, setAnswer] = useState('');
+  const [answers, setAnswers] = useState([]);
   const [error, setError] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
   const [isLastQuestion, setIsLastQuestion] = useState(false);
@@ -49,6 +49,16 @@ function DailyQuestions() {
     }
   };
 
+  // Adjusted: Moved the definition of resetComponentState before its use
+  function resetComponentState() {
+    setCurrentQuestion(null);
+    setAnswer('');
+    setAnswers([]);
+    setError('');
+    setCurrentQuestionIndex(1);
+    setIsLastQuestion(false);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const finalAnswers = [...answers, { question_id: currentQuestion.id, answer }];
@@ -65,9 +75,16 @@ function DailyQuestions() {
         }),
       });
 
+      const responseData = await response.json();
+
       if (response.ok) {
-        alert('Your answers have been submitted. Thank you!');
-        // Reset states or redirect as necessary
+        const message = responseData.crisis_status === 'Yes'
+          ? 'Your answers have been submitted. If you are in crisis, call Samaritans. Hours: Available 24 hours. 116 123.'
+          : 'Your answers have been submitted. Thank you! Have a nice day.';
+
+        alert(message);
+
+        resetComponentState();
       } else {
         setError('Failed to submit the answers. Please try again later.');
       }
@@ -77,7 +94,7 @@ function DailyQuestions() {
   };
 
   if (error) {
-    return <div className="error-message">{error}</div>; // Display the error
+    return <div className="error-message">{error}</div>;
   }
 
   if (!currentQuestion) {
@@ -93,11 +110,9 @@ function DailyQuestions() {
           onChange={handleAnswerChange}
           placeholder="Your answer here"
         />
-        {isLastQuestion ? (
-          <button type="submit">Submit Answers</button>
-        ) : (
-          <button type="button" onClick={handleNext}>Next Question</button>
-        )}
+        {isLastQuestion
+          ? <button type="submit">Submit Answers</button>
+          : <button type="button" onClick={handleNext}>Next Question</button>}
       </form>
     </div>
   );

@@ -331,8 +331,6 @@ def get_question(question_id):
     else:
         return jsonify({'error': 'Question not found'}), 404
 
-
-
 # from model_predict.py
 @auth_bp.route('/submit_dailyanswers', methods=['POST'])
 def submit_answers():
@@ -340,11 +338,9 @@ def submit_answers():
     tokenizer_path = os.path.join(ease_mind_directory, 'tokenizer.pickle')
     model_path = os.path.join(ease_mind_directory, 'my_model.h5')
 
-    # Load the saved tokenizer
     with open(tokenizer_path, 'rb') as handle:
         tokenizer = pickle.load(handle)
 
-    # load model
     model = load_model(model_path)
 
     data = request.json
@@ -353,31 +349,28 @@ def submit_answers():
     if not answers:
         return jsonify({'error': 'No answers provided'}), 400
 
-    response_data = []  # To collect response data
+    crisis_detected = False  # Initialize crisis detection flag
 
     for answer_data in answers:
         question_id = answer_data.get('question_id')
         answer_text = answer_data.get('answer')
 
-        # Convert answer text to sequence
         sequence = tokenizer.texts_to_sequences([answer_text])
         padded_sequence = pad_sequences(sequence, maxlen=100)
         prediction = model.predict(padded_sequence)
-        
-        # Determine word detection ('Yes' for positive, 'No' for negative, in this simplified case)
+
         word_detection = 'Yes' if prediction[0][0] > 0.5 else 'No'
         
-        # Save to database
+        if word_detection == 'Yes':
+            crisis_detected = True
+
         answer = DailyQAnswer(question_id=question_id, answer=answer_text, word_detection=word_detection)
         db.session.add(answer)
 
-        # Add to response data
-        response_data.append({'question_id': question_id, 'word_detection': word_detection})
-
     db.session.commit()
-    
-    # Return the word detection result for each answer
-    return jsonify({'message': 'Answers submitted successfully', 'data': response_data}), 200
+
+    crisis_status = "Yes" if crisis_detected else "No"
+    return jsonify({'message': 'Answers submitted successfully', 'crisis_status': crisis_status}), 200
 
 # Ai chatbot
 import openai
