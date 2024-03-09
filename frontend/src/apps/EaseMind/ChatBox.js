@@ -6,13 +6,13 @@ function ChatBox() {
   const [input, setInput] = useState('');
   const [isMinimized, setIsMinimized] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
-  const [currentOptions, setCurrentOptions] = useState([]);
-
+  const [isChattingWithAI, setIsChattingWithAI] = useState(false);
   const initialOptions = [
     { text: 'General enquiry', id: 1 },
     { text: 'Advice based on anxiety level', id: 2 },
-    { text: 'Daily question', id: 3 },
+    { text: 'Chat with AI', id: 3 },
   ];
+  const [currentOptions, setCurrentOptions] = useState(initialOptions);
 
   const optionAfterInitial = [
     { text: 'Advice for anxiety', id: 4 },
@@ -43,12 +43,38 @@ function ChatBox() {
     addMessage('Hi! How can I help you today?');
   }, []);
 
-  const sendMessage = (event) => {
+  const sendMessage = async (event) => {
     event.preventDefault();
-    if (input.trim() !== '') {
-      addMessage(input);
+    const userMessage = input.trim();
+
+    if (userMessage !== '') {
+      const newMessage = { id: `user-${Date.now()}`, text: userMessage, sender: 'user' };
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
       setInput('');
-      setCurrentOptions([]);
+
+      if (isChattingWithAI) {
+        try {
+          const response = await fetch('http://127.0.0.1:5000/aichat', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: userMessage }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const data = await response.json();
+          const aiResponse = { id: `ai-${Date.now()}`, text: data.response, sender: 'ai' };
+          setMessages((prevMessages) => [...prevMessages, aiResponse]);
+        } catch (error) {
+          console.error('Failed to fetch AI response:', error);
+          const errorMessage = { id: `error-${Date.now()}`, text: 'Sorry, something went wrong.', sender: 'system' };
+          setMessages((prevMessages) => [...prevMessages, errorMessage]);
+        }
+      }
     }
   };
 
@@ -68,18 +94,19 @@ function ChatBox() {
     } else if (option.id === 2) {
       // Implement the logic for "Advice based on anxiety level"
     } else if (option.id === 3) {
-      // Implement the logic for "chat with AI"
+      setIsChattingWithAI(true);
+      setCurrentOptions([]);
     } else if (option.id === 4) {
       const anxietyExplanation = 'Anxiety is a feeling of unease, such as worry or fear, that can be mild or severe. '
-      + '\n\nEveryone has feelings of anxiety at some point in their life. For example, you may feel worried and anxious about sitting an exam, '
-      + 'or having a medical test or job interview. During times like these, feeling anxious can be perfectly normal. '
-      + '\n\nBut some people find it hard to control their worries. Their feelings of anxiety are more constant and can often affect their daily lives. '
-      + '\n\nAnxiety is the main symptom of several conditions, including: '
-      + '\n1. panic disorder '
-      + '\n2. phobias, such as agoraphobia or claustrophobia '
-      + '\n3. post-traumatic stress disorder (PTSD) '
-      + '\n4. social anxiety disorder (social phobia) '
-      + '\nPlease choose the following option to get advice for different anxiety.';
+        + '\n\nEveryone has feelings of anxiety at some point in their life. For example, you may feel worried and anxious about sitting an exam, '
+        + 'or having a medical test or job interview. During times like these, feeling anxious can be perfectly normal. '
+        + '\n\nBut some people find it hard to control their worries. Their feelings of anxiety are more constant and can often affect their daily lives. '
+        + '\n\nAnxiety is the main symptom of several conditions, including: '
+        + '\n1. panic disorder '
+        + '\n2. phobias, such as agoraphobia or claustrophobia '
+        + '\n3. post-traumatic stress disorder (PTSD) '
+        + '\n4. social anxiety disorder (social phobia) '
+        + '\nPlease choose the following option to get advice for different anxiety.';
       addMessage(anxietyExplanation);
       setCurrentOptions(optionsAfterAnxiety);
     } else if (option.id === 5) {
@@ -89,12 +116,12 @@ function ChatBox() {
       setCurrentOptions(optionsAfterSpecificAnxiety);
     } else if (option.id === 6) {
       const anxietyTriggersMessage = 'Everyone\'s experience of anxiety is different, so it\'s hard to know exactly what causes anxiety problems. There are probably lots of factors involved.'
-      + '\n\nThe following link covers some things which make anxiety problems more likely to happen:'
-      + '\n1. past or childhood experiences'
-      + '\n2. your current life situation'
-      + '\n3. physical and mental health problems'
-      + '\n4. drugs and medication'
-      + '\nlink: https://www.mind.org.uk/information-support/types-of-mental-health-problems/anxiety-and-panic-attacks/causes/';
+        + '\n\nThe following link covers some things which make anxiety problems more likely to happen:'
+        + '\n1. past or childhood experiences'
+        + '\n2. your current life situation'
+        + '\n3. physical and mental health problems'
+        + '\n4. drugs and medication'
+        + '\nlink: https://www.mind.org.uk/information-support/types-of-mental-health-problems/anxiety-and-panic-attacks/causes/';
       addMessage(anxietyTriggersMessage);
       askIfMoreQuestions();
       setCurrentOptions(optionsAfterSpecificAnxiety);
@@ -170,6 +197,12 @@ function ChatBox() {
     }
   };
 
+  const endAIChatSession = () => {
+    setIsChattingWithAI(false);
+    addMessage('AI chat session ended. How can I help you now?');
+    setCurrentOptions(initialOptions); // Reset to initial options
+  };
+
   const toggleMinimize = () => {
     setIsMinimized(!isMinimized);
   };
@@ -192,16 +225,18 @@ function ChatBox() {
               {messages.map((message) => (
                 <div key={message.id} className="message">{message.text}</div>
               ))}
-              {currentOptions.map((option) => (
-                <button
-                  key={option.id}
-                  type="button"
-                  onClick={() => sendPredefinedMessage(option)}
-                  className="predefinedOptionButton"
-                >
-                  {option.text}
-                </button>
-              ))}
+              <div className="optionsContainer">
+                {currentOptions.map((option) => (
+                  <button
+                    key={option.id}
+                    onClick={() => sendPredefinedMessage(option)}
+                    type="button" // Explicitly setting the button type
+                    className="optionButton"
+                  >
+                    {option.text}
+                  </button>
+                ))}
+              </div>
             </div>
             <form className="chatBoxInput" onSubmit={sendMessage}>
               <input
@@ -212,6 +247,11 @@ function ChatBox() {
               />
               <button type="submit">Send</button>
             </form>
+            {isChattingWithAI && (
+              <button type="button" onClick={endAIChatSession} className="endChatButton">
+                End Chat with AI
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -220,5 +260,4 @@ function ChatBox() {
 }
 
 export default ChatBox;
-
 // https://www.nhs.uk/mental-health/conditions/generalised-anxiety-disorder/overview/#:~:text=Anxiety%20is%20a%20feeling%20of,medical%20test%20or%20job%20interview.

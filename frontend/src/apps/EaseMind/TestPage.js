@@ -15,6 +15,9 @@ function TestPage() {
         <Link to="/EaseMind_spin">
           <button type="button" className="easeMindButton">The Social Phobia Inventory</button>
         </Link>
+        <Link to="/EaseMind_pd">
+          <button type="button" className="easeMindButton">Panic Disorder Test</button>
+        </Link>
       </div>
     </div>
   );

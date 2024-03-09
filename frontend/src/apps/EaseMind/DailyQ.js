@@ -4,17 +4,21 @@ import { AuthTokenContext } from '../../App';
 
 function DailyQuestions() {
   const [currentQuestion, setCurrentQuestion] = useState(null);
-  const [answer, setAnswer] = useState('');
+  const [answer, setAnswer] = useState(''); // Temporary storage for the current answer (replaces currentAnswer)
+  const [answers, setAnswers] = useState([]); // Array to hold all answers
   const [error, setError] = useState('');
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1); // Assuming question IDs are sequential and start from 1
-  const { token } = useContext(AuthTokenContext); // If authentication is required
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
+  const [isLastQuestion, setIsLastQuestion] = useState(false);
+  const { token } = useContext(AuthTokenContext);
 
   useEffect(() => {
+    setIsLastQuestion(currentQuestionIndex === 10);
+
     const fetchQuestion = async () => {
       try {
         const response = await fetch(`http://127.0.0.1:5000/dailyquestion/${currentQuestionIndex}`, {
           headers: {
-            Authorization: `Bearer ${token}`, // Include this header only if your API requires authentication
+            Authorization: `Bearer ${token}`,
           },
         });
         if (response.ok) {
@@ -35,34 +39,45 @@ function DailyQuestions() {
     setAnswer(e.target.value);
   };
 
+  const handleNext = () => {
+    const newAnswer = { question_id: currentQuestion.id, answer };
+    setAnswers((prev) => [...prev, newAnswer]);
+    setAnswer('');
+
+    if (currentQuestionIndex < 10) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const finalAnswers = [...answers, { question_id: currentQuestion.id, answer }];
+
     try {
-      const response = await fetch('http://127.0.0.1:5000/submit_dailyanswer', {
+      const response = await fetch('http://127.0.0.1:5000/submit_dailyanswers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`, // Assuming your API requires authentication
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          question_id: currentQuestion.id, // No change here, as shorthand doesn't apply
-          answer, // ES6 object shorthand used here
+          answers: finalAnswers,
         }),
       });
 
       if (response.ok) {
-        setAnswer(''); // Clear the answer field for the next question
-        setCurrentQuestionIndex(currentQuestionIndex + 1); // Move to the next question
+        alert('Your answers have been submitted. Thank you!');
+        // Reset states or redirect as necessary
       } else {
-        setError('Failed to submit the answer. Please try again later.');
+        setError('Failed to submit the answers. Please try again later.');
       }
     } catch (submissionError) {
-      setError('An error occurred while submitting your answer.');
+      setError('An error occurred while submitting your answers.');
     }
   };
 
   if (error) {
-    return <div className="error-message">{error}</div>;
+    return <div className="error-message">{error}</div>; // Display the error
   }
 
   if (!currentQuestion) {
@@ -78,7 +93,11 @@ function DailyQuestions() {
           onChange={handleAnswerChange}
           placeholder="Your answer here"
         />
-        <button type="submit">Submit Answer</button>
+        {isLastQuestion ? (
+          <button type="submit">Submit Answers</button>
+        ) : (
+          <button type="button" onClick={handleNext}>Next Question</button>
+        )}
       </form>
     </div>
   );

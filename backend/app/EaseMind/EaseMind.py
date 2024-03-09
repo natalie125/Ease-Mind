@@ -2,15 +2,16 @@ from flask import Flask, request, jsonify, current_app
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
-from app.models import EPersonalDetails, EATestResult, EAQuestion, SPINQuestion, SPINTestResult, DailyQuestion, DailyQAnswer 
+from app.models import EPersonalDetails, EATestResult, EAQuestion, SPINQuestion, SPINTestResult, PDQuestion, PDTestResult, DailyQuestion, DailyQAnswer 
 from app.endpoints import auth_bp
 from datetime import datetime
 from sqlalchemy import extract
-import spacy
-from spacy.matcher import PhraseMatcher
-import nltk
-from nltk.corpus import wordnet as wn
-from textblob import TextBlob
+import traceback
+import pickle
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.models import load_model
+import os
+
 app = Flask(__name__)
 CORS(app)
 
@@ -220,8 +221,6 @@ def get_SPIN_questions():
     questions_data = [{'id': question.id, 'text': question.text} for question in questions]
     return jsonify(questions_data), 200
 
-from app.models import SPINTestResult  # Ensure to import SPINTestResult model
-
 @auth_bp.route('/submit_SPIN_result', methods=['POST'])
 @jwt_required()
 def submit_SPIN_test_result():
@@ -247,6 +246,59 @@ def submit_SPIN_test_result():
         current_app.logger.error(f'Unexpected error saving SPIN test result: {e}')
         return jsonify({"error": "Unable to save SPIN test result"}), 500
 
+PD_Question = [
+    "How many panic and limited symptoms attacks did you have during the week?",
+    "If you had any panic attacks during the past week, how distressing (uncomfortable, frightening) were they while they were happening? (if you had more than one, give an average rating. If you didn’t have any panic attacks but did have limited symptom attacks, answer for the limited symptom attacks)",
+    "During the past week, how much have you worried or felt anxious about when your next panic attack would occur or about fears related to the attacks (for example, that they could mean you have physical or mental health problems or could cause you social embarrassment)?",
+    "During the past week were there any places or situations (e.g., public transportation, movie theatres, crowds, bridges, tunnels, shopping centres, being alone) you avoided, or felt afraid of (uncomfortable in, wanted to avoid or leave), because of fear of having a panic attack? Are there any other situations that you would have avoided or been afraid of if they had come up during the week, for the same reason? If yes to either question, please rate your level of fear and avoidance this past week.",
+    "During the past week, were there any activities (e.g. physical exertion, sexual relations, taking a hot shower or bath, drinking coffee, watching an exciting or scary movie) that you avoided, or felt afraid of (uncomfortable doing, wanted to avoid or stop), because they caused physical sensations like those you feel during panic attacks or that you were afraid might trigger a panic attack? Are there any other activities that you would have avoided or been afraid of if they had come up during the week for that reason? If yes to either question, please rate your level of fear and avoidance of those activities this past week.",
+    "During the past week, how much did the above symptoms altogether (panic and limited symptom attacks, worry about attacks, and fear of situations and activities because of attacks) interfere with your ability to work or carry out your responsibilities at home? (If your work or home responsibilities were less than usual this past week, answer how you think you would have done if the responsibilities had been usual)",
+    "During the past week, how much did panic and limited symptom attacks, worry about attacks, and fear of situations and activities because of attacks interfere with your social life? (if you didn’t have many opportunities to socialize this past week, answer how you think you would have done if you did have opportunities.)"
+]
+
+for q_text in PD_Question :
+    # Check if the question already exists
+    exists = PDQuestion.query.filter_by(text=q_text).first()
+    
+    if not exists:
+        # Only add the question if it doesn't already exist
+        question = PDQuestion (text=q_text)
+        db.session.add(question)
+
+db.session.commit()
+
+@auth_bp.route('/PDquestions', methods=['GET'])
+@jwt_required()
+def get_PD_questions():
+    questions = PDQuestion.query.all()
+    questions_data = [{'id': question.id, 'text': question.text} for question in questions]
+    return jsonify(questions_data), 200
+
+@auth_bp.route('/submit_PD_result', methods=['POST'])
+@jwt_required()
+def submit_PD_test_result():
+    current_user_id = get_jwt_identity()
+    data = request.json
+
+    score = data.get('score')
+    if score is None:
+        return jsonify({"error": "Score is required."}), 400
+
+    try:
+        # Create a new PD test result instance
+        test_result = PDTestResult(user_id=current_user_id, score=score)
+        # Add the new test result to the database session
+        db.session.add(test_result)
+        # Commit the session to save the test result
+        db.session.commit()
+
+        # Explicitly return a status code
+        return jsonify({"message": "PD test score saved successfully", "score": score}), 200
+    except Exception as e:
+        # Log the exception and return an error message
+        current_app.logger.error(f'Unexpected error saving PD test result: {e}')
+        return jsonify({"error": "Unable to save PD test result"}), 500
+
 daily_questions = [
     "How are you feeling today, really? Physically and mentally.",
     "What’s taking up most of your headspace right now?",
@@ -260,16 +312,18 @@ daily_questions = [
     "What are you grateful for right now?"
 ]
 
-def populate_questions():
-    for q_text in daily_questions:
-        question_exists = DailyQuestion.query.filter_by(question_text=q_text).first() is not None
-        if not question_exists:
-            new_question = DailyQuestion(question_text=q_text)
-            db.session.add(new_question)
+for q_text in daily_questions :
+    # Check if the question already exists
+    exists = DailyQuestion.query.filter_by(question_text=q_text).first()
     
-    db.session.commit()
+    if not exists:
+        # Only add the question if it doesn't already exist
+        question = DailyQuestion (question_text=q_text)
+        db.session.add(question)
 
-@app.route('/dailyquestion/<int:question_id>', methods=['GET'])
+db.session.commit()
+
+@auth_bp.route('/dailyquestion/<int:question_id>', methods=['GET'])
 def get_question(question_id):
     question = DailyQuestion.query.get(question_id)
     if question:
@@ -277,84 +331,101 @@ def get_question(question_id):
     else:
         return jsonify({'error': 'Question not found'}), 404
 
-nltk.download('wordnet')
 
-# Load spaCy model with word vectors
-nlp = spacy.load("en_core_web_md")
 
-# Define keywords for detection by category
-keywords_by_category = {
-    "hopelessness": ["hopeless", "pointless", "no future", "nothing matters", "give up"],
-    "self_harm": ["self-harm", "cutting", "hurt myself", "end it all", "take my life"],
-    "worthlessness": ["worthless", "unlovable", "failure", "not good enough", "hate myself"],
-    "pain": ["can't take it anymore", "tired of living", "exhausted", "overwhelmed", "unbearable"],
-    "isolation": ["all alone", "no one cares", "left behind", "no friends", "isolated"],
-    "finality": ["final note", "last words", "won't see me", "goodbye", "my last"]
-}
+# from model_predict.py
+@auth_bp.route('/submit_dailyanswers', methods=['POST'])
+def submit_answers():
+    ease_mind_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'EaseMind'))
+    tokenizer_path = os.path.join(ease_mind_directory, 'tokenizer.pickle')
+    model_path = os.path.join(ease_mind_directory, 'my_model.h5')
 
-# Function to get synonyms from WordNet
-def get_synonyms(word):
-    synonyms = set()
-    for syn in wn.synsets(word):
-        for lemma in syn.lemmas():
-            synonyms.add(lemma.name().replace('_', ' '))
-    return list(synonyms)
+    # Load the saved tokenizer
+    with open(tokenizer_path, 'rb') as handle:
+        tokenizer = pickle.load(handle)
 
-# Expand each category of keywords with synonyms from WordNet
-expanded_keywords_by_category = {category: set() for category in keywords_by_category}
-for category, keywords in keywords_by_category.items():
-    for keyword in keywords:
-        expanded_keywords_by_category[category].update(get_synonyms(keyword))
-        expanded_keywords_by_category[category].add(keyword)
+    # load model
+    model = load_model(model_path)
 
-# Function to analyze text for distress signals
-def analyze_text_for_distress(text):
-    doc = nlp(text)
-    matched_categories = []
-
-    for category, keywords in expanded_keywords_by_category.items():
-        keyword_docs = [nlp(keyword) for keyword in keywords]  # Convert keywords to spaCy Docs
-        matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
-        patterns = [nlp.make_doc(keyword) for keyword in keywords]
-        matcher.add("DistressSignals", None, *patterns)
-        matches = matcher(doc)
-        if matches:
-            matched_categories.append(category)
-            continue
-
-        for token in doc:
-            for keyword_doc in keyword_docs:
-                if token.similarity(keyword_doc) > 0.5:
-                    matched_categories.append(category)
-                    break
-
-    return matched_categories
-
-@app.route('/submit_dailyanswer', methods=['POST'])
-def submit_answer():
     data = request.json
-    question_id = data.get('question_id')
-    answer_text = data.get('answer')
+    answers = data.get('answers')
     
-    answer = DailyQAnswer(question_id=question_id, answer=answer_text)
-    db.session.add(answer)
+    if not answers:
+        return jsonify({'error': 'No answers provided'}), 400
+
+    response_data = []  # To collect response data
+
+    for answer_data in answers:
+        question_id = answer_data.get('question_id')
+        answer_text = answer_data.get('answer')
+
+        # Convert answer text to sequence
+        sequence = tokenizer.texts_to_sequences([answer_text])
+        padded_sequence = pad_sequences(sequence, maxlen=100)
+        prediction = model.predict(padded_sequence)
+        
+        # Determine word detection ('Yes' for positive, 'No' for negative, in this simplified case)
+        word_detection = 'Yes' if prediction[0][0] > 0.5 else 'No'
+        
+        # Save to database
+        answer = DailyQAnswer(question_id=question_id, answer=answer_text, word_detection=word_detection)
+        db.session.add(answer)
+
+        # Add to response data
+        response_data.append({'question_id': question_id, 'word_detection': word_detection})
+
     db.session.commit()
     
-    categories = analyze_text_for_distress(answer_text)
-    if categories:
-        return jsonify({'message': 'Your response has been saved and will be reviewed.', 'categories': categories}), 200
+    # Return the word detection result for each answer
+    return jsonify({'message': 'Answers submitted successfully', 'data': response_data}), 200
+
+# Ai chatbot
+import openai
+from dotenv import load_dotenv
+import os
+# Load environment variables
+load_dotenv()
+
+# Set your OpenAI API key here
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+@auth_bp.route('/aichat', methods=['POST'])
+def chat_with_openai():
+    # Ensure request has JSON content
+    if not request.is_json:
+        return jsonify({"error": "Missing JSON in request"}), 400
+
+    # Extract the user message from the request
+    user_message = request.json.get('message')
+    if not user_message:
+        return jsonify({"error": "Missing 'message' in JSON payload"}), 400
+
+    # Preparing the conversation history if available
+    conversation_history = request.json.get('history', [])
+    messages = [
+        {"role": "system", "content": "You are a helpful assistant."},
+    ] + conversation_history + [
+        {"role": "user", "content": user_message},
+    ]
+
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages
+        )
+        # Append the latest response to the conversation history
+        conversation_history.append({"role": "user", "content": user_message})
+        conversation_history.append({"role": "assistant", "content": response.choices[0].message})
+
+        # Return both the response and the updated conversation history
+        return jsonify({
+            "response": response.choices[0].message,
+            "history": conversation_history
+        })
+    except Exception as e:
+        app.logger.error('Unhandled Exception: %s', traceback.format_exc())
+        return jsonify({"error": str(e)}), 500
+
     
-    return jsonify({'message': 'Your response has been saved.'}), 200
-
-@app.route('/analyze', methods=['POST'])
-def analyze():
-    data = request.json
-    responses = data['responses']
-    results = []
-    for response in responses:
-        categories = analyze_text_for_distress(response)
-        results.append({"response": response, "categories": categories})
-    return jsonify(results)
-
 if __name__ == '__main__':
     app.run(debug=True)

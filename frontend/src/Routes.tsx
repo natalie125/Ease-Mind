@@ -46,6 +46,7 @@ import EaseMindChatBox from './apps/EaseMind/ChatBox';
 import EaseMindReport from './apps/EaseMind/report';
 import EaseMindTestPage from './apps/EaseMind/TestPage';
 import EaseMindSPIN from './apps/EaseMind/SPIN';
+import EaseMindPD from './apps/EaseMind/panic';
 import EaseMindDailyQ from './apps/EaseMind/DailyQ';
 
 import DepressiLess from './apps/DepressiLess/DepressiLess';
@@ -104,6 +105,7 @@ function Routes() {
         <Route path="/EaseMind_report" element={<EaseMindReport />} />
         <Route path="/EaseMind_testpage" element={<EaseMindTestPage />} />
         <Route path="/EaseMind_spin" element={<EaseMindSPIN />} />
+        <Route path="/EaseMind_pd" element={<EaseMindPD />} />
         <Route path="/EaseMind_dailyQ" element={<EaseMindDailyQ />} />
 
         <Route path="/autism_instructions" element={<AutismDetector />} />
