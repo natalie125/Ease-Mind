@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import './AnxietyLevelTest.css';
+import './DailyQ.css';
 import { AuthTokenContext } from '../../App';
 
 function DailyQuestions() {

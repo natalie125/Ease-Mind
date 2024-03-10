@@ -1,0 +1,56 @@
+.daily-questions-container {
+    background-color: #E0F2F1; /* Light teal background */
+    color: #004D40; /* Dark teal text for better readability */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    max-width: 600px; /* Limit the width for better readability */
+    margin: 20px auto; /* Center the container */
+    font-family: 'Arial', sans-serif; /* Use a standard, easy-to-read font */
+  }
+  
+  .daily-questions-container h2 {
+    color: #00695C; /* Slightly darker teal for headings */
+  }
+  
+  .daily-questions-container textarea {
+    width: 100%; /* Full container width */
+    margin: 10px 0; /* Add some space around the textarea */
+    padding: 10px; /* Inner space for text */
+    background-color: #ffffff; /* White background for contrast */
+    border: 1px solid #B2DFDB; /* Light teal border */
+    border-radius: 5px; /* Rounded corners */
+    resize: vertical; /* Allow only vertical resizing */
+    height: 100px; /* Default height */
+  }
+  
+  .daily-questions-container button {
+    background-color: #004D40; /* Dark teal background */
+    color: #ffffff; /* White text */
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px;
+  }
+  
+  .daily-questions-container button:hover {
+    background-color: #00796B; /* Slightly lighter teal on hover */
+  }
+  
+  .error-message {
+    color: #D32F2F; /* Red color for errors to catch attention */
+    background-color: #FFEBEE; /* Very light red background */
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  /* Add some spacing and padding for comfort */
+  textarea:focus, button:focus {
+    outline: none; /* Remove the default focus outline */
+    border-color: #26A69A; /* Use a teal color for focus */
+  }
+  
