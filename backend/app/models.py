@@ -137,3 +137,20 @@ class PDTestResult(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)  # Timestamp of the test
 
     user = relationship('Users', backref='pd_test_results') 
+
+#PTSD Question for EaseMind
+class PTSDQuestion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(500))  # The text of the question
+
+    def __repr__(self):
+        return f'<PTSDQuestion {self.text}>'
+
+#PTSD Result for EaseMind
+class PTSDResult(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    score = db.Column(db.Integer, nullable=False)  # The score from the test
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)  # Timestamp of the test
+
+    user = relationship('Users', backref='ptsd_results') 

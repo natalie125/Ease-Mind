@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import './AnxietyLevelTest.css';
 import { AuthTokenContext } from '../../App';
 
-function SocialPhobiaInventoryTest() {
+function PTSDTest() {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [resultMessage, setResultMessage] = useState('');
@@ -11,7 +11,7 @@ function SocialPhobiaInventoryTest() {
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      const response = await fetch('http://127.0.0.1:5000/SPINquestions', {
+      const response = await fetch('http://127.0.0.1:5000/PTSDquestions', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -20,7 +20,7 @@ function SocialPhobiaInventoryTest() {
         const data = await response.json();
         setQuestions(data);
         const initialAnswers = data.reduce((acc, question) => {
-          acc[question.id] = 0;
+          acc[question.id] = 0; // Initialize all answers to '0'
           return acc;
         }, {});
         setAnswers(initialAnswers);
@@ -46,12 +46,12 @@ function SocialPhobiaInventoryTest() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const score = calculateScore();
-    const result = score >= 19
-      ? 'Social Phobia likely present. Consider seeking a professional evaluation.'
-      : 'Social Phobia likely not present. If symptoms persist, consider professional advice.';
+    const result = score >= 30 // cut-off score of 30 for potential PTSD
+      ? 'High level of distress. Consider seeking professional evaluation for PTSD.'
+      : 'Distress level is below the typical cut-off for PTSD. If symptoms persist or worsen, consider seeking professional advice.';
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/submit_SPIN_result', {
+      const response = await fetch('http://127.0.0.1:5000/submit_PTSD_result', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,13 +72,13 @@ function SocialPhobiaInventoryTest() {
 
   return (
     <div className="anxietyLevelTestContainer">
-      <h1>Social Phobia Inventory Test</h1>
+      <h1>PTSD (The Impact of Event Scale – Revised (IES-R))</h1>
       <form onSubmit={handleSubmit}>
         {questions.map((question) => (
           <div key={question.id}>
             <label htmlFor={`question-${question.id}`}>{question.text}</label>
             <select
-              className="SPINTestSelect"
+              className="IESRTestSelect"
               name={question.id.toString()}
               id={`question-${question.id}`}
               value={answers[question.id]}
@@ -86,8 +86,8 @@ function SocialPhobiaInventoryTest() {
             >
               <option value="0">Not at all</option>
               <option value="1">A little bit</option>
-              <option value="2">Somewhat</option>
-              <option value="3">Very much</option>
+              <option value="2">Moderately</option>
+              <option value="3">Quite a bit</option>
               <option value="4">Extremely</option>
             </select>
           </div>
@@ -100,6 +100,5 @@ function SocialPhobiaInventoryTest() {
   );
 }
 
-export default SocialPhobiaInventoryTest;
-// https://psychology-tools.com/test/spinc
-// https://www.tomwademd.net/documenting-mental-health-treatment-outcomes-with-improving-access-to-psychological-therapy-iapt-data-handbook-from-the-nhs/
+export default PTSDTest;
+// https://novopsych.com.au/assessments/diagnosis/the-impact-of-event-scale-revised-ies-r/

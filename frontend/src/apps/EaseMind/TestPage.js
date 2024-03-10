@@ -18,6 +18,9 @@ function TestPage() {
         <Link to="/EaseMind_pd">
           <button type="button" className="easeMindButton">Panic Disorder Test</button>
         </Link>
+        <Link to="/EaseMind_ptsd">
+          <button type="button" className="easeMindButton">PTSD Test</button>
+        </Link>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, current_app
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
-from app.models import EPersonalDetails, EATestResult, EAQuestion, SPINQuestion, SPINTestResult, PDQuestion, PDTestResult, DailyQuestion, DailyQAnswer 
+from app.models import EPersonalDetails, EATestResult, EAQuestion, SPINQuestion, SPINTestResult, PDQuestion, PDTestResult, DailyQuestion, DailyQAnswer, PTSDQuestion, PTSDResult
 from app.endpoints import auth_bp
 from datetime import datetime
 from sqlalchemy import extract
@@ -371,6 +371,73 @@ def submit_answers():
 
     crisis_status = "Yes" if crisis_detected else "No"
     return jsonify({'message': 'Answers submitted successfully', 'crisis_status': crisis_status}), 200
+
+ptsd_questions = [
+    "Any reminder brought back feelings about it",
+    "I had trouble staying asleep",
+    "Other things kept making me think about it",
+    "I felt irritable and angry",
+    "I avoided letting myself get upset when I thought about it or was reminded of it",
+    "I thought about it when I didn't mean to",
+    "I felt as if it hadn't happened or wasn't real",
+    "I stayed away from reminders about it",
+    "Pictures about it popped into my mind",
+    "I was jumpy and easily startled",
+    "I tried not to think about it",
+    "I was aware that I still had a lot of feelings about it but I didn't deal with them",
+    "My feelings about it were kind of numb",
+    "I found myself acting or feeling as though I was back at that time",
+    "I had trouble falling asleep",
+    "I had waves of strong feelings about it",
+    "I tried to remove it from my memory",
+    "I had trouble concentrating",
+    "Reminders of it caused me to have physical reactions such as sweating, trouble breathing, nausea or a pounding heart",
+    "I had dreams about it",
+    "I felt watchful or on-guard",
+    "I tried not to talk about it",
+]
+for q_text in ptsd_questions :
+    # Check if the question already exists
+    exists = PTSDQuestion.query.filter_by(text=q_text).first()
+    
+    if not exists:
+        # Only add the question if it doesn't already exist
+        question = PTSDQuestion (text=q_text)
+        db.session.add(question)
+
+db.session.commit()
+
+@auth_bp.route('/PTSDquestions', methods=['GET'])
+@jwt_required()
+def get_PTSD_questions():
+    questions = PTSDQuestion.query.all()
+    questions_data = [{'id': question.id, 'text': question.text} for question in questions]
+    return jsonify(questions_data), 200
+
+@auth_bp.route('/submit_PTSD_result', methods=['POST'])
+@jwt_required()
+def submit_PTSD_test_result():
+    current_user_id = get_jwt_identity()
+    data = request.json
+
+    score = data.get('score')
+    if score is None:
+        return jsonify({"error": "Score is required."}), 400
+
+    try:
+        # Create a new PD test result instance
+        test_result = PTSDResult(user_id=current_user_id, score=score)
+        # Add the new test result to the database session
+        db.session.add(test_result)
+        # Commit the session to save the test result
+        db.session.commit()
+
+        # Explicitly return a status code
+        return jsonify({"message": "PD test score saved successfully", "score": score}), 200
+    except Exception as e:
+        # Log the exception and return an error message
+        current_app.logger.error(f'Unexpected error saving PTSD test result: {e}')
+        return jsonify({"error": "Unable to save PD test result"}), 500
 
 # Ai chatbot
 import openai
