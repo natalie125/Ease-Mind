@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
 from app.models import EPersonalDetails, EATestResult, EAQuestion, SPINQuestion, SPINTestResult, PDQuestion, PDTestResult, DailyQuestion, DailyQAnswer, PTSDQuestion, PTSDResult
 from app.endpoints import auth_bp
-from datetime import datetime
+from datetime import datetime, timedelta
 from sqlalchemy import extract
 import traceback
 import pickle
@@ -438,6 +438,23 @@ def submit_PTSD_test_result():
         # Log the exception and return an error message
         current_app.logger.error(f'Unexpected error saving PTSD test result: {e}')
         return jsonify({"error": "Unable to save PD test result"}), 500
+
+@auth_bp.route('/get_word_detection', methods=['GET'])
+def get_word_detection_answers():
+    # Calculate the date 14 days ago from now
+    two_weeks_ago = datetime.utcnow() - timedelta(days=14)
+
+    # Query the database for any 'yes' answers in the word_detection field within the last 2 weeks
+    answers = DailyQAnswer.query.filter(
+        DailyQAnswer.created_at >= two_weeks_ago,
+        DailyQAnswer.word_detection.ilike('Yes')  # Case-insensitive comparison
+    ).all()
+
+    # Check if there are any such answers
+    print(f"Answers found: {len(answers)}")
+    risk_detected = len(answers) > 0
+
+    return jsonify({'risk_detected': risk_detected})
 
 # Ai chatbot
 import openai

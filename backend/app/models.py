@@ -118,6 +118,8 @@ class DailyQAnswer(db.Model):
     question_id = db.Column(db.Integer, db.ForeignKey('daily_question.id'), nullable=False)
     answer = db.Column(db.Text)
     word_detection = db.Column(db.String(50))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)  # Timestamp of the test
+    
     def __repr__(self):
         return f"<Answer {self.id}>"
     
