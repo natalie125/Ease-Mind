@@ -1,108 +1,20 @@
-import React, { useState, useContext } from 'react';
-import axios from 'axios';
-import { AuthTokenContext } from '../../App';
-
-const BASEURL = process.env.NODE_ENV === 'development'
-  ? process.env.REACT_APP_DEV
-  : process.env.REACT_APP_PROD;
+import React from 'react';
+import SystemStatistics from './SystemStatistics';
 
 function RootsRadar() {
-  const { token } = useContext(AuthTokenContext);
-  const [id, setId] = useState('');
-  const [text, setText] = useState('');
-
-  const handlePostText = async () => {
-    await axios
-      .post(
-        `${BASEURL}api/roots-radar/mvp-string`,
-        { text },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          setId(response.data.id);
-        } else {
-          setId(`ERROR: ${response.data.msg}`);
-        }
-      });
-  };
-
-  const handleGetText = async () => {
-    await axios
-      .get(`${BASEURL}api/roots-radar/mvp-string`, {
-        params: { id },
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          setText(response.data.text);
-        } else {
-          setText(response.data.msg);
-        }
-      });
-  };
-
   return (
-    <div>
-      <br />
-      <h1>Roots Radar</h1>
-      <br />
-      <a href="/roots-radar/add-new-patient-basic">Add new patient (basic)</a>
-      <br />
-      <br />
-      <a href="/roots-radar/make-models-from-database">Make Model From Database</a>
-      <br />
-      <br />
-      <a href="/roots-radar/get-patients">List Patients</a>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <h1 style={{ marginTop: '1rem' }}>Roots Radar</h1>
+      <h3>Pages</h3>
+      <ul>
+        <li><a href="/roots-radar/add-new-patient-basic">➕ Add new patient (basic)</a></li>
+        <li><a href="/roots-radar/make-models-from-database">🏗 Make Model From Database</a></li>
+        <li><a href="/roots-radar/get-patients">📃 List Patients</a></li>
+        <li><a href="/roots-radar/system-statistics">📊 System Statistics</a></li>
+      </ul>
       <hr />
-      <br />
-      <br />
-      <br />
-      <br />
-      <h2>MVP Database Stuff</h2>
-      <br />
-      <br />
-      <p>
-        id:
-        {id}
-      </p>
-      <input type="text" id="id_input" value={id} onChange={(e) => setId(e.target.value)} />
-      <hr />
-      <p>
-        Text:
-        {text}
-      </p>
-      <input type="text" id="text_input" value={text} onChange={(e) => setText(e.target.value)} />
-      <hr />
-      <button
-        type="button"
-        onClick={() => handleGetText()}
-        disabled={id === ''}
-      >
-        get text of id
-      </button>
-      <button
-        type="button"
-        onClick={() => handlePostText()}
-        disabled={text === ''}
-      >
-        add new text in db
-      </button>
+      <h3>Dev/Debug</h3>
+      <SystemStatistics />
     </div>
   );
 }

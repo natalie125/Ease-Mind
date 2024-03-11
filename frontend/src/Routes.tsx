@@ -36,6 +36,7 @@ import RootsRadar from './apps/RootsRadar/RootsRadar';
 import AddNewPatientBasic from './apps/RootsRadar/AddNewPatientBasic';
 import MakeModelFromDatabase from './apps/RootsRadar/MakeModelFromDatabase';
 import GetPatients from './apps/RootsRadar/GetPatients';
+import SystemStatistics from './apps/RootsRadar/SystemStatistics';
 
 import AutismDetector from './apps/AutismDetector/AutismDetector';
 
@@ -99,6 +100,7 @@ function Routes() {
         <Route path="/roots-radar/add-new-patient-basic" element={<AddNewPatientBasic />} />
         <Route path="/roots-radar/make-models-from-database" element={<MakeModelFromDatabase />} />
         <Route path="/roots-radar/get-patients" element={<GetPatients />} />
+        <Route path="/roots-radar/system-statistics" element={<SystemStatistics />} />
 
         <Route path="/EaseMind" element={<EaseMind />} />
         <Route path="/EaseMind_personal_details" element={<EaseMindPersonalDetails />} />

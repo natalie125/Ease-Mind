@@ -107,6 +107,7 @@ function AddNewPatientBasic() {
 
   return (
     <div className="AddNewPatientBasicComponent">
+      <a className="back-link" href="/roots-radar">← Back</a>
       <h2>Add a new patient</h2>
       <button
         type="button"

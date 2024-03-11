@@ -34,3 +34,8 @@ export interface IPatient {
 export interface IPatients {
   patients: IPatient[];
 }
+
+export interface ISystemStatistics {
+  numberOfPatients: number;
+  numberOfPatientsWithoutPrediction: number;
+}

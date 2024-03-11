@@ -82,6 +82,9 @@ def make_model_from_database():
   df.drop('id', axis=1, inplace=True)
   df.drop('DisorderSubclassPredicted', axis=1, inplace=True)
 
+  # TODO: Now patients may not have a disorder so NaNs can appear in target.
+  # Need to sanitize input. Will need to do more sanitization when full 
+
   targetColumn = 'DisorderSubclass'
   output_set = df[targetColumn]
   input_set = df.drop(columns=[targetColumn])
@@ -103,7 +106,10 @@ def make_model_from_database():
 @auth_bp.route('/api/roots-radar/new_patient', methods=['POST'])
 def new_patient():
   query = request.get_json()['patients']
+  this_dir = os.path.dirname(__file__)
+  M = joblib.load(f'{this_dir}/classifier-linear-svc-FROMDATABASE-inAPI-joblib-dump.joblib')
   for patient in query:
+    subclass = M.predict([patient[0:-1]])
     patient.insert(0,0) # HACK to fix 1 based index
     print(f"\n\npatient = {patient}\n\n")
     # TODO: model validation?
@@ -135,8 +141,8 @@ def new_patient():
       Symptom3 = float(patient[25]),
       Symptom4 = float(patient[26]),
       Symptom5 = float(patient[27]),
-      DisorderSubclass = float(patient[28]), # TODO Could be '' in which case do None
-      DisorderSubclassPredicted = None
+      DisorderSubclass = None if patient[28] == '' else float(patient[28]),
+      DisorderSubclassPredicted = subclass
     )
     db.session.add(new_record)
 
@@ -224,3 +230,56 @@ def number_of_patients_without_prediction():
   response = make_response(jsonify({"patients": r}))
   response.status_code = 200
   return response
+
+@auth_bp.route('/api/roots-radar/system-statistics', methods=['GET'])
+def system_statistics():
+  response = make_response(jsonify({
+    "numberOfPatients": len(models.Patient.query.all()),
+    "numberOfPatientsWithoutPrediction": len(models.Patient.query.filter_by(
+      DisorderSubclassPredicted=None
+    ).all()),
+  }))
+  response.status_code = 200
+  return response
+
+@auth_bp.route('/api/roots-radar/predict-unpredicted', methods=['POST'])
+def predict_unpredicted():
+  this_dir = os.path.dirname(__file__)
+  M = joblib.load(f'{this_dir}/classifier-linear-svc-FROMDATABASE-inAPI-joblib-dump.joblib')
+
+  targets = models.Patient.query.filter_by(DisorderSubclassPredicted=None).all()
+  for targetPatient in targets:
+    query = [
+          targetPatient.PatientAge,
+          targetPatient.GenesInMothersSide,
+          targetPatient.InheritedFromFather,
+          targetPatient.MaternalGene,
+          targetPatient.PaternalGene,
+          targetPatient.BloodCellCount_mcL,
+          targetPatient.MothersAge,
+          targetPatient.FathersAge,
+          targetPatient.RespiratoryRate_breathsPerMin,
+          targetPatient.HeartRate_ratesPermin,
+          targetPatient.Gender,
+          targetPatient.BirthAsphyxia,
+          targetPatient.FolicAcidDetails_periConceptiona,
+          targetPatient.HistoryOfSeriousMaternalIllness,
+          targetPatient.HistoryOfRadiationExposure_xRay,
+          targetPatient.HistoryOfSubstanceAbuse,
+          targetPatient.AssistedConception_IVF_ART,
+          targetPatient.HistoryOfAnomaliesInPreviousPregnancies,
+          targetPatient.NumberOfPreviousAbortions,
+          targetPatient.BirthDefects,
+          targetPatient.WhiteBloodCellCount_thousand_per_microliter,
+          targetPatient.BloodTestResult,
+          targetPatient.Symptom1,
+          targetPatient.Symptom2,
+          targetPatient.Symptom3,
+          targetPatient.Symptom4,
+          targetPatient.Symptom5
+        ]
+    subclass = M.predict([query])[0]
+    targetPatient.DisorderSubclassPredicted = subclass
+
+  db.session.commit()
+  return ("Success", 200)

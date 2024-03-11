@@ -45,6 +45,7 @@ function MakeModelFromDatabase() {
 
   return (
     <div className="MakeModelFromDatabaseComponent">
+      <a className="back-link" href="/roots-radar">← Back</a>
       <h2>MakeModelFromDatabase</h2>
       <button type="button" onClick={() => handlePostMakeModels()}>
         Make Models
