@@ -10,7 +10,7 @@ function EaseMind() {
     return !hasAgreed;
   });
 
-  const [showChatBox, setShowChatBox] = useState(false); // New state for showing/hiding ChatBox
+  const [showChatBox, setShowChatBox] = useState(false);
 
   const userEmail = sessionStorage.getItem('email')
     ? sessionStorage.getItem('email').substring(1, sessionStorage.getItem('email').length - 1)

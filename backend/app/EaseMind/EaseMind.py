@@ -308,7 +308,7 @@ daily_questions = [
     "What did you do today that made you feel good?",
     "What’s something you can do today that would be good for you?",
     "What’s something you’re looking forward to in the next few days?",
-    "What’s something we can do together this week, even if we’re apart?",
+    "If I was your friend. What’s something we can do together this week, even if we’re apart?",
     "What are you grateful for right now?"
 ]
 

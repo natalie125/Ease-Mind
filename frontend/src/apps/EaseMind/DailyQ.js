@@ -10,8 +10,14 @@ function DailyQuestions() {
   const [error, setError] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
   const [isLastQuestion, setIsLastQuestion] = useState(false);
+  const [isRecording, setIsRecording] = useState(false); // Track recording state
   const { token } = useContext(AuthTokenContext);
   const navigate = useNavigate();
+
+  // Reference to the SpeechRecognition instance
+  const recognitionRef = React.useRef(null);
+
+  const speechRecognitionAvailable = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
 
   useEffect(() => {
     setIsLastQuestion(currentQuestionIndex === 10);
@@ -37,6 +43,42 @@ function DailyQuestions() {
     fetchQuestion();
   }, [currentQuestionIndex, token]);
 
+  useEffect(() => {
+    // Initialize SpeechRecognition
+    if (speechRecognitionAvailable) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-GB';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+      recognitionRef.current = recognition;
+
+      recognition.onresult = (event) => {
+        const speechToText = event.results[0][0].transcript;
+        setAnswer(speechToText);
+      };
+
+      recognition.onend = () => {
+        setIsRecording(false); // Automatically stop recording when speech ends
+      };
+
+      recognition.onerror = (event) => {
+        setError(`Speech recognition error: ${event.error}`);
+        setIsRecording(false);
+      };
+    }
+  }, [speechRecognitionAvailable]);
+
+  const toggleRecording = () => {
+    if (isRecording) {
+      recognitionRef.current.stop();
+      setIsRecording(false);
+    } else {
+      recognitionRef.current.start();
+      setIsRecording(true);
+    }
+  };
+
   const handleAnswerChange = (e) => {
     setAnswer(e.target.value);
   };
@@ -51,7 +93,6 @@ function DailyQuestions() {
     }
   };
 
-  // Adjusted: Moved the definition of resetComponentState before its use
   function resetComponentState() {
     setCurrentQuestion(null);
     setAnswer('');
@@ -59,6 +100,7 @@ function DailyQuestions() {
     setError('');
     setCurrentQuestionIndex(1);
     setIsLastQuestion(false);
+    setIsRecording(false);
   }
 
   const handleSubmit = async (e) => {
@@ -77,16 +119,11 @@ function DailyQuestions() {
         }),
       });
 
-      const responseData = await response.json();
-
       if (response.ok) {
-        const message = responseData.crisis_status === 'Yes'
-          ? 'Your answers have been submitted. If you are in crisis, call Samaritans. Hours: Available 24 hours. 116 123.'
-          : 'Your answers have been submitted. Thank you! Have a nice day.';
-
-        alert(message);
-
+        const responseData = await response.json();
+        alert(`Your answers have been submitted. ${responseData.crisis_status === 'Yes' ? 'If you are in crisis, please seek help immediately. call Samaritans. Hours: Available 24 hours. 116 123.' : 'Thank you! Have a nice day.'}`);
         resetComponentState();
+        navigate('/EaseMind');
       } else {
         setError('Failed to submit the answers. Please try again later.');
       }
@@ -105,20 +142,16 @@ function DailyQuestions() {
 
   return (
     <div className="daily-questions-container">
-      <button
-        type="button"
-        className="GoBackButton"
-        onClick={() => navigate('/EaseMind')} // Navigate to EaseMind page
-      >
+      <button type="button" className="GoBackButton" onClick={() => navigate('/EaseMind')}>
         Go Back
       </button>
       <h2>{currentQuestion.question_text}</h2>
       <form onSubmit={handleSubmit}>
-        <textarea
-          value={answer}
-          onChange={handleAnswerChange}
-          placeholder="Your answer here"
-        />
+        <textarea value={answer} onChange={handleAnswerChange} placeholder="Your answer here" />
+        <button type="button" onClick={toggleRecording} disabled={!speechRecognitionAvailable}>
+          {isRecording ? 'Stop Record' : 'Dictate Answer'}
+        </button>
+        {!speechRecognitionAvailable && <p>Speech to text is not available in your browser.</p>}
         {isLastQuestion
           ? <button type="submit">Submit Answers</button>
           : <button type="button" onClick={handleNext}>Next Question</button>}
