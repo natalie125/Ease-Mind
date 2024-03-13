@@ -456,6 +456,53 @@ def get_word_detection_answers():
 
     return jsonify({'risk_detected': risk_detected})
 
+@auth_bp.route('/get_user_feedback', methods=['GET'])
+@jwt_required()
+def get_user_feedback():
+    current_user_id = get_jwt_identity()
+
+    # Fetch the latest scores for each test for the current user
+    latest_spin_score = SPINTestResult.query.filter_by(user_id=current_user_id).order_by(SPINTestResult.created_at.desc()).first()
+    latest_pd_score = PDTestResult.query.filter_by(user_id=current_user_id).order_by(PDTestResult.created_at.desc()).first()
+    latest_ptsd_score = PTSDResult.query.filter_by(user_id=current_user_id).order_by(PTSDResult.created_at.desc()).first()
+    latest_ea_score = EATestResult.query.filter_by(user_id=current_user_id).order_by(EATestResult.created_at.desc()).first()
+
+    # Initialize feedback messages list
+    feedback_messages = []
+
+    # Panic Disorder Feedback
+    if latest_pd_score:
+        pd_feedback = "Indications of Panic Disorder are " + ("likely present. Consider seeking a professional evaluation." if latest_pd_score.score >= 8 else "not present. If symptoms persist or worsen, consider seeking professional advice.")
+        feedback_messages.append(pd_feedback)
+
+    # PTSD Feedback
+    if latest_ptsd_score:
+        ptsd_feedback = "Distress level is " + ("above the typical cut-off for PTSD. High level of distress. Consider seeking professional evaluation for PTSD." if latest_ptsd_score.score >= 30 else "below the typical cut-off for PTSD. If symptoms persist or worsen, consider seeking professional advice.")
+        feedback_messages.append(ptsd_feedback)
+
+    # Social Phobia Feedback
+    if latest_spin_score:
+        spin_feedback = "Social Phobia is " + ("likely present. Consider seeking a professional evaluation." if latest_spin_score.score >= 19 else "not present. If symptoms persist, consider professional advice.")
+        feedback_messages.append(spin_feedback)
+
+    # General Anxiety Feedback
+    if latest_ea_score:
+        if latest_ea_score.score >= 15:
+            ea_feedback = 'Severe anxiety'
+        elif latest_ea_score.score >= 10:
+            ea_feedback = 'Moderate anxiety. Further evaluation is recommended.'
+        elif latest_ea_score.score >= 5:
+            ea_feedback = 'Mild anxiety'
+        else:
+            ea_feedback = 'Minimal or no anxiety'
+        feedback_messages.append(ea_feedback)
+
+    # If there are no feedback messages, indicate no recent scores are available
+    if not feedback_messages:
+        feedback_messages.append("No recent test scores available to generate feedback.")
+
+    return jsonify({"feedback": feedback_messages}), 200
+
 # Ai chatbot
 import openai
 from dotenv import load_dotenv

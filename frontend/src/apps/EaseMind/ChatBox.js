@@ -33,6 +33,11 @@ function ChatBox() {
     { text: 'No', id: 13 },
   ];
 
+  const optionsAfterSleepHelp = [
+    { text: 'Yes, I need more help with sleeping problems', id: 14 },
+    { text: 'No, I don\'t need more help with sleeping problems', id: 15 },
+  ];
+
   const addMessage = (text) => {
     const newMessage = { id: `${text}-${Date.now()}`, text };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
@@ -87,6 +92,15 @@ function ChatBox() {
     }, 1000); // Adjust the timeout duration as needed
   };
 
+  const askIfMoreQuestionsForSleep = () => {
+    // Add a custom message related to sleep advice follow-up
+    addMessage('Do you need more help with sleeping problems?');
+    // Set a brief timeout to allow the user to read the message before showing the options
+    setTimeout(() => {
+      setCurrentOptions(optionsAfterSleepHelp);
+    }, 1000); // Adjust the timeout duration as needed
+  };
+
   const sendPredefinedMessage = (option) => {
     addMessage(option.text);
     if (option.id === 1) {
@@ -110,9 +124,17 @@ function ChatBox() {
       addMessage(anxietyExplanation);
       setCurrentOptions(optionsAfterAnxiety);
     } else if (option.id === 5) {
-      const sleepAdvice = 'Here is some advice to fall asleep faster. Please click on the following link: https://www.nhs.uk/every-mind-matters/mental-wellbeing-tips/how-to-fall-asleep-faster-and-sleep-better/';
+      const sleepAdvice = 'If you\'re having problems sleeping, you might: '
+      + '\n- be more likely to feel anxious, depressed, or suicidal'
+      + '\n- be more likely to have psychotic episodes – poor sleep can trigger mania, psychosis, or paranoia, or make existing symptoms worse'
+      + '\n- feel lonely or isolated – for example, if you don\'t have the energy to see people or they don\'t seem to understand'
+      + '\n- struggle to concentrate, or make plans and decisions'
+      + '\n- feel irritable or not have energy to do things'
+      + '\n- have problems with day to day life – for example, at work or with family and friends'
+      + '\n- be more affected by other health problems, including mental health problems.'
+      + '\n\nHere is some advice to fall asleep faster. Please click on the following link: https://www.nhs.uk/every-mind-matters/mental-wellbeing-tips/how-to-fall-asleep-faster-and-sleep-better/';
       addMessage(sleepAdvice);
-      askIfMoreQuestions();
+      askIfMoreQuestionsForSleep();
       setCurrentOptions(optionsAfterSpecificAnxiety);
     } else if (option.id === 6) {
       const anxietyTriggersMessage = 'Everyone\'s experience of anxiety is different, so it\'s hard to know exactly what causes anxiety problems. There are probably lots of factors involved.'
@@ -192,6 +214,14 @@ function ChatBox() {
         setCurrentOptions(initialOptions);
         addMessage('Hi! How can I help you today?');
       }, 1500);
+    } else if (option.id === 14) {
+      // If the user needs more help with sleeping problems
+      const moreSleepAdvice = 'Here is some advice to fall asleep faster. Please click on the following link: https://www.nhs.uk/every-mind-matters/mental-wellbeing-tips/how-to-fall-asleep-faster-and-sleep-better/';
+      addMessage(moreSleepAdvice);
+      askIfMoreQuestions(); // Ask if the user has any other questions after providing the additional advice
+    } else if (option.id === 15) {
+      // If the user does not need more help with sleeping problems
+      askIfMoreQuestions(); // Directly ask if the user has more questions, potentially leading to different topics
     } else {
       setCurrentOptions([]);
     }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './DailyQ.css';
 import { AuthTokenContext } from '../../App';
 
@@ -10,6 +11,7 @@ function DailyQuestions() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
   const [isLastQuestion, setIsLastQuestion] = useState(false);
   const { token } = useContext(AuthTokenContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLastQuestion(currentQuestionIndex === 10);
@@ -103,6 +105,13 @@ function DailyQuestions() {
 
   return (
     <div className="daily-questions-container">
+      <button
+        type="button"
+        className="GoBackButton"
+        onClick={() => navigate('/EaseMind')} // Navigate to EaseMind page
+      >
+        Go Back
+      </button>
       <h2>{currentQuestion.question_text}</h2>
       <form onSubmit={handleSubmit}>
         <textarea

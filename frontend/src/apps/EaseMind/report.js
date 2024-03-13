@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   CartesianGrid, Line, LineChart, Legend, Tooltip, ReferenceLine, XAxis, YAxis,
 } from 'recharts';
@@ -44,6 +45,8 @@ function TestResultsChart() {
   const authTokenContext = useContext(AuthTokenContext);
   const token = authTokenContext?.token;
   const [suicidalRisk, setSuicidalRisk] = useState(false);
+  const [userTestFeedback, setUserTestFeedback] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const granularities = ['yearly', 'monthly', 'daily'];
@@ -69,8 +72,9 @@ function TestResultsChart() {
       })
       .catch((error) => {
         setFetchError(error.message);
-        setUserFeedback('Failed to load chart data.'); // Provide feedback to the user
+        setUserFeedback('Failed to load chart data.');
       });
+
     fetch('http://127.0.0.1:5000/get_word_detection', {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -81,17 +85,32 @@ function TestResultsChart() {
         return response.json();
       })
       .then((data) => {
-        setSuicidalRisk(data.risk_detected); // Directly use the risk_detected boolean from the response
+        setSuicidalRisk(data.risk_detected);
       })
       .catch((error) => {
         console.error('Failed to fetch word detection answers:', error);
       });
+
+    const fetchUserFeedback = () => {
+      fetch('http://127.0.0.1:5000/get_user_feedback', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setUserTestFeedback(data.feedback.join(' '));
+        })
+        .catch(() => {
+          setUserFeedback('Failed to load user feedback.'); // Updated to remove the 'error' variable and console statement
+        });
+    };
+
+    fetchUserFeedback();
   }, [token]);
 
   const exportPDF = async () => {
     const input = document.getElementById(`chart-${selectedGranularity}`);
     if (!input) {
-      setUserFeedback("Couldn't find the chart element for PDF generation."); // Update feedback for the user
+      setUserFeedback("Couldn't find the chart element for PDF generation.");
       return;
     }
 
@@ -125,6 +144,8 @@ function TestResultsChart() {
       boxSizing: 'border-box',
     },
     chartContainer: {
+      display: 'flex',
+      justifyContent: 'center',
       margin: '20px 0',
       padding: '20px',
       backgroundColor: 'white',
@@ -173,10 +194,21 @@ function TestResultsChart() {
       borderRadius: '5px',
       border: '1px solid #ccc',
     },
+    feedbackSection: {
+      margin: '20px 0',
+      textAlign: 'center',
+    },
   };
 
   return (
     <div style={styles.pageContainer}>
+      <button
+        type="button"
+        className="GoBackButton"
+        onClick={() => navigate('/EaseMind')}
+      >
+        Go Back
+      </button>
       {fetchError && <div className="alert alert-danger">{fetchError}</div>}
       {userFeedback && <div className="alert alert-info">{userFeedback}</div>}
       {' '}
@@ -221,6 +253,11 @@ function TestResultsChart() {
         fontWeight: 'bold',
       }}
       >
+        {userTestFeedback && (
+          <div style={styles.feedbackSection}>
+            {userTestFeedback}
+          </div>
+        )}
         {suicidalRisk ? (
           'There might be a risk of suicidal thoughts based on recent responses. It is recommended to seek professional help.'
         ) : (

@@ -52,10 +52,25 @@ select:focus {
   display: inline-block;
 }
 
+
 .easeMindButton:hover {
   background-color: #1E88E5; 
 }
+.GoBackButton {
+  background-color: #42A5F5; /* Matching the .easeMindButton color */
+  color: white;
+  padding: 8px 10px; /* Smaller padding for a smaller button */
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem; /* Smaller font size */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 1rem; /* Adds space below the button for separation */
+}
 
+.GoBackButton:hover {
+  background-color: #1E88E5; /* Matching the .easeMindButton hover color */
+}
 .easeMindTitle {
   color: #1565C0; 
   margin-bottom: 30px;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AnxietyLevelTest.css';
 import { AuthTokenContext } from '../../App';
 
@@ -8,6 +9,7 @@ function AnxietyLevelTest() {
   const [resultMessage, setResultMessage] = useState('');
   const [error, setError] = useState(''); // Add this state to store potential error messages
   const { token } = useContext(AuthTokenContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -85,6 +87,13 @@ function AnxietyLevelTest() {
 
   return (
     <div className="anxietyLevelTestContainer">
+      <button
+        type="button"
+        className="GoBackButton"
+        onClick={() => navigate('/EaseMind')} // Navigate to EaseMind page
+      >
+        Go Back
+      </button>
       <h1>Anxiety Level Test</h1>
       <h2 className="timeframe-note">In the past 2 weeks:</h2>
       <form onSubmit={handleSubmit}>

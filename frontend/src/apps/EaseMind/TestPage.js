@@ -1,10 +1,18 @@
-import React from 'react'; // Removed useState since it's not used
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './EaseMind.css';
 
 function TestPage() {
+  const navigate = useNavigate();
   return (
     <div className="easeMindContainer">
+      <button
+        type="button"
+        className="GoBackButton"
+        onClick={() => navigate('/EaseMind')} // Navigate to EaseMind page
+      >
+        Go Back
+      </button>
       <h1 className="easeMindTitle">
         Tests for anxiety
       </h1>

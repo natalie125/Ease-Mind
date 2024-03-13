@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './EaseMind.css';
 import { AuthTokenContext } from '../../App';
 
@@ -21,6 +22,7 @@ function PersonalDetails() {
   const [formSubmissionMessage, setFormSubmissionMessage] = useState('');
   const [fetchError, setFetchError] = useState(''); // State for fetch errors
   const { token } = useContext(AuthTokenContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -121,6 +123,13 @@ function PersonalDetails() {
 
   return (
     <div className="easeMindContainer">
+      <button
+        type="button"
+        className="GoBackButton"
+        onClick={() => navigate('/EaseMind')}
+      >
+        Go Back
+      </button>
       <h2 className="easeMindTitle">Please fill in the details below:</h2>
       <form onSubmit={saveDetails}>
         <label>
