@@ -247,7 +247,7 @@ describe('Route tests with error handling', () => {
     renderWithRouterAndAuth(<Routes />, { route: '/EaseMind' });
     await waitFor(() => {
       expect(screen.getByRole('button', { name: 'Edit My Details' })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: 'Anxiety Level Test' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Anxiety Tests' })).toBeInTheDocument();
     });
   });
 
