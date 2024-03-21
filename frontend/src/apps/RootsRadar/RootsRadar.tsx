@@ -1,20 +1,37 @@
 import React from 'react';
-import SystemStatistics from './SystemStatistics';
+import './RootsRadar.scss';
 
 function RootsRadar() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <h1 style={{ marginTop: '1rem' }}>Roots Radar</h1>
-      <h3>Pages</h3>
-      <ul>
-        <li><a href="/roots-radar/add-new-patient-basic">➕ Add new patient (basic)</a></li>
-        <li><a href="/roots-radar/make-models-from-database">🏗 Make Model From Database</a></li>
-        <li><a href="/roots-radar/get-patients">📃 List Patients</a></li>
-        <li><a href="/roots-radar/system-statistics">📊 System Statistics</a></li>
-      </ul>
+    <div className="rootsRadar" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <h1>Roots Radar</h1>
+      <div className="body-div">
+        <h2>Welcome Patient Name!</h2>
+        <div className="links-div">
+          <a href={`/roots-radar/patient?patient=${'1'}`}>🌲 View your family tree</a>
+          <a href="/roots-radar/diagnoses">🏥 View your diagnoses</a>
+          <a href="/roots-radar/consent">☑ Give your families doctors consent to use your records</a>
+        </div>
+      </div>
       <hr />
-      <h3>Dev/Debug</h3>
-      <SystemStatistics />
+      <h1>Roots Radar</h1>
+      <div className="body-div">
+        <h2>Welcome Medical Staff Name!</h2>
+        <div className="links-div">
+          <a href="/roots-radar/add-new-patient">➕ Add new patient</a>
+          <a href="/roots-radar/add-new-patient-basic">➕ Add new patient (basic)</a>
+          <a href="/roots-radar/get-patients">🔍 View your patients</a>
+        </div>
+      </div>
+      <hr />
+      <h1>Roots Radar</h1>
+      <div className="body-div">
+        <h2>Welcome System Administrator!</h2>
+        <div className="links-div">
+          <a href="/roots-radar/make-models-from-database">🏗 Make Model From Database</a>
+          <a href="/roots-radar/system-statistics">📊 System Statistics</a>
+        </div>
+      </div>
     </div>
   );
 }

@@ -4,14 +4,14 @@ import React, {
 import axios from 'axios';
 import { AuthTokenContext } from '../../App';
 import { IPatients } from './types';
-// import PatientCard from './PatientCard';
+import PatientCard from './PatientCard';
 import './GetPatients.scss';
 
 const BASEURL = process.env.NODE_ENV === 'development'
   ? process.env.REACT_APP_DEV
   : process.env.REACT_APP_PROD;
 
-function GetPatients() {
+function PatientsTree() {
   const { token } = useContext(AuthTokenContext);
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -108,8 +108,6 @@ function GetPatients() {
 
   return (
     <div className="GetPatientsComponent">
-      <h1>Roots Radar</h1>
-
       <a className="back-link" href="/roots-radar">← Back</a>
       <h2>Patients</h2>
       <h3>Prediction Controls</h3>
@@ -123,7 +121,7 @@ function GetPatients() {
       {errorPrediction && <p>{errorPrediction}</p>}
       <hr />
       <h3>Patients View</h3>
-      <label htmlFor="patients_search_input">Search patients by ID or name:</label>
+      <label htmlFor="patients_search_input">Search patients by ID:</label>
       <input
         id="patients_search_input"
         value={searchQuery}
@@ -135,30 +133,11 @@ function GetPatients() {
         ? <p>Loading...</p>
         : (
           <div className="patients">
-            <table>
-              <thead>
-                <tr>
-                  <td>Name</td>
-                  <td>ID</td>
-                </tr>
-              </thead>
-              <tbody>
-                {patients?.patients
-                  .filter((patient) => patient.PatientID.toString().startsWith(searchQuery))
-                  .map((patient) => (
-                    <tr>
-                      <td><a href={`/roots-radar/patient?patient=${patient.PatientID}`}>Name TBD</a></td>
-                      <td>
-                        <a href={`/roots-radar/patient?patient=${patient.PatientID}`}>
-                          Patient ID:
-                          {patient.PatientID}
-                        </a>
-                      </td>
-                    </tr>
-                    // <PatientCard patient={patient} />
-                  ))}
-              </tbody>
-            </table>
+            {patients?.patients
+              .filter((patient) => patient.PatientID.toString().startsWith(searchQuery))
+              .map((patient) => (
+                <PatientCard patient={patient} />
+              ))}
           </div>
         )}
       {error && <p>{error}</p>}
@@ -166,4 +145,4 @@ function GetPatients() {
   );
 }
 
-export default GetPatients;
+export default PatientsTree;

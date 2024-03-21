@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthTokenContext } from '../../App';
+import './MakeModelFromDatabase.scss';
 
 const BASEURL = process.env.NODE_ENV === 'development'
   ? process.env.REACT_APP_DEV
@@ -14,7 +15,7 @@ function MakeModelFromDatabase() {
   const handlePostMakeModels = async () => {
     await axios
       .post(
-        `${BASEURL}api/roots-radar/make_model_from_database`,
+        `${BASEURL}api/roots-radar/make_model_from_mimic_database`,
         {},
         {
           headers: {
@@ -45,6 +46,7 @@ function MakeModelFromDatabase() {
 
   return (
     <div className="MakeModelFromDatabaseComponent">
+      <h1>Roots Radar</h1>
       <a className="back-link" href="/roots-radar">← Back</a>
       <h2>MakeModelFromDatabase</h2>
       <button type="button" onClick={() => handlePostMakeModels()}>

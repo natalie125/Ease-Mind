@@ -18,5 +18,8 @@ venv/
 
 # databases
 *.db
+*.db-journal
 
 ./pytest_cache
+
+.ipynb_checkpoints/*

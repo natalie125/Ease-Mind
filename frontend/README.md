@@ -17,6 +17,9 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ## Note on ESLint
 
+<!-- TODO: Change ESLint errors to be warnings, change pipeline to error on any warnings. -->
+<!-- This stops annoying strictness when developing but keeps prod code on lockdown. -->
+
 The `.eslintrc.json` file in the frontend directory is setup to look for
 `tsconfig.json` at the same directory level, however your editor (VSCode in
 this example) may give lint warnings based on the root directory.

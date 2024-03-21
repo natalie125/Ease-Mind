@@ -72,7 +72,109 @@ class Patient(db.Model):
     DisorderSubclassPredicted = db.Column(db.Float)
 
     def as_dict(self):
-       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+class PATIENTS(db.Model):
+    # ROW_ID = db.Column(db.Integer, primary_key=True)
+    SUBJECT_ID = db.Column(db.Integer, primary_key=True)
+    GENDER = db.Column(db.String(1))
+    DOB = db.Column(db.Date)
+    # DOD # Not required for demonstration
+    # DOD_HOSP # Not required for demonstration
+    # DOD_SSN # Not required for demonstration
+    # EXPIRE_FLAG # Not required for demonstration
+    MOTHER_SUBJECT_ID = db.Column(db.Integer, db.ForeignKey('patients.SUBJECT_ID'), nullable=True)
+    FATHER_SUBJECT_ID = db.Column(db.Integer, db.ForeignKey('patients.SUBJECT_ID'), nullable=True)
+
+class D_ICD_DIAGNOSES(db.Model):
+    ROW_ID = db.Column(db.Integer, primary_key=True)
+    ICD9_CODE = db.Column(db.String(10))
+    SHORT_TITLE = db.Column(db.String(50))
+    LONG_TITLE = db.Column(db.String(400))
+
+class D_ITEMS(db.Model):
+    ROW_ID = db.Column(db.Integer, primary_key=True)
+    ITEMID = db.Column(db.String(10))
+    LABEL = db.Column(db.String(100))
+    ABBREVIATION = db.Column(db.String(80))
+    DBSOURCE = db.Column(db.String(20))
+    LINKSTO = db.Column(db.String(20))
+    # CATEGORY # Not required for demonstration
+    # UNITNAME # Not required for demonstration
+    # PARAM_TYPE # Not required for demonstration
+    # CONCEPTID # Not required for demonstration
+
+class DIAGNOSES_ICD(db.Model):
+    ROW_ID = db.Column(db.Integer, primary_key=True)
+    SUBJECT_ID = db.Column(db.Integer, db.ForeignKey('patients.SUBJECT_ID'), nullable=False)
+    # HADM_ID # Not required for demonstration
+    SEQ_NUM = db.Column(db.Integer)
+    ICD9_CODE = db.Column(db.String(10))
+
+class CHARTEVENTS(db.Model):
+    ROW_ID = db.Column(db.Integer, primary_key=True)
+    SUBJECT_ID = db.Column(db.Integer, db.ForeignKey('patients.SUBJECT_ID'), nullable=False)
+    # HADM_ID # Not required for demonstration
+    # ICUSTAY_ID # Not required for demonstration
+    ITEMID = db.Column(db.String(10), db.ForeignKey('d_items.ITEMID'), nullable=False)
+    CHARTTIME = db.Column(db.Date)
+    STORETIME = db.Column(db.Date)
+    # CGID # Not required for demonstration
+    VALUE = db.Column(db.String(200))
+    VALUENUM = db.Column(db.Float)
+    VALUEUOM = db.Column(db.String(20))
+    # WARNING # Not required for demonstration
+    # ERROR # Not required for demonstration
+
+class LABEVENTS(db.Model):
+    ROW_ID = db.Column(db.Integer, primary_key=True)
+    SUBJECT_ID = db.Column(db.Integer, db.ForeignKey('patients.SUBJECT_ID'), nullable=False)
+    # HADM_ID # Not required for demonstration
+    ITEMID = db.Column(db.String(10), db.ForeignKey('d_items.ITEMID'), nullable=False)
+    CHARTTIME = db.Column(db.Date)
+    VALUE = db.Column(db.String(200))
+    VALUENUM = db.Column(db.Float)
+    VALUEUOM = db.Column(db.String(20))
+    FLAG = db.Column(db.String(20))
+
+class NOTEEVENTS(db.Model):
+    ROW_ID = db.Column(db.Integer, primary_key=True)
+    SUBJECT_ID = db.Column(db.Integer, db.ForeignKey('patients.SUBJECT_ID'), nullable=False)
+    # HADM_ID # Not required for demonstration
+    CHARTDATE = db.Column(db.Date)
+    CHARTTIME = db.Column(db.Date)
+    STORETIME = db.Column(db.Date)
+    CATEGORY = db.Column(db.String(100))
+    DESCRIPTION = db.Column(db.String(100))
+    # CGID # Not required for demonstration
+    # ISERROR # Not required for demonstration
+    TEXT = db.Column(db.String(1000))
+
+class DATETIMEEVENTS(db.Model):
+    ROW_ID = db.Column(db.Integer, primary_key=True)
+    SUBJECT_ID = db.Column(db.Integer, db.ForeignKey('patients.SUBJECT_ID'), nullable=False)
+    # HADM_ID # Not required for demonstration
+    # ICUSTAY_ID # Not required for demonstration
+    ITEMID = db.Column(db.String(10), db.ForeignKey('d_items.ITEMID'), nullable=False)
+    CHARTTIME = db.Column(db.Date)
+    STORETIME = db.Column(db.Date)
+    # CGID # Not required for demonstration
+    VALUE = db.Column(db.Date)
+    # VALUEUOM # Not required for demonstration
+    # WARNING # Not required for demonstration
+    # ERROR # Not required for demonstration
+    # RESULTSTATUS # Not required for demonstration
+    # STOPPED # Not required for demonstration
+
+    # # HADM_ID # Not required for demonstration
+    # CHARTDATE = db.Column(db.Date)
+    # CHARTTIME = db.Column(db.Date)
+    # STORETIME = db.Column(db.Date)
+    # CATEGORY = db.Column(db.String(100))
+    # DESCRIPTION = db.Column(db.String(100))
+    # # CGID # Not required for demonstration
+    # # ISERROR # Not required for demonstration
+    # TEXT = db.Column(db.String(1000))
 
 # ---------------------------------------------------------------------------- #
 

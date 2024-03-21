@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Carter+One&family=Chakra+Petch:wght@600&family=Mukta:wght@800&display=swap');
+
+.PatientComponent {
+  padding: 1rem;
+  color: white;
+  background-color: rgb(65, 162, 246);
+  min-height: 100vh;
+  .mother-and-father-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    
+  }
+}

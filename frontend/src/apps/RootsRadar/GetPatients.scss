@@ -1,4 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Carter+One&family=Chakra+Petch:wght@600&family=Mukta:wght@800&display=swap');
+
 .GetPatientsComponent {
+  background-color: rgb(65, 162, 246);
+  min-height: 100vh;
+
+  h1 {
+    font-size: 4rem;
+    font-family: "Carter One", system-ui;
+    text-decoration: underline;
+    color: rgb(255, 255, 255);
+    // color: rgb(0, 136, 255);
+  }
+
   padding: 1rem;
   text-align: left;
 
@@ -32,5 +45,19 @@
   }
   >hr {
     margin: 1rem 0;
+  }
+  table {
+    color: white;
+    // border: 1px solid white;
+    border-radius: 7px;
+    thead {
+      font-size: 1.25rem;
+    }
+    td {
+      // border-bottom: 1px solid white;
+      padding: 0.25rem;
+    }
+    // tr:nth-child(even){background-color: #ffffff; color: #4381e5}
+    // tr:nth-child(odd){background-color: #4381e5; color: white;}
   }
 }

@@ -39,3 +39,11 @@ export interface ISystemStatistics {
   numberOfPatients: number;
   numberOfPatientsWithoutPrediction: number;
 }
+
+export interface IDiagnosis {
+  ROW_ID: string;
+  SUBJECT_ID: string;
+  SEQ_NUM: string;
+  ICD9_CODE: string;
+  text: string;
+}
