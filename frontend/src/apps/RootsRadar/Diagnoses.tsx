@@ -76,9 +76,10 @@ function Diagnoses() {
     content = (
       <div className="DiagnosesComponent">
         <h1>Roots Radar</h1>
+        <h2>Diagnoses logged on you account:</h2>
         {diag.map((d) => (
           <p>
-            Diagnosis:
+            Diagnosis code: &nbsp;
             {d.ICD9_CODE}
             &nbsp;-&nbsp;
             {d.text}

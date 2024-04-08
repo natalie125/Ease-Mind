@@ -613,3 +613,115 @@ def patient_diags(id):
   response = make_response(jsonify({"diagnoses": r}))
   response.status_code = 200
   return response
+
+@auth_bp.route('/api/roots-radar/mimic-patient-details/<id>', methods=['GET'])
+def patient_diags(id):
+  diagnoses = [{
+      'ROW_ID': diag_record.ROW_ID,
+      'SUBJECT_ID': diag_record.SUBJECT_ID,
+      'SEQ_NUM': diag_record.SEQ_NUM,
+      'ICD9_CODE': diag_record.ICD9_CODE,
+      'text': models.D_ICD_DIAGNOSES.query.filter_by(ICD9_CODE=diag_record.ICD9_CODE).first().SHORT_TITLE
+      } for diag_record in models.DIAGNOSES_ICD.query.filter_by(SUBJECT_ID=id).all()
+  ]
+  
+  response = make_response(jsonify({
+    # TODO: get all of the patients details.
+    "diagnoses": diagnoses
+  }))
+  response.status_code = 200
+  return response
+
+@auth_bp.route('/api/roots-radar/set-decendents-consent-flag/<id>/<flag>', methods=['POST'])
+def patient_diags(id, flag):  
+  if flag != '1' or flag != '0':
+    response.status_code = 400
+    return response
+
+  user = models.PATIENTS.query.filter_by(SUBJECT_ID=id).first()
+  user.DESCENDENTS_CONSENT_FLAG = True if flag == '1' else False
+  db.session.commit()
+  
+  response.status_code = 200
+  return response
+
+@auth_bp.route('/api/roots-radar/mimic-new-patient', methods=['POST'])
+def mimic_new_patient():
+  data = request.get_json()['patient']
+  this_dir = os.path.dirname(__file__)
+
+  # Patient
+  new_patient = models.PATIENTS(
+    GENDER = data.sex,
+    DOB = datetime.datetime.now(), 
+    MOTHER_SUBJECT_ID = data.MotherSubjectID,
+    FATHER_SUBJECT_ID = data.FatherSubjectID,
+  )
+  db.session.add(new_record)
+  # Heart Rate
+  HeartRate = models.CHARTEVENTS(
+    SUBJECT_ID = new_patient.SUBJECT_ID,
+    ITEMID = '220045', # 'Heart Rate'
+    CHARTTIME = datetime.datetime.now(),
+    STORETIME = datetime.datetime.now(),
+    VALUE = data.HeartRate,
+    VALUENUM = None,
+    VALUEUOM = 'rates/min',
+  )
+  db.session.add(HeartRate)
+  # Respiratory Rate
+  RespiratoryRate = models.CHARTEVENTS(
+    SUBJECT_ID = new_patient.SUBJECT_ID,
+    ITEMID = '220210', # 'Respiratory Rate'
+    CHARTTIME = datetime.datetime.now(),
+    STORETIME = datetime.datetime.now(),
+    VALUE = data.RespiratortyRate,
+    VALUENUM = None,
+    VALUEUOM = 'breaths/min',
+  )
+  db.session.add(RespiratoryRate)
+  # Blood Cell Count
+  bloodCellCount = models.LABEVENTS(
+    SUBJECT_ID = new_patient.SUBJECT_ID,
+    ITEMID = '99001', # Bloodcellcount
+    CHARTTIME = datetime.datetime.now(),
+    VALUE = str(data.bloodCellCount),
+    VALUENUM = data.bloodCellCount,
+    VALUEUOM = 'thousand/mcL',
+    FLAG = None
+  )
+  db.session.add(bloodCellCount)
+  # White Blood Cell Count
+  whiteBloodCellCount = models.LABEVENTS(
+    SUBJECT_ID = new_patient.SUBJECT_ID,
+    ITEMID = '99002', # WhiteBloodcellcount
+    CHARTTIME = datetime.datetime.now(),
+    VALUE = str(data.whiteBloodCellCount),
+    VALUENUM = data.whiteBloodCellCount,
+    VALUEUOM = 'thousand/mcL',
+    FLAG = None,
+  )
+  db.session.add(whiteBloodCellCount)
+  # Blood Test Status
+  BloodTestResult = models.LABEVENTS(
+    SUBJECT_ID = new_patient.SUBJECT_ID,
+    ITEMID = '43176', # 'Blood Out Lab'
+    CHARTTIME = datetime.datetime.now(),
+    VALUE = None,
+    VALUENUM = None,
+    VALUEUOM = None,
+    FLAG = data.BloodTestResult,
+  )
+  db.session.add(BloodTestResult)
+  
+  # TODO: Use the MIMIC Model to add a prediction.
+  # M = joblib.load(f'{this_dir}/classifier-linear-svc-FROMDATABASE-inAPI-joblib-dump.joblib')
+  
+  db.session.commit()
+
+  response = make_response(jsonify({
+    "msg": "Patient Added",
+    "id": new_patient.SUBJECT_ID,
+  }))
+  response.status_code = 200
+  return response

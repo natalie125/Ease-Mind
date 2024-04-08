@@ -18,8 +18,8 @@ function RootsRadar() {
       <div className="body-div">
         <h2>Welcome Medical Staff Name!</h2>
         <div className="links-div">
-          <a href="/roots-radar/add-new-patient">➕ Add new patient</a>
-          <a href="/roots-radar/add-new-patient-basic">➕ Add new patient (basic)</a>
+          <a href="/roots-radar/add-new-patient">➕👶 Add new patient (from birth)</a>
+          <a href="/roots-radar/add-new-patient-basic">➕👩 Add new patient (adult - unknown parents)</a>
           <a href="/roots-radar/get-patients">🔍 View your patients</a>
         </div>
       </div>

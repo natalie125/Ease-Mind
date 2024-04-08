@@ -20,4 +20,20 @@
   h2 {
     margin: 1rem;
   }
+  h3 {
+    margin-bottom: 1rem;
+  }
+  .inputs-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 33rem;
+    margin: auto;
+    .grid-col-container {
+
+    }
+    .input-container {
+      max-width: 16rem;
+    }
+  }
 }

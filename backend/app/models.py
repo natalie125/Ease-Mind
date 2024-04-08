@@ -83,8 +83,11 @@ class PATIENTS(db.Model):
     # DOD_HOSP # Not required for demonstration
     # DOD_SSN # Not required for demonstration
     # EXPIRE_FLAG # Not required for demonstration
+
     MOTHER_SUBJECT_ID = db.Column(db.Integer, db.ForeignKey('patients.SUBJECT_ID'), nullable=True)
     FATHER_SUBJECT_ID = db.Column(db.Integer, db.ForeignKey('patients.SUBJECT_ID'), nullable=True)
+    DESCENDENTS_CONSENT_FLAG = db.Column(db.Boolean, default=False)
+
 
 class D_ICD_DIAGNOSES(db.Model):
     ROW_ID = db.Column(db.Integer, primary_key=True)
