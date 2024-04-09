@@ -1,6 +1,6 @@
 .chatBoxContainer {
     position: fixed;
-    bottom: 20px;
+    bottom: 40px;
     right: 20px;
     width: 300px;
     max-height: 400px;
@@ -56,6 +56,13 @@
     background: #e3e6ea;
     border-radius: 15px;
     max-width: 80%;
+  }
+
+  /* AI聊天时用户消息的样式 */
+  .message.user-ai {
+    margin-left: auto; /* 右对齐 */
+    background-color: lightblue; /* 选择一个与其他消息区分开的颜色 */
+    color: white; /* 根据需要调整文本颜色 */
   }
   
   .predefinedOptions {
@@ -123,6 +130,31 @@
 
   .minimized .chatContent {
     max-height: 0;
+  }
+  
+  .optionButton {
+    padding: 8px 15px; /* 调整按钮内边距 */
+    background-color: #007bff; /* 蓝色背景 */
+    color: white; /* 白色文字 */
+    border: none; /* 无边框 */
+    border-radius: 5px; /* 圆角 */
+    font-weight: bold; /* 加粗字体 */
+    text-transform: uppercase; /* 文字大写 */
+    cursor: pointer; /* 鼠标手势 */
+    transition: background-color 0.3s, box-shadow 0.3s; /* 过渡效果 */
+    margin: 5px 0; /* 与其他按钮的间距 */
+    width: calc(100% - 10px); /* 宽度适应容器 */
+    display: block; /* 块级显示，使其宽度占满容器 */
+  }
+  
+  .optionButton:hover {
+    background-color: #0056b3; /* 悬停时的背景颜色变深 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 悬停时添加阴影 */
+  }
+  
+  .optionButton:active {
+    background-color: #004494; /* 点击时的背景颜色更深 */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset; /* 点击时的内阴影效果 */
   }
   
   

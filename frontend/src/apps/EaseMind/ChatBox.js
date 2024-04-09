@@ -38,6 +38,10 @@ function ChatBox() {
     { text: 'No, I don\'t need more help with sleeping problems', id: 15 },
   ];
 
+  const optionAfterAIChat = [
+    { text: 'End Chat With AI', id: 16 },
+  ];
+
   const addMessage = (text) => {
     const newMessage = { id: `${text}-${Date.now()}`, text };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
@@ -53,10 +57,17 @@ function ChatBox() {
     const userMessage = input.trim();
 
     if (userMessage !== '') {
-      const newMessage = { id: `user-${Date.now()}`, text: userMessage, sender: 'user' };
+      const messageClass = isChattingWithAI ? 'user-ai' : '';
+      const newMessage = {
+        id: `user-${Date.now()}`,
+        text: userMessage,
+        sender: 'user',
+        class: messageClass,
+      };
       setMessages((prevMessages) => [...prevMessages, newMessage]);
       setInput('');
 
+      // If user is currently chatting with AI, send message to AI
       if (isChattingWithAI) {
         try {
           const response = await fetch('http://127.0.0.1:5000/aichat', {
@@ -64,7 +75,7 @@ function ChatBox() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ message: userMessage }),
+            body: JSON.stringify({ message: userMessage }), // Pass the chat history to AI
           });
 
           if (!response.ok) {
@@ -72,12 +83,11 @@ function ChatBox() {
           }
 
           const data = await response.json();
-          const aiResponse = { id: `ai-${Date.now()}`, text: data.response, sender: 'ai' };
+          const aiResponse = { id: `ai-${Date.now()}`, text: data.response.content, sender: 'ai' }; // Extract text from AI response
           setMessages((prevMessages) => [...prevMessages, aiResponse]);
         } catch (error) {
           console.error('Failed to fetch AI response:', error);
-          const errorMessage = { id: `error-${Date.now()}`, text: 'Sorry, something went wrong.', sender: 'system' };
-          setMessages((prevMessages) => [...prevMessages, errorMessage]);
+          addMessage('Sorry, something went wrong.', 'system');
         }
       }
     }
@@ -101,7 +111,13 @@ function ChatBox() {
     }, 1000); // Adjust the timeout duration as needed
   };
 
-  const sendPredefinedMessage = (option) => {
+  const endAIChatSession = () => {
+    setIsChattingWithAI(false);
+    addMessage('AI chat session ended. How can I help you now?');
+    setCurrentOptions(initialOptions); // Reset to initial options
+  };
+
+  const sendPredefinedMessage = async (option) => {
     addMessage(option.text);
     if (option.id === 1) {
       setCurrentOptions(optionAfterInitial);
@@ -109,7 +125,7 @@ function ChatBox() {
       // Implement the logic for "Advice based on anxiety level"
     } else if (option.id === 3) {
       setIsChattingWithAI(true);
-      setCurrentOptions([]);
+      setCurrentOptions(optionAfterAIChat);
     } else if (option.id === 4) {
       const anxietyExplanation = 'Anxiety is a feeling of unease, such as worry or fear, that can be mild or severe. '
         + '\n\nEveryone has feelings of anxiety at some point in their life. For example, you may feel worried and anxious about sitting an exam, '
@@ -222,15 +238,12 @@ function ChatBox() {
     } else if (option.id === 15) {
       // If the user does not need more help with sleeping problems
       askIfMoreQuestions(); // Directly ask if the user has more questions, potentially leading to different topics
+    } else if (option.id === 16) {
+      // If the user does not need more help with sleeping problems
+      endAIChatSession(); // Directly ask if the user has more questions, potentially leading to different topics
     } else {
       setCurrentOptions([]);
     }
-  };
-
-  const endAIChatSession = () => {
-    setIsChattingWithAI(false);
-    addMessage('AI chat session ended. How can I help you now?');
-    setCurrentOptions(initialOptions); // Reset to initial options
   };
 
   const toggleMinimize = () => {
@@ -253,7 +266,7 @@ function ChatBox() {
           <div className="chatContent">
             <div className="chatBoxMessages">
               {messages.map((message) => (
-                <div key={message.id} className="message">{message.text}</div>
+                <div key={message.id} className={`message ${message.class || ''}`}>{message.text}</div>
               ))}
               <div className="optionsContainer">
                 {currentOptions.map((option) => (
@@ -277,11 +290,11 @@ function ChatBox() {
               />
               <button type="submit">Send</button>
             </form>
-            {isChattingWithAI && (
+            {/* {isChattingWithAI && (
               <button type="button" onClick={endAIChatSession} className="endChatButton">
                 End Chat with AI
               </button>
-            )}
+            )} */}
           </div>
         )}
       </div>

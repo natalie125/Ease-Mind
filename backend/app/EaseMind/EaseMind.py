@@ -11,6 +11,32 @@ import pickle
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.models import load_model
 import os
+# Ai chatbot
+import openai
+from dotenv import load_dotenv
+import os
+
+
+# Load environment variables
+load_dotenv()
+
+# Set your OpenAI API key here
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+# 获取项目根目录
+root_path = os.path.dirname(os.path.abspath(__file__))
+
+# 拼接完整路径
+tokenizer_path = os.path.join(root_path, 'tokenizer.pickle')
+
+# Load the saved tokenizer
+with open(tokenizer_path, 'rb') as handle:
+    tokenizer = pickle.load(handle)
+
+model_path = os.path.join(root_path, 'my_model.h5')
+
+# load mdel
+model = load_model(model_path)
 
 app = Flask(__name__)
 CORS(app)
@@ -503,15 +529,6 @@ def get_user_feedback():
 
     return jsonify({"feedback": feedback_messages}), 200
 
-# Ai chatbot
-import openai
-from dotenv import load_dotenv
-import os
-# Load environment variables
-load_dotenv()
-
-# Set your OpenAI API key here
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
 @auth_bp.route('/aichat', methods=['POST'])
 def chat_with_openai():
@@ -524,31 +541,50 @@ def chat_with_openai():
     if not user_message:
         return jsonify({"error": "Missing 'message' in JSON payload"}), 400
 
-    # Preparing the conversation history if available
-    conversation_history = request.json.get('history', [])
-    messages = [
-        {"role": "system", "content": "You are a helpful assistant."},
-    ] + conversation_history + [
-        {"role": "user", "content": user_message},
-    ]
+    # Convert new text into a sequence of numberss
+    new_sequences = tokenizer.texts_to_sequences([user_message])
 
-    try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=messages
-        )
-        # Append the latest response to the conversation history
-        conversation_history.append({"role": "user", "content": user_message})
-        conversation_history.append({"role": "assistant", "content": response.choices[0].message})
+    # Pad the new sequences
+    new_texts_padded = pad_sequences(new_sequences, maxlen=100)
 
-        # Return both the response and the updated conversation history
+    # Use model to make prediction
+    prediction = model.predict(new_texts_padded)
+
+    # Set a threshold and print the prediction result
+    threshold = 0.5
+    predicted_class = 1 if prediction[0][0] > threshold else 0 
+    if predicted_class == 1:
         return jsonify({
-            "response": response.choices[0].message,
-            "history": conversation_history
+            "response": {
+                "content": "If you are in crisis, please seek help immediately. Call Samaritans. Hours: Available 24 hours. Number: 116 123."
+            }
         })
-    except Exception as e:
-        app.logger.error('Unhandled Exception: %s', traceback.format_exc())
-        return jsonify({"error": str(e)}), 500
+    else:
+        # Preparing the conversation history if available
+        conversation_history = request.json.get('history', [])
+        messages = [
+            {"role": "system", "content": "You are a helpful assistant."},
+        ] + conversation_history + [
+            {"role": "user", "content": user_message},
+        ]
+
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=messages
+            )
+            # Append the latest response to the conversation history
+            conversation_history.append({"role": "user", "content": user_message})
+            conversation_history.append({"role": "assistant", "content": response.choices[0].message})
+
+            # Return both the response and the updated conversation history
+            return jsonify({
+                "response": response.choices[0].message,
+                "history": conversation_history
+            })
+        except Exception as e:
+            app.logger.error('Unhandled Exception: %s', traceback.format_exc())
+            return jsonify({"error": str(e)}), 500
 
     
 if __name__ == '__main__':

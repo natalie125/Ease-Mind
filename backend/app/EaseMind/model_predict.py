@@ -6,7 +6,7 @@ from tensorflow.keras.models import load_model
 with open('tokenizer.pickle', 'rb') as handle:
     tokenizer = pickle.load(handle)
 
-# load mdel
+# Load the saved model
 model = load_model('my_model.h5')
 
 while True:
@@ -15,7 +15,7 @@ while True:
     if new_text == 'quit':
         break
 
-    # Convert new text into a sequence of numberss
+    # Convert new text into a sequence of numbers
     new_sequences = tokenizer.texts_to_sequences([new_text])
 
     # Pad the new sequences

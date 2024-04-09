@@ -10,11 +10,9 @@ function DailyQuestions() {
   const [error, setError] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
   const [isLastQuestion, setIsLastQuestion] = useState(false);
-  const [isRecording, setIsRecording] = useState(false); // Track recording state
+  const [isRecording, setIsRecording] = useState(false);
   const { token } = useContext(AuthTokenContext);
   const navigate = useNavigate();
-
-  // Reference to the SpeechRecognition instance
   const recognitionRef = React.useRef(null);
 
   const speechRecognitionAvailable = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
