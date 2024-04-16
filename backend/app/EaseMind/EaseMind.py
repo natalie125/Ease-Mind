@@ -23,10 +23,10 @@ load_dotenv()
 # Set your OpenAI API key here
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# 获取项目根目录
+# Get the project root directory
 root_path = os.path.dirname(os.path.abspath(__file__))
 
-# 拼接完整路径
+# Concatenate the full path
 tokenizer_path = os.path.join(root_path, 'tokenizer.pickle')
 
 # Load the saved tokenizer

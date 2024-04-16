@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './EaseMind.css';
-import ChatBox from './ChatBox';
+import ePersonalDetailsImage from './images/e_personal_details.png';
+import anxietyTestImage from './images/anxiety_test.png';
+import reportImage from './images/report.png';
+import dailyQuestionnaireImage from './images/daily_q.png';
+import chatBoxImage from './images/chatbox.png';
 import PopUp from './PopUp';
+import ChatBox from './ChatBox';
 
 function EaseMind() {
   const [showPopUp, setShowPopUp] = useState(() => {
@@ -12,47 +17,40 @@ function EaseMind() {
 
   const [showChatBox, setShowChatBox] = useState(false);
 
-  const userEmail = sessionStorage.getItem('email')
-    ? sessionStorage.getItem('email').substring(1, sessionStorage.getItem('email').length - 1)
-    : 'User';
-
   const handlePopUpClose = () => {
     setShowPopUp(false);
     localStorage.setItem('hasAgreedToPopUp', 'true');
   };
 
-  // Toggle function for ChatBox visibility
   const toggleChatBox = () => {
     setShowChatBox(!showChatBox);
   };
 
   return (
-    <div className="easeMindContainer">
-      <h1 className="easeMindTitle">
-        Welcome&nbsp;
-        {userEmail}
-        !
-      </h1>
-      <div>
-        <Link to="/EaseMind_personal_details">
-          <button type="button" className="easeMindButton">Edit My Details</button>
+    <div className="easeMindFullPage">
+      <div className="easeMindFeatures">
+        <Link to="/EaseMind_personal_details" className="easeMindFeatureItem">
+          <img src={ePersonalDetailsImage} alt="Personal Details" />
+          <span>Edit My Details</span>
         </Link>
-        <Link to="/EaseMind_testpage">
-          <button type="button" className="easeMindButton">Anxiety Tests</button>
+        <Link to="/EaseMind_testpage" className="easeMindFeatureItem">
+          <img src={anxietyTestImage} alt="Anxiety Tests" />
+          <span>Check My Anxiety Levels</span>
         </Link>
-        <Link to="/EaseMind_report">
-          <button type="button" className="easeMindButton">Report</button>
+        <Link to="/EaseMind_report" className="easeMindFeatureItem">
+          <img src={reportImage} alt="Report" />
+          <span>Check My Report</span>
         </Link>
-        <Link to="/EaseMind_dailyQ">
-          <button type="button" className="easeMindButton">Daily Questionnaire</button>
+        <Link to="/EaseMind_dailyQ" className="easeMindFeatureItem">
+          <img src={dailyQuestionnaireImage} alt="Daily Questionnaire" />
+          <span>Complete Daily Questionnaire</span>
         </Link>
-        {/* Toggle Button for ChatBox */}
-        <button type="button" className="easeMindButton" onClick={toggleChatBox}>
-          {showChatBox ? 'Hide Chat' : 'Chat Box'}
+        <button type="button" className="easeMindFeatureItem" onClick={toggleChatBox}>
+          <img src={chatBoxImage} alt="Chat Box" />
+          <span>{showChatBox ? 'Hide Chat' : 'Chat Box'}</span>
         </button>
-        {showChatBox && <ChatBox />}
       </div>
-
+      {showChatBox && <ChatBox />}
       {showPopUp && <PopUp onClose={handlePopUpClose} />}
     </div>
   );

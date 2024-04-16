@@ -43,13 +43,19 @@ function ChatBox() {
   ];
 
   const addMessage = (text) => {
+    console.log(`addMessage called with text: ${text}`);
     const newMessage = { id: `${text}-${Date.now()}`, text };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
   };
 
+  const [hasInitialMessageBeenAdded, setHasInitialMessageBeenAdded] = useState(false);
+
   useEffect(() => {
-    setCurrentOptions(initialOptions);
-    addMessage('Hi! How can I help you today?');
+    if (!hasInitialMessageBeenAdded) {
+      setCurrentOptions(initialOptions);
+      addMessage('Hi! How can I help you today?');
+      setHasInitialMessageBeenAdded(true);
+    }
   }, []);
 
   const sendMessage = async (event) => {
