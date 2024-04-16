@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './EaseMind.css';
+import './AnxietyLevelTest.css';
 import { AuthTokenContext } from '../../App';
 
 function PersonalDetails() {

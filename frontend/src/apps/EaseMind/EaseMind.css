@@ -1,6 +1,7 @@
 .easeMindFullPage {
   text-align: center;
   padding: 2rem 0;
+  background-color: #E0F2F1;
 }
 
 .easeMindFeatures {
@@ -19,15 +20,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 0; /* Remove padding to allow the image to extend to the full size of the button */
   border: none;
   border-radius: 8px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
-  margin-bottom: 1rem; /* Space for bottom margin */
-  width: 150px; /* Set a fixed width for each item */
-  height: 150px; /* Set a fixed height for each item */
+  margin-bottom: 1rem;
+  width: 90%; /* Set a fixed width for each item */
+  height: 90%; /* Set a fixed height for each item */
+  cursor: pointer; /* To indicate the item is clickable */
 }
 
 .easeMindFeatureItem span {
@@ -36,6 +38,7 @@
   width: 100%;
   text-align: center;
   z-index: 2;
+  color: black;
 }
 
 .easeMindTitle {
@@ -193,4 +196,40 @@ select:focus {
 
 .easeMindFeatureItem:hover {
   background-color: #1E88E5; /* Darker shade on hover */
+}
+
+.easeMindFeatureItem img {
+  width: 100%; /* Make the image cover the full width of the button */
+  height: 100%; /* Make the image cover the full height of the button */
+  object-fit: cover; /* This will ensure that the aspect ratio is maintained */
+  border-radius: 8px; /* To match the border radius of the button */
+}
+
+.easeMindchatboxbutton {
+  position: fixed; /* Position the button fixed relative to the viewport */
+  bottom: 20px; /* 20px from the bottom of the viewport */
+  right: 20px; /* 20px from the right side of the viewport */
+  width: 80px; /* Set the width of the button */
+  height: 80px; /* Set the height of the button */
+  border: none; /* Remove border */
+  border-radius: 50%; /* Make it round */
+  padding: 0; /* Remove padding */
+  box-shadow: none; /* Remove shadow if you don't want it */
+  background: none; /* Remove any background */
+  cursor: pointer; /* Cursor to pointer to indicate it's clickable */
+  z-index: 1000; /* High z-index to ensure it's above other elements */
+}
+
+.easeMindchatboxbutton img {
+  width: 100%; /* Make the image fill the button */
+  height: auto; /* Keep the image aspect ratio */
+  object-fit: cover; /* Cover the content box without stretching */
+}
+
+.easeMindHeader {
+  text-align: center;
+  margin-top: 0;
+  padding-top: 20px; /* Padding at the top */
+  font-size: 2rem; /* Size of the h1 heading */
+  margin-bottom: 40px; /* Increased bottom margin to create space */
 }
