@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './EaseMind.css';
+import './Testpage.css';
 
 function TestPage() {
   const navigate = useNavigate();

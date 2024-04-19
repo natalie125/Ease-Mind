@@ -71,23 +71,6 @@ select:focus {
   outline: none;
 }
 
-.easeMindButton {
-  width: 100%;
-  background-color: #42A5F5; 
-  color: white;
-  padding: 15px 20px;
-  border: none;
-  border-radius: 4px;
-  margin-top: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
-}
-
-.easeMindButton:hover {
-  background-color: #1E88E5; 
-}
 .GoBackButton {
   background-color: #42A5F5; /* Matching the .easeMindButton color */
   color: white;

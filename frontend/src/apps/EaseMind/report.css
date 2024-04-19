@@ -1,0 +1,115 @@
+.pageContainer {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    width: 100vw;
+    box-sizing: border-box;
+}
+
+.chartContainer {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.header {
+    color: #42A5F5;
+    text-align: center;
+}
+
+.button {
+    background-color: #42A5F5;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+.alertSuccess {
+    color: green;
+    background-color: #E8F5E9;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.alertWarning {
+    color: darkorange;
+    background-color: #FFF3E0;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.selectContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100px;
+    margin: 20px 0;
+}
+
+.selectStyle {
+    width: 200px;
+    padding: 10px;
+    margin: 0 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.feedbackSection {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.GoBackButton {
+    background-color: #42A5F5;
+    color: white;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 1rem;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+}
+
+.suicidalRiskSection {
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+}
+/* Styles for when there is a risk of suicidal thoughts */
+.suicidalRiskHigh {
+    background-color: #FFCDD2; /* Red background */
+    color: #D32F2F; /* Dark red text */
+}
+
+/* Styles for when there is no risk of suicidal thoughts */
+.suicidalRiskLow {
+    background-color: #C8E6C9; /* Green background */
+    color: #2E7D32; /* Dark green text */
+}
+
+/* Common styles for both conditions */
+.suicidalRiskSection {
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+}

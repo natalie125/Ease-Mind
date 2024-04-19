@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './ChatBox.css';
+import { FaMicrophone, FaMicrophoneSlash } from 'react-icons/fa';
+import { AuthTokenContext } from '../../App';
 
 function ChatBox() {
   const [messages, setMessages] = useState([]);
@@ -7,6 +9,48 @@ function ChatBox() {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
   const [isChattingWithAI, setIsChattingWithAI] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const recognitionRef = React.useRef(null);
+  const { token } = useContext(AuthTokenContext);
+
+  useEffect(() => {
+    const speechRecognitionAvailable = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+    if (speechRecognitionAvailable) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = true; // You can set this to false if you want the recognition to stop after the user stops speaking
+      recognitionRef.current.interimResults = true; // Show interim results
+      recognitionRef.current.lang = 'en-UK'; // Set the language
+
+      recognitionRef.current.onresult = (event) => {
+        const transcript = Array.from(event.results)
+          .map((result) => result[0])
+          .map((result) => result.transcript)
+          .join('');
+        setInput(transcript); // Update the input field with the transcript
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsRecording(false);
+      };
+
+      recognitionRef.current.onerror = (event) => {
+        console.error(`Speech recognition error: ${event.error}`);
+        setIsRecording(false);
+      };
+    }
+  }, []);
+
+  const toggleRecording = () => {
+    if (isRecording) {
+      recognitionRef.current.stop();
+      setIsRecording(false);
+    } else {
+      recognitionRef.current.start();
+      setIsRecording(true);
+    }
+  };
+
   const initialOptions = [
     { text: 'General enquiry', id: 1 },
     { text: 'Advice based on anxiety level', id: 2 },
@@ -99,6 +143,26 @@ function ChatBox() {
     }
   };
 
+  const fetchLatestAnxietyResult = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/latesttest', {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      // Accessing the score and advice directly
+      addMessage(`Your latest anxiety level is: ${data.score}. Based on this, we advise the following: ${data.advice}`);
+    } catch (error) {
+      console.error('Failed to fetch the latest anxiety result:', error);
+      addMessage('Sorry, something went wrong while retrieving your anxiety results.', 'system');
+    }
+  };
+
   const askIfMoreQuestions = () => {
     // Add a message asking if the user has more questions
     addMessage('Do you have any other questions?');
@@ -128,7 +192,8 @@ function ChatBox() {
     if (option.id === 1) {
       setCurrentOptions(optionAfterInitial);
     } else if (option.id === 2) {
-      // Implement the logic for "Advice based on anxiety level"
+      await fetchLatestAnxietyResult();
+      askIfMoreQuestions();
     } else if (option.id === 3) {
       setIsChattingWithAI(true);
       setCurrentOptions(optionAfterAIChat);
@@ -294,6 +359,9 @@ function ChatBox() {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Type a message..."
               />
+              <button type="button" onClick={toggleRecording} disabled={!recognitionRef.current}>
+                {isRecording ? <FaMicrophoneSlash /> : <FaMicrophone />}
+              </button>
               <button type="submit">Send</button>
             </form>
             {/* {isChattingWithAI && (

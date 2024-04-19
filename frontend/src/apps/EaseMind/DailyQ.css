@@ -1,16 +1,15 @@
 .daily-questions-container {
-    background-color: #E0F2F1; /* Light teal background */
-    color: #004D40; /* Dark teal text for better readability */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-    max-width: 600px; /* Limit the width for better readability */
-    margin: 20px auto; /* Center the container */
-    font-family: 'Arial', sans-serif; /* Use a standard, easy-to-read font */
-  }
-  
+  background-color: #E0F2F1; /* Light teal background */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  max-width: 600px; /* Limit the width for better readability */
+  margin: 20px auto; /* Center the container */
+  font-family: 'Arial', sans-serif; /* Use a standard, easy-to-read font */
+}
+
   .daily-questions-container h2 {
-    color: #00695C; /* Slightly darker teal for headings */
+    color: #1565C0; ; /* Slightly darker teal for headings */
   }
   
   .daily-questions-container textarea {
@@ -25,7 +24,7 @@
   }
   
   .daily-questions-container button {
-    background-color: #004D40; /* Dark teal background */
+    background-color:#42A5F5;  /* Dark teal background */
     color: #ffffff; /* White text */
     border: none;
     padding: 10px 20px;
@@ -36,7 +35,7 @@
   }
   
   .daily-questions-container button:hover {
-    background-color: #00796B; /* Slightly lighter teal on hover */
+    background-color: #1E88E5; ; /* Slightly lighter teal on hover */
   }
   
   .error-message {

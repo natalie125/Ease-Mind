@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   CartesianGrid, Line, LineChart, Legend, Tooltip, ReferenceLine, XAxis, YAxis,
 } from 'recharts';
+import './report.css';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { AuthTokenContext } from '../../App';
@@ -38,42 +39,48 @@ const augmentDataWithLevelAndFormatDate = (responseData, granularity) => respons
 });
 
 function TestResultsChart() {
-  const [chartData, setChartData] = useState({ yearly: [], monthly: [], daily: [] });
   const [selectedGranularity, setSelectedGranularity] = useState('yearly');
-  const [fetchError, setFetchError] = useState('');
+  const [fetchError] = useState('');
   const [userFeedback, setUserFeedback] = useState('');
   const authTokenContext = useContext(AuthTokenContext);
   const token = authTokenContext?.token;
   const [suicidalRisk, setSuicidalRisk] = useState(false);
   const [userTestFeedback, setUserTestFeedback] = useState('');
   const navigate = useNavigate();
+  const [testData, setTestData] = useState({
+    anxiety: { yearly: [], monthly: [], daily: [] },
+    spin: { yearly: [], monthly: [], daily: [] },
+    pd: { yearly: [], monthly: [], daily: [] },
+    ptsd: { yearly: [], monthly: [], daily: [] },
+  });
 
   useEffect(() => {
+    const tests = ['anxiety', 'spin', 'pd', 'ptsd'];
     const granularities = ['yearly', 'monthly', 'daily'];
-    Promise.all(granularities.map((granularity) => fetch(`http://127.0.0.1:5000/get_test_results?granularity=${granularity}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Failed to fetch test results for ${granularity}, status: ${response.status}`);
-        }
-        return response.json();
+
+    tests.forEach((test) => {
+      Promise.all(granularities.map((granularity) => fetch(`http://127.0.0.1:5000/get_${test}_results?granularity=${granularity}`, {
+        headers: { Authorization: `Bearer ${token}` },
       })
-      .then((responseData) => ({
-        granularity,
-        data: augmentDataWithLevelAndFormatDate(responseData, granularity),
-      }))))
-      .then((allChartData) => {
-        const newData = allChartData.reduce((acc, { granularity, data }) => {
-          acc[granularity] = data;
-          return acc;
-        }, {});
-        setChartData(newData);
-      })
-      .catch((error) => {
-        setFetchError(error.message);
-        setUserFeedback('Failed to load chart data.');
-      });
+        .then((response) => response.json())
+        .then((responseData) => ({
+          testKey: test, // Changed 'test' to 'testKey' here
+          granularity,
+          data: augmentDataWithLevelAndFormatDate(responseData, granularity),
+        }))
+        .catch((error) => {
+          console.error(`Failed to fetch ${test} results for ${granularity}:`, error);
+        })))
+        .then((results) => {
+          setTestData((prevData) => {
+            const newData = { ...prevData };
+            results.forEach(({ testKey, granularity, data }) => { // Changed 'test' to 'testKey' here
+              newData[testKey][granularity] = data; // Changed 'test' to 'testKey' here
+            });
+            return newData;
+          });
+        });
+    });
 
     fetch('http://127.0.0.1:5000/get_word_detection', {
       headers: { Authorization: `Bearer ${token}` },
@@ -108,24 +115,30 @@ function TestResultsChart() {
   }, [token]);
 
   const exportPDF = async () => {
-    const input = document.getElementById(`chart-${selectedGranularity}`);
+    const input = document.getElementById('exportContainer');
     if (!input) {
-      setUserFeedback("Couldn't find the chart element for PDF generation.");
+      setUserFeedback("Couldn't find the container for PDF generation.");
       return;
     }
 
     try {
-      const canvas = await html2canvas(input);
+      const canvas = await html2canvas(input, {
+        scale: 1,
+        windowWidth: input.scrollWidth,
+        windowHeight: input.scrollHeight,
+      });
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({
         orientation: 'landscape',
+        unit: 'px',
+        format: [canvas.width, canvas.height],
       });
 
-      pdf.addImage(imgData, 'PNG', 10, 10, 180, 150);
-      pdf.save('chart.pdf');
+      pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+      pdf.save('test-results.pdf');
       setUserFeedback('PDF successfully generated and downloaded.');
     } catch (error) {
-      setUserFeedback('Failed to generate PDF.');
+      setUserFeedback(`Failed to generate PDF: ${error.message}`);
     }
   };
 
@@ -133,154 +146,71 @@ function TestResultsChart() {
     setSelectedGranularity(event.target.value);
     setUserFeedback('');
   };
-  const styles = {
-    pageContainer: {
-      backgroundColor: '#E0F2F1',
-      padding: '20px',
-      borderRadius: '8px',
-      fontFamily: 'Arial, sans-serif',
-      minHeight: '100vh',
-      width: '100vw',
-      boxSizing: 'border-box',
-    },
-    chartContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-      margin: '20px 0',
-      padding: '20px',
-      backgroundColor: 'white',
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-      borderRadius: '8px',
-    },
-    header: {
-      color: '#42A5F5',
-      textAlign: 'center',
-    },
-    button: {
-      backgroundColor: '#42A5F5',
-      color: 'white',
-      border: 'none',
-      padding: '10px 20px',
-      borderRadius: '5px',
-      cursor: 'pointer',
-      margin: '10px 0',
-    },
-    alertSuccess: {
-      color: 'green',
-      backgroundColor: '#E8F5E9',
-      padding: '10px',
-      borderRadius: '5px',
-      margin: '10px 0',
-    },
-    alertWarning: {
-      color: 'darkorange',
-      backgroundColor: '#FFF3E0',
-      padding: '10px',
-      borderRadius: '5px',
-      margin: '10px 0',
-    },
-    selectContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'column',
-      height: '100px',
-      margin: '20px 0',
-    },
-    selectStyle: {
-      width: '200px',
-      padding: '10px',
-      margin: '0 10px',
-      borderRadius: '5px',
-      border: '1px solid #ccc',
-    },
-    feedbackSection: {
-      margin: '20px 0',
-      textAlign: 'center',
-    },
-  };
 
   return (
-    <div style={styles.pageContainer}>
-      <button
-        type="button"
-        className="GoBackButton"
-        onClick={() => navigate('/EaseMind')}
-      >
+    <div className="pageContainer">
+      <button type="button" className="GoBackButton" onClick={() => navigate('/EaseMind')}>
         Go Back
       </button>
       {fetchError && <div className="alert alert-danger">{fetchError}</div>}
       {userFeedback && <div className="alert alert-info">{userFeedback}</div>}
-      {' '}
-      <div style={styles.selectContainer}>
-        <label htmlFor="granularity-select">Choose a granularity:</label>
-        <select
-          id="granularity-select"
-          onChange={handleGranularityChange}
-          value={selectedGranularity}
-          style={styles.selectStyle}
-        >
-          <option value="yearly">Yearly</option>
-          <option value="monthly">Monthly</option>
-          <option value="daily">Daily</option>
-        </select>
-      </div>
-      {Object.keys(chartData).map((granularity) => (
-        <div key={granularity} id={`chart-${granularity}`} style={{ display: granularity === selectedGranularity ? 'block' : 'none' }}>
-          <h2>
-            {granularity.toUpperCase()}
-            {' '}
-            Data
-          </h2>
-          <LineChart width={600} height={300} data={chartData[granularity]}>
-            <CartesianGrid stroke="#ccc" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="score" stroke="#8884d8" />
-            <ReferenceLine y={10} label="Threshold" stroke="red" />
-          </LineChart>
+      <div id="exportContainer">
+        <div className="selectContainer">
+          <label htmlFor="granularity-select">Choose a granularity:</label>
+          <select
+            id="granularity-select"
+            onChange={handleGranularityChange}
+            value={selectedGranularity}
+            className="selectStyle"
+          >
+            <option value="yearly">Yearly</option>
+            <option value="monthly">Monthly</option>
+            <option value="daily">Daily</option>
+          </select>
         </div>
-      ))}
-      <div style={{
-        backgroundColor: suicidalRisk ? '#FFCDD2' : '#C8E6C9', // Red if there is risk, green if not
-        color: suicidalRisk ? '#D32F2F' : '#2E7D32', // Dark red text for risk, dark green text for no risk
-        padding: '20px',
-        margin: '20px 0',
-        borderRadius: '8px',
-        textAlign: 'center',
-        fontWeight: 'bold',
-      }}
-      >
-        {userTestFeedback && (
-          <div style={styles.feedbackSection}>
-            {userTestFeedback}
+        {Object.entries(testData).map(([testName, dataByGranularity]) => (
+          <div key={testName}>
+            <h2>
+              {testName.toUpperCase()}
+              {' '}
+              Test Results
+            </h2>
+            {Object.keys(dataByGranularity).map((granularity) => (
+              <div key={granularity} style={{ display: granularity === selectedGranularity ? 'block' : 'none' }}>
+                <LineChart width={600} height={300} data={dataByGranularity[granularity]}>
+                  <CartesianGrid stroke="#ccc" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="score" stroke="#8884d8" />
+                  <ReferenceLine y={10} label="Moderate anxiety threshold" stroke="red" />
+                </LineChart>
+              </div>
+            ))}
           </div>
-        )}
-        {suicidalRisk ? (
-          'There might be a risk of suicidal thoughts based on recent responses. It is recommended to seek professional help.'
-        ) : (
-          'No indications of suicidal thoughts based on recent responses.'
-        )}
+        ))}
+        <div className={suicidalRisk ? 'suicidalRiskSection alert-danger' : 'suicidalRiskSection alert-success'}>
+          {userTestFeedback && (
+            <div className="feedbackSection">
+              {userTestFeedback}
+            </div>
+          )}
+          {suicidalRisk ? (
+            'There might be a risk of suicidal thoughts based on recent responses. It is recommended to seek professional help.'
+          ) : (
+            'No indications of suicidal thoughts based on recent responses.'
+          )}
+        </div>
       </div>
       <button
         type="button"
         onClick={exportPDF}
-        style={{
-          backgroundColor: '#42A5F5',
-          color: 'white',
-          padding: '10px 20px',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          fontWeight: 'bold',
-        }}
+        className="button"
       >
         Export to PDF
       </button>
     </div>
   );
 }
-
 export default TestResultsChart;

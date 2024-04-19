@@ -31,3 +31,4 @@ while True:
         print("Predicted class: Positive")
     else:
         print("Predicted class: Negative")
+    
