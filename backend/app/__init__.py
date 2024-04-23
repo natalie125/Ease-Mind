@@ -29,7 +29,8 @@ def create_app(testing=False):
     # we DO NOT want to include the CORS(app).
     path = Path("app.py")
     if not Path.is_file(path):
-        CORS(app) # Enables CORS
+        # CORS(app) # Enables CORS
+        cors = CORS(app, resources={r"/api/*": {"origins": ["https://archie-adams.github.io/larks", "https://d28uu5wwh8m9ry.cloudfront.net/"]}})
         print("Running locally - CORS has been enabled.")
     else:
         print("Running on EC2 - CORS not enabled in __init__.py")
