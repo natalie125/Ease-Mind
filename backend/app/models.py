@@ -6,6 +6,7 @@ class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(500), index=True, unique=True)
     password = db.Column(db.String(500))
+    rootsRadarRole = db.Column(db.Integer, default=0) # 0 = user, 1 = caregiver, 2 = admin, 3 = developer
 
     # Based on:
     # https://ed-a-nunes.medium.com/field-validation-for-backend-apis-with-python-flask-and-sqlalchemy-30e8cc0d260c
@@ -75,6 +76,7 @@ class Patient(db.Model):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 class PATIENTS(db.Model):
+    USER_ID = db.Column(db.ForeignKey('users.id'), nullable=False)
     # ROW_ID = db.Column(db.Integer, primary_key=True)
     SUBJECT_ID = db.Column(db.Integer, primary_key=True)
     GENDER = db.Column(db.String(1))
@@ -113,6 +115,8 @@ class DIAGNOSES_ICD(db.Model):
     # HADM_ID # Not required for demonstration
     SEQ_NUM = db.Column(db.Integer)
     ICD9_CODE = db.Column(db.String(10))
+    SELF_REPORTED_FLAG = db.Column(db.Boolean, default=False)
+
 
 class CHARTEVENTS(db.Model):
     ROW_ID = db.Column(db.Integer, primary_key=True)

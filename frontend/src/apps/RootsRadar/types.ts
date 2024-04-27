@@ -47,3 +47,75 @@ export interface IDiagnosis {
   ICD9_CODE: string;
   text: string;
 }
+
+export interface IPatientHistory {
+  PatientID: number;
+}
+
+interface IDiagnoses {
+  'ROW_ID': number;
+  'SUBJECT_ID': number;
+  'SEQ_NUM': number;
+  'ICD9_CODE': string;
+  'SHORT_TITLE': string;
+  'LONG_TITLE': string;
+  'SELF_REPORTED_FLAG': boolean;
+}
+
+interface IChartevents {
+  'ROW_ID': number;
+  'SUBJECT_ID': number;
+  'ITEMID': string;
+  'CHARTTIME': string;
+  'STORETIME': string;
+  'VALUE': string;
+  'VALUENUM': number;
+  'VALUEUOM': string;
+}
+
+interface ILabevents {
+'ROW_ID': number;
+'SUBJECT_ID': number;
+'ITEMID': string;
+'CHARTTIME': string;
+'VALUE': string;
+'VALUENUM': number;
+'VALUEUOM': string;
+'FLAG': string;
+}
+
+interface INoteevents {
+'ROW_ID': number;
+'SUBJECT_ID': number;
+'CHARTDATE': string;
+'CHARTTIME': string;
+'STORETIME': string;
+'CATEGORY': string;
+'DESCRIPTION': string;
+'TEXT': string;
+}
+
+interface IDatetimeevents {
+'ROW_ID': number;
+'SUBJECT_ID': number;
+'ITEMID': string;
+'CHARTTIME': string;
+'STORETIME': string;
+'VALUE': string;
+}
+
+interface IDetailsSuccess {
+  'consent': 'True';
+  id: number;
+  'diagnoses': IDiagnoses[];
+  'chartevents': IChartevents[];
+  'labevents': ILabevents[];
+  'noteevents': INoteevents[];
+  'datetimeevents': IDatetimeevents[];
+}
+interface IDetailsFail {
+  'consent': 'False';
+  id: number;
+}
+
+export type IDetails = IDetailsSuccess | IDetailsFail;

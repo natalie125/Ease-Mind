@@ -2,31 +2,25 @@ import React, {
   useState, useContext, useEffect,
 } from 'react';
 import axios from 'axios';
-import { useSearchParams } from 'react-router-dom';
 import { AuthTokenContext } from '../../App';
-import './Diagnoses.scss';
-import { IDiagnosis } from './types';
 
-import Patient from './Patient';
 import './Patient.scss';
 
 const BASEURL = process.env.NODE_ENV === 'development'
   ? process.env.REACT_APP_DEV
   : process.env.REACT_APP_PROD;
 
-function Diagnoses() {
+function PatientChildren({ id }: {id: string;}) {
   const { token } = useContext(AuthTokenContext);
-
-  const [searchParams] = useSearchParams();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [diag, setPatientsDiag] = useState<IDiagnosis[] | null>(null);
+  const [patient, setPatients] = useState<string[] | null>(null);
 
-  const callGetPatientDiagnosesAPI = async (ID: string) => (
+  const callGetPatientAPI = async () => (
     axios
       .get(
-        `${BASEURL}api/roots-radar/patient/${ID}/diagnoses`,
+        `${BASEURL}api/roots-radar/mimic-patient-children/${id}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -36,7 +30,10 @@ function Diagnoses() {
       )
       .then((response) => {
         if (response.status === 200) {
-          return response.data.diagnoses as IDiagnosis[];
+          return response.data as string[];
+        }
+        if (response.status === 204) {
+          return null;
         }
         setError('Non 200 code returned. Patient not fetched.');
         return null;
@@ -53,16 +50,16 @@ function Diagnoses() {
       })
   );
 
-  const getPatientDiagnoses = async (id:string) => {
+  const getPatient = async () => {
     setIsLoading(true);
-    const response = await callGetPatientDiagnosesAPI(id);
+    const response = await callGetPatientAPI();
     setIsLoading(false);
     if (!response) return;
-    setPatientsDiag(response);
+    setPatients(response);
   };
 
   useEffect(() => {
-    getPatientDiagnoses(searchParams.get('patient') ?? '10');
+    getPatient();
   }, []);
 
   if (isLoading) {
@@ -73,30 +70,24 @@ function Diagnoses() {
     return <p>{error}</p>;
   }
 
-  let content = <p>loading</p>;
-
-  if (diag !== null) {
-    content = (
-      <div className="DiagnosesComponent">
-        {/* <a href="/roots-radar">Back to home</a> */}
-        <h1>Roots Radar</h1>
-        <h2>Diagnoses logged on you account:</h2>
-        {/* {diag.map((d) => (
-          <p>
-            Diagnosis code: &nbsp;
-            {d.ICD9_CODE}
-            &nbsp;-&nbsp;
-            {d.text}
-          </p>
-        ))} */}
-        <div className="patient-box">
-          <Patient id={searchParams.get('patient') ?? '-1'} onlyDiag />
-        </div>
-      </div>
-    );
-  }
-
-  return content;
+  return (
+    <ul>
+      {patient
+        ? (
+          <>
+            {patient.map((child) => (
+              <li>
+                <a href={`/roots-radar/patient?patient=${child}`}>
+                  ID:
+                  {child}
+                </a>
+              </li>
+            ))}
+          </>
+        )
+        : <p>This patient has no children.</p>}
+    </ul>
+  );
 }
 
-export default Diagnoses;
+export default PatientChildren;

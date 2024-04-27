@@ -88,7 +88,7 @@ function AddNewPatientBasic() {
       )
       .then((response) => {
         if (response.status === 200) {
-          alert('New patient added successfully! Navigate to their page to see their disorder subclass prediction!');
+          alert(`Predicted disorder subclass is ${response.data.subclass}`);
         } else {
           alert('Non 200 code returned. Patient not added.');
         }
@@ -108,7 +108,7 @@ function AddNewPatientBasic() {
   return (
     <div className="AddNewPatientBasicComponent">
       <a className="back-link" href="/roots-radar">← Back</a>
-      <h2>Add a new patient</h2>
+      <h2>AI Disorder Subclass Manual Query</h2>
       <button
         type="button"
         onClick={() => {
@@ -143,7 +143,7 @@ function AddNewPatientBasic() {
           setDisorderSubclass(['0', '5', '6'][Math.floor(Math.random() * 3)]);
         }}
       >
-        Fill with acceptable data (FOR TESTING)
+        Fill with within-range data (For Testing/Demo)
       </button>
       <div className="add-new-patient-form">
         <div>
@@ -374,7 +374,7 @@ function AddNewPatientBasic() {
           type="button"
           onClick={() => handlePostPatient()}
         >
-          Add new patient to health records.
+          Query the model
         </button>
       </div>
     </div>

@@ -37,10 +37,11 @@ import AddNewPatientBasic from './apps/RootsRadar/AddNewPatientBasic';
 import MakeModelFromDatabase from './apps/RootsRadar/MakeModelFromDatabase';
 import GetPatients from './apps/RootsRadar/GetPatients';
 import SystemStatistics from './apps/RootsRadar/SystemStatistics';
-import Patient from './apps/RootsRadar/Patient';
 import Diagnoses from './apps/RootsRadar/Diagnoses';
 import Consent from './apps/RootsRadar/Consent';
 import AddNew from './apps/RootsRadar/AddNew';
+import SelfReportHistory from './apps/RootsRadar/SelfReportHistory';
+import PatientHistoryTree from './apps/RootsRadar/PatientHistoryTree';
 
 import AutismDetector from './apps/AutismDetector/AutismDetector';
 
@@ -106,7 +107,8 @@ function Routes() {
         <Route path="/roots-radar/make-models-from-database" element={<MakeModelFromDatabase />} />
         <Route path="/roots-radar/get-patients" element={<GetPatients />} />
         <Route path="/roots-radar/system-statistics" element={<SystemStatistics />} />
-        <Route path="/roots-radar/patient" element={<Patient />} />
+        <Route path="/roots-radar/patient" element={<PatientHistoryTree />} />
+        <Route path="/roots-radar/self-report-history" element={<SelfReportHistory />} />
         <Route path="/roots-radar/diagnoses" element={<Diagnoses />} />
         <Route path="/roots-radar/consent" element={<Consent />} />
 

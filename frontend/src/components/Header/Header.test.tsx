@@ -11,6 +11,12 @@ describe('Header', () => {
     const contextValues = {
       token: 'your_mocked_token',
       setToken: jest.fn(),
+      email: 'your_mocked_email',
+      setEmail: jest.fn(),
+      rootsRadarRole: '0',
+      setRootsRadarRole: jest.fn(),
+      id: 'your_mocked_id',
+      setId: jest.fn(),
     };
 
     render(
@@ -31,6 +37,12 @@ describe('Header', () => {
     const contextValues = {
       token: 'your_mocked_token',
       setToken: jest.fn(),
+      email: 'your_mocked_email',
+      setEmail: jest.fn(),
+      rootsRadarRole: '0',
+      setRootsRadarRole: jest.fn(),
+      id: 'your_mocked_id',
+      setId: jest.fn(),
     };
 
     render(
@@ -51,6 +63,12 @@ describe('Header', () => {
     const contextValues = {
       token: null,
       setToken: jest.fn(),
+      email: 'your_mocked_email',
+      setEmail: jest.fn(),
+      rootsRadarRole: '0',
+      setRootsRadarRole: jest.fn(),
+      id: 'your_mocked_id',
+      setId: jest.fn(),
     };
 
     render(

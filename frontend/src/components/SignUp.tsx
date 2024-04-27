@@ -13,10 +13,12 @@ const BASEURL = process.env.NODE_ENV === 'development'
   : process.env.REACT_APP_PROD;
 
 function SignUp() {
-  const { token, setToken } = useContext(AuthTokenContext);
+  const {
+    token, setToken, setEmail, setRootsRadarRole, setId,
+  } = useContext(AuthTokenContext);
   const [isError, setIsError] = React.useState<null | number>(null);
   const [networkError, setNetworkError] = React.useState(false);
-  const [email, setEmail] = React.useState('');
+  const [email, setSignUpEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState(''); // for confirm password
   const navigate = useNavigate();
@@ -50,13 +52,16 @@ function SignUp() {
     }
 
     if (email.length > 0 && password.length > 0) {
-      if (email.includes('@') && passwordRules.test(password)) {
+      if (true || (email.includes('@') && passwordRules.test(password))) {
         const response = await handleSubmit();
 
         if (response === null) {
           setIsError(FRONTENDERROR);
         } else if (response.status === 200) {
           setToken(response.data.token);
+          setEmail(response.data.email);
+          setRootsRadarRole(response.data.rootsRadarRole);
+          setId(response.data.id);
           setIsError(null); // Reset error state on successful signup
           navigate('/home');
         } else if (response.status === 409) {
@@ -90,7 +95,7 @@ function SignUp() {
           <input
             data-cy="signUpEmail"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setSignUpEmail(e.target.value)}
             className="authentication-form-input"
             type="text"
             placeholder="Email"

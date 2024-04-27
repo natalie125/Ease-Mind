@@ -73,7 +73,7 @@ function AddNew() {
           <div className="input-container">
             <div className="grid-col-container">
               <h3>Parental Information</h3>
-              <p>Mother&apos;s Subject ID</p>
+              <p>Mother&apos;s User ID</p>
               <input
                 value={MotherSubjectID}
                 onChange={(e) => setMotherSubjectID(e.target.value)}
@@ -81,7 +81,7 @@ function AddNew() {
               />
             </div>
             <div className="input-container">
-              <p>Father&apos;s Subject ID</p>
+              <p>Father&apos;s User ID</p>
               <input
                 value={FatherSubjectID}
                 onChange={(e) => setFatherSubjectID(e.target.value)}
@@ -103,6 +103,7 @@ function AddNew() {
             </div>
             <div className="input-container">
               <p>Heart Rate</p>
+              <p>(Normal = 1, Abnormal = 0)</p>
               <input
                 value={HeartRate}
                 onChange={(e) => setHeartRate(e.target.value)}
@@ -111,6 +112,7 @@ function AddNew() {
             </div>
             <div className="input-container">
               <p>Respiratory Rate</p>
+              <p>(Normal = 1, Abnormal = 0)</p>
               <input
                 value={RespiratoryRate}
                 onChange={(e) => setRespiratoryRate(e.target.value)}
@@ -118,7 +120,7 @@ function AddNew() {
               />
             </div>
             <div className="input-container">
-              <p>Blood Cell Count</p>
+              <p>Blood Cell Count (thousands/microliter)</p>
               <input
                 value={bloodCellCount}
                 onChange={(e) => setbloodCellCount(e.target.value)}
@@ -126,7 +128,7 @@ function AddNew() {
               />
             </div>
             <div className="input-container">
-              <p>White Blood Cell Count</p>
+              <p>White Blood Cell Count (thousands/microliter)</p>
               <input
                 value={whiteBloodCellCount}
                 onChange={(e) => setwhiteBloodCellCount(e.target.value)}
@@ -134,7 +136,7 @@ function AddNew() {
               />
             </div>
             <div className="input-container">
-              <p>Blood Test Status</p>
+              <p>Blood Test Status (0,1,2,3)</p>
               <input
                 value={BloodTestResult}
                 onChange={(e) => setBloodTestResult(e.target.value)}

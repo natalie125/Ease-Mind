@@ -49,6 +49,7 @@ function MakeModelFromDatabase() {
       <h1>Roots Radar</h1>
       <a className="back-link" href="/roots-radar">← Back</a>
       <h2>MakeModelFromDatabase</h2>
+      <p>This operation may take 3-10minutes. There will be no system downtime.</p>
       <button type="button" onClick={() => handlePostMakeModels()}>
         Make Models
       </button>
