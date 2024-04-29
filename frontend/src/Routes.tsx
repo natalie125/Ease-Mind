@@ -53,6 +53,7 @@ import DepressiLessQuestionnaireForm from './apps/DepressiLess/QuestionnaireForm
 import DepressiLessUserMedicalHistory from './apps/DepressiLess/UserMedicalHistory';
 import DepressiLessUserMentalHealthHistory from './apps/DepressiLess/UserMentalHealthHistory';
 import DepressiLessChatSupport from './apps/DepressiLess/ChatSupport';
+import DepressiLessTextClassification from './apps/DepressiLess/TextClassification';
 
 
 // If we want to check each time? Maybe it could be a use memo for when the token changes only?
