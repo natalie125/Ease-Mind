@@ -4,7 +4,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   buttonStyle, containerStyle,
-} from '../styles/Styles';
+} from './styles/Styles';
 
 function ChatSupport() {
   const navigate = useNavigate();
