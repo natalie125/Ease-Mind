@@ -6,6 +6,17 @@ from app.models import UserInformation, UserMentalHealthHistory, UserMedicalHist
 from app.endpoints import auth_bp
 from datetime import datetime
 from sqlalchemy import extract
+import torch
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
+
+# Load depression model (ensure the path and method match your actual model)
+depression_model = torch.load('/path/to/your/depression_model.pth')
+depression_model.eval()
+
+# Load GPT-2 model
+tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
+gpt_model = GPT2LMHeadModel.from_pretrained('gpt2')
+gpt_model.eval()
 
 app = Flask(__name__)
 CORS(app)
@@ -162,16 +173,51 @@ def post_chat_message():
 def classify_text():
     current_user_id = get_jwt_identity()
     data = request.json
+    user_input = data['text']  # User input from concatenated responses
+    # Assuming user_input needs to be tokenized or preprocessed
+    inputs = preprocess(user_input)  # Implement this based on your model requirements
+    with torch.no_grad():
+        outputs = depression_model(inputs)
+        classification = interpret(outputs)  # Implement this to interpret your model's output
+    
     try:
         new_classification = TextClassification(
-            user_input=data['user_input'],
-            classification=data['classification'],
-            confidence=data['confidence'],
+            user_input=user_input,
+            classification=classification,
+            confidence=0.85,  # Assume your model also outputs confidence
             user_id=current_user_id
         )
         db.session.add(new_classification)
         db.session.commit()
-        return jsonify({"message": "Text classified successfully"}), 201
+        return jsonify({"message": "Text classified successfully", "classification": classification}), 201
     except Exception as e:
         current_app.logger.error(f'Error classifying text: {e}')
         return jsonify({"error": "Failed to classify text"}), 500
+    
+@auth_bp.route('/answer_question', methods=['POST'])
+@jwt_required()
+def answer_question():
+    data = request.json
+    question = data['question']
+    context = data.get('context', "")  # Use previous chat as context, if available
+    
+    # Combine context and question for a coherent answer
+    prompt = context + "\n\n" + question
+    inputs = tokenizer.encode(prompt, return_tensors='pt')
+    outputs = gpt_model.generate(inputs, max_length=150, num_return_sequences=1)
+    answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    
+    return jsonify({"answer": answer}), 200
+
+@auth_bp.route('/get_answer', methods=['POST'])
+@jwt_required()
+def get_answer(question, context):
+    # Here you can integrate with an NLP model like OpenAI's GPT, or any other suitable model
+    # Example pseudocode:
+    # response = model.predict(question, context)
+    # return response
+
+    # For simplicity, let's use a simple rule-based approach for demonstration:
+    if "depression" in question.lower():
+        return "If you are feeling depressed, it's important to talk to a professional."
+    return "Please rephrase your question or ask something else."
