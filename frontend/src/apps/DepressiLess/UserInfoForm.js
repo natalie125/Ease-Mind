@@ -1,14 +1,11 @@
-// UserInfoForm.js
-
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { AuthTokenContext } from '../../App';
 import StepIndicator from './StepIndicator';
 import {
   containerWithStepsStyle, formContainerStyle,
-  buttonStyle, inputContainerStyle, inputStyle,
+  buttonStyle, inputContainerStyle,
   modalBackdropStyle, modalStyle, modalHeaderStyle,
   modalContentStyle, modalFooterStyle,
   proceedButtonStyle, cancelButtonStyle,
@@ -53,8 +50,6 @@ PrivacyModal.propTypes = {
 };
 
 function UserInfoForm() {
-  const navigate = useNavigate();
-  const { token } = useContext(AuthTokenContext);
   const [showModal, setShowModal] = useState(true);
   const [userInformation, setUserInfo] = useState({
     name: '',
@@ -64,23 +59,30 @@ function UserInfoForm() {
     nationality: '',
     sexualOrientation: '',
   });
-  const [errors, setErrors] = useState({});
-  const [feedbackMessage, setFeedbackMessage] = useState('');
   const [fetchError, setFetchError] = useState('');
+  const { token } = useContext(AuthTokenContext);
+  const navigate = useNavigate(); // Use useNavigate to get navigation function
 
   useEffect(() => {
-    const endpoint = 'http://127.0.0.1:5000/get_user_info';
-    console.log(`Bearer token: ${token}`); // Debug token output
-    axios.get(endpoint, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).then((response) => {
-      setUserInfo(response.data);
-    }).catch((error) => {
-      const message = error.response ? error.response.data.error : 'Error fetching user details.';
-      setFetchError(message);
-    });
+    const fetchUserInformation = async () => {
+      const endpoint = 'http://127.0.0.1:5000/get_user_info';
+      try {
+        const response = await fetch(endpoint, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch user info');
+        }
+        const data = await response.json();
+        setUserInfo(data);
+      } catch (error) {
+        setFetchError('Error fetching user info. Please try again.');
+      }
+    };
+
+    fetchUserInformation();
   }, [token]);
 
   const handleChange = (e) => {
@@ -92,37 +94,46 @@ function UserInfoForm() {
   };
 
   const validateForm = () => {
-    const formIsValid = true;
-    const newErrors = {};
-    if (!userInformation.name.trim()) newErrors.name = 'Name is required';
-    if (!userInformation.genderIdentity.trim()) newErrors.gender_identity = 'Gender Identity is required';
-    if (!userInformation.sexAssignedAtBirth.trim()) newErrors.sex_assigned_at_birth = 'Sex assigned at birth is required';
-    if (!userInformation.age.trim() || Number.isNaN(Number(userInformation.age)) || Number(userInformation.age) <= 0) newErrors.age = 'Valid age is required';
-    if (!userInformation.nationality.trim()) newErrors.nationality = 'Nationality is required';
-    setErrors(newErrors);
-    return formIsValid && Object.keys(newErrors).length === 0;
+    const allFieldsFilled = Object.values(userInformation).every((value) => value.trim() !== '');
+    if (!allFieldsFilled) {
+      return false;
+    }
+    return true;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) {
-      setFeedbackMessage('Please correct the errors before submitting.');
-      return;
-    }
-
+  const saveUserInfoToDatabase = async () => {
     const endpoint = 'http://127.0.0.1:5000/submit_user_info';
-    axios.post(endpoint, userInformation, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    }).then((response) => {
-      navigate('/DepressiLess/UserMentalHealthHistory', { state: { userId: response.data.id } });
-      setFeedbackMessage('Information submitted successfully!');
-    }).catch((error) => {
-      const message = error.response ? error.response.data.error : 'Failed to submit information.';
-      setFeedbackMessage(message);
-    });
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(userInformation),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Failed to save user info: ${errorData.error ? errorData.error : 'Unknown error'}`);
+      } else {
+        return 'Details saved successfully';
+      }
+    } catch (error) {
+      throw new Error(`Error saving details: ${error.message}`);
+    }
+  };
+
+  const saveUserInfo = async (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      try {
+        await saveUserInfoToDatabase();
+        navigate('/DepressiLess/UserMentalHealthHistory'); // Navigate on successful save
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
   const handleModalProceed = () => {
@@ -138,100 +149,109 @@ function UserInfoForm() {
       <StepIndicator currentStep={0} />
       {showModal && <PrivacyModal onProceed={handleModalProceed} onCancel={handleModalCancel} />}
       <div style={formContainerStyle}>
-        {feedbackMessage && (
-          <div style={{
-            padding: '10px', backgroundColor: '#f8d7da', color: '#721c24', marginBottom: '20px', borderRadius: '4px',
-          }}
-          >
-            {feedbackMessage}
-          </div>
-        )}
-        {fetchError && (
-          <div style={{
-            padding: '10px', backgroundColor: '#f8d7da', color: '#721c24', marginBottom: '20px', borderRadius: '4px',
-          }}
-          >
-            {fetchError}
-          </div>
-        )}
         <h3>Personal Information:</h3>
-        <form onSubmit={handleSubmit}>
-          <div style={inputContainerStyle}>
-            <label htmlFor="name">Name:</label>
+        <form onSubmit={saveUserInfo} style={inputContainerStyle}>
+          {/* Name input */}
+          <label>
+            Name:
+            {' '}
+            <span className="compulsory-field">*</span>
             <input
               type="text"
-              id="name"
               name="name"
               value={userInformation.name}
               onChange={handleChange}
-              autoComplete="off"
-              style={inputStyle}
+              className="userInfoInput"
             />
-            {errors.name && <div style={{ color: 'red' }}>{errors.name}</div>}
-          </div>
-          <div style={inputContainerStyle}>
-            <label htmlFor="genderIdentity">Gender:</label>
+          </label>
+
+          {/* Gender Identity input */}
+          <label>
+            Gender Identity:
+            {' '}
+            <span className="compulsory-field">*</span>
             <input
               type="text"
-              id="genderIdentity"
               name="genderIdentity"
               value={userInformation.genderIdentity}
               onChange={handleChange}
-              style={inputStyle}
+              className="userInfoInput"
             />
-            {errors.genderIdentity && <div style={{ color: 'red' }}>{errors.genderIdentity}</div>}
-          </div>
-          <div style={inputContainerStyle}>
-            <label htmlFor="sexAssignedAtBirth">Sex at Birth:</label>
+          </label>
+
+          {/* Sex Assigned at Birth input */}
+          <label>
+            Sex at Birth:
+            {' '}
+            <span className="compulsory-field">*</span>
             <input
               type="text"
-              id="sexAssignedAtBirth"
               name="sexAssignedAtBirth"
               value={userInformation.sexAssignedAtBirth}
               onChange={handleChange}
-              style={inputStyle}
+              className="userInfoInput"
             />
-            {errors.sexAssignedAtBirth && <div style={{ color: 'red' }}>{errors.sexAssignedAtBirth}</div>}
-          </div>
-          <div style={inputContainerStyle}>
-            <label htmlFor="age">Age:</label>
+          </label>
+
+          {/* Age input */}
+          <label>
+            Age:
+            {' '}
+            <span className="compulsory-field">*</span>
             <input
-              type="number" // Change 'integer' to 'number' to be correct HTML
-              id="age"
+              type="number"
               name="age"
               value={userInformation.age}
               onChange={handleChange}
-              style={inputStyle}
+              className="userInfoInput"
             />
-            {errors.age && <div style={{ color: 'red' }}>{errors.age}</div>}
-          </div>
-          <div style={inputContainerStyle}>
-            <label htmlFor="nationality">Nationality:</label>
+          </label>
+
+          {/* Nationality input */}
+          <label>
+            Nationality:
+            {' '}
+            <span className="compulsory-field">*</span>
             <input
               type="text"
-              id="nationality"
               name="nationality"
               value={userInformation.nationality}
               onChange={handleChange}
-              style={inputStyle}
+              className="userInfoInput"
             />
-            {errors.nationality && <div style={{ color: 'red' }}>{errors.nationality}</div>}
-          </div>
-          <div style={inputContainerStyle}>
-            <label htmlFor="sexualOrientation">Sexual Orientation:</label>
+          </label>
+
+          {/* Sexual Orientation input */}
+          <label>
+            Sexual Orientation:
+            {' '}
+            <span className="compulsory-field">*</span>
             <input
               type="text"
-              id="sexualOrientation"
               name="sexualOrientation"
               value={userInformation.sexualOrientation}
               onChange={handleChange}
-              style={inputStyle}
+              className="userInfoInput"
             />
+          </label>
+
+          {/* Submit button */}
+          <div>
+            <button
+              type="submit"
+              className="userInfoSubmitButton"
+              style={{
+                ...buttonStyle,
+              }}
+            >
+              Submit
+            </button>
           </div>
-          <input type="submit" value="Submit" style={buttonStyle} />
         </form>
+        {fetchError && <div className="error">{fetchError}</div>}
       </div>
     </div>
   );
 }
+
 export default UserInfoForm;
