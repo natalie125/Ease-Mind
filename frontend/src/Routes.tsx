@@ -53,7 +53,6 @@ import DepressiLessOnlineResources from './apps/DepressiLess/OnlineResources';
 import DepressiLessQuestionnaireForm from './apps/DepressiLess/QuestionnaireForm';
 import DepressiLessUserMedicalHistory from './apps/DepressiLess/UserMedicalHistory';
 import DepressiLessUserMentalHealthHistory from './apps/DepressiLess/UserMentalHealthHistory';
-import DepressiLessDepressionScreeningForm from './apps/DepressiLess/DepressionScreeningForm';
 import DepressiLessChatSupport from './apps/DepressiLess/ChatSupport';
 import DepressiLessTextClassification from './apps/DepressiLess/TextClassification';
 import DepressiLessOnlineResources from './apps/DepressiLess/OnlineResources';
