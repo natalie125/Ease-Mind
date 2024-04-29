@@ -1,4 +1,5 @@
 // UserInfoForm.js
+
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -11,7 +12,7 @@ import {
   modalBackdropStyle, modalStyle, modalHeaderStyle,
   modalContentStyle, modalFooterStyle,
   proceedButtonStyle, cancelButtonStyle,
-} from '../styles/Styles';
+} from './styles/Styles';
 
 function PrivacyModal({ onProceed, onCancel }) {
   return (

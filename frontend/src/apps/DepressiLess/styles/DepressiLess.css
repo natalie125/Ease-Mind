@@ -1,0 +1,56 @@
+/* DepressiLess.css */
+
+.header {
+    background-color: #333;
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    text-align: center;
+  }
+  
+  .main-content {
+    padding: 20px;
+  }
+  
+  .interactive-area {
+    border: 1px solid #000;
+    margin: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer; 
+  }
+
+  .button:hover {
+    transform: scale(1.05);
+  }
+
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+  }
+  
+  .label {
+    margin-bottom: 5px;
+  }
+  
+  .input,
+  .textarea {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .submit-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #333;
+    color: #fff;
+  }
