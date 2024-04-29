@@ -86,3 +86,85 @@ class EAQuestion(db.Model):
 
     def __repr__(self):
         return f'<EAQuestion {self.text}>'
+    
+# ---------------------------------------------------------------------------- #
+# DepressiLess Models
+class UserInformation(db.Model):
+    __tablename__ = 'user_information'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    name = db.Column(db.String(120), nullable=False)
+    genderIdentity = db.Column(db.String(50), nullable=False)
+    sexAssignedAtBirth = db.Column(db.String(50), nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    nationality = db.Column(db.String(120), nullable=False)
+    sexualOrientation = db.Column(db.String(50), nullable=True)
+
+    # Relationships
+    mental_health_histories = db.relationship('UserMentalHealthHistory', backref='user', lazy=True)
+    medical_histories = db.relationship('UserMedicalHistory', backref='user', lazy=True)
+    questionnaire_forms = db.relationship('QuestionnaireForm', backref='user', lazy=True)
+    chat_messages = db.relationship('ChatMessage', backref='user', lazy=True)
+    text_classifications = db.relationship('TextClassification', backref='user', lazy=True)
+
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class UserMentalHealthHistory(db.Model):
+    __tablename__ = 'user_mental_health_history'
+
+    id = db.Column(db.Integer, primary_key=True)
+    psychiatricHistory = db.Column(db.Text, nullable=False)
+    stressLevels = db.Column(db.Text, nullable=False)
+    copingMechanisms = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_information.id'), nullable=False)
+
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class UserMedicalHistory(db.Model):
+    __tablename__ = 'user_medical_history'
+
+    id = db.Column(db.Integer, primary_key=True)
+    pastMedicalHistory = db.Column(db.Text, nullable=False)
+    familyMedicalHistory = db.Column(db.Text, nullable=True)
+    medicationHistory = db.Column(db.Text, nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_information.id'), nullable=False)
+
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class QuestionnaireForm(db.Model):
+    __tablename__ = 'questionnaire_form'
+
+    id = db.Column(db.Integer, primary_key=True)
+    currentMood = db.Column(db.Text, nullable=False)
+    recentExperiences = db.Column(db.Text, nullable=True)
+    emotionalState = db.Column(db.Text, nullable=True)
+    emotionalTriggers = db.Column(db.Text, nullable=True)
+    copingMethods = db.Column(db.Text, nullable=True)
+    safetyCheck = db.Column(db.Text, nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_information.id'), nullable=False)
+
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class ChatMessage(db.Model):
+    __tablename__ = 'chat_message'
+
+    id = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_information.id'), nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+class TextClassification(db.Model):
+    __tablename__ = 'text_classification'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_input = db.Column(db.Text, nullable=False)
+    classification = db.Column(db.String(120), nullable=False)
+    confidence = db.Column(db.Float, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_information.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+# ---------------------------------------------------------------------------- #
