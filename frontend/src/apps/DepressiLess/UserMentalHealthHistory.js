@@ -2,11 +2,11 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import StepIndicator from '../common_components/StepIndicator';
-import { AuthTokenContext } from '../../../App';
+import StepIndicator from './StepIndicator';
+import { AuthTokenContext } from '../../App';
 import {
   containerWithStepsStyle, formContainerStyle, buttonStyle, inputContainerStyle, inputStyle,
-} from '../styles/Styles';
+} from './styles/Styles';
 
 const BASEURL = process.env.NODE_ENV === 'development'
   ? process.env.REACT_APP_DEV
@@ -56,7 +56,7 @@ function UserMentalHealthHistory() {
 
     await axios
       .post(
-        `${BASEURL}api/depressiLess/UserMentalHealthHistory`,
+        `${BASEURL}/mental_health_history`,
         {
           psychiatricHistory: mentalHealthInfo.psychiatricHistory,
           stressLevels: mentalHealthInfo.stressLevels,

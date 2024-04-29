@@ -1,7 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthTokenContext } from '../../../../App';
-import { buttonStyle, containerStyle, inputContainerStyle, inputStyle } from './styles/Styles';
+import { AuthTokenContext } from '../../App';
+import {
+  buttonStyle, containerStyle, inputContainerStyle, inputStyle,
+} from './styles/Styles';
 import './TextClassification.css';
 
 const BASEURL = process.env.NODE_ENV === 'development'
@@ -19,11 +21,11 @@ function TextClassification() {
   const [additionalAnswer, setAdditionalAnswer] = useState('');
 
   const questions = [
-    "Are there any worries or challenges that you have been facing lately?",
-    "Have you noticed any changes in your feelings or behaviors that you would like to share?",
-    "What activities or interactions have brought you comfort or distress?",
-    "How have you been managing your emotions? What coping strategies have you tried?",
-    "Lastly, it is important for us to know: have you had any thoughts of harming yourself or others?"
+    'Are there any worries or challenges that you have been facing lately?',
+    'Have you noticed any changes in your feelings or behaviors that you would like to share?',
+    'What activities or interactions have brought you comfort or distress?',
+    'How have you been managing your emotions? What coping strategies have you tried?',
+    'Lastly, it is important for us to know: have you had any thoughts of harming yourself or others?',
   ];
 
   const handleChange = (e) => {
@@ -56,7 +58,7 @@ function TextClassification() {
         setFeedbackMessage('All responses processed successfully.');
         // Check if the classification indicates high risk
         if (data.classification === 'High Risk' && data.confidence > 0.75) { // Adjust threshold as needed
-          feedbackMessage += ' We would like to suggest you speak to a professional and check out our online resources.';
+          setFeedbackMessage((prevMessage) => `${prevMessage} We would like to suggest you speak to a professional and check out our online resources.`);
           navigate('/OnlineResources'); // Navigate to online resources
         }
       } else {
@@ -107,11 +109,18 @@ function TextClassification() {
           placeholder={questions[currentQuestionIndex]}
           style={inputStyle}
         />
-        <button type="submit" style={buttonStyle}>{currentQuestionIndex < questions.length - 1 ? "Next Question" : "Submit All Answers"}</button>
+        <button type="submit" style={buttonStyle}>{currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Submit All Answers'}</button>
       </form>
       {classificationResult && (
         <div>
-          <p>After processing, we identify that your text shows signs of {classificationResult.classification.toLowerCase()} with a confidence of {classificationResult.confidence.toFixed(2)}.</p>
+          <p>
+            After processing, we identify that your text shows signs of
+            {classificationResult.classification.toLowerCase()}
+            {' '}
+            with a confidence of
+            {classificationResult.confidence.toFixed(2)}
+            .
+          </p>
           <form onSubmit={handleAdditionalQuestionSubmit}>
             <input
               type="text"
@@ -122,7 +131,13 @@ function TextClassification() {
             />
             <button type="submit" style={buttonStyle}>Get Answer</button>
           </form>
-          {additionalAnswer && <div><strong>Answer:</strong> {additionalAnswer}</div>}
+          {additionalAnswer && (
+            <div>
+              <strong>Answer:</strong>
+              {' '}
+              {additionalAnswer}
+            </div>
+          )}
         </div>
       )}
       {feedbackMessage && <p className="feedback-message">{feedbackMessage}</p>}

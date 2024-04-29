@@ -1,17 +1,17 @@
-//UserInfoForm.js
+// UserInfoForm.js
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { AuthTokenContext } from '../../../App';
-import StepIndicator from '../common_components/StepIndicator';
+import { AuthTokenContext } from '../../App';
+import StepIndicator from './StepIndicator';
 import {
   containerWithStepsStyle, formContainerStyle,
   buttonStyle, inputContainerStyle, inputStyle,
   modalBackdropStyle, modalStyle, modalHeaderStyle,
   modalContentStyle, modalFooterStyle,
   proceedButtonStyle, cancelButtonStyle,
-} from '../styles/Styles';
+} from './styles/Styles';
 
 function PrivacyModal({ onProceed, onCancel }) {
   return (

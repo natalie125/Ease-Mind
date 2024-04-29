@@ -135,21 +135,6 @@ class UserMedicalHistory(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-class QuestionnaireForm(db.Model):
-    __tablename__ = 'questionnaire_form'
-
-    id = db.Column(db.Integer, primary_key=True)
-    currentMood = db.Column(db.Text, nullable=False)
-    recentExperiences = db.Column(db.Text, nullable=True)
-    emotionalState = db.Column(db.Text, nullable=True)
-    emotionalTriggers = db.Column(db.Text, nullable=True)
-    copingMethods = db.Column(db.Text, nullable=True)
-    safetyCheck = db.Column(db.Text, nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user_information.id'), nullable=False)
-
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
 class ChatMessage(db.Model):
     __tablename__ = 'chat_message'
 

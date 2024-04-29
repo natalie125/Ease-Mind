@@ -8,9 +8,10 @@ from datetime import datetime
 from sqlalchemy import extract
 import torch
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
+from text_analysis import preprocess_text, classify_text
 
 # Load depression model (ensure the path and method match your actual model)
-depression_model = torch.load('/path/to/your/depression_model.pth')
+depression_model = torch.load('/models/depression_model/depression_model.pth')
 depression_model.eval()
 
 # Load GPT-2 model
@@ -175,10 +176,10 @@ def classify_text():
     data = request.json
     user_input = data['text']  # User input from concatenated responses
     # Assuming user_input needs to be tokenized or preprocessed
-    inputs = preprocess(user_input)  # Implement this based on your model requirements
+    inputs = preprocess_text(user_input)  # Implement this based on your model requirements
     with torch.no_grad():
         outputs = depression_model(inputs)
-        classification = interpret(outputs)  # Implement this to interpret your model's output
+        classification = classify_text(outputs)
     
     try:
         new_classification = TextClassification(
@@ -208,16 +209,3 @@ def answer_question():
     answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
     
     return jsonify({"answer": answer}), 200
-
-@auth_bp.route('/get_answer', methods=['POST'])
-@jwt_required()
-def get_answer(question, context):
-    # Here you can integrate with an NLP model like OpenAI's GPT, or any other suitable model
-    # Example pseudocode:
-    # response = model.predict(question, context)
-    # return response
-
-    # For simplicity, let's use a simple rule-based approach for demonstration:
-    if "depression" in question.lower():
-        return "If you are feeling depressed, it's important to talk to a professional."
-    return "Please rephrase your question or ask something else."
