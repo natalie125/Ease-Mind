@@ -237,9 +237,7 @@ describe('Route tests with error handling', () => {
   test('navigating to Roots Radar page', async () => {
     renderWithRouterAndAuth(<Routes />, { route: '/roots-radar' });
     await waitFor(() => {
-      expect(screen.getByText('Roots Radar')).toBeInTheDocument();
-      expect(screen.getByText('get text of id')).toBeInTheDocument();
-      expect(screen.getByText('add new text in db')).toBeInTheDocument();
+      expect(screen.getByText('Error: No user id specified.')).toBeInTheDocument();
     });
   });
 

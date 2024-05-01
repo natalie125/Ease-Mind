@@ -29,8 +29,8 @@ describe('Header', () => {
 
     // Assertions for the rendered header
     expect(screen.getByText('LARKS APP')).toBeInTheDocument();
-    expect(screen.getByText('Apps')).toBeInTheDocument();
-    expect(screen.getByText('Logout')).toBeInTheDocument();
+    expect(screen.getByText('APPS')).toBeInTheDocument();
+    expect(screen.getByText('LOGOUT')).toBeInTheDocument();
   });
 
   it('clicking on logout button calls setToken', () => {
@@ -54,7 +54,7 @@ describe('Header', () => {
     );
 
     // Click on the logout button and assert that setToken is called
-    fireEvent.click(screen.getByText('Logout'));
+    fireEvent.click(screen.getByText('LOGOUT'));
     expect(contextValues.setToken).toHaveBeenCalledWith(null);
   });
 
