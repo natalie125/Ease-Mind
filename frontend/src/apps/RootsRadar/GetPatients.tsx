@@ -23,10 +23,10 @@ function GetPatients() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [patients, setPatients] = useState<IPListNew[] | null>(null);
+  // const [patients, setPatients] = useState<IPListNew[] | null>(null);
   const [patientsList, setPatientsList] = useState<IPListNew[]>([]);
-  console.log(patients);
-  console.log(patientsList);
+  // console.log(patients);
+  // console.log(patientsList);
   // const [isLoadingPrediction, setIsLoadingPrediction] = useState(false);
   // const [errorPrediction, setErrorPrediction] = useState('');
 
@@ -65,7 +65,7 @@ function GetPatients() {
     const response = await callGetPatientsAPI();
     setIsLoading(false);
     if (!response) return;
-    setPatients(response);
+    // setPatients(response);
     setPatientsList(response ?? []);
   };
 

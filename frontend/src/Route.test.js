@@ -13,7 +13,7 @@ import SignUp from './components/SignUp';
 const renderWithRouterAndAuth = (ui, { route = '/' } = {}) => {
   window.history.pushState({}, 'Test page', route);
   return render(
-    <AuthTokenContext.Provider value={{ token: 'mockToken', setToken: () => console.log('setToken called') }}>
+    <AuthTokenContext.Provider value={{ token: 'mockToken', setToken: () => jest.fn() }}>
       <Router>
         {ui}
       </Router>

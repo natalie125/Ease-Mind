@@ -120,8 +120,8 @@ function RootsRadar() {
     );
   }
 
-  console.log(rootsRadarRole);
-  console.log(email);
+  // console.log(rootsRadarRole);
+  // console.log(email);
   return (
     <p>
       Error: Incorrect value for rootsRadarRole (

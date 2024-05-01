@@ -23,7 +23,7 @@ const BASEURL = process.env.NODE_ENV === 'development'
 
 function PatientHistoryTree() {
   const [searchParams] = useSearchParams();
-  console.log(searchParams.get('patient'));
+  // console.log(searchParams.get('patient'));
 
   const { token } = useContext(AuthTokenContext);
 

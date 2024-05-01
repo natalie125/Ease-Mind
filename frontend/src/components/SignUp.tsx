@@ -52,7 +52,7 @@ function SignUp() {
     }
 
     if (email.length > 0 && password.length > 0) {
-      if (true || (email.includes('@') && passwordRules.test(password))) {
+      if ((email.includes('@') && passwordRules.test(password))) {
         const response = await handleSubmit();
 
         if (response === null) {
