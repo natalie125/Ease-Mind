@@ -11,6 +11,12 @@ describe('Header', () => {
     const contextValues = {
       token: 'your_mocked_token',
       setToken: jest.fn(),
+      email: 'your_mocked_email',
+      setEmail: jest.fn(),
+      rootsRadarRole: '0',
+      setRootsRadarRole: jest.fn(),
+      id: 'your_mocked_id',
+      setId: jest.fn(),
     };
 
     render(
@@ -23,14 +29,20 @@ describe('Header', () => {
 
     // Assertions for the rendered header
     expect(screen.getByText('LARKS APP')).toBeInTheDocument();
-    expect(screen.getByText('Apps')).toBeInTheDocument();
-    expect(screen.getByText('Logout')).toBeInTheDocument();
+    expect(screen.getByText('APPS')).toBeInTheDocument();
+    expect(screen.getByText('LOGOUT')).toBeInTheDocument();
   });
 
   it('clicking on logout button calls setToken', () => {
     const contextValues = {
       token: 'your_mocked_token',
       setToken: jest.fn(),
+      email: 'your_mocked_email',
+      setEmail: jest.fn(),
+      rootsRadarRole: '0',
+      setRootsRadarRole: jest.fn(),
+      id: 'your_mocked_id',
+      setId: jest.fn(),
     };
 
     render(
@@ -42,7 +54,7 @@ describe('Header', () => {
     );
 
     // Click on the logout button and assert that setToken is called
-    fireEvent.click(screen.getByText('Logout'));
+    fireEvent.click(screen.getByText('LOGOUT'));
     expect(contextValues.setToken).toHaveBeenCalledWith(null);
   });
 
@@ -51,6 +63,12 @@ describe('Header', () => {
     const contextValues = {
       token: null,
       setToken: jest.fn(),
+      email: 'your_mocked_email',
+      setEmail: jest.fn(),
+      rootsRadarRole: '0',
+      setRootsRadarRole: jest.fn(),
+      id: 'your_mocked_id',
+      setId: jest.fn(),
     };
 
     render(

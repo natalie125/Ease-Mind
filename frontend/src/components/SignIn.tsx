@@ -11,7 +11,9 @@ const BASEURL = process.env.NODE_ENV === 'development'
 
 function SignIn() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const { token, setToken } = useContext(AuthTokenContext);
+  const {
+    token, setToken, setEmail, setRootsRadarRole, setId,
+  } = useContext(AuthTokenContext);
   const navigate = useNavigate();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -69,7 +71,9 @@ function SignIn() {
 
       if (response.status === 200) {
         setToken(response.data.token);
-        sessionStorage.setItem('email', JSON.stringify(response.data.email));
+        setEmail(response.data.email);
+        setRootsRadarRole(response.data.rootsRadarRole);
+        setId(response.data.id);
         navigate('/home');
       } else {
         setIsFilled(false);

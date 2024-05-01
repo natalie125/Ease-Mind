@@ -1,0 +1,34 @@
+.AddNewPatientBasicComponent {
+  margin-top: 1rem;
+
+  > h2 {
+    margin-bottom: 1rem;
+  }
+
+  > button {
+    padding: 0.25rem 1rem;
+    font-size: medium;
+    margin-bottom: 1rem;
+  }
+
+  .add-new-patient-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 60%;
+    margin: auto;
+    > div {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      > p {
+        text-align: end;
+        margin-right: 1rem;
+        padding-top: 0.5rem;
+      }
+    }
+    >button {
+      padding: 1rem;
+      font-size: large;
+      margin-bottom: 2rem;
+    }
+  }
+}
