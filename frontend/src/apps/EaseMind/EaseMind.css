@@ -27,14 +27,14 @@
   position: relative;
   overflow: hidden;
   margin-bottom: 1rem;
-  width: 90%; /* Set a fixed width for each item */
-  height: 90%; /* Set a fixed height for each item */
-  cursor: pointer; /* To indicate the item is clickable */
+  width: 90%;
+  height: 90%;
+  cursor: pointer;
 }
 
 .easeMindFeatureItem span {
   position: absolute;
-  bottom: 10px; /* Adjust if you want the text positioned differently */
+  bottom: 10px;
   width: 100%;
   text-align: center;
   z-index: 2;
@@ -72,23 +72,24 @@ select:focus {
 }
 
 .GoBackButton {
-  background-color: #42A5F5; /* Matching the .easeMindButton color */
-  color: rgb(38, 7, 7);
-  padding: 8px 10px; /* Smaller padding for a smaller button */
+  background-color: #42A5F5;
+  color: white;
+  padding: 8px 10px;
   border: none;
   border-radius: 4px;
-  font-size: 0.8rem; /* Smaller font size */
+  font-size: 0.8rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-bottom: 1rem; /* Adds space below the button for separation */
-  position: fixed; /* Keeps the button positioned relative to the viewport */
-  top: 20px; /* Distance from the top of the viewport */
-  left: 20px;
+  display: block;
+  margin-top: 20px;
+  margin-left: 20px;
+  width: fit-content;
 }
 
 .GoBackButton:hover {
-  background-color: #1E88E5; /* Matching the .easeMindButton hover color */
+  background-color: #1E88E5;
 }
+
 .easeMindTitle {
   color: #1565C0; 
   margin-bottom: 30px;
@@ -147,8 +148,8 @@ select:focus {
 }
 
 .chatBoxMessages {
-  max-height: 300px; /* Adjust the height as needed */
-  overflow-y: auto; /* Enables vertical scrolling */
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .easeMindChatBox {
@@ -161,9 +162,9 @@ select:focus {
   border-radius: 8px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   padding: 10px;
-  width: 300px; /* Set the width of the chat box */
-  height: 150px; /* Set the height to match the feature items */
-  margin: 1rem auto; /* Center the chat box */
+  width: 300px;
+  height: 150px;
+  margin: 1rem auto;
 }
 
 .easeMindChatBox span {
@@ -181,41 +182,41 @@ select:focus {
 }
 
 .easeMindFeatureItem:hover {
-  background-color: #1E88E5; /* Darker shade on hover */
+  background-color: #1E88E5;
 }
 
 .easeMindFeatureItem img {
-  width: 100%; /* Make the image cover the full width of the button */
-  height: 100%; /* Make the image cover the full height of the button */
-  object-fit: cover; /* This will ensure that the aspect ratio is maintained */
-  border-radius: 8px; /* To match the border radius of the button */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .easeMindchatboxbutton {
-  position: fixed; /* Position the button fixed relative to the viewport */
-  bottom: 20px; /* 20px from the bottom of the viewport */
-  right: 20px; /* 20px from the right side of the viewport */
-  width: 80px; /* Set the width of the button */
-  height: 80px; /* Set the height of the button */
-  border: none; /* Remove border */
-  border-radius: 50%; /* Make it round */
-  padding: 0; /* Remove padding */
-  box-shadow: none; /* Remove shadow if you don't want it */
-  background: none; /* Remove any background */
-  cursor: pointer; /* Cursor to pointer to indicate it's clickable */
-  z-index: 1000; /* High z-index to ensure it's above other elements */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 80px;
+  height: 80px;
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+  box-shadow: none;
+  background: none;
+  cursor: pointer;
+  z-index: 1000;
 }
 
 .easeMindchatboxbutton img {
-  width: 100%; /* Make the image fill the button */
-  height: auto; /* Keep the image aspect ratio */
-  object-fit: cover; /* Cover the content box without stretching */
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
 .easeMindHeader {
   text-align: center;
   margin-top: 0;
-  padding-top: 20px; /* Padding at the top */
-  font-size: 2rem; /* Size of the h1 heading */
-  margin-bottom: 40px; /* Increased bottom margin to create space */
+  padding-top: 20px;
+  font-size: 2rem;
+  margin-bottom: 40px;
 }

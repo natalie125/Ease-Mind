@@ -248,6 +248,8 @@ function TestResultsChart() {
         <div className={suicidalRisk ? 'suicidalRiskSection alert-danger' : 'suicidalRiskSection alert-success'}>
           {userTestFeedback && (
             <div className="feedbackSection">
+              <strong>Feedback:</strong>
+              {' '}
               {userTestFeedback}
             </div>
           )}
