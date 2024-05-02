@@ -12,10 +12,8 @@ import torch
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from text_analysis import preprocess_text, classify_text
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
-
-model_path = 'app/depressiLess/models/depression_model'
-depression_model = AutoModelForSequenceClassification.from_pretrained(model_path)
-tokenizerModel = AutoTokenizer.from_pretrained(model_path)
+import gdown
+import os
 
 # Load GPT-2 model
 tokenizerGPT2 = GPT2Tokenizer.from_pretrained('gpt2')
@@ -24,6 +22,39 @@ gpt_model.eval()
 
 app = Flask(__name__)
 CORS(app)
+
+google_drive_model_id = '10BdhMe8kXoxw5tPWLdv8yIYwTnYGuNZz'
+model_directory = 'app/depressiLess/models'
+model_filename = 'my_depression_model.zip'
+model_path = os.path.join(model_directory, 'my_depression_model')
+
+def setup_model():
+    # Ensure the directory exists
+    if not os.path.exists(model_directory):
+        os.makedirs(model_directory)
+
+    # Full path to the zipfile
+    zip_path = os.path.join(model_directory, model_filename)
+
+    # Download if the model directory is empty
+    if not os.listdir(model_path):
+        gdown.download(f'https://drive.google.com/uc?id={google_drive_model_id}', zip_path, quiet=False)
+        # Unzip the file
+        import zipfile
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall(model_directory)
+        os.remove(zip_path)  # Clean up zip file
+
+@auth_bp.before_first_request
+def initialize_model():
+    setup_model()
+    # Assuming the model and tokenizer are in the same path after extraction
+    global depression_model
+    global tokenizerModel
+    my_depression_model = AutoModelForSequenceClassification.from_pretrained(model_path)
+    tokenizerModel = AutoTokenizer.from_pretrained(model_path)
+    my_depression_model.eval()
+
 
 @app.errorhandler(Exception)
 def handle_unexpected_error(error):
