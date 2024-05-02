@@ -241,8 +241,8 @@ describe('Route tests with error handling', () => {
     });
   });
 
-// EaseMind Application
-// EaseMind home page
+  // EaseMind Application
+  // EaseMind home page
   test('navigating to EaseMind main page', async () => {
     renderWithRouterAndAuth(<Routes />, { route: '/EaseMind' });
     await waitFor(() => {
@@ -251,7 +251,7 @@ describe('Route tests with error handling', () => {
       expect(screen.getByAltText('Anxiety Tests')).toBeInTheDocument();
     });
   });
-// EaseMind personal details
+  // EaseMind personal details
   test('navigating to EaseMind Personal Details page', async () => {
     renderWithRouterAndAuth(<Routes />, { route: '/EaseMind_personal_details' });
     await waitFor(() => {

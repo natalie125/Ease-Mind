@@ -17,7 +17,7 @@ function EaseMind() {
   });
 
   const [showChatBox, setShowChatBox] = useState(false);
-
+  // handle pop up close
   const handlePopUpClose = () => {
     setShowPopUp(false);
     localStorage.setItem('hasAgreedToPopUp', 'true');
@@ -25,12 +25,6 @@ function EaseMind() {
 
   const toggleChatBox = () => {
     setShowChatBox(!showChatBox);
-  };
-
-  // Function to call when the PopUp is closed
-  const handlePopUpClose = () => {
-    setShowPopUp(false);
-    localStorage.setItem('hasAgreedToPopUp', 'true'); // Save flag indicating user has agreed
   };
 
   return (

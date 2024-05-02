@@ -128,7 +128,6 @@ function Routes() {
         <Route path="/EaseMind_dailyQ" element={<EaseMindDailyQ />} />
         <Route path="/EaseMind_ptsd" element={<EaseMindPTSDTest />} />
 
-
         <Route path="/autism_instructions" element={<AutismDetector />} />
         <Route path="/autism_instructions/personaldetails" element={<AutismDetectorPersonalDetails />} />
         <Route path="/autism_instructions/questionnaire" element={<AutismDetectorQuestionnaire />} />

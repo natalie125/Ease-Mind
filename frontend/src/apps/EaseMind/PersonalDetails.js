@@ -277,4 +277,3 @@ function PersonalDetails() {
 }
 
 export default PersonalDetails;
-
