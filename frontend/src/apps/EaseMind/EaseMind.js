@@ -27,6 +27,12 @@ function EaseMind() {
     setShowChatBox(!showChatBox);
   };
 
+  // Function to call when the PopUp is closed
+  const handlePopUpClose = () => {
+    setShowPopUp(false);
+    localStorage.setItem('hasAgreedToPopUp', 'true'); // Save flag indicating user has agreed
+  };
+
   return (
     <div className="easeMindFullPage">
       <h1 className="easeMindHeader">Feeling anxious? We are here to help!</h1>

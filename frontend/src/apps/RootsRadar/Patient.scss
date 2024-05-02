@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Carter+One&family=Chakra+Petch:wght@600&family=Mukta:wght@800&display=swap');
+
+.PatientComponent, .PatientHistoryTreeComponent, .SelfReportHistoryComponent {
+  padding: 1rem;
+  color: white;
+  background-color: rgb(65, 162, 246);
+  min-height: 100vh;
+  h2 {
+    margin: 1rem;
+  }
+  .mother-and-father-box {
+    overflow-x: scroll;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .patient-box {
+    a {
+      color: rgb(254, 255, 212);
+    }
+    h3 {
+      margin-bottom: 0.5rem;
+    }
+    background-color: #104d98;
+    padding: 1rem;
+  }
+  table {
+    border-collapse: collapse;
+  }
+  table td {
+    padding: 0.5rem;
+  }
+  table tr {
+    background-color: #1668cc;
+    color: #ffffff;
+    font-size: 12px;
+    border: 1px solid #54585d;
+  }
+  table td {
+    border: 1px solid #dddfe1;
+  }
+  table tr {
+    background-color: #3c8fe2;
+  }
+  table tr:nth-child(odd) {
+    background-color: #2f6caa;
+  }
+}

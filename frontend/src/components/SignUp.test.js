@@ -20,7 +20,15 @@ const mockSetToken = jest.fn();
 
 const renderSignUp = () => render(
   <BrowserRouter>
-    <AuthTokenContext.Provider value={{ token: null, setToken: mockSetToken }}>
+    <AuthTokenContext.Provider
+      value={{
+        token: null,
+        setToken: mockSetToken,
+        setEmail: mockSetToken,
+        setRootsRadarRole: mockSetToken,
+        setId: mockSetToken,
+      }}
+    >
       <SignUp />
       ,
     </AuthTokenContext.Provider>

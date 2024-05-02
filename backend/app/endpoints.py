@@ -35,7 +35,12 @@ def login():
 
     token = create_access_token(user.id, expires_delta=timedelta(hours=1))
 
-    return jsonify({"token": token, "email": user.email}), 200
+    return jsonify({
+        "token": token,
+        "email": user.email,
+        "rootsRadarRole": user.rootsRadarRole,
+        "id": user.id,
+    }), 200
 
 # ---------------------------------------------------------------------------- #
 
@@ -60,8 +65,15 @@ def register():
     db.session.add(new_user)
     db.session.commit()
 
-    access_token = create_access_token(identity=new_user.id)
-    return {"msg": "New user added.", "token": access_token}, 200
+    token = create_access_token(identity=new_user.id)
+
+    return jsonify({
+        "msg": "New user added.",
+        "token": token,
+        "email": new_user.email,
+        "rootsRadarRole": new_user.rootsRadarRole,
+        "id": new_user.id,
+    }), 200
 
 # ---------------------------------------------------------------------------- #
 

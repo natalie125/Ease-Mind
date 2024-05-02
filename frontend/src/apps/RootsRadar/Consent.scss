@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Carter+One&family=Chakra+Petch:wght@600&family=Mukta:wght@800&display=swap');
+
+.ConsentComponent {
+  padding: 1rem;
+  color: white;
+  background-color: rgb(65, 162, 246);
+  min-height: 100vh;
+
+  h1 {
+    font-size: 4rem;
+    font-family: "Carter One", system-ui;
+    text-decoration: underline;
+    color: rgb(255, 255, 255);
+    // color: rgb(0, 136, 255);
+    width: 100%;
+    margin: auto;
+    margin-bottom: 1rem;
+  }
+  .leftAlignDiv {
+    text-align: left;
+    h2 {
+      margin-bottom: 1rem;
+    }
+    label {
+      color: white;
+      display: inline;
+    }
+  }
+}
