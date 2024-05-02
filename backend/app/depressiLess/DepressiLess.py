@@ -1,3 +1,5 @@
+# backend/app/depressiLess/DepressiLess.py
+
 from flask import Flask, request, jsonify, current_app
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -9,13 +11,14 @@ from sqlalchemy import extract
 import torch
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 from text_analysis import preprocess_text, classify_text
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-# Load depression model (ensure the path and method match your actual model)
-depression_model = torch.load('/models/depression_model/depression_model.pth')
-depression_model.eval()
+model_path = 'app/depressiLess/models/depression_model'
+depression_model = AutoModelForSequenceClassification.from_pretrained(model_path)
+tokenizerModel = AutoTokenizer.from_pretrained(model_path)
 
 # Load GPT-2 model
-tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
+tokenizerGPT2 = GPT2Tokenizer.from_pretrained('gpt2')
 gpt_model = GPT2LMHeadModel.from_pretrained('gpt2')
 gpt_model.eval()
 
@@ -129,28 +132,7 @@ def add_medical_history():
     except Exception as e:
         current_app.logger.error(f'Error adding medical history: {e}')
         return jsonify({"error": "Failed to add medical history"}), 500
-   
-@auth_bp.route('/questionnaire_form', methods=['POST'])
-@jwt_required()
-def submit_questionnaire():
-    current_user_id = get_jwt_identity()
-    data = request.json
-    try:
-        new_form = QuestionnaireForm(
-            currentMood=data['currentMood'],
-            recentExperiences=data.get('recentExperiences', ''),
-            emotionalState=data.get('emotionalState', ''),
-            emotionalTriggers=data.get('emotionalTriggers', ''),
-            copingMethods=data.get('copingMethods', ''),
-            safetyCheck=data.get('safetyCheck', ''),
-            user_id=current_user_id
-        )
-        db.session.add(new_form)
-        db.session.commit()
-        return jsonify({"message": "Questionnaire submitted successfully"}), 201
-    except Exception as e:
-        current_app.logger.error(f'Error submitting questionnaire: {e}')
-        return jsonify({"error": "Failed to submit questionnaire"}), 500
+  
 
 @auth_bp.route('/chat_message', methods=['POST'])
 @jwt_required()
@@ -174,9 +156,8 @@ def post_chat_message():
 def classify_text():
     current_user_id = get_jwt_identity()
     data = request.json
-    user_input = data['text']  # User input from concatenated responses
-    # Assuming user_input needs to be tokenized or preprocessed
-    inputs = preprocess_text(user_input)  # Implement this based on your model requirements
+    user_input = data['text']
+    inputs = preprocess_text(user_input)
     with torch.no_grad():
         outputs = depression_model(inputs)
         classification = classify_text(outputs)
@@ -185,7 +166,7 @@ def classify_text():
         new_classification = TextClassification(
             user_input=user_input,
             classification=classification,
-            confidence=0.85,  # Assume your model also outputs confidence
+            confidence=0.85,
             user_id=current_user_id
         )
         db.session.add(new_classification)
@@ -201,11 +182,11 @@ def answer_question():
     data = request.json
     question = data['question']
     context = data.get('context', "")  # Use previous chat as context, if available
-    
+
     # Combine context and question for a coherent answer
     prompt = context + "\n\n" + question
-    inputs = tokenizer.encode(prompt, return_tensors='pt')
+    inputs = tokenizerGPT2.encode(prompt, return_tensors='pt')
     outputs = gpt_model.generate(inputs, max_length=150, num_return_sequences=1)
-    answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    
+    answer = tokenizerGPT2.decode(outputs[0], skip_special_tokens=True)
+
     return jsonify({"answer": answer}), 200
