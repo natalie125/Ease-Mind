@@ -12,6 +12,7 @@ import pickle
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 
+# CNN model
 def cnn_model():
     model = Sequential()
     model.add(Embedding(input_dim=10000, output_dim=128, input_length=100))
@@ -26,7 +27,7 @@ def cnn_model():
 
     return model
 
-
+#LSTM model
 def lstm_model():
     model = Sequential()
     model.add(Embedding(input_dim=10000, output_dim=128, input_length=100))
@@ -41,7 +42,7 @@ def lstm_model():
 
     return model
 
-
+# used fo transformer model
 def transformer_encoder_layer(embed_dim, num_heads, ff_dim, rate=0.1):
     inputs = Input(shape=(None, embed_dim))
     attention_output = MultiHeadAttention(num_heads=num_heads, key_dim=embed_dim)(inputs, inputs)
@@ -52,7 +53,7 @@ def transformer_encoder_layer(embed_dim, num_heads, ff_dim, rate=0.1):
     ffn_output = Dropout(rate)(ffn_output)
     return Model(inputs=inputs, outputs=LayerNormalization(epsilon=1e-6)(out1 + ffn_output))
 
-
+# transformer model
 def transformer_model():
     embed_dim = 128  # size for each token
     num_heads = 4  # Number of attention heads
@@ -71,7 +72,7 @@ def transformer_model():
 
     return model
 
-
+# train the data
 def train(create_model):
     data = pd.read_csv('mental_health.csv')
 
@@ -120,7 +121,7 @@ def train(create_model):
     print("Confusion Matrix:")
     print(cm)
 
-    # print training and valtionation loss graph
+    # print training and validation loss graph
     plt.plot(history.history['loss'], label='Training Loss')
     plt.plot(history.history['val_loss'], label='Validation Loss')
     plt.title('Training vs Validation Loss')
@@ -140,4 +141,4 @@ def train(create_model):
 
 
 if __name__ == '__main__':
-    train(lstm_model)
+    train(cnn_model)

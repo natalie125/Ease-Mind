@@ -10,7 +10,7 @@ function PanicDisorder() {
   const [error, setError] = useState('');
   const { token } = useContext(AuthTokenContext);
   const navigate = useNavigate();
-
+  // Fetch panic disorder questions from backend
   useEffect(() => {
     const fetchQuestions = async () => {
       const response = await fetch('http://127.0.0.1:5000/PDquestions', {
@@ -25,6 +25,7 @@ function PanicDisorder() {
           acc[question.id] = 0;
           return acc;
         }, {});
+        // Set initial answers
         setAnswers(initialAnswers);
       } else {
         setError('Failed to fetch questions. Please try again later.');
@@ -49,6 +50,7 @@ function PanicDisorder() {
     event.preventDefault();
     const score = calculateScore();
     const result = score >= 8
+    // If score >= 8, there is an indications of panic disorder, vice versa
       ? 'Indications of Panic Disorder are present. Consider seeking a professional evaluation.'
       : 'Indications of Panic Disorder are likely not present. If symptoms persist or worsen, consider seeking professional advice.';
 
@@ -110,5 +112,5 @@ function PanicDisorder() {
 }
 
 export default PanicDisorder;
-// https://www.gpwebsolutions-host.co.uk/5121b/files/2017/05/UMC-Panic-Disorder-Severity-Scale-PDSS.pdf
-// https://www.tomwademd.net/documenting-mental-health-treatment-outcomes-with-improving-access-to-psychological-therapy-iapt-data-handbook-from-the-nhs/
+// test from: https://www.gpwebsolutions-host.co.uk/5121b/files/2017/05/UMC-Panic-Disorder-Severity-Scale-PDSS.pdf
+// source: https://www.tomwademd.net/documenting-mental-health-treatment-outcomes-with-improving-access-to-psychological-therapy-iapt-data-handbook-from-the-nhs/

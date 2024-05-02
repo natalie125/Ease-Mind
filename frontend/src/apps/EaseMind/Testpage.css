@@ -41,7 +41,7 @@
   .easeMindButton {
     width: 100%;
     background-color: #42A5F5; 
-    color: white; /* Changed from white to black */
+    color: white;
     padding: 15px 20px;
     border: none;
     border-radius: 4px;
@@ -50,7 +50,7 @@
     transition: background-color 0.3s ease;
     text-decoration: none;
     display: inline-block;
-    font-size: 1.2rem; /* Increased font size */
+    font-size: 1.2rem;
   }
   
   .easeMindButton:hover {
@@ -58,19 +58,19 @@
   }
 
   .GoBackButton {
-    background-color: #42A5F5; /* Matching the .easeMindButton color */
+    background-color: #42A5F5;
     color: white;
-    padding: 8px 10px; /* Smaller padding for a smaller button */
+    padding: 8px 10px;
     border: none;
     border-radius: 4px;
-    font-size: 0.8rem; /* Smaller font size */
+    font-size: 0.8rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 1.2rem;; /* Adds space below the button for separation */
+    font-size: 1.2rem;;
   }
   
   .GoBackButton:hover {
-    background-color: #1E88E5; /* Matching the .easeMindButton hover color */
+    background-color: #1E88E5;
   }
   .easeMindTitle {
     color: #1565C0; 
@@ -130,6 +130,6 @@
   }
   
   .chatBoxMessages {
-    max-height: 300px; /* Adjust the height as needed */
-    overflow-y: auto; /* Enables vertical scrolling */
+    max-height: 300px;
+    overflow-y: auto;
   }

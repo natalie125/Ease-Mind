@@ -10,7 +10,7 @@ function PTSDTest() {
   const [error, setError] = useState('');
   const { token } = useContext(AuthTokenContext);
   const navigate = useNavigate();
-
+  // Fetch PTSD questions from backend
   useEffect(() => {
     const fetchQuestions = async () => {
       const response = await fetch('http://127.0.0.1:5000/PTSDquestions', {
@@ -22,7 +22,7 @@ function PTSDTest() {
         const data = await response.json();
         setQuestions(data);
         const initialAnswers = data.reduce((acc, question) => {
-          acc[question.id] = 0; // Initialize all answers to '0'
+          acc[question.id] = 0; // Initialise all answers to '0'
           return acc;
         }, {});
         setAnswers(initialAnswers);
@@ -110,4 +110,4 @@ function PTSDTest() {
 }
 
 export default PTSDTest;
-// https://novopsych.com.au/assessments/diagnosis/the-impact-of-event-scale-revised-ies-r/
+// Test from: https://novopsych.com.au/assessments/diagnosis/the-impact-of-event-scale-revised-ies-r/

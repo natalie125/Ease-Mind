@@ -10,7 +10,7 @@ function SocialPhobiaInventoryTest() {
   const [error, setError] = useState('');
   const { token } = useContext(AuthTokenContext);
   const navigate = useNavigate();
-
+  // Fetch SPIN questions
   useEffect(() => {
     const fetchQuestions = async () => {
       const response = await fetch('http://127.0.0.1:5000/SPINquestions', {
@@ -49,6 +49,7 @@ function SocialPhobiaInventoryTest() {
     event.preventDefault();
     const score = calculateScore();
     const result = score >= 19
+    // Show result depends on the score
       ? 'Social Phobia likely present. Consider seeking a professional evaluation.'
       : 'Social Phobia likely not present. If symptoms persist, consider professional advice.';
 
@@ -110,5 +111,5 @@ function SocialPhobiaInventoryTest() {
 }
 
 export default SocialPhobiaInventoryTest;
-// https://psychology-tools.com/test/spinc
+// https://psychology-tools.com/test/spin
 // https://www.tomwademd.net/documenting-mental-health-treatment-outcomes-with-improving-access-to-psychological-therapy-iapt-data-handbook-from-the-nhs/

@@ -71,45 +71,10 @@
     text-align: center;
 }
 
-.GoBackButton {
-    background-color: #42A5F5;
-    color: white;
-    padding: 8px 10px;
-    border: none;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-bottom: 1rem;
-    position: fixed;
-    top: 10px;
-    right: 10px;
+.userInfo h1 {
+    margin-bottom: 10px;
 }
 
-.suicidalRiskSection {
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 8px;
-    text-align: center;
-    font-weight: bold;
-}
-/* Styles for when there is a risk of suicidal thoughts */
-.suicidalRiskHigh {
-    background-color: #FFCDD2; /* Red background */
-    color: #D32F2F; /* Dark red text */
-}
-
-/* Styles for when there is no risk of suicidal thoughts */
-.suicidalRiskLow {
-    background-color: #C8E6C9; /* Green background */
-    color: #2E7D32; /* Dark green text */
-}
-
-/* Common styles for both conditions */
-.suicidalRiskSection {
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 8px;
-    text-align: center;
-    font-weight: bold;
+.userInfo p {
+    margin-bottom: 10px;
 }

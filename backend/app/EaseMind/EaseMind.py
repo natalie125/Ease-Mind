@@ -41,6 +41,7 @@ model = load_model(model_path)
 app = Flask(__name__)
 CORS(app)
 
+# Error handling
 @app.errorhandler(Exception)
 def handle_unexpected_error(error):
     current_app.logger.error(f'Unexpected error: {error}')
@@ -99,6 +100,7 @@ def submit_personal_details():
         current_app.logger.error(f'Unexpected error saving personal details: {e}')
         return jsonify({"error": "Unable to save details"}), 500
 
+# Get personal details for personal details page
 @auth_bp.route('/get_epersonal_details', methods=['GET'])
 @jwt_required()
 def get_epersonal_details():
@@ -121,7 +123,8 @@ def get_epersonal_details():
         return jsonify(details), 200
     else:
         return jsonify({"message": "No details found for the user"}), 404
-    
+  
+ # Define Anxiety test questions
 Testquestions = [
     "Feeling nervous, anxious or on edge?",
     "Not being able to stop or control worrying?",
@@ -132,6 +135,7 @@ Testquestions = [
     "Feeling afraid as if something awful might happen?"
 ]
 
+# saving questiona
 for q_text in Testquestions:
     # Check if the question already exists
     exists = EAQuestion.query.filter_by(text=q_text).first()
@@ -144,6 +148,7 @@ for q_text in Testquestions:
 # Commit once after adding all new questions to avoid multiple transactions
 db.session.commit()
 
+# Get anxiety test questions
 @auth_bp.route('/EAquestions', methods=['GET'])
 @jwt_required()
 def get_questions():
@@ -151,6 +156,7 @@ def get_questions():
     questions_data = [{'id': question.id, 'text': question.text} for question in questions]
     return jsonify(questions_data), 200
 
+# Submit anxiety test
 @auth_bp.route('/submit_etest_result', methods=['POST'])
 @jwt_required()
 def submit_test_result():
@@ -209,6 +215,7 @@ def get_test_results():
     else:
         return jsonify({"message": "No test results found for the user"}), 404
 
+# Fetch SPIN test results by 
 @auth_bp.route('/get_spin_results', methods=['GET'])
 @jwt_required()
 def get_spin_results():
@@ -216,6 +223,7 @@ def get_spin_results():
     granularity = request.args.get('granularity', 'monthly')
 
     base_query = SPINTestResult.query.filter_by(user_id=current_user_id)
+    # Modify the query based on the granularity
     if granularity == 'yearly':
         results = base_query \
             .with_entities(
@@ -241,6 +249,7 @@ def get_spin_results():
 
     return jsonify(formatted_results), 200
 
+# Get panic disorder results
 @auth_bp.route('/get_pd_results', methods=['GET'])
 @jwt_required()
 def get_pd_results():
@@ -248,6 +257,7 @@ def get_pd_results():
     granularity = request.args.get('granularity', 'monthly')
 
     base_query = PDTestResult.query.filter_by(user_id=current_user_id)
+    # Modify the query based on the granularity
     if granularity == 'yearly':
         results = base_query \
             .with_entities(
@@ -273,6 +283,7 @@ def get_pd_results():
 
     return jsonify(formatted_results), 200
 
+# Fetch PTSD results
 @auth_bp.route('/get_ptsd_results', methods=['GET'])
 @jwt_required()
 def get_ptsd_results():
@@ -280,6 +291,7 @@ def get_ptsd_results():
     granularity = request.args.get('granularity', 'monthly')
 
     base_query = PTSDResult.query.filter_by(user_id=current_user_id)
+    # Modify the query based on the granularity
     if granularity == 'yearly':
         results = base_query \
             .with_entities(
@@ -305,6 +317,7 @@ def get_ptsd_results():
 
     return jsonify(formatted_results), 200
 
+# Define SPIN questions
 SPIN_questions = [
     "I am afraid of people in authority.",
     "I am bothered by blushing in front of people.",
@@ -344,6 +357,7 @@ def get_SPIN_questions():
     questions_data = [{'id': question.id, 'text': question.text} for question in questions]
     return jsonify(questions_data), 200
 
+# Submit SPIN result
 @auth_bp.route('/submit_SPIN_result', methods=['POST'])
 @jwt_required()
 def submit_SPIN_test_result():
@@ -369,6 +383,7 @@ def submit_SPIN_test_result():
         current_app.logger.error(f'Unexpected error saving SPIN test result: {e}')
         return jsonify({"error": "Unable to save SPIN test result"}), 500
 
+# define panic disorder
 PD_Question = [
     "How many panic and limited symptoms attacks did you have during the week?",
     "If you had any panic attacks during the past week, how distressing (uncomfortable, frightening) were they while they were happening? (if you had more than one, give an average rating. If you didn’t have any panic attacks but did have limited symptom attacks, answer for the limited symptom attacks)",
@@ -379,6 +394,7 @@ PD_Question = [
     "During the past week, how much did panic and limited symptom attacks, worry about attacks, and fear of situations and activities because of attacks interfere with your social life? (if you didn’t have many opportunities to socialize this past week, answer how you think you would have done if you did have opportunities.)"
 ]
 
+# Saving panic disorder questions
 for q_text in PD_Question :
     # Check if the question already exists
     exists = PDQuestion.query.filter_by(text=q_text).first()
@@ -390,6 +406,7 @@ for q_text in PD_Question :
 
 db.session.commit()
 
+# Fetch panic disorder questions
 @auth_bp.route('/PDquestions', methods=['GET'])
 @jwt_required()
 def get_PD_questions():
@@ -397,6 +414,7 @@ def get_PD_questions():
     questions_data = [{'id': question.id, 'text': question.text} for question in questions]
     return jsonify(questions_data), 200
 
+# Submit panic disorder score
 @auth_bp.route('/submit_PD_result', methods=['POST'])
 @jwt_required()
 def submit_PD_test_result():
@@ -422,6 +440,7 @@ def submit_PD_test_result():
         current_app.logger.error(f'Unexpected error saving PD test result: {e}')
         return jsonify({"error": "Unable to save PD test result"}), 500
 
+# Define daily questions
 daily_questions = [
     "How are you feeling today, really? Physically and mentally.",
     "What’s taking up most of your headspace right now?",
@@ -435,6 +454,7 @@ daily_questions = [
     "What are you grateful for right now?"
 ]
 
+# Saving daily questions
 for q_text in daily_questions :
     # Check if the question already exists
     exists = DailyQuestion.query.filter_by(question_text=q_text).first()
@@ -446,6 +466,7 @@ for q_text in daily_questions :
 
 db.session.commit()
 
+# Show daily question based on question number
 @auth_bp.route('/dailyquestion/<int:question_id>', methods=['GET'])
 def get_question(question_id):
     question = DailyQuestion.query.get(question_id)
@@ -460,12 +481,12 @@ def submit_answers():
     ease_mind_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'EaseMind'))
     tokenizer_path = os.path.join(ease_mind_directory, 'tokenizer.pickle')
     model_path = os.path.join(ease_mind_directory, 'my_model.h5')
-
+    # Load the tokenizer
     with open(tokenizer_path, 'rb') as handle:
         tokenizer = pickle.load(handle)
-
+    # Load the trained model
     model = load_model(model_path)
-
+    # Extract JSON data from the POST request
     data = request.json
     answers = data.get('answers')
     
@@ -473,15 +494,15 @@ def submit_answers():
         return jsonify({'error': 'No answers provided'}), 400
 
     crisis_detected = False  # Initialize crisis detection flag
-
+    # Process each answer provided in the request
     for answer_data in answers:
         question_id = answer_data.get('question_id')
         answer_text = answer_data.get('answer')
-
+        # Convert the answer text to a sequence of tokens
         sequence = tokenizer.texts_to_sequences([answer_text])
         padded_sequence = pad_sequences(sequence, maxlen=100)
         prediction = model.predict(padded_sequence)
-
+        # Determine if the word indicative of a crisis is detected
         word_detection = 'Yes' if prediction[0][0] > 0.5 else 'No'
         
         if word_detection == 'Yes':
@@ -495,6 +516,7 @@ def submit_answers():
     crisis_status = "Yes" if crisis_detected else "No"
     return jsonify({'message': 'Answers submitted successfully', 'crisis_status': crisis_status}), 200
 
+# Define PTSD questions
 ptsd_questions = [
     "Any reminder brought back feelings about it",
     "I had trouble staying asleep",
@@ -519,6 +541,8 @@ ptsd_questions = [
     "I felt watchful or on-guard",
     "I tried not to talk about it",
 ]
+
+# Saving PTSD questions
 for q_text in ptsd_questions :
     # Check if the question already exists
     exists = PTSDQuestion.query.filter_by(text=q_text).first()
@@ -530,6 +554,7 @@ for q_text in ptsd_questions :
 
 db.session.commit()
 
+# Fetch PTSD questions
 @auth_bp.route('/PTSDquestions', methods=['GET'])
 @jwt_required()
 def get_PTSD_questions():
@@ -537,6 +562,8 @@ def get_PTSD_questions():
     questions_data = [{'id': question.id, 'text': question.text} for question in questions]
     return jsonify(questions_data), 200
 
+
+# Submit PTSD score
 @auth_bp.route('/submit_PTSD_result', methods=['POST'])
 @jwt_required()
 def submit_PTSD_test_result():
@@ -562,6 +589,8 @@ def submit_PTSD_test_result():
         current_app.logger.error(f'Unexpected error saving PTSD test result: {e}')
         return jsonify({"error": "Unable to save PD test result"}), 500
 
+
+# Check if there is suicidal thoughts within 2 weeks for report page
 @auth_bp.route('/get_word_detection', methods=['GET'])
 def get_word_detection_answers():
     # Calculate the date 14 days ago from now
@@ -579,6 +608,7 @@ def get_word_detection_answers():
 
     return jsonify({'risk_detected': risk_detected})
 
+# Create feedback for the user
 @auth_bp.route('/get_user_feedback', methods=['GET'])
 @jwt_required()
 def get_user_feedback():
@@ -611,11 +641,11 @@ def get_user_feedback():
     # General Anxiety Feedback
     if latest_ea_score:
         if latest_ea_score.score >= 15:
-            ea_feedback = 'Severe anxiety'
+            ea_feedback = 'Severe anxiety likely present. Consider seeking a professional evaluation. '
         elif latest_ea_score.score >= 10:
-            ea_feedback = 'Moderate anxiety. Further evaluation is recommended.'
+            ea_feedback = 'Moderate anxiety likely present. Further evaluation is recommended.'
         elif latest_ea_score.score >= 5:
-            ea_feedback = 'Mild anxiety'
+            ea_feedback = 'Mild anxiety likely present'
         else:
             ea_feedback = 'Minimal or no anxiety'
         feedback_messages.append(ea_feedback)
@@ -683,6 +713,7 @@ def chat_with_openai():
             app.logger.error('Unhandled Exception: %s', traceback.format_exc())
             return jsonify({"error": str(e)}), 500
 
+# Get the latest anxiety test result
 @auth_bp.route('/latesttest', methods=['GET'])
 @jwt_required()
 def get_latest_anxiety_result():
@@ -724,5 +755,24 @@ def get_latest_anxiety_result():
         current_app.logger.error(f'Error retrieving latest anxiety test result: {e}')
         return jsonify({"error": "Unable to retrieve the latest anxiety test result"}), 500
 
+# User details for report page
+@auth_bp.route('/user_details', methods=['GET'])
+@jwt_required()
+def get_user_details():
+    user_id = get_jwt_identity()
+    user_details = EPersonalDetails.query.filter_by(user_id=user_id).first()
+    if user_details:
+        full_name = f"{user_details.firstName} {user_details.lastName}".strip()
+        return jsonify({
+            'fullName': full_name,
+            'firstName': user_details.firstName,
+            'lastName': user_details.lastName,
+            'DOB': user_details.DOB.strftime("%Y-%m-%d"),
+            'gender': user_details.gender,
+            'address': f"{user_details.houseNumber} {user_details.streetName}, {user_details.city}, {user_details.postCode}, {user_details.country}",
+        })
+    else:
+        return jsonify({'error': 'User not found'}), 404
+    
 if __name__ == '__main__':
     app.run(debug=True)

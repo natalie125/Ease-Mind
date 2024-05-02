@@ -11,6 +11,7 @@ import ChatBox from './ChatBox';
 
 function EaseMind() {
   const [showPopUp, setShowPopUp] = useState(() => {
+    // Check if user has agreed to the terms and conditions
     const hasAgreed = localStorage.getItem('hasAgreedToPopUp');
     return !hasAgreed;
   });

@@ -6,11 +6,11 @@
 
 .easeMindFeatures {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr)); /* Create two columns */
-  gap: 1rem; /* Space between the items */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
   justify-content: center;
   align-items: center;
-  max-width: 600px; /* Adjust the max width as needed */
+  max-width: 600px;
   margin: auto;
 }
 
@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0; /* Remove padding to allow the image to extend to the full size of the button */
+  padding: 0;
   border: none;
   border-radius: 8px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -73,7 +73,7 @@ select:focus {
 
 .GoBackButton {
   background-color: #42A5F5; /* Matching the .easeMindButton color */
-  color: white;
+  color: rgb(38, 7, 7);
   padding: 8px 10px; /* Smaller padding for a smaller button */
   border: none;
   border-radius: 4px;
@@ -81,6 +81,9 @@ select:focus {
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-bottom: 1rem; /* Adds space below the button for separation */
+  position: fixed; /* Keeps the button positioned relative to the viewport */
+  top: 20px; /* Distance from the top of the viewport */
+  left: 20px;
 }
 
 .GoBackButton:hover {

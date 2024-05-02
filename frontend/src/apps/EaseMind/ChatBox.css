@@ -2,8 +2,8 @@
     position: fixed;
     bottom: 40px;
     right: 20px;
-    width: 300px;
-    max-height: 400px;
+    width: 320px;
+    max-height: 500px;
     display: flex;
     flex-direction: column;
     border: 1px solid #ddd;

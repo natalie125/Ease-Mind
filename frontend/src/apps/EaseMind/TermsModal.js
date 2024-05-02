@@ -18,7 +18,7 @@ function TermsModal({ isOpen, onClose }) {
     </div>
   );
 }
-
+// PropTypes for type checking the props being passed to the component
 TermsModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,

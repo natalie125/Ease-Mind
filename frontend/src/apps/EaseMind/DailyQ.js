@@ -14,12 +14,12 @@ function DailyQuestions() {
   const { token } = useContext(AuthTokenContext);
   const navigate = useNavigate();
   const recognitionRef = React.useRef(null);
-
+  // Speech to text API
   const speechRecognitionAvailable = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
 
   useEffect(() => {
     setIsLastQuestion(currentQuestionIndex === 10);
-
+    // Fetch daily question from backend
     const fetchQuestion = async () => {
       try {
         const response = await fetch(`http://127.0.0.1:5000/dailyquestion/${currentQuestionIndex}`, {
@@ -42,7 +42,7 @@ function DailyQuestions() {
   }, [currentQuestionIndex, token]);
 
   useEffect(() => {
-    // Initialize SpeechRecognition
+    // Initialise SpeechRecognition
     if (speechRecognitionAvailable) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       const recognition = new SpeechRecognition();
@@ -66,7 +66,7 @@ function DailyQuestions() {
       };
     }
   }, [speechRecognitionAvailable]);
-
+  // When user click on recording
   const toggleRecording = () => {
     if (isRecording) {
       recognitionRef.current.stop();
@@ -119,6 +119,7 @@ function DailyQuestions() {
 
       if (response.ok) {
         const responseData = await response.json();
+        // Send instant help if detect suicidal thoughts
         alert(`Your answers have been submitted. ${responseData.crisis_status === 'Yes' ? 'If you are in crisis, please seek help immediately. call Samaritans. Hours: Available 24 hours. 116 123.' : 'Thank you! Have a nice day.'}`);
         resetComponentState();
         navigate('/EaseMind');
@@ -159,3 +160,4 @@ function DailyQuestions() {
 }
 
 export default DailyQuestions;
+// source: https://idontmind.com/journal/just-checking-in-ten-minutes-ten-questions

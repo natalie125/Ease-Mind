@@ -23,7 +23,7 @@ function PersonalDetails() {
   const [fetchError, setFetchError] = useState(''); // State for fetch errors
   const { token } = useContext(AuthTokenContext);
   const navigate = useNavigate();
-
+  // Fetch personal details
   useEffect(() => {
     const fetchUserDetails = async () => {
       const endpoint = 'http://127.0.0.1:5000/get_epersonal_details';
@@ -104,7 +104,7 @@ function PersonalDetails() {
       throw new Error(`Error saving details: ${error.message}`);
     }
   };
-
+  // Save updated details
   const saveDetails = async (e) => {
     e.preventDefault();
     setFormSubmissionMessage('');

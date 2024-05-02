@@ -7,16 +7,16 @@ function AnxietyLevelTest() {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [resultMessage, setResultMessage] = useState('');
-  const [error, setError] = useState(''); // Add this state to store potential error messages
+  const [error, setError] = useState('');
   const { token } = useContext(AuthTokenContext);
   const navigate = useNavigate();
-
+  // Fetch anxiety questions
   useEffect(() => {
     const fetchQuestions = async () => {
       const response = await fetch('http://127.0.0.1:5000/EAquestions', {
-        method: 'GET', // Explicitly specify the method for clarity
+        method: 'GET',
         headers: {
-          Authorization: `Bearer ${token}`, // Assuming token is correctly obtained here
+          Authorization: `Bearer ${token}`,
         },
       });
       if (response.ok) {
@@ -68,7 +68,7 @@ function AnxietyLevelTest() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`, // Ensure you have the token
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ score }), // Send the score to your backend
       });
