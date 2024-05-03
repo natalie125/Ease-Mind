@@ -23,6 +23,7 @@ gpt_model.eval()
 app = Flask(__name__)
 CORS(app)
 
+"""
 google_drive_model_id = '10BdhMe8kXoxw5tPWLdv8yIYwTnYGuNZz'
 model_directory = 'app/depressiLess/models'
 model_filename = 'my_depression_model.zip'
@@ -54,7 +55,7 @@ def initialize_model():
     my_depression_model = AutoModelForSequenceClassification.from_pretrained(model_path)
     tokenizerModel = AutoTokenizer.from_pretrained(model_path)
     my_depression_model.eval()
-
+"""
 
 @app.errorhandler(Exception)
 def handle_unexpected_error(error):
