@@ -11,10 +11,11 @@ import os
 import cv2
 from flask_jwt_extended import jwt_required
 
+"""
 file_path = os.path.abspath(os.path.join(
     'app/shreyas', 'tonsil_detector.h5'))
 model = tf.keras.models.load_model(file_path)
-
+"""
 
 def rescale(image):
     return image.astype('float32')/255.0
