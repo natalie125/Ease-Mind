@@ -159,3 +159,4 @@ wrapt==1.16.0
 WTForms==3.0.1
 yarl==1.9.2
 zipp==3.11.0
+openai==0.28.0
