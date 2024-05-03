@@ -119,8 +119,12 @@ function DailyQuestions() {
 
       if (response.ok) {
         const responseData = await response.json();
+        const crisisMessage = responseData.crisis_status === 'Yes'
+          ? 'If you are in crisis, please seek help immediately. Call Samaritans. Hours: Available 24 hours. 116 123.'
+          : 'Thank you! Have a nice day.';
+
         // Send instant help if detect suicidal thoughts
-        alert(`Your answers have been submitted. ${responseData.crisis_status === 'Yes' ? 'If you are in crisis, please seek help immediately. call Samaritans. Hours: Available 24 hours. 116 123.' : 'Thank you! Have a nice day.'}`);
+        alert(`Your answers have been submitted. ${crisisMessage}`);
         resetComponentState();
         navigate('/EaseMind');
       } else {

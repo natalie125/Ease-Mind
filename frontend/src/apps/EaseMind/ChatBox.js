@@ -89,7 +89,7 @@ function ChatBox() {
   ];
 
   const addMessage = (text) => {
-    console.log(`addMessage called with text: ${text}`);
+    // console.log(`addMessage called with text: ${text}`);
     const newMessage = { id: `${text}-${Date.now()}`, text };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
   };
@@ -138,7 +138,7 @@ function ChatBox() {
           const aiResponse = { id: `ai-${Date.now()}`, text: data.response.content, sender: 'ai' }; // Extract text from AI response
           setMessages((prevMessages) => [...prevMessages, aiResponse]);
         } catch (error) {
-          console.error('Failed to fetch AI response:', error);
+          // console.error('Failed to fetch AI response:', error);
           addMessage('Sorry, something went wrong.', 'system');
         }
       }
@@ -160,7 +160,7 @@ function ChatBox() {
       // Accessing the score and advice directly
       addMessage(`Your latest anxiety level is: ${data.score}. Based on this, we advise the following: ${data.advice}`);
     } catch (error) {
-      console.error('Failed to fetch the latest anxiety result:', error);
+      // console.error('Failed to fetch the latest anxiety result:', error);
       addMessage('Sorry, something went wrong while retrieving your anxiety results.', 'system');
     }
   };
@@ -202,8 +202,10 @@ function ChatBox() {
     } else if (option.id === 4) {
       const anxietyExplanation = 'Anxiety is a feeling of unease, such as worry or fear, that can be mild or severe. '
           + '\n\nEveryone has feelings of anxiety at some point in their life. For example, you may feel worried and anxious about sitting an exam, '
-          + 'or having a medical test or job interview. During times like these, feeling anxious can be perfectly normal. '
-          + '\n\nBut some people find it hard to control their worries. Their feelings of anxiety are more constant and can often affect their daily lives. '
+          + 'or having a medical test or job interview. '
+          + 'During times like these, feeling anxious can be perfectly normal. '
+          + '\n\nBut some people find it hard to control their worries. '
+          + 'Their feelings of anxiety are more constant and can often affect their daily lives. '
           + '\n\nAnxiety is the main symptom of several conditions, including: '
           + '\n1. panic disorder '
           + '\n2. phobias, such as agoraphobia or claustrophobia '
@@ -221,12 +223,14 @@ function ChatBox() {
         + '\n- feel irritable or not have energy to do things'
         + '\n- have problems with day to day life – for example, at work or with family and friends'
         + '\n- be more affected by other health problems, including mental health problems.'
-        + '\n\nHere is some advice to fall asleep faster. Please click on the following link: https://www.nhs.uk/every-mind-matters/mental-wellbeing-tips/how-to-fall-asleep-faster-and-sleep-better/';
+        + '\n\nHere is some advice to fall asleep faster. Please click on the following link: '
+        + 'https://www.nhs.uk/every-mind-matters/mental-wellbeing-tips/how-to-fall-asleep-faster-and-sleep-better/';
       addMessage(sleepAdvice);
       askIfMoreQuestionsForSleep();
       setCurrentOptions(optionsAfterSpecificAnxiety);
     } else if (option.id === 6) {
-      const anxietyTriggersMessage = 'Everyone\'s experience of anxiety is different, so it\'s hard to know exactly what causes anxiety problems. There are probably lots of factors involved.'
+      const anxietyTriggersMessage = 'Everyone\'s experience of anxiety is different, so it\'s hard to know exactly what causes anxiety problems. '
+          + 'There are probably lots of factors involved.'
           + '\n\nThe following link covers some things which make anxiety problems more likely to happen:'
           + '\n1. past or childhood experiences'
           + '\n2. your current life situation'
@@ -237,8 +241,10 @@ function ChatBox() {
       askIfMoreQuestions();
       setCurrentOptions(optionsAfterSpecificAnxiety);
     } else if (option.id === 7) {
-      const panicDisorderMessage = 'Everyone experiences feelings of anxiety and panic at certain times. It\'s a natural response to stressful or dangerous situations.'
-          + '\n\nBut someone with panic disorder has feelings of anxiety, stress and panic regularly and at any time, often for no apparent reason. What to do during a panic attack:'
+      const panicDisorderMessage = 'Everyone experiences feelings of anxiety and panic at certain times. '
+          + 'It\'s a natural response to stressful or dangerous situations.'
+          + '\n\nBut someone with panic disorder has feelings of anxiety, stress and panic regularly and at any time, '
+          + 'often for no apparent reason. What to do during a panic attack:'
           + '\n- stay where you are, if possible'
           + '\n- breathe slowly and deeply'
           + '\n- remind yourself that the attack will pass'
@@ -248,9 +254,12 @@ function ChatBox() {
       askIfMoreQuestions();
       setCurrentOptions(optionsAfterSpecificAnxiety);
     } else if (option.id === 8) {
-      const phobiaMessage = 'Phobias are more pronounced than fears. They develop when a person has an exaggerated or unrealistic sense of danger about a situation or object.'
-          + '\n\nIf a phobia becomes very severe, a person may organise their life around avoiding the thing that\'s causing them anxiety. As well as restricting their day-to-day life, it can also cause a lot of distress. Most phobias can be treated successfully.'
-          + '\n\nSimple phobias can be treated through gradual exposure to the object, animal, place or situation that causes fear and anxiety. This is known as desensitisation or self-exposure therapy.'
+      const phobiaMessage = 'Phobias are more pronounced than fears. '
+          + 'They develop when a person has an exaggerated or unrealistic sense of danger about a situation or object.'
+          + '\n\nIf a phobia becomes very severe, a person may organise their life around avoiding the thing that\'s causing them anxiety. '
+          + 'As well as restricting their day-to-day life, it can also cause a lot of distress. Most phobias can be treated successfully.'
+          + '\n\nSimple phobias can be treated through gradual exposure to the object, animal, place or situation that causes fear and anxiety. '
+          + 'This is known as desensitisation or self-exposure therapy.'
           + '\n\nYou could try these methods with the help of a professional or as part of a self-help programme.'
           + '\n\nTreating complex phobias often takes longer and involves talking therapies, such as:'
           + '\n- counselling'
@@ -265,23 +274,30 @@ function ChatBox() {
       askIfMoreQuestions();
       setCurrentOptions(optionsAfterSpecificAnxiety);
     } else if (option.id === 9) {
-      const ptsdMessage = 'Someone with PTSD often relives the traumatic event through nightmares and flashbacks, and may experience feelings of isolation, irritability and guilt.'
+      const ptsdMessage = 'Someone with PTSD often relives the traumatic event through nightmares and flashbacks, '
+          + 'and may experience feelings of isolation, irritability and guilt.'
           + '\n\nThey may also have problems sleeping, such as insomnia, and find concentrating difficult.'
-          + '\n\nThese symptoms are often severe and persistent enough to have a significant impact on the person\'s day-to-day life. PTSD can be successfully treated, even when it develops many years after a traumatic event.'
+          + '\n\nThese symptoms are often severe and persistent enough to have a significant impact on the person\'s day-to-day life. '
+          + 'PTSD can be successfully treated, even when it develops many years after a traumatic event.'
           + '\n\nTreatment depends on the severity of symptoms and how soon they occur after the traumatic event.'
           + '\n\nAny of the following treatment options may be recommended:'
           + '\n- watchful waiting – monitoring your symptoms to see whether they improve or get worse without treatment'
           + '\n- antidepressants – such as paroxetine or sertraline'
-          + '\n- talking therapies – such as trauma-focused cognitive behavioural therapy (CBT) or eye movement desensitisation and reprocessing (EMDR)';
+          + '\n- talking therapies – such as trauma-focused cognitive behavioural therapy '
+          + '(CBT) or eye movement desensitisation and reprocessing (EMDR)';
       addMessage(ptsdMessage);
       askIfMoreQuestions();
       setCurrentOptions(optionsAfterSpecificAnxiety);
     } else if (option.id === 10) {
-      const socialAnxietyMessage = 'It\'s a common problem that usually starts during the teenage years. It can be very distressing and have a big impact on your life.'
+      const socialAnxietyMessage = 'It\'s a common problem that usually starts during the teenage years. '
+          + 'It can be very distressing and have a big impact on your life.'
           + '\n\nFor some people it gets better as they get older. But for many people it does not go away on its own without treatment.'
-          + '\n\nIt\'s important to get help if you are having symptoms. There are treatments that can help you manage it. Self-help can help reduce social anxiety and you might find it a useful first step before trying other treatments.'
+          + '\n\nIt\'s important to get help if you are having symptoms. There are treatments that can help you manage it. '
+          + 'Self-help can help reduce social anxiety and you might find it a useful first step before trying other treatments.'
           + '\n\nThe following tips may help:'
-          + '\n- try to understand more about your anxiety – by thinking about or writing down what goes through your mind and how you behave in certain social situations, it can help to keep a diary'
+          + '\n- try to understand more about your anxiety – '
+          + 'by thinking about or writing down what goes through your mind and how you behave in certain social situations, '
+          + 'it can help to keep a diary'
           + '\n- try some relaxation techniques, such as breathing exercises for stress'
           + '\n- break down challenging situations into smaller parts and work on feeling more relaxed with each part'
           + '\n- try to focus on what people are saying rather than just assuming the worst.';
@@ -306,7 +322,8 @@ function ChatBox() {
       }, 1500);
     } else if (option.id === 14) {
       // If the user needs more help with sleeping problems
-      const moreSleepAdvice = 'Here is some advice to fall asleep faster. Please click on the following link: https://www.nhs.uk/every-mind-matters/mental-wellbeing-tips/how-to-fall-asleep-faster-and-sleep-better/';
+      const moreSleepAdvice = 'Here is some advice to fall asleep faster. Please click on the following link:'
+      + ' https://www.nhs.uk/every-mind-matters/mental-wellbeing-tips/how-to-fall-asleep-faster-and-sleep-better/';
       addMessage(moreSleepAdvice);
       askIfMoreQuestions(); // Ask if the user has any other questions after providing the additional advice
     } else if (option.id === 15) {
@@ -380,4 +397,5 @@ function ChatBox() {
 }
 
 export default ChatBox;
-// resources from: https://www.nhs.uk/mental-health/conditions/generalised-anxiety-disorder/overview/#:~:text=Anxiety%20is%20a%20feeling%20of,medical%20test%20or%20job%20interview.
+// resources from: https://www.nhs.uk/mental-health/conditions/generalised-anxiety-disorder/overview/#:~:
+// text=Anxiety%20is%20a%20feeling%20of,medical%20test%20or%20job%20interview.

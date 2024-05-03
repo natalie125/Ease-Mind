@@ -96,11 +96,28 @@ function PanicDisorder() {
               onChange={handleSelectChange}
             >
               <option value="0">No fear or avoidance</option>
-              <option value="1">Occasional fear and/or avoidance but I could usually confront or endure the situation. There was little or no modification of my lifestyle due to this</option>
-              <option value="2">Noticeable fear and/or avoidance but still manageable. I avoided some situations, but I could confront them with a companion. There was some modification of my lifestyle because of this, but my overall functioning was not impaired.</option>
-              <option value="3">Extensive avoidance. Substantial modification of my lifestyle was required to accommodate the avoidance, making it difficult to manage usual activities.</option>
-              <option value="4">Pervasive disabling fear and/or avoidance. Extensive modification in my lifestyle was required such that important tasks were not performed.</option>
+              <option value="1">
+                {'Occasional fear and/or avoidance but I could usually confront or '
+                + 'endure the situation. There was little or no modification of my '
+                + 'lifestyle due to this'}
+              </option>
+              <option value="2">
+                {'Noticeable fear and/or avoidance but still manageable. I avoided '
+                + 'some situations, but I could confront them with a companion. There '
+                + 'was some modification of my lifestyle because of this, but my overall '
+                + 'functioning was not impaired.'}
+              </option>
+              <option value="3">
+                {'Extensive avoidance. Substantial modification of my lifestyle was '
+                + 'required to accommodate the avoidance, making it difficult to manage '
+                + 'usual activities.'}
+              </option>
+              <option value="4">
+                {'Pervasive disabling fear and/or avoidance. Extensive modification in '
+                + 'my lifestyle was required such that important tasks were not performed.'}
+              </option>
             </select>
+
           </div>
         ))}
         <button type="submit" className="submitTestButton">Score my Answers</button>
@@ -113,4 +130,5 @@ function PanicDisorder() {
 
 export default PanicDisorder;
 // test from: https://www.gpwebsolutions-host.co.uk/5121b/files/2017/05/UMC-Panic-Disorder-Severity-Scale-PDSS.pdf
-// source: https://www.tomwademd.net/documenting-mental-health-treatment-outcomes-with-improving-access-to-psychological-therapy-iapt-data-handbook-from-the-nhs/
+// source: https://www.tomwademd.net/documenting-mental-health-treatment-outcomes-with-improving-access-to-
+// psychological-therapy-iapt-data-handbook-from-the-nhs/

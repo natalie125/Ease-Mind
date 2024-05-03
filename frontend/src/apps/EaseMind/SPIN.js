@@ -112,4 +112,5 @@ function SocialPhobiaInventoryTest() {
 
 export default SocialPhobiaInventoryTest;
 // https://psychology-tools.com/test/spin
-// https://www.tomwademd.net/documenting-mental-health-treatment-outcomes-with-improving-access-to-psychological-therapy-iapt-data-handbook-from-the-nhs/
+// https://www.tomwademd.net/documenting-mental-health-treatment-
+// outcomes-with-improving-access-to-psychological-therapy-iapt-data-handbook-from-the-nhs/

@@ -9,12 +9,13 @@ from flask_jwt_extended import create_access_token, jwt_required
 auth_bp = Blueprint('auth', __name__)
 
 # import individual project python files
-from app.kevin.kevin import *  # noqa: F403, F401
-from app.lanre.lanre import *  # noqa: F403, F401
-from app.ramat.ramat import *  # noqa: F403, F401
-from app.shreyas.shreyas import *  # noqa: F403, F401
-from app.rootsRadar.rootsRadar import *  # noqa: F403, F401
+#from app.kevin.kevin import * # noqa: F403, F401
+from app.lanre.lanre import * # noqa: F403, F401
+#from app.ramat.ramat import * # noqa: F403, F401
+#from app.shreyas.shreyas import * # noqa: F403, F401
+from app.rootsRadar.rootsRadar import * # noqa: F403, F401
 from app.EaseMind.EaseMind import * # noqa: F403, F401
+
 
 # ---------------------------------------------------------------------------- #
 
