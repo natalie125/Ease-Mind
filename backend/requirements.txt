@@ -160,3 +160,4 @@ WTForms==3.0.1
 yarl==1.9.2
 zipp==3.11.0
 openai==0.28.0
+python-dotenv==1.0.1
