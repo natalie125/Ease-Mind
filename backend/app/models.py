@@ -104,7 +104,6 @@ class UserInformation(db.Model):
     # Relationships
     mental_health_histories = db.relationship('UserMentalHealthHistory', backref='user', lazy=True)
     medical_histories = db.relationship('UserMedicalHistory', backref='user', lazy=True)
-    questionnaire_forms = db.relationship('QuestionnaireForm', backref='user', lazy=True)
     chat_messages = db.relationship('ChatMessage', backref='user', lazy=True)
     text_classifications = db.relationship('TextClassification', backref='user', lazy=True)
 

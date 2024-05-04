@@ -1,10 +1,11 @@
-// TextClassification.js
-
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthTokenContext } from '../../App';
 import {
-  buttonStyle, containerStyle, inputContainerStyle, inputStyle,
+  buttonStyle,
+  containerStyle,
+  inputContainerStyle,
+  inputStyle,
 } from './styles/Styles';
 import './TextClassification.css';
 
@@ -32,7 +33,7 @@ function TextClassification() {
 
   const handleChange = (e) => {
     const newResponses = [...responses];
-    newResponses[currentQuestionIndex] = e.target.value;
+    newResponses[currentQuestionIndex] = e.target.value.trim();
     setResponses(newResponses);
   };
 
@@ -43,7 +44,6 @@ function TextClassification() {
       return;
     }
 
-    // All questions answered, send for classification
     try {
       const response = await fetch(`${BASEURL}/text_classification`, {
         method: 'POST',
@@ -51,17 +51,18 @@ function TextClassification() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ text: responses.join(' ') }),
+        body: JSON.stringify({ text: responses.join(' ').trim() }),
       });
 
       const data = await response.json();
       if (response.ok) {
         setClassificationResult(data);
         setFeedbackMessage('All responses processed successfully.');
-        // Check if the classification indicates high risk
-        if (data.classification === 'High Risk' && data.confidence > 0.75) { // Adjust threshold as needed
-          setFeedbackMessage((prevMessage) => `${prevMessage} We would like to suggest you speak to a professional and check out our online resources.`);
-          navigate('/OnlineResources'); // Navigate to online resources
+        if (data.classification === 'High Risk' && data.confidence > 0.75) {
+          setFeedbackMessage(
+            (prevMessage) => `${prevMessage} We would like to suggest you speak to a professional and check out our online resources.`,
+          );
+          navigate('/OnlineResources');
         }
       } else {
         throw new Error(data.error || 'Unknown error occurred');
@@ -71,13 +72,9 @@ function TextClassification() {
     }
   };
 
-  const handleAdditionalQuestionChange = (e) => {
-    setAdditionalQuestion(e.target.value);
-  };
-
   const handleAdditionalQuestionSubmit = async (e) => {
     e.preventDefault();
-    if (!additionalQuestion) return;
+    if (!additionalQuestion.trim()) return;
     try {
       const response = await fetch(`${BASEURL}/answer_question`, {
         method: 'POST',
@@ -85,7 +82,7 @@ function TextClassification() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ question: additionalQuestion }),
+        body: JSON.stringify({ question: additionalQuestion.trim() }),
       });
       const data = await response.json();
       if (response.ok) {
@@ -101,7 +98,10 @@ function TextClassification() {
 
   return (
     <div style={containerStyle}>
-      <h2>Hello, I am here to help you. Can you please provide the answers to these questions?</h2>
+      <h2>
+        Hello, I am here to help you. Can you please provide the answers to these
+        questions?
+      </h2>
       <form onSubmit={handleSubmit} style={inputContainerStyle}>
         <textarea
           id="responseInput"
@@ -111,7 +111,9 @@ function TextClassification() {
           placeholder={questions[currentQuestionIndex]}
           style={inputStyle}
         />
-        <button type="submit" style={buttonStyle}>{currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Submit All Answers'}</button>
+        <button type="submit" style={buttonStyle}>
+          {currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Submit All Answers'}
+        </button>
       </form>
       {classificationResult && (
         <div>
@@ -127,11 +129,13 @@ function TextClassification() {
             <input
               type="text"
               value={additionalQuestion}
-              onChange={handleAdditionalQuestionChange}
+              onChange={(e) => setAdditionalQuestion(e.target.value)}
               placeholder="Have more questions? Ask here:"
               style={inputStyle}
             />
-            <button type="submit" style={buttonStyle}>Get Answer</button>
+            <button type="submit" style={buttonStyle}>
+              Get Answer
+            </button>
           </form>
           {additionalAnswer && (
             <div>
