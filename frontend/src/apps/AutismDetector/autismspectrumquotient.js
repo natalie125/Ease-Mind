@@ -10,7 +10,7 @@ const BASEURL = process.env.NODE_ENV === 'development'
 
 function Autismspectrumquotient() {
   const [answers, setAnswers] = useState({});
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // New state for tracking current question index
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [testResult, setTestResult] = useState({ score: null, resultMessage: null });
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
@@ -282,7 +282,7 @@ function Autismspectrumquotient() {
   };
 
   const handleCloseModal = () => {
-    setShowModal(false); // Close the modal
+    setShowModal(false);
     navigate('/autism_instructions/questionnairetype'); // Navigate back to the specified path
   };
 
@@ -304,12 +304,16 @@ function Autismspectrumquotient() {
     if (aq >= 32) {
       resultMessage += 'This score indicates a high likelihood of autistic traits, with 79.3% of autistic individuals scoring 32 or higher. ';
     } else if (aq >= 26) {
+      // eslint-disable-next-line
       resultMessage += 'This score suggests possible autistic traits, as any scores of 26 or greater indicate the presence of autistic traits; the higher the score, the more autistic traits you have.';
     } else {
       resultMessage += 'This score is below the common threshold for autistic traits, indicating you likely do not have them.';
     }
+    // eslint-disable-next-line
     resultMessage += 'The AQ is particularly sensitive in distinguishing between autistic and non-autistic adult females, as 92.3% of autistic females scored 32 or higher.';
+    // eslint-disable-next-line
     resultMessage += 'The AQ doesn’t really offer much insight into specific autistic traits, as it only outputs a single score.';
+    // eslint-disable-next-line
     resultMessage += 'Furthermore, no single test is conclusive, and not every autistic person necessarily scores above the defined threshold on each test. If you score low on the AQ but still think you could be autistic, try taking a few other autism tests.';
 
     setTestResult({ score: aq, resultMessage });
@@ -325,6 +329,7 @@ function Autismspectrumquotient() {
         config,
       );
     } catch (error) {
+      // eslint-disable-next-line
       console.error('Error saving the test result:', error);
     }
   };
