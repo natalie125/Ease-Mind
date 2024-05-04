@@ -14,7 +14,6 @@ def generate_repetitive_sentence(topic):
         f"The concept of {topic} is {repetition}engaging due to its {repetition}unique nature.",
         f"Delving into {topic}, one discovers its {repetition}intriguing and {repetition}rich aspects.",
         f"Considering {topic}, its {repetition}charm and {repetition}appeal are {repetition}undeniable.",
-        # Adding more structures to fulfill the request
         f"Every aspect of {topic} is {repetition}captivating, drawing one into its {repetition}depths.",
         f"Engaging with {topic}, you're struck by its {repetition}beauty and {repetition}complexity.",
         f"The {repetition}intensity with which {topic} presents itself is {repetition}unmatched.",
@@ -45,7 +44,6 @@ def generate_focused_sentence(topic):
         f"My latest research into {topic} has led me to explore {random.choice(details)} that are quite compelling.",
         f"Delving deeper into {topic}, I've uncovered {random.choice(details)} that challenge conventional wisdom.",
         f"Investigating {topic} has revealed {random.choice(details)}, offering new insights.",
-        # Adding more structures
         f"Through my study of {topic}, I've engaged with {random.choice(details)}, which has profoundly shifted my understanding.",
         f"The exploration of {topic} allowed me to dissect {random.choice(details)}, uncovering layers previously unimagined.",
         f"My analysis of {topic} focuses on {random.choice(details)}, highlighting its pivotal role.",
@@ -74,7 +72,6 @@ def generate_unusual_pattern_sentence(topic):
         f"{random.choice(introductory_phrases)}{topic}, one can't help but be drawn to its unique aspects.",
         f"{random.choice(introductory_phrases)}{topic}, its singular qualities stand out distinctly.",
         f"With {random.choice(introductory_phrases)}{topic}, its distinctiveness becomes increasingly apparent.",
-        # Adding more structures
         f"Peering into {topic} {random.choice(introductory_phrases)}, the unconventional wisdom it offers is enlightening.",
         f"Dissecting {topic} {random.choice(introductory_phrases)}, one uncovers layers not immediately visible.",
         f"Exploring the essence of {topic} {random.choice(introductory_phrases)}, its uncharted territories beckon.",
@@ -1579,7 +1576,7 @@ def generate_note_with_multiple_characteristics(num_sentences=5):
     topics = ["quantum computing", "medieval history", "sustainable architecture", "astrobiology", "classical music", "the evolution of languages", "vintage clocks", "honeybees"]
     names = ["Alex", "Jordan", "Taylor", "Casey", "Morgan", "Sam", "Riley", "Alexis"]
     sentence_types = [
-        "normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal",  # Include more normal sentences
+        "normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal",
         "normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal", "normal",
         "repetitive", "focused", "unusual", "literal", "echolalia",
         "pronominal_reversal", "detailed_description", "scripted_language",
@@ -1611,7 +1608,7 @@ def generate_synthetic_data_with_notes(num_notes=5000):
 
 if __name__ == "__main__":
     dataset_with_notes = generate_synthetic_data_with_notes(5000)
-    with open("/Users/ayesharahman1/Desktop/larks/backend/app/AutismDetector/synthetic_dataset_with_notes.json", "w") as f:
+    with open("app/AutismDetector/synthetic_dataset_with_notes.json", "w") as f:
         json.dump(dataset_with_notes, f, indent=4)
 
     print("Synthetic data with notes generated and saved to synthetic_dataset_with_notes.json.")

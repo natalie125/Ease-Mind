@@ -12,7 +12,7 @@ nltk.download('punkt')  # Download the Punkt tokenizer models
 nltk.download('vader_lexicon')
 nltk.download('stopwords')
 from nltk.sentiment import SentimentIntensityAnalyzer
-from nltk.tokenize import sent_tokenize  # Import the sentence tokenizer
+from nltk.tokenize import sent_tokenize
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification
 from datetime import datetime
@@ -77,32 +77,19 @@ def get_feedback():
         print(f"Failed to fetch feedback: {e}")
         return jsonify({"error": "Failed to fetch feedback"}), 500
 
-# @auth_bp.route('/api/get_game_feedback', methods=['GET'])
-# @jwt_required()
-# def get_game_feedback():
-#     user_id = get_jwt_identity()
-#     feedbacks = GameFeedback.query.filter_by(user_id=user_id).all()
-#     results = [{
-#         "scenario_id": feedback.scenario_id,
-#         "response": feedback.response,
-#         "feedback": feedback.feedback,
-#         "sentiment": feedback.sentiment
-#     } for feedback in feedbacks]
-#     return jsonify(results), 200
-
 ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### ####### 
 
 ####### Notes Function #######
 
 # Load the Keras model and tokenizer
-model = joblib.load('/Users/ayesharahman1/Desktop/larks/backend/app/AutismDetector/autism_classifier.joblib')
-tokenizer = joblib.load('/Users/ayesharahman1/Desktop/larks/backend/app/AutismDetector/tfidf_vectorizer.joblib')
+model = joblib.load('app/AutismDetector/autism_classifier.joblib')
+tokenizer = joblib.load('app/AutismDetector/tfidf_vectorizer.joblib')
 @auth_bp.route('/api/notes', methods=['GET', 'POST'])
 @jwt_required()
 def handle_notes():
     current_user_id = get_jwt_identity()
     if request.method == 'GET':
-        user_notes = models.Note.query.filter_by(user_id=current_user_id).all()
+        user_notes = models.AutismNote.query.filter_by(user_id=current_user_id).all()
         notes_list = [{"id": note.id, "note": note.note, "timestamp": note.timestamp.isoformat(), "prediction": note.prediction} for note in user_notes]
         return jsonify({"notes": notes_list}), 200
     elif request.method == 'POST':
@@ -117,12 +104,12 @@ def handle_notes():
             # Ensure PyTorch tensors are being used if the model is a PyTorch model
             inputs = tokenizer.encode_plus(sentence, add_special_tokens=True, return_tensors='pt')
             sentence_prediction = model(**inputs)[0]
-            if sentence_prediction[0, 1] > 0.5:  # Adjust the threshold as needed, assuming index 1 is the positive class
+            if sentence_prediction[0, 1] > 0.5:
                 autistic_characteristics_count += 1
         
-        note_label = 1 if autistic_characteristics_count >= 15 else 0  # Adjust the criteria as needed
+        note_label = 1 if autistic_characteristics_count >= 15 else 0
         
-        new_note = models.Note(
+        new_note = models.AutismNote(
             user_id=current_user_id,
             note=note_text,
             prediction=note_label
@@ -184,9 +171,9 @@ def save_result():
 
 ####### Personal Details ####### 
 
-@auth_bp.route('/submit_personal_details', methods=['POST'])
+@auth_bp.route('/autism_submit_personal_details', methods=['POST'])
 @jwt_required()
-def submit_personal_details():
+def autism_submit_personal_details():
     current_user_id = get_jwt_identity()  # Get the user ID from the JWT token
     data = request.json
     print("etst")
@@ -241,9 +228,9 @@ def submit_personal_details():
         current_app.logger.error(f'Unexpected error saving personal details: {e}')
         return jsonify({"error": "Unable to save details"}), 500
 
-@auth_bp.route('/get_personal_details', methods=['GET'])
+@auth_bp.route('/autism_get_personal_details', methods=['GET'])
 @jwt_required()
-def get_personal_details():
+def autism_get_personal_details():
     current_user_id = get_jwt_identity()
     personal_details = Autismpersonaldetails.query.filter_by(user_id=current_user_id).first()
     
@@ -444,8 +431,8 @@ def process_eye_tracking_data():
                 model_output_path = os.path.join(temp_dir, 'complete_eye-tracking-model.joblib')
                 scaler_output_path = os.path.join(temp_dir, 'complete_eye-tracking-scaler.joblib')
                 
-                merge_chunks('/Users/ayesharahman1/Desktop/larks/backend/app/AutismDetector/chunks/', model_output_path)
-                merge_chunks('/Users/ayesharahman1/Desktop/larks/backend/app/AutismDetector/chunks-scaler/', scaler_output_path)
+                merge_chunks('app/AutismDetector/chunks/', model_output_path)
+                merge_chunks('app/AutismDetector/chunks-scaler/', scaler_output_path)
 
                 # Load the merged model and scaler
                 model = load(model_output_path)

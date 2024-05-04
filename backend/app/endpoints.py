@@ -12,11 +12,12 @@ from datetime import datetime
 auth_bp = Blueprint('auth', __name__)
 
 # import individual project python files
-from app.kevin.kevin import *  # noqa: F403, F401
-from app.lanre.lanre import *  # noqa: F403, F401
-from app.ramat.ramat import *  # noqa: F403, F401
-#from app.shreyas.shreyas import *  # noqa: F403, F401
-from app.rootsRadar.rootsRadar import *  # noqa: F403, F401
+#from app.kevin.kevin import * # noqa: F403, F401
+from app.lanre.lanre import * # noqa: F403, F401
+#from app.ramat.ramat import * # noqa: F403, F401
+#from app.shreyas.shreyas import * # noqa: F403, F401
+from app.rootsRadar.rootsRadar import * # noqa: F403, F401
+from app.EaseMind.EaseMind import * # noqa: F403, F401
 from app.AutismDetector.AutismDetector import *  # noqa: F403, F401
 
 # ---------------------------------------------------------------------------- #
@@ -38,7 +39,14 @@ def login():
 
     token = create_access_token(user.id, expires_delta=timedelta(hours=1))
 
-    return jsonify({"token": token, "email": user.email}), 200
+    return jsonify({
+        "token": token,
+        "email": user.email,
+        "rootsRadarRole": user.rootsRadarRole,
+        "id": user.id,
+    }), 200
+
+# ---------------------------------------------------------------------------- #
 
 @auth_bp.route('/', methods=['GET'])
 def home():
@@ -67,8 +75,15 @@ def register():
     db.session.add(new_user)
     db.session.commit()
 
-    access_token = create_access_token(identity=new_user.id)
-    return {"msg": "New user added.", "token": access_token}, 200
+    token = create_access_token(identity=new_user.id)
+
+    return jsonify({
+        "msg": "New user added.",
+        "token": token,
+        "email": new_user.email,
+        "rootsRadarRole": new_user.rootsRadarRole,
+        "id": new_user.id,
+    }), 200
 
 # ---------------------------------------------------------------------------- #
 
