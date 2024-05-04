@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // Import useState and useEffect from React
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Chatbot from './Chatbot'; // Import the Chatbot component
@@ -14,15 +14,15 @@ function PopUp({ show, onClose }) {
   }
 
   const popupStyles = {
-    border: '10px solid #C68B77', // Dark green border
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)', // 3D shadow
+    border: '10px solid #C68B77',
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
   };
 
   const popupContentStyles = {
-    width: '1000px', // Adjust the width as needed
-    height: '500px', // Adjust the height as needed
-    padding: '20px', // Add padding for better spacing
-    backgroundColor: 'white', // Background color for the white part
+    width: '1000px',
+    height: '500px',
+    padding: '20px',
+    backgroundColor: 'white',
   };
 
   return (
@@ -32,10 +32,21 @@ function PopUp({ show, onClose }) {
         <h1>Warning:</h1>
         <br />
         <p>
-          This website represents a project created by a computer science student affiliated with the University of Leeds. It is important to note that this website is not intended to serve as a substitute for professional assistance or guidance for individuals with autism spectrum disorders (ASD). If you or someone you know is autistic and seeking support or advice related to ASD, it is strongly recommended that you consult with qualified and licensed professionals who specialize in autism-related matters.
-          Additionally, please exercise caution while navigating this website, as its content may contain elements that could potentially trigger discomfort or unease in certain individuals. The website&apos;s primary purpose is educational or developmental, and it may not adhere to the specific requirements or standards associated with professional resources for individuals with autism.
-          The well-being and mental health of individuals with autism are of paramount importance, and seeking guidance from experienced professionals is a prudent step to ensure the best possible support and care.
-          It&apos;s worth mentioning that this website follows the criteria outlined in the Diagnostic and Statistical Manual of Mental Disorders, Fifth Edition (DSM-5) to provide accurate information and resources regarding autism spectrum disorders.
+          This website represents a project created by a computer science student affiliated with the University of Leeds.
+          It is important to note that this website is not intended to serve as a substitute for professional assistance or guidance
+          for individuals with autism spectrum disorders (ASD).
+          If you or someone you know is autistic and seeking support or advice related to ASD, it is strongly recommended that you
+          consult with qualified and licensed professionals who
+          specialize in autism-related matters.
+          Additionally, please exercise caution while navigating this website, as its content may contain elements that could potentially
+          trigger discomfort or unease in certain individuals.
+          The website&apos;s primary purpose is educational or developmental,
+          and it may not adhere to the specific requirements or
+          standards associated with professional resources for individuals with autism.
+          The well-being and mental health of individuals with autism are of paramount importance,
+          and seeking guidance from experienced professionals is a prudent step to ensure the best possible support and care.
+          It&apos;s worth mentioning that this website follows the criteria outlined in the Diagnostic and Statistical Manual of Mental Disorders,
+          Fifth Edition (DSM-5) to provide accurate information and resources regarding autism spectrum disorders.
         </p>
       </div>
     </div>
@@ -55,7 +66,7 @@ function AutismDetector() {
 
   const [showChatbot, setShowChatbot] = useState(false);
   const [showPopUp, setShowPopUp] = useState(true);
-  const [showOptions, setShowOptions] = useState(false); // State to manage the visibility of the additional options
+  const [showOptions, setShowOptions] = useState(false);
 
   const toggleChatbot = () => {
     setShowChatbot(!showChatbot);
@@ -86,38 +97,38 @@ function AutismDetector() {
     fontFamily: 'Arial, sans-serif',
     color: '#000',
     textAlign: 'center',
-    padding: isMobile ? '2%' : '2vw', // Adjust padding for mobile
+    padding: isMobile ? '2%' : '2vw',
   };
 
   const autismHomeVideoStyle = {
-    width: '41%', // Adjust the width as needed, e.g., to 50% of its container
-    height: '300px', // Keeps the aspect ratio of the image
+    width: '41%',
+    height: '300px',
     float: 'left',
     marginTop: '44vh',
     marginLeft: '-10%',
     position: 'relative',
-    display: 'block', // This ensures the video is displayed as a block element, removing any unwanted space around it
-    objectFit: 'cover', // This will cover the area of the container without stretching the video
-    marginBottom: '-38px', // Adjust if necessary to remove any remaining space
+    display: 'block',
+    objectFit: 'cover',
+    marginBottom: '-38px',
   };
 
   const dialogueBubbleStyle = {
     position: 'absolute',
-    top: '-200px', // Adjust as necessary
-    right: '-40%', // Adjust as necessary
+    top: '-200px',
+    right: '-40%',
     backgroundColor: '#C68B77',
     color: 'white',
     borderRadius: '50%',
     padding: '10px',
-    width: '500px', // Adjust as necessary
-    height: '200px', // Adjust as necessary
+    width: '500px',
+    height: '200px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: '18px', // Adjust as necessary
+    fontSize: '18px',
     fontWeight: 'bold',
-    zIndex: 5, // Ensure it's above the video
-    flexDirection: 'column', // This ensures vertical stacking
+    zIndex: 5,
+    flexDirection: 'column',
   };
 
   const imageContainerStyle = {
@@ -131,43 +142,43 @@ function AutismDetector() {
   const greenImageStyle = {
     position: 'relative',
     right: '20%',
-    width: '143%', // Adjust the width to make it smaller
-    height: isMobile ? '400px' : '580px', // Adjust the height for mobile and non-mobile
+    width: '143%',
+    height: isMobile ? '400px' : '580px',
     marginTop: '3vh',
-    zIndex: 2, // Increase the z-index to bring it behind the content
+    zIndex: 2,
   };
 
   const greyImageStyle = {
     position: 'absolute',
     top: '31%',
-    right: '0%', // Move to the right
+    right: '0%',
     width: '50%',
-    height: '73%', // Set the height to match autismHomeImage height
+    height: '73%',
     borderTop: '10px solid white',
     borderBottom: '10px solid white',
     borderLeft: '15px solid white',
     borderRight: '10px solid white',
     boxSizing: 'border-box',
-    zIndex: 2, // Higher z-index to bring it to front
+    zIndex: 2,
   };
 
   const textContainerStyle = {
     position: 'absolute',
-    top: '44%', // Adjust the top position as needed
-    left: '35%', // Adjust the left position as needed
-    width: '80%', // Adjust the width as needed
+    top: '44%',
+    left: '35%',
+    width: '80%',
     color: '#C68B77',
     fontSize: '3vw',
     fontWeight: 'bold',
-    zIndex: 3, // Higher z-index to bring it to front
+    zIndex: 3,
     textAlign: 'center',
   };
 
   const taskbarStyle = {
     display: 'flex',
-    flexWrap: 'wrap', // Allow items to wrap as needed
-    justifyContent: 'center', // Center items horizontally
-    alignItems: 'center', // Align items vertically
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#C68B77',
     borderRadius: '15px',
     border: 'solid white',
@@ -210,13 +221,13 @@ function AutismDetector() {
     padding: '2rem',
     borderRadius: '10px',
     textAlign: 'center',
-    position: 'absolute', // Make it positioned absolutely
+    position: 'absolute',
     marginTop: '5%',
-    top: isMobile ? 'calc(80% + 20px)' : '125%', // Adjust the top position based on resolution
+    top: isMobile ? 'calc(80% + 20px)' : '125%',
     left: '50%',
     width: '90%',
     height: '40%',
-    transform: 'translate(-50%, -50%)', // Center it horizontally and vertically
+    transform: 'translate(-50%, -50%)',
     zIndex: 4,
     color: '#C68B77',
     fontSize: isMobile ? 'calc(40% + 10px)' : '1.5vw',
@@ -224,23 +235,22 @@ function AutismDetector() {
 
   const chatbotIconStyle = {
     position: 'fixed',
-    bottom: isMobile ? '10px' : '20px', // Adjust the bottom position for mobile
-    right: isMobile ? '145px' : '20px', // Adjust the right position for mobile
-    backgroundColor: '#C68B77', // Example background color
-    color: 'white', // Text color
-    padding: '15px', // Padding around the button
-    borderRadius: '50%', // Circular button
-    cursor: 'pointer', // Cursor changes to pointer on hover
-    fontSize: isMobile ? '15px' : '20px', // Adjust font size for mobile
+    bottom: isMobile ? '10px' : '20px',
+    right: isMobile ? '145px' : '20px',
+    backgroundColor: '#C68B77',
+    color: 'white',
+    padding: '15px',
+    borderRadius: '50%',
+    cursor: 'pointer',
+    fontSize: isMobile ? '15px' : '20px',
     zIndex: 4,
     border: 'solid white',
   };
 
   const handleYesClick = () => {
-    setShowOptions(true); // When "Yes" is clicked, show the additional options
+    setShowOptions(true);
   };
 
-  // Define the style for the "Yes" button
   const yesButtonStyle = {
     padding: '5px 10px',
     margin: '10px 0',
@@ -249,8 +259,8 @@ function AutismDetector() {
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
-    position: 'relative', // Make sure it's positioned relative to its parent
-    zIndex: 100, // Try increasing the z-index
+    position: 'relative',
+    zIndex: 100,
   };
 
   const mediaQueries = `
@@ -346,8 +356,8 @@ function AutismDetector() {
 
   const navigate = useNavigate();
   const handleButtonClick = () => {
-    toggleChatbot(); // Assuming this function exists to toggle the chatbot's visibility
-    navigate('/autism_instructions/trackingandnotes'); // Navigate programmatically
+    toggleChatbot();
+    navigate('/autism_instructions/trackingandnotes');
   };
 
   return (
@@ -357,6 +367,7 @@ function AutismDetector() {
         <div>
           <Link to="/autism_instructions/personaldetails" style={taskbarItemStyle} className="taskbar-link">Personal Details</Link>
           <Link to="/autism_instructions/eyeTracking" style={taskbarItemStyle} className="taskbar-link">Eye Tracking</Link>
+          <Link to="/autism_instructions/game" style={taskbarItemStyle} className="taskbar-link">Social Interaction Game</Link>
           <Link to="/autism_instructions/test" style={taskbarItemStyle} className="taskbar-link">Test</Link>
           <Link to="/autism_instructions/feedback" style={taskbarItemStyle} className="taskbar-link">Feedback</Link>
           <Link to="/autism_instructions/trackingandnotes" style={taskbarItemStyle} className="taskbar-link">Tracking & Notes</Link>
@@ -466,6 +477,10 @@ function AutismDetector() {
           <Link to="/autism_instructions/questionnairetype" style={buttonStyle}>
             <u>Take a Questionnaire</u>
           </Link>
+          <br />
+          <Link to="/autism_instructions/eyeTracking" style={buttonStyle}>
+            <u>Try the Eye Movement Tracking</u>
+          </Link>
         </div>
       </div>
       <button type="button" style={chatbotIconStyle} onClick={toggleChatbot}>
@@ -489,7 +504,13 @@ function AutismDetector() {
           <button
             type="button"
             style={{
-              marginLeft: '2%', border: '2px solid white', backgroundColor: 'transparent', color: 'white', cursor: 'pointer', padding: '5px 10px', fontSize: '20px',
+              marginLeft: '2%',
+              border: '2px solid white',
+              backgroundColor: 'transparent',
+              color: 'white',
+              cursor: 'pointer',
+              padding: '5px 10px',
+              fontSize: '20px',
             }}
             onClick={toggleHelplinePopup}
           >
@@ -498,7 +519,13 @@ function AutismDetector() {
           <button
             type="button"
             style={{
-              marginLeft: '72%', border: '2px solid white', backgroundColor: 'transparent', color: 'white', cursor: 'pointer', padding: '5px 10px', fontSize: '20px',
+              marginLeft: '72%',
+              border: '2px solid white',
+              backgroundColor: 'transparent',
+              color: 'white',
+              cursor: 'pointer',
+              padding: '5px 10px',
+              fontSize: '20px',
             }}
             onClick={togglePrivacyPopup}
           >
@@ -516,7 +543,13 @@ function AutismDetector() {
         }}
         >
           <div style={{
-            position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: 'white', padding: '20px', borderRadius: '10px',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'white',
+            padding: '20px',
+            borderRadius: '10px',
           }}
           >
             <h1 style={{ color: '#C68B77' }}>Helpline Numbers</h1>
@@ -549,7 +582,8 @@ function AutismDetector() {
               <br />
               Go to the Accident and Emergency (A&E) department of any hospital or make an emergency GP appointment
               <br />
-              If you live in England, Scotland, or Wales, call the NHS non-emergency line on 111 if medical advice is needed. You can also access advice online at
+              If you live in England, Scotland, or Wales, call the NHS non-emergency line on 111 if medical advice is needed.
+              You can also access advice online at
               <br />
               <b>
                 <a style={{ color: '#C68B77' }} href="https://111.nhs.uk/" target="_blank" rel="noopener noreferrer">
@@ -560,7 +594,12 @@ function AutismDetector() {
               If you live in Northern Ireland, contact your trust’s GP out of hours service if medical advice is needed.
               <br />
               <b>
-                <a style={{ color: '#C68B77' }} href="https://www.nidirect.gov.uk/articles/gp-out-hours-service" target="_blank" rel="noopener noreferrer">
+                <a
+                  style={{ color: '#C68B77' }}
+                  href="https://www.nidirect.gov.uk/articles/gp-out-hours-service"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   https://www.nidirect.gov.uk/articles/gp-out-hours-service
                 </a>
               </b>
@@ -573,7 +612,12 @@ function AutismDetector() {
               (6pm to midnight every day)
               <br />
               <b>
-                <a style={{ color: '#C68B77' }} href="https://www.spuk.org.uk/national-suicide-prevention-helpline-uk/" target="_blank" rel="noopener noreferrer">
+                <a
+                  style={{ color: '#C68B77' }}
+                  href="https://www.spuk.org.uk/national-suicide-prevention-helpline-uk/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   https://www.spuk.org.uk/national-suicide-prevention-helpline-uk/
                 </a>
               </b>
@@ -598,43 +642,57 @@ function AutismDetector() {
         }}
         >
           <div style={{
-            position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: 'white', padding: '20px', borderRadius: '10px',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'white',
+            padding: '20px',
+            borderRadius: '10px',
           }}
           >
             <h1 style={{ color: '#C68B77' }}>Privacy Policy</h1>
             <br />
             <p>
-              I understand the importance of your privacy and will do everything possible to protect it. Below, I outline how your personal information is collected, used, and protected while using this website.
+              I understand the importance of your privacy and will do everything possible to protect it.
+              Below, I outline how your personal information is collected, used, and protected while using this website.
             </p>
             <br />
             <h3 style={{ color: '#C68B77' }}>1. Collection of Personal Information</h3>
             <p>
-              All data collected on this website is kept private and discrete unless you explicitly choose to share it. We collect personal information only when necessary for providing and improving our services.
+              All data collected on this website is kept private and discrete unless you explicitly choose to share it.
+              We collect personal information only when necessary for providing and improving our services.
             </p>
             <br />
             <h3 style={{ color: '#C68B77' }}>2. Use of Personal Information</h3>
             <p>
-              Any personal information collected is used solely for the purpose of providing and improving the services offered on this website. Your questionnaire solutions are saved privately in our database to personalize your experience and provide relevant recommendations.
+              Any personal information collected is used solely for the purpose of providing and improving the services offered on this website.
+              Your questionnaire solutions are saved privately in our database to personalize your experience and provide relevant recommendations.
             </p>
             <br />
             <h3 style={{ color: '#C68B77' }}>3. Protection of Personal Information</h3>
             <p>
-              Your privacy and security are paramount. All personal information, including passwords, is encrypted to prevent unauthorized access or disclosure. We utilize industry-standard security measures to safeguard your data.
+              Your privacy and security are paramount.
+              All personal information, including passwords, is encrypted to prevent unauthorized access or disclosure.
+              We utilize industry-standard security measures to safeguard your data.
             </p>
             <br />
             <h3 style={{ color: '#C68B77' }}>4. Data Retention</h3>
             <p>
-              We retain your personal information only for as long as necessary to fulfill the purposes outlined in this Privacy Policy. If you wish to delete or modify your personal information, please contact us.
+              We retain your personal information only for as long as necessary to fulfill the purposes outlined in this Privacy Policy.
+              If you wish to delete or modify your personal information, please contact us.
             </p>
             <br />
             <h3 style={{ color: '#C68B77' }}>5. Updates to Privacy Policy</h3>
             <p>
-              This Privacy Policy may be updated from time to time to reflect changes in our practices or legal requirements. Any updates will be posted on this page, and your continued use of the website constitutes acceptance of the updated policy.
+              This Privacy Policy may be updated from time to time to reflect changes in our practices or legal requirements.
+              Any updates will be posted on this page, and your continued use of the website constitutes acceptance of the updated policy.
             </p>
             <br />
             <h3 style={{ color: '#C68B77' }}>6. Contact Information</h3>
             <p>
-              If you have any questions, concerns, or requests regarding your privacy or this Privacy Policy, please don&apos;t hesitate to contact us at [contact@autismdetector.com].
+              If you have any questions, concerns, or requests regarding your privacy or this Privacy Policy,
+              please don&apos;t hesitate to contact us at [contact@autismdetector.com].
             </p>
             <br />
             <button
