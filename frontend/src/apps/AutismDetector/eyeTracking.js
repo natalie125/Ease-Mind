@@ -31,6 +31,7 @@ const useCameraStream = () => {
           };
         }
       } catch (err) {
+        // eslint-disable-next-line
         console.error('Error accessing media devices:', err);
       }
     };
@@ -80,7 +81,7 @@ function EyeTracking() {
         clearInterval(interval);
         stopRecording();
         setShowOptions(true);
-        return 20; // Stop the timer at 20 seconds
+        return 20;
       });
     }, 1000);
   };
@@ -100,6 +101,7 @@ function EyeTracking() {
         setPredictionResult(response.data.prediction);
       }
     } catch (error) {
+      // eslint-disable-next-line
       console.error('Error sending video data:', error.response ? error.response.data : error.message);
     }
     setShowOptions(false);
@@ -116,9 +118,15 @@ function EyeTracking() {
       >
         <p>Please look at the camera for a minimum of 20 seconds.</p>
         <br />
-        <p>Please make sure the lighting is good and there is no one other than yourself in the frame.</p>
+        <p>
+          Please make sure the lighting is good, your eyes are vidible (please remove your spectacles)
+          and there is no one other than yourself in the frame.
+        </p>
         <br />
-        <p>Press &quot;Start Recording&quot; when ready. The timer will stop at 20 seconds and your feedback will be displayed below.</p>
+        <p>
+          Press &quot;Start Recording&quot; when ready.
+          The timer will stop at 20 seconds and your feedback will be displayed below after a couple seconds.
+        </p>
       </div>
       <video ref={videoRef} style={{ width: '640px', height: '480px', border: '5px solid #C68B77' }} controls autoPlay muted />
       <br />
