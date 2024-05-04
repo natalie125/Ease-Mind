@@ -10,7 +10,6 @@ const BASEURL = process.env.NODE_ENV === 'development'
   : process.env.REACT_APP_PROD;
 
 function Popup({ togglePopup }) {
-  console.log('Popup rendered');
   return (
     <div style={{
       position: 'fixed',
@@ -28,11 +27,63 @@ function Popup({ togglePopup }) {
     >
       <h4>This is a Sample you can follow to write your own</h4>
       <p>
-        Today was a day full of textures and patterns, and I found it both overwhelming and fascinating. This morning, I wore my new sweater, the one with the stripes. I love how the colors align perfectly at the seams—it’s satisfying, like solving a puzzle. But the fabric felt itchy against my skin, more than usual, which made it hard to focus during breakfast. At school, during math class, I was happy. We worked on sequences, and I noticed patterns that no one else did until I pointed them out. It made me feel good to see the numbers line up, predictable and orderly. It’s comforting when things make sense because so often, they don’t.
+        Today was a day full of textures and patterns, and I found it both overwhelming and fascinating.
 
-        Lunchtime was challenging. The cafeteria was louder than usual, and the clinking of cutlery on the plates was sharp. I ate quickly so I could escape to the library. The quiet there helps calm my nerves. I spent my time organizing books by their color. It’s not the system the library uses, but I think it makes the shelves look better. In the afternoon, we had a surprise fire drill. The sudden alarm was startling. I knew it was just a drill, but my heart raced like I was in danger. Mrs. Henderson noticed I was struggling and let me use my headphones. Music helps drown out the noise and makes me feel secure.
+        This morning, I wore my new sweater, the one with the stripes.
 
-        After school, I walked home the long way, along the canal. I like watching the water. It moves in a pattern, but not one I can predict, which is both intriguing and a bit frustrating. At home, I spent time working on my model airplane. It&apos;s a kit, but I&apos;m making modifications to it. The pieces fit together snugly, and I feel a sense of accomplishment with each part I successfully assemble. Mom made spaghetti for dinner. I like spaghetti. It’s easy to eat because it doesn’t crunch, and I don’t like loud foods. After dinner, I watched an episode of my favorite show—it’s about space and the universe. Space is vast and infinite, yet it follows rules, and that’s another puzzle I enjoy thinking about. Now, I’m ready to go to bed, and I’m feeling okay. Today had its ups and downs, but I handled it well, I think. Tomorrow, I hope the sweater feels less itchy.
+        I love how the colors align perfectly at the seams—it’s satisfying, like solving a puzzle.
+
+        But the fabric felt itchy against my skin, more than usual, which made it hard to focus during breakfast.
+
+        At school, during math class, I was happy.
+
+        We worked on sequences, and I noticed patterns that no one else did until I pointed them out.
+
+        It made me feel good to see the numbers line up, predictable and orderly.
+
+        It’s comforting when things make sense because so often, they don’t.
+
+        Lunchtime was challenging. The cafeteria was louder than usual, and the clinking of cutlery on the plates was sharp.
+
+        I ate quickly so I could escape to the library. The quiet there helps calm my nerves.
+
+        I spent my time organizing books by their color.
+
+        It’s not the system the library uses, but I think it makes the shelves look better.
+
+        In the afternoon, we had a surprise fire drill. The sudden alarm was startling.
+
+        I knew it was just a drill, but my heart raced like I was in danger.
+
+        Mrs. Henderson noticed I was struggling and let me use my headphones.
+
+        Music helps drown out the noise and makes me feel secure.
+
+        After school, I walked home the long way, along the canal.
+
+        I like watching the water.
+
+        It moves in a pattern, but not one I can predict, which is both intriguing and a bit frustrating.
+
+        At home, I spent time working on my model airplane.
+
+        It&apos;s a kit, but I&apos;m making modifications to it.
+
+        The pieces fit together snugly, and I feel a sense of accomplishment with each part I successfully assemble.
+
+        Mom made spaghetti for dinner. I like spaghetti.
+
+        It’s easy to eat because it doesn’t crunch, and I don’t like loud foods.
+
+        After dinner, I watched an episode of my favorite show—it’s about space and the universe.
+
+        Space is vast and infinite, yet it follows rules, and that’s another puzzle I enjoy thinking about.
+
+        Now, I’m ready to go to bed, and I’m feeling okay.
+
+        Today had its ups and downs, but I handled it well, I think.
+
+        Tomorrow, I hope the sweater feels less itchy.
       </p>
       <button type="button" onClick={togglePopup} style={{ cursor: 'pointer', padding: '10px', borderRadius: '5px' }}>X Close</button>
     </div>
@@ -50,19 +101,17 @@ function Notes() {
   const [showPopup, setShowPopup] = useState(false);
 
   const autismHomeVideoStyle = {
-    width: '15%', // Adjust the width as needed, e.g., to 50% of its container
-    height: '300px', // Keeps the aspect ratio of the image
+    width: '15%',
+    height: '300px',
     float: 'left',
     marginTop: '-140vh',
     marginLeft: '85%',
     position: 'relative',
-    display: 'block', // This ensures the video is displayed as a block element, removing any unwanted space around it
-    objectFit: 'cover', // This will cover the area of the container without stretching the video
+    display: 'block',
+    objectFit: 'cover',
   };
 
   const fetchNotes = async () => {
-    console.log(token);
-
     await axios.get(`${BASEURL}api/notes`, {
       headers: { Authorization: `Bearer ${token}` },
     }).then((response) => {
@@ -115,11 +164,11 @@ function Notes() {
     <div style={{
       fontFamily: 'Arial, sans-serif',
       maxWidth: '1000px',
-      margin: '50px auto 0', // Adds top margin space
+      margin: '50px auto 0',
       padding: '20px',
       boxShadow: '0 0 10px rgba(0,0,0,0.1)',
-      backgroundColor: '#C68B77', // Dark green background
-      color: 'white', // Text color set to white
+      backgroundColor: '#C68B77',
+      color: 'white',
     }}
     >
       <button type="button" style={goBackButtonStyle} onClick={handleGoBack}>&larr; Go Back</button>
@@ -134,13 +183,20 @@ function Notes() {
         textAlign: 'center', color: 'white', border: '2px solid white', padding: '10px',
       }}
       >
-        Treat this area as an area where you note your regular day. This will be used to track your autistic characteristics in writing. The notes you save will be run through a trained algorithm which will detect these characteristics in your writing. For the algorithm to work best, please do not proofread or grammatically correct your notes and write them as you speak.
+        Treat this area as an area where you note your regular day.
+        This will be used to track your autistic characteristics in writing.
+        The notes you save will be run through a trained algorithm which will detect these characteristics in your writing.
+        For the algorithm to work best, please do not proofread or grammatically correct your notes and write them as you speak.
       </h4>
       <h5 style={{
         textAlign: 'center', color: 'white', border: '2px solid white', padding: '10px',
       }}
       >
-        Please be aware that the algorithm checks for charactecteristics like repition in each sentence. If the count (characteristics) in a note is more than or equal to 15, it gives feedback saying the note could have been written by a person having ASD. It is also to be noted that just because the algorithm states the note a certain way doesn&apos;t mean that it is 100% accurate since each individual is unique and different.
+        Please be aware that the algorithm checks for charactecteristics like repition in each sentence.
+        If the count (characteristics) in a note is more than or equal to 15,
+        it gives feedback saying the note could have been written by a person having ASD.
+        It is also to be noted that just because the algorithm states the note a certain way
+        doesn&apos;t mean that it is 100% accurate since each individual is unique and different.
       </h5>
       <button
         type="button"
@@ -165,8 +221,8 @@ function Notes() {
             padding: '10px',
             border: '1px solid #ccc',
             borderRadius: '4px',
-            backgroundColor: 'white', // Ensures input is visible
-            color: 'black', // Text color for input
+            backgroundColor: 'white',
+            color: 'black',
           }}
         />
         <button
@@ -177,7 +233,7 @@ function Notes() {
             padding: '10px',
             border: 'none',
             borderRadius: '4px',
-            backgroundColor: '#F5D0AF', // Light green button
+            backgroundColor: '#F5D0AF',
             color: '#C68B77',
             cursor: 'pointer',
           }}
@@ -192,7 +248,10 @@ function Notes() {
             <div
               key={note.id}
               style={{
-                marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '10px', color: note.prediction === 1 ? '#6B536B' : 'white', // Change color based on prediction
+                marginBottom: '20px',
+                borderBottom: '1px solid #eee',
+                paddingBottom: '10px',
+                color: note.prediction === 1 ? '#6B536B' : 'white',
               }}
             >
               <p style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>{note.note}</p>
@@ -203,7 +262,7 @@ function Notes() {
               {/* Highlighting text based on prediction */}
               {note.prediction !== undefined && (
                 <p style={{ fontWeight: 'bold' }}>
-                  {note.prediction === 1 ? '🌟 This note exhibits characteristics of autism.' : 'This note does not exhibit characteristics of autism.'}
+                  {note.prediction === 1 ? '🌟 This note exhibits characteristics of autism' : 'This note does not exhibit characteristics of autism'}
                 </p>
               )}
             </div>
