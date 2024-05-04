@@ -5,14 +5,14 @@ import autismHomeVideo from '../../images/autism-test.gif';
 
 function TestComponent() {
   const autismHomeVideoStyle = {
-    width: '15%', // Adjust the width as needed, e.g., to 50% of its container
-    height: '300px', // Keeps the aspect ratio of the image
+    width: '15%',
+    height: '300px',
     float: 'left',
     marginTop: '-28vh',
     marginLeft: '55%',
     position: 'relative',
-    display: 'block', // This ensures the video is displayed as a block element, removing any unwanted space around it
-    objectFit: 'cover', // This will cover the area of the container without stretching the video
+    display: 'block',
+    objectFit: 'cover',
   };
 
   const containerStyle = {
@@ -39,8 +39,8 @@ function TestComponent() {
 
   const buttonContainerStyle = {
     display: 'flex',
-    justifyContent: 'center', // Correct for vertical centering in column layout
-    alignItems: 'center', // Correct for horizontal centering
+    justifyContent: 'center',
+    alignItems: 'center',
     width: '100%',
     flexDirection: 'column',
     marginBottom: '20px',
@@ -57,12 +57,12 @@ function TestComponent() {
   };
 
   const linkStyle = {
-    display: 'inline-block', // Ensure it's clickable area is only around the text
+    display: 'inline-block',
     backgroundColor: '#C68B77',
     padding: '15px 30px',
     borderRadius: '15px',
-    border: '2px solid white', // Correct way to set border (width style color)
-    color: 'white', // Text color set to white
+    border: '2px solid white',
+    color: 'white',
     fontSize: '18px',
     textDecoration: 'none',
     fontWeight: 'bold',
@@ -76,7 +76,7 @@ function TestComponent() {
     color: '#C68B77',
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: '10px', // Ensure spacing between link and description
+    marginTop: '10px',
   };
 
   const goBackButtonStyle = {
@@ -108,13 +108,29 @@ function TestComponent() {
             <Link to="/autism_instructions/questionnairetype" style={linkStyle}>
               Go to Questionnaire
             </Link>
-            <p style={descriptionStyle}>This questionnaire is designed to explore various aspects of social communication and behavior in alignment with the Diagnostic and Statistical Manual of Mental Disorders, Fifth Edition (DSM-5) criteria for Autism Spectrum Disorder (ASD). The DSM-5 emphasizes two core areas for diagnosis: deficits in social communication and social interaction across multiple contexts, and restricted, repetitive patterns of behavior, interests, or activities. Each question encourages self-reflection on aspects of social communication, relationships, and behavioral patterns that individuals may find challenging. The questionnaire will take 15-20 minutes depending on the user.</p>
+            <p style={descriptionStyle}>
+              This questionnaire is designed to explore various aspects of social
+              communication and behavior in alignment with the Diagnostic and Statistical Manual of Mental Disorders,
+              Fifth Edition (DSM-5) criteria for Autism Spectrum Disorder (ASD).
+              The DSM-5 emphasizes two core areas for diagnosis: deficits in social communication and social interaction across multiple contexts,
+              and restricted, repetitive patterns of behavior, interests, or activities.
+              Each question encourages self-reflection on aspects of social communication,
+              relationships, and behavioral patterns that individuals may find challenging.
+              The questionnaire will take 15-20 minutes depending on the user.
+            </p>
           </div>
           <div style={buttonBoxStyle}>
             <Link to="/autism_instructions/game" style={linkStyle}>
               Go to Game
             </Link>
-            <p style={descriptionStyle}>The &quot;Social Interaction Challenge&quot; game is an educational tool designed to help individuals, particularly those with autism, improve their understanding and management of social interactions and sensory experiences. Through a series of scenarios, players are presented with various social and sensory situations that require thoughtful responses or actions. The game aims to enhance social communication skills, emotional recognition, and adaptability in changing environments, which are areas often challenging for individuals on the autism spectrum.</p>
+            <p style={descriptionStyle}>
+              The &quot;Social Interaction Challenge&quot; game is an educational tool designed to help individuals,
+              particularly those with autism, improve their understanding and management of social interactions and sensory experiences.
+              Through a series of scenarios, players are presented with various social and sensory situations that require thoughtful
+              responses or actions.
+              The game aims to enhance social communication skills, emotional recognition, and adaptability in changing environments,
+              which are areas often challenging for individuals on the autism spectrum.
+            </p>
           </div>
         </div>
       </div>
