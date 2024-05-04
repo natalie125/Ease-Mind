@@ -52,7 +52,7 @@ import AutismDetectorCATQ from './apps/AutismDetector/catq';
 import AutismDetectorRAADSR from './apps/AutismDetector/raadsr';
 import AutismDetectorTrackingAndNotes from './apps/AutismDetector/trackingandnotes';
 import AutismDetectorGame from './apps/AutismDetector/game.js';
-import AutismDetectorTest from './apps/AutismDetector/test.js';
+import AutismDetectorTest from './apps/AutismDetector/TestComponent‎.js';
 import AutismDetectorFeedback from './apps/AutismDetector/feedback.js';
 import AutismDetectorEyeTracking from './apps/AutismDetector/eyeTracking.js';
 
