@@ -270,6 +270,7 @@ const scenarios = [
   },
   {
     id: 13,
+    // eslint-disable-next-line
     description: 'You are at a family gathering, and a relative asks you about your interests. How do you share your interests with them and ask about theirs to keep the conversation going?',
     correctKeywords: [
       'share', 'interests', 'ask', 'listen', 'conversation', 'engage', 'family', 'talk', 'discuss', 'mutual',
@@ -281,6 +282,7 @@ const scenarios = [
   },
   {
     id: 14,
+    // eslint-disable-next-line
     description: 'During a team meeting, your colleague gives a presentation. What are some ways you can use nonverbal communication to show your support and understanding of their presentation?',
     correctKeywords: [
       'nod', 'smile', 'eye contact', 'applaud', 'thumbs up', 'attentive', 'listen', 'engage', 'body language',
@@ -292,6 +294,7 @@ const scenarios = [
   },
   {
     id: 15,
+    // eslint-disable-next-line
     description: 'Your daily routine is unexpectedly changed due to an emergency at school or work. How do you cope with this change and adjust to the new schedule?',
     correctKeywords: [
       'adapt', 'flexible', 'plan', 'organize', 'prioritize', 'calm', 'accept', 'adjust', 'strategy', 'cope',
@@ -303,6 +306,7 @@ const scenarios = [
   },
   {
     id: 16,
+    // eslint-disable-next-line
     description: 'You have a deep interest in a specific topic and want to share it with a new friend who might not share your enthusiasm. How do you introduce your interest in a way that is engaging for both of you?',
     correctKeywords: [
       'introduce', 'explain', 'share', 'engage', 'enthusiasm', 'listen', 'feedback', 'curiosity', 'inclusive',
@@ -314,6 +318,7 @@ const scenarios = [
   },
   {
     id: 17,
+    // eslint-disable-next-line
     description: 'You are in a new environment that is overwhelming your senses. What steps do you take to make yourself more comfortable and manage sensory overload?',
     correctKeywords: [
       'headphones', 'break', 'quiet place', 'deep breaths', 'focus', 'limit stimuli', 'ask for help', 'self-care',
@@ -365,47 +370,49 @@ function Game() {
   `;
 
   const autismHomeVideoStyle = {
-    width: '15%', // Adjust the width as needed
-    height: '20%', // Adjust the height as needed
+    width: '15%',
+    height: '20%',
     position: 'absolute',
-    top: '80%', // Adjust the vertical position as needed
+    top: '80%',
     transform: 'translateY(-50%)',
     animation: 'slideRight 20s linear infinite',
   };
 
   const darkGreenBoxStyle = {
     backgroundColor: '#C68B77',
-    padding: '20px', // Keeps content from touching the edges
-    borderRadius: '10px', // Rounds the corners of the box
-    color: 'white', // Text color for better contrast
-    margin: '20px auto', // Centers the box with auto left and right margins
-    maxWidth: '1600px', // Max width for the box
-    height: '700px', // Fixed height
-    display: 'flex', // Enables Flexbox layout
-    flexDirection: 'column', // Stacks children vertically
-    justifyContent: 'center', // Centers items vertically
-    alignItems: 'center', // Centers items horizontally
+    padding: '20px',
+    borderRadius: '10px',
+    color: 'white',
+    margin: '20px auto',
+    maxWidth: '1600px',
+    height: '700px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   };
 
   const childStyle = {
-    margin: '50px 0', // Example margin, adjust as needed for each child
+    margin: '50px 0',
   };
 
   const headingStyle = {
-    border: '2px solid white', // White border around the heading
-    padding: '10px 20px', // Padding inside the border
-    borderRadius: '5px', // Optional: Rounds the corners of the border
-    textAlign: 'center', // Centers the text within the heading
-    width: '100%', // Ensures the heading takes full width of its container
-    boxSizing: 'border-box', // Ensures padding and border are included in the width
+    border: '2px solid white',
+    padding: '10px 20px',
+    borderRadius: '5px',
+    textAlign: 'center',
+    width: '100%',
+    boxSizing: 'border-box',
   };
 
   // Function to check if a word or its synonyms match any of the correct keywords
+  // eslint-disable-next-line
   const includesWordOrSynonym = (word, correctKeywords) => correctKeywords.some((keyword) => word === keyword || (synonymsDictionary[keyword] && synonymsDictionary[keyword].includes(word)));
 
   const calculateAndSetFinalFeedback = () => {
     let feedbackText = 'Thank you for completing the game. Here are your responses, feedback, and sentiment analysis:\n\n';
     responses.forEach((res, index) => {
+      // eslint-disable-next-line
       feedbackText += `Scenario ${index + 1}: ${res.description}\nResponse: ${res.response}\nFeedback: ${res.feedback}\nSentiment: ${res.sentiment}\n\n`;
     });
 
@@ -416,6 +423,7 @@ function Game() {
     } else if (scorePercentage >= 50) {
       feedbackText += 'Your responses suggest you have good social interaction skills with some areas for improvement.';
     } else {
+      // eslint-disable-next-line
       feedbackText += 'Your responses suggest you may benefit from further support in social interactions. Consulting with a professional is recommended for a comprehensive assessment.';
     }
 
@@ -435,9 +443,9 @@ function Game() {
           },
         },
       );
-      return apiResponse.data.feedback; // Return the feedback instead of setting state
+      return apiResponse.data.feedback;
     } catch (error) {
-      console.error('Error analyzing sentiment:', error);
+      // console.error('Error analyzing sentiment:', error);
       return 'Could not analyze sentiment.';
     }
   };
@@ -449,6 +457,7 @@ function Game() {
     const sentiment = await analyzeSentiment(response);
 
     const feedbackEmoji = correctCount > 0 ? '😊' : '😕';
+    // eslint-disable-next-line
     const feedback = `${correctCount > 0 ? 'Correct! You responded appropriately.' : 'This response could be improved. Reflecting on more appropriate keywords could help.'} ${feedbackEmoji}`;
     const newScore = correctCount > 0 ? score + 1 : score;
 
@@ -465,8 +474,10 @@ function Game() {
         Authorization: `Bearer ${token}`,
       },
     }).then(() => {
+      // eslint-disable-next-line
       console.log('Feedback and score sent!');
     }).catch((error) => {
+      // eslint-disable-next-line
       console.error('Error sending feedback and score:', error);
     });
 
@@ -502,14 +513,14 @@ function Game() {
 
   // Additional style for the feedback container to make it scrollable
   const feedbackContainerStyle = {
-    margin: '20px 0', // Adds some top and bottom margin
-    padding: '10px', // Adds padding inside the feedback container
-    backgroundColor: 'rgba(255, 255, 255, 0.2)', // Slightly lighter background for contrast
-    borderRadius: '5px', // Rounds the corners
-    maxHeight: '500px', // Maximum height before scrolling
-    overflowY: 'auto', // Enables vertical scrolling
-    width: '100%', // Ensures it fills the container
-    boxSizing: 'border-box', // Includes padding in the width calculation
+    margin: '20px 0',
+    padding: '10px',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: '5px',
+    maxHeight: '500px',
+    overflowY: 'auto',
+    width: '100%',
+    boxSizing: 'border-box',
   };
 
   return (
