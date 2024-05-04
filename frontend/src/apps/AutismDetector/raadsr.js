@@ -10,7 +10,7 @@ const BASEURL = process.env.NODE_ENV === 'development'
 
 function raadsR() {
   const [answers, setAnswers] = useState({});
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Track the current question
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [testResult, setTestResult] = useState({ score: null, resultMessage: null });
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
@@ -225,6 +225,7 @@ function raadsR() {
       },
       {
         id: 41,
+        // eslint-disable-next-line
         text: 'I keep lists of things that interest me, even when they have no practical use (for example sports statistics, train schedules, calendar dates, historical facts and dates).',
         options: ['True now and when I was young', 'True only now', 'True only when I was younger than 16', 'Never true'],
       },
@@ -462,9 +463,10 @@ function raadsR() {
       circumscribedInterests: 0,
     };
 
-    // Define which questions belong to each subscale
+    // Defining which questions belong to each subscale
     const subscaleQuestionMapping = {
-      language: [2, 7, 15, 27, 35, 58, 66], // Already provided
+      language: [2, 7, 15, 27, 35, 58, 66],
+      // eslint-disable-next-line
       socialRelatedness: [1, 3, 5, 6, 8, 11, 12, 14, 17, 18, 20, 21, 22, 23, 25, 26, 28, 31, 37, 38, 39, 43, 44, 45, 47, 48, 53, 54, 55, 60, 61, 64, 68, 69, 72, 76, 77, 79, 80],
       sensoryMotor: [4, 10, 16, 19, 29, 33, 34, 36, 42, 46, 49, 51, 57, 59, 62, 65, 67, 71, 73, 74],
       circumscribedInterests: [9, 13, 24, 30, 32, 40, 41, 50, 52, 56, 63, 70, 75, 78],
@@ -505,9 +507,13 @@ function raadsR() {
 
     // Interpretation of total and subscale scores for result message
     const interpretations = {
+      // eslint-disable-next-line
       language: subscaleScores.language >= 4 ? 'Language-related symptoms are notably present.' : 'Language-related symptoms are within typical limits.',
+      // eslint-disable-next-line
       socialRelatedness: subscaleScores.socialRelatedness >= 31 ? 'Social relatedness concerns are significantly evident.' : 'Social relatedness concerns are within typical limits.',
+      // eslint-disable-next-line
       sensoryMotor: subscaleScores.sensoryMotor >= 16 ? 'Sensory-motor symptoms are notably present.' : 'Sensory-motor symptoms are within typical limits.',
+      // eslint-disable-next-line
       circumscribedInterests: subscaleScores.circumscribedInterests >= 15 ? 'Circumscribed interests are significantly evident.' : 'Circumscribed interests are within typical limits.',
     };
 
@@ -519,7 +525,9 @@ function raadsR() {
     }).join('\n');
 
     // Construct result message
+    // eslint-disable-next-line
     const likelihoodMessage = raadsrScore >= 65 ? 'You are likely autistic.' : 'You are unlikely to be autistic, but further evaluation may be beneficial if concerns persist.';
+    // eslint-disable-next-line
     const resultMessage = `Based on your total score of ${raadsrScore}, ${likelihoodMessage}\nSubscale scores are as follows:\n${detailedResults}\n\nPlease consult a professional for an accurate assessment, especially if your scores closely approach or exceed any thresholds.`;
 
     setTestResult({ score: raadsrScore, resultMessage });
@@ -530,6 +538,7 @@ function raadsR() {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
+      // eslint-disable-next-line
       console.log({
         raadsrScore,
         language: subscaleScores.language,
@@ -545,6 +554,7 @@ function raadsR() {
         circumscribedInterests: subscaleScores.circumscribedInterests,
       }, config);
     } catch (error) {
+      // eslint-disable-next-line
       console.error('Error saving the test result:', error);
       alert('There was an error saving your results. Please try again.');
     }
