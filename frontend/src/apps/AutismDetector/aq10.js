@@ -10,7 +10,7 @@ const BASEURL = process.env.NODE_ENV === 'development'
 
 function AQ10() {
   const [answers, setAnswers] = useState({});
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // Track the current question
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [testResult, setTestResult] = useState({ score: null, resultMessage: null });
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
@@ -109,6 +109,7 @@ function AQ10() {
 
     const aq10 = Object.values(answers).reduce((acc, value) => acc + value, 0);
 
+    // eslint-disable-next-line
     const resultMessage = `Your AQ-10 score is ${aq10}. A score of 6 or higher is indicative of a significant number of autistic traits. This screening suggests that further evaluation by a professional may be beneficial. Remember, this test is not diagnostic.`;
 
     setTestResult({ score: aq10, resultMessage });
@@ -126,14 +127,15 @@ function AQ10() {
         },
       );
     } catch (error) {
+      // eslint-disable-next-line
       console.error('Error saving the test result:', error);
     }
   };
 
   // Function to handle closing the modal and navigating back
   const handleCloseModal = () => {
-    setShowModal(false); // First, close the modal
-    navigate('/autism_instructions/questionnairetype'); // Then, navigate back to the specified path
+    setShowModal(false);
+    navigate('/autism_instructions/questionnairetype');
   };
 
   useEffect(() => {
