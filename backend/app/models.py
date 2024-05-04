@@ -1,6 +1,7 @@
 from app import db
 from sqlalchemy.orm import validates, relationship
 from datetime import datetime, date
+from sqlalchemy.dialects.sqlite import JSON
 
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -26,6 +27,8 @@ class Users(db.Model):
 
     #relationship to EPersonalDetails. uselist=False to ensure one-to-one.
     epersonal_details = relationship('EPersonalDetails', back_populates='user', uselist=False)
+    #relationship to PersonalDetails. uselist=False to ensure one-to-one.
+    Autismpersonal_details = relationship('Autismpersonaldetails', back_populates='user', uselist=False)
 
     @validates('password')
     def validate_password(self, key, password):
@@ -233,3 +236,80 @@ class EAQuestion(db.Model):
 
     def __repr__(self):
         return f'<EAQuestion {self.text}>'
+
+# ---------------------------------------------------------------------------- #
+
+# Autsim Detector backend integration
+
+class Autismpersonaldetails(db.Model):
+    __tablename__ = 'Autismpersonaldetails'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    firstName = db.Column(db.String(500))
+    lastName = db.Column(db.String(500))
+    DOB = db.Column(db.Date)
+    gender = db.Column(db.String(50))
+    postCode = db.Column(db.String(100))
+    city = db.Column(db.String(500))
+    countryOfResidence = db.Column(db.String(500))
+    highestEducation = db.Column(db.String(500))
+    ethnicity = db.Column(db.String(500))
+    nationality = db.Column(db.String(500))
+    sexuality = db.Column(db.String(50))
+    additionalConditions = db.Column(JSON)
+    sensorySensitivity = db.Column(JSON)
+    user = relationship('Users', back_populates='Autismpersonal_details', uselist=False)
+
+    @validates('DOB')
+    def validate_DOB(self, key, DOB):
+        if isinstance(DOB, date):
+            birth_date = DOB
+        else:
+            birth_date = datetime.strptime(DOB, "%Y-%m-%d").date()
+        
+        today = date.today()
+        age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+        if age < 18:
+            raise AssertionError('You must be older than 18 to use this service.')
+        
+        return birth_date
+
+class AutismNote(db.Model):
+    __tablename__ = 'Autismnotes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    note = db.Column(db.String, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    prediction = db.Column(db.Integer)
+    user = relationship('Users', backref='notes') 
+
+class AutismDetectorFeedback(db.Model):
+    __tablename__ = 'AutismDetectorFeedback'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    aq10 = db.Column(db.Integer, nullable=True)
+    aq = db.Column(db.Integer, nullable=True)
+    catqtotalScore = db.Column(db.Integer, nullable=True)
+    compensationScore = db.Column(db.Integer, nullable=True)
+    maskingScore = db.Column(db.Integer, nullable=True)
+    assimilationScore = db.Column(db.Integer, nullable=True)
+    raadsrScore = db.Column(db.Integer, nullable=True)
+    language = db.Column(db.Integer, nullable=True)
+    socialRelatedness = db.Column(db.Integer, nullable=True)
+    sensoryMotor = db.Column(db.Integer, nullable=True)
+    circumscribedInterests = db.Column(db.Integer, nullable=True)
+    user = relationship('Users', backref='Autismfeedback')
+
+class AutismGameFeedback(db.Model):
+    __tablename__ = 'AutismGameFeedback'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    score = db.Column(db.Integer, nullable=True)
+    scenario_id = db.Column(db.Integer, nullable=False)
+    response = db.Column(db.String(500), nullable=False)
+    feedback = db.Column(db.String(500), nullable=False)
+    sentiment = db.Column(db.String(100), nullable=False)
+    user = relationship('Users', backref='Autismgame_feedback')

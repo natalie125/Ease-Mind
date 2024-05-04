@@ -5,16 +5,19 @@ from flask import request, jsonify, Blueprint, current_app
 from .models import Users
 from flask_jwt_extended import JWTManager, get_jwt_identity
 from flask_jwt_extended import create_access_token, jwt_required
+from flask_cors import cross_origin
+from datetime import datetime
+# from transformers import pipeline
 
 auth_bp = Blueprint('auth', __name__)
 
 # import individual project python files
-#from app.kevin.kevin import * # noqa: F403, F401
-from app.lanre.lanre import * # noqa: F403, F401
-#from app.ramat.ramat import * # noqa: F403, F401
-#from app.shreyas.shreyas import * # noqa: F403, F401
-from app.rootsRadar.rootsRadar import * # noqa: F403, F401
-from app.EaseMind.EaseMind import * # noqa: F403, F401
+from app.kevin.kevin import *  # noqa: F403, F401
+from app.lanre.lanre import *  # noqa: F403, F401
+from app.ramat.ramat import *  # noqa: F403, F401
+#from app.shreyas.shreyas import *  # noqa: F403, F401
+from app.rootsRadar.rootsRadar import *  # noqa: F403, F401
+from app.AutismDetector.AutismDetector import *  # noqa: F403, F401
 
 # ---------------------------------------------------------------------------- #
 
@@ -35,12 +38,11 @@ def login():
 
     token = create_access_token(user.id, expires_delta=timedelta(hours=1))
 
-    return jsonify({
-        "token": token,
-        "email": user.email,
-        "rootsRadarRole": user.rootsRadarRole,
-        "id": user.id,
-    }), 200
+    return jsonify({"token": token, "email": user.email}), 200
+
+@auth_bp.route('/', methods=['GET'])
+def home():
+    return "home page"
 
 # ---------------------------------------------------------------------------- #
 
@@ -65,15 +67,8 @@ def register():
     db.session.add(new_user)
     db.session.commit()
 
-    token = create_access_token(identity=new_user.id)
-
-    return jsonify({
-        "msg": "New user added.",
-        "token": token,
-        "email": new_user.email,
-        "rootsRadarRole": new_user.rootsRadarRole,
-        "id": new_user.id,
-    }), 200
+    access_token = create_access_token(identity=new_user.id)
+    return {"msg": "New user added.", "token": access_token}, 200
 
 # ---------------------------------------------------------------------------- #
 
