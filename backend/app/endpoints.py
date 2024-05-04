@@ -16,6 +16,7 @@ from app.lanre.lanre import * # noqa: F403, F401
 from app.rootsRadar.rootsRadar import * # noqa: F403, F401
 from app.EaseMind.EaseMind import * # noqa: F403, F401
 
+
 # ---------------------------------------------------------------------------- #
 
 @auth_bp.route('/login', methods=['POST'])
@@ -109,3 +110,4 @@ def upload():
 @jwt_required()
 def verification():
     return {'user': get_jwt_identity()}
+

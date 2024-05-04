@@ -1,9 +1,9 @@
 .chatBoxContainer {
     position: fixed;
-    bottom: 20px;
+    bottom: 40px;
     right: 20px;
-    width: 300px;
-    max-height: 400px;
+    width: 320px;
+    max-height: 500px;
     display: flex;
     flex-direction: column;
     border: 1px solid #ddd;
@@ -56,6 +56,12 @@
     background: #e3e6ea;
     border-radius: 15px;
     max-width: 80%;
+  }
+
+  .message.user-ai {
+    margin-left: auto;
+    background-color: lightblue;
+    color: white;
   }
   
   .predefinedOptions {
@@ -125,4 +131,27 @@
     max-height: 0;
   }
   
+  .optionButton {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    margin: 5px 0;
+    width: calc(100% - 10px);
+    display: block;
+  }
   
+  .optionButton:hover {
+    background-color: #0056b3;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .optionButton:active {
+    background-color: #004494;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }

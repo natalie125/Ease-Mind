@@ -7,7 +7,7 @@ function PopUp({ onClose }) {
   const [agreeDataStore, setAgreeDataStore] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
 
-  // Simplify the checkbox handling logic by directly targeting the state update based on checkbox id
+  // Handle changes in checkbox
   const handleCheckboxChange = ({ target: { id, checked } }) => {
     if (id === 'readTerms') setReadTerms(checked);
     if (id === 'agreeDataStore') setAgreeDataStore(checked);
@@ -18,7 +18,7 @@ function PopUp({ onClose }) {
 
   const handleClose = () => {
     if (readTerms && agreeDataStore) {
-      onClose(); // Assuming onClose correctly sets the visibility of the popup in the parent component
+      onClose(); // Close the popup if both conditions are met
     } else {
       alert('Please tick both statements before agreeing.');
     }

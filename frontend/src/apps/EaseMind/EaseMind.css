@@ -1,11 +1,44 @@
-.easeMindContainer {
+.easeMindFullPage {
+  text-align: center;
+  padding: 2rem 0;
   background-color: #E0F2F1;
+}
+
+.easeMindFeatures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
   max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
+  margin: auto;
+}
+
+.easeMindFeatureItem {
+  background-color: #42A5F5;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: left;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  width: 90%;
+  height: 90%;
+  cursor: pointer;
+}
+
+.easeMindFeatureItem span {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  z-index: 2;
+  color: black;
 }
 
 .easeMindTitle {
@@ -38,22 +71,23 @@ select:focus {
   outline: none;
 }
 
-.easeMindButton {
-  width: 100%;
-  background-color: #42A5F5; 
+.GoBackButton {
+  background-color: #42A5F5;
   color: white;
-  padding: 15px 20px;
+  padding: 8px 10px;
   border: none;
   border-radius: 4px;
-  margin-top: 1rem;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
+  display: block;
+  margin-top: 20px;
+  margin-left: 20px;
+  width: fit-content;
 }
 
-.easeMindButton:hover {
-  background-color: #1E88E5; 
+.GoBackButton:hover {
+  background-color: #1E88E5;
 }
 
 .easeMindTitle {
@@ -112,3 +146,78 @@ select:focus {
 .compulsory-field {
   color: red;
 }
+
+.chatBoxMessages {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.easeMindChatBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #42A5F5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 300px;
+  height: 150px;
+  margin: 1rem auto;
+}
+
+.easeMindChatBox span {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  z-index: 2;
+}
+
+.easeMindFeatureItem {
+  background-size: cover;
+  background-position: center;
+  transition: background-color 0.3s ease;
+}
+
+.easeMindFeatureItem:hover {
+  background-color: #1E88E5;
+}
+
+.easeMindFeatureItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.easeMindchatboxbutton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 80px;
+  height: 80px;
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+  box-shadow: none;
+  background: none;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.easeMindchatboxbutton img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.easeMindHeader {
+  text-align: center;
+  margin-top: 0;
+  padding-top: 20px;
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+
