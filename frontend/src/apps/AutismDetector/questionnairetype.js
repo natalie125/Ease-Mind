@@ -4,14 +4,14 @@ import autismHomeVideo from '../../images/autism-test.gif';
 
 function questionnairetype() {
   const autismHomeVideoStyle = {
-    width: '15%', // Adjust the width as needed, e.g., to 50% of its container
-    height: '300px', // Keeps the aspect ratio of the image
+    width: '15%',
+    height: '300px',
     float: 'left',
     marginTop: '-28vh',
     marginLeft: '55%',
     position: 'relative',
-    display: 'block', // This ensures the video is displayed as a block element, removing any unwanted space around it
-    objectFit: 'cover', // This will cover the area of the container without stretching the video
+    display: 'block',
+    objectFit: 'cover',
   };
 
   const containerStyle = {
@@ -38,8 +38,8 @@ function questionnairetype() {
 
   const buttonContainerStyle = {
     display: 'flex',
-    justifyContent: 'center', // Correct for vertical centering in column layout
-    alignItems: 'center', // Correct for horizontal centering
+    justifyContent: 'center',
+    alignItems: 'center',
     width: '100%',
     flexDirection: 'column',
   };
@@ -55,12 +55,12 @@ function questionnairetype() {
   };
 
   const linkStyle = {
-    display: 'inline-block', // Ensure it's clickable area is only around the text
+    display: 'inline-block',
     backgroundColor: '#C68B77',
     padding: '15px 30px',
     borderRadius: '15px',
-    border: '2px solid white', // Correct way to set border (width style color)
-    color: 'white', // Text color set to white
+    border: '2px solid white',
+    color: 'white',
     fontSize: '18px',
     textDecoration: 'none',
     fontWeight: 'bold',
@@ -74,7 +74,7 @@ function questionnairetype() {
     color: '#C68B77',
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: '10px', // Ensure spacing between link and description
+    marginTop: '10px',
   };
 
   const goBackButtonStyle = {
@@ -111,7 +111,8 @@ function questionnairetype() {
               With just 10 statements and binary response choices, it offers a quick evaluation of potential autism spectrum characteristics.
               Each statement covers various aspects of social interaction, communication, and behavior.
               Scoring ranges from 0 to 10, with a threshold score of 6 indicating potential autism traits.
-              Higher scores suggest a greater likelihood of having autistic traits. While the AQ-10 provides a snapshot of possible autism traits, it&apos;s important to note that it&apos;s not a diagnostic tool.
+              Higher scores suggest a greater likelihood of having autistic traits.
+              While the AQ-10 provides a snapshot of possible autism traits, it&apos;s important to note that it&apos;s not a diagnostic tool.
               Further assessment by healthcare professionals is necessary for a comprehensive evaluation.
             </p>
           </div>
@@ -123,8 +124,10 @@ function questionnairetype() {
               The Autism Quotient Spectrum (AQ) is a more comprehensive assessment tool compared to the AQ-10.
               It consists of 50 statements covering a broader range of behaviors and characteristics associated with autism spectrum disorder (ASD).
               The test evaluates areas such as social skills, communication preferences, imagination, attention to detail, and cognitive flexibility.
-              Scoring ranges from 0 to 50, with a threshold score of 26 indicating potential autism traits. Higher scores suggest a higher likelihood of having autistic traits.
-              Additionally, the AQ provides mean scores for different subgroups, allowing individuals to compare their scores with those of autistic and neurotypical populations.
+              Scoring ranges from 0 to 50, with a threshold score of 26 indicating potential autism traits.
+              Higher scores suggest a higher likelihood of having autistic traits.
+              Additionally, the AQ provides mean scores for different subgroups, allowing individuals to compare their scores with those of autistic
+              and neurotypical populations.
             </p>
           </div>
           <div style={buttonBoxStyle}>
@@ -134,9 +137,12 @@ function questionnairetype() {
             <p style={descriptionStyle}>
               The CAT-Q assesses the degree to which individuals utilize camouflaging strategies to mask their autistic traits in social situations.
               Camouflaging involves compensating, masking, and assimilating behaviors to appear more neurotypical.
-              The questionnaire comprises 25 statements, each addressing different aspects of camouflaging behavior. Response choices range from &quot;Strongly Disagree&quot; to &quot;Strongly Agree.&quot;
-              Scoring ranges from 25 to 175, with a threshold score of 100 indicating significant camouflaging behavior. Higher scores suggest a greater tendency to camouflage autistic traits.
-              The CAT-Q aims to shed light on the challenges faced by individuals with autism in navigating social interactions and the impact of camouflaging on their well-being.
+              The questionnaire comprises 25 statements, each addressing different aspects of camouflaging behavior.
+              Response choices range from &quot;Strongly Disagree&quot; to &quot;Strongly Agree.&quot;
+              Scoring ranges from 25 to 175, with a threshold score of 100 indicating significant camouflaging behavior.
+              Higher scores suggest a greater tendency to camouflage autistic traits.
+              The CAT-Q aims to shed light on the challenges faced by individuals with autism in navigating social interactions and the impact of
+              camouflaging on their well-being.
             </p>
           </div>
           <div style={buttonBoxStyle}>
@@ -147,9 +153,12 @@ function questionnairetype() {
               The RAADS-R is a comprehensive self-report instrument designed to assess a wide range of autistic traits and behaviors.
               It consists of 80 statements covering areas such as language, social relatedness, sensory-motor skills, and circumscribed interests.
               Each statement offers four response choices based on the individual&apos;s experiences throughout their life.
-              Scoring ranges from 0 to 240, with a threshold score of 65 indicating potential autism. Higher scores suggest a greater likelihood of having autistic traits.
-              The RAADS-R provides insights into the diverse manifestations of autism across different domains, allowing for a more nuanced understanding of an individual&apos;s autistic profile.
-              However, like other screening tools, it should be interpreted alongside clinical assessments for a comprehensive evaluation of autism spectrum characteristics.
+              Scoring ranges from 0 to 240, with a threshold score of 65 indicating potential autism.
+              Higher scores suggest a greater likelihood of having autistic traits.
+              The RAADS-R provides insights into the diverse manifestations of autism across different domains, allowing for a more nuanced
+              understanding of an individual&apos;s autistic profile.
+              However, like other screening tools, it should be interpreted alongside clinical assessments for a comprehensive evaluation of
+              autism spectrum characteristics.
             </p>
           </div>
         </div>
