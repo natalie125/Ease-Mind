@@ -5,9 +5,6 @@ from flask import request, jsonify, Blueprint, current_app
 from .models import Users
 from flask_jwt_extended import JWTManager, get_jwt_identity
 from flask_jwt_extended import create_access_token, jwt_required
-from flask_cors import cross_origin
-from datetime import datetime
-# from transformers import pipeline
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -18,7 +15,6 @@ from app.lanre.lanre import * # noqa: F403, F401
 #from app.shreyas.shreyas import * # noqa: F403, F401
 from app.rootsRadar.rootsRadar import * # noqa: F403, F401
 from app.EaseMind.EaseMind import * # noqa: F403, F401
-from app.AutismDetector.AutismDetector import *  # noqa: F403, F401
 
 
 # ---------------------------------------------------------------------------- #
@@ -46,12 +42,6 @@ def login():
         "rootsRadarRole": user.rootsRadarRole,
         "id": user.id,
     }), 200
-
-# ---------------------------------------------------------------------------- #
-
-@auth_bp.route('/', methods=['GET'])
-def home():
-    return "home page"
 
 # ---------------------------------------------------------------------------- #
 
