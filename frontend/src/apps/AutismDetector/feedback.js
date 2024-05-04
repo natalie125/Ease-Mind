@@ -48,33 +48,43 @@ function Feedback() {
 
     feedbackMessages.push(<h3 key="aq-aq10-header">Autism Spectrum Quotient (AQ) and AQ-10 Analysis:</h3>);
     if (aq >= 32 && aq10 >= 6) {
+      // eslint-disable-next-line
       feedbackMessages.push(<p key="aq-aq10-high">Your scores on both AQ and AQ-10 are significantly above the typical threshold, which strongly suggests the presence of autistic traits. It&apos;s advisable to consult with a healthcare professional for a formal assessment, as this can provide a more definitive understanding and access to support services.</p>);
     } else if (aq < 26 && aq10 < 6) {
+      // eslint-disable-next-line
       feedbackMessages.push(<p key="aq-aq10-low">Your scores indicate fewer autistic traits, falling below the common thresholds. If you have concerns about autism despite these results, personal experiences and other behaviors not captured by these tests could still warrant a professional consultation.</p>);
     } else {
+      // eslint-disable-next-line
       feedbackMessages.push(<p key="aq-aq10-discrepancy">There&apos;s an inconsistency between your AQ and AQ-10 scores, suggesting that further detailed evaluation might be helpful. Different contexts or interpretations of questions could result in these variations. A professional can offer insights into these discrepancies.</p>);
     }
 
     feedbackMessages.push(<h3 key="catq-header">Camouflaging Autistic Traits Questionnaire (CAT-Q) Interpretation:</h3>);
     if (catqtotalScore >= 100) {
+      // eslint-disable-next-line
       feedbackMessages.push(<p key="catq-high">Your CAT-Q score indicates significant camouflaging of autistic traits. While camouflaging might help in some social situations, it can also lead to increased stress and burnout. Recognizing and understanding your camouflaging behaviors can be a first step towards finding strategies that reduce the need to camouflage, enhancing your well-being.</p>);
     } else {
+      // eslint-disable-next-line
       feedbackMessages.push(<p key="catq-low">A lower CAT-Q score suggests less frequent camouflaging of autistic traits. This can reduce stress associated with social interactions but may also impact social integration. Finding a balance that respects your needs and minimizes stress is crucial.</p>);
     }
 
     feedbackMessages.push(<h3 key="raadsr-header">Ritvo Autism Asperger Diagnostic Scale-Revised (RAADS-R) Analysis:</h3>);
     if (raadsrScore >= 65) {
+      // eslint-disable-next-line
       feedbackMessages.push(<p key="raadsr-high">Your RAADS-R score suggests autistic traits with a level of detail across various domains, including language, social relatedness, sensory-motor, and circumscribed interests. These insights, alongside scores from other questionnaires, might prompt a deeper exploration into how these traits impact your life and ways to support your needs.</p>);
     } else {
+      // eslint-disable-next-line
       feedbackMessages.push(<p key="raadsr-low">A RAADS-R score below the common threshold for autism spectrum conditions suggests fewer autistic traits. However, this doesn&apos;t invalidate any challenges you face. Personal experiences are paramount, and seeking professional advice can provide tailored support.</p>);
     }
 
     feedbackMessages.push(<h3 key="personalized-suggestions">Personalized Suggestions:</h3>);
     if (aq >= 32 && aq10 >= 6 && catqtotalScore >= 100 && raadsrScore >= 65) {
+      // eslint-disable-next-line
       feedbackMessages.push(<p key="high-likelihood-asd">The consistency in your results across all tests suggests a high likelihood of ASD. Engaging with autism spectrum communities and seeking a formal diagnosis could offer both personal insights and practical support. A diagnosis can be a gateway to understanding your unique strengths and challenges, and how to navigate them.</p>);
     } else if (aq < 26 && aq10 < 6 && catqtotalScore < 100 && raadsrScore < 65) {
+      // eslint-disable-next-line
       feedbackMessages.push(<p key="lower-likelihood-asd">Your results suggest a lower likelihood of ASD, but if there are discrepancies in how you feel or behave that led you to take these assessments, it’s still worth discussing with a professional. There are many aspects of neurodiversity, and a thorough evaluation can provide clarity.</p>);
     } else {
+      // eslint-disable-next-line
       feedbackMessages.push(<p key="mixed-results">Your scores present a mixed picture, which is not uncommon. Many people have traits that align with autism spectrum conditions to varying degrees. Exploring these traits further with a professional can help you understand your unique profile, including strengths and areas where you may benefit from support.</p>);
     }
 
@@ -83,7 +93,9 @@ function Feedback() {
         <strong>
           Next Steps:
         </strong>
-        Consider these insights as a starting point for further exploration. Whether through professional evaluation, self-exploration, or connecting with communities, understanding your neurodiverse traits can lead to a more fulfilling life.
+        Consider these insights as a starting point for further exploration.
+        Whether through professional evaluation, self-exploration, or connecting with communities, understanding
+        your neurodiverse traits can lead to a more fulfilling life.
       </p>,
     );
 
@@ -98,6 +110,7 @@ function Feedback() {
         setFeedback(response.data.feedback);
       }
     }).catch((error) => {
+      // eslint-disable-next-line
       console.error('Error fetching feedback:', error);
     });
   };
@@ -114,14 +127,15 @@ function Feedback() {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.status === 200 && response.data && response.data.length > 0) {
-        const finalFeedback = response.data[response.data.length - 1]; // Taking the last element as final
-        setGameFeedback([finalFeedback]); // Update state to include only the final feedback
+        const finalFeedback = response.data[response.data.length - 1];
+        setGameFeedback([finalFeedback]);
       } else {
-        setGameFeedback([]); // Set to empty array if no data is returned
+        setGameFeedback([]);
       }
     } catch (error) {
+      // eslint-disable-next-line
       console.error('Error fetching game feedback:', error.response ? error.response.data : error.message);
-      setGameFeedback([]); // Set to empty array in case of error
+      setGameFeedback([]);
     }
   };
 
@@ -134,7 +148,7 @@ function Feedback() {
   const handleGoBack = () => navigate(-1);
 
   const printDocument = () => {
-    const input = document.getElementById('feedback-section'); // Targeting the feedback container
+    const input = document.getElementById('feedback-section');
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       // eslint-disable-next-line new-cap
@@ -143,9 +157,9 @@ function Feedback() {
       });
       const imgProps = pdf.getImageProperties(imgData);
 
-      // Define a custom width for the PDF content (e.g., 70% of the PDF page width)
+      // Define a custom width for the PDF content
       const pageWidth = pdf.internal.pageSize.getWidth();
-      const customPdfWidth = pageWidth * 0.3; // Decrease PDF page width by setting a custom width
+      const customPdfWidth = pageWidth * 0.3;
 
       // Calculate the height based on the custom width to maintain the aspect ratio
       let pdfHeight = (imgProps.height * customPdfWidth) / imgProps.width;
@@ -153,9 +167,7 @@ function Feedback() {
       // Check if the calculated height exceeds the PDF page height
       const pageHeight = pdf.internal.pageSize.getHeight();
       if (pdfHeight > pageHeight) {
-        // If so, adjust the height to fit and optionally adjust the width to maintain aspect ratio
-        pdfHeight = pageHeight * 0.95; // Adjust height to fit within the page
-        // customPdfWidth = (imgProps.width * pdfHeight) / imgProps.height; // Uncomment if you also want to adjust width based on new height
+        pdfHeight = pageHeight * 0.95;
       }
 
       // Calculate horizontal offset to center the image (if desired)
@@ -168,14 +180,14 @@ function Feedback() {
   };
 
   const autismHomeVideoStyle = {
-    width: '50%', // Adjust the width as needed, e.g., to 50% of its container
-    height: '500px', // Keeps the aspect ratio of the image
+    width: '50%',
+    height: '500px',
     float: 'left',
     marginTop: '-35vh',
     marginLeft: '-40%',
     position: 'relative',
-    display: 'block', // This ensures the video is displayed as a block element, removing any unwanted space around it
-    objectFit: 'cover', // This will cover the area of the container without stretching the video
+    display: 'block',
+    objectFit: 'cover',
   };
 
   // Function to interpret AQ-10 score and return a feedback message
@@ -184,8 +196,10 @@ function Feedback() {
       return 'Please take the test to receive feedback.';
     }
     if (score >= 6) {
+      // eslint-disable-next-line
       return 'Your AQ-10 score suggests a significant number of autistic traits. This indicates that further evaluation by a professional may be beneficial for a comprehensive understanding. Remember, this test is not diagnostic, but its a good starting point for discussion with healthcare professionals.';
     }
+    // eslint-disable-next-line
     return 'Your AQ-10 score suggests fewer autistic traits. However, if you have concerns about autism or related conditions, consulting with a professional can provide more detailed insights. Remember, this screening tool cannot capture the full complexity of individual experiences.';
   };
 
@@ -196,10 +210,13 @@ function Feedback() {
     }
     if (score >= 26) {
       if (score >= 32) {
+        // eslint-disable-next-line
         return `Your AQ score of ${score} suggests a significant number of autistic traits, aligning with scores typically observed in autistic individuals. Notably, 79.3% of autistic people score 32 or higher. This level of score is especially significant among autistic females. It's recommended to seek further evaluation from a healthcare professional for a comprehensive assessment.`;
       }
+      // eslint-disable-next-line
       return `Your AQ score of ${score} indicates the presence of autistic traits. While this doesn't conclusively diagnose autism, it suggests traits consistent with the spectrum. Further professional evaluation can provide more clarity.`;
     }
+    // eslint-disable-next-line
     return `Your AQ score of ${score} suggests fewer autistic traits, falling below the typical threshold for indicating significant autistic traits. However, if you have concerns or suspect autism based on other experiences or symptoms, it might still be worth consulting a healthcare professional for a thorough evaluation.`;
   };
 
@@ -275,11 +292,14 @@ function Feedback() {
 
     // Interpret the total score
     if (totalScore >= 100) {
+      // eslint-disable-next-line
       catqfeedback += 'This score indicates a significant use of camouflaging strategies to navigate social situations or mask autistic traits. Camouflaging can be mentally and emotionally taxing and may lead to increased stress or burnout. ';
       if (totalScore >= 124) {
+        // eslint-disable-next-line
         catqfeedback += 'Your score is similar to or higher than the average scores reported by autistic individuals, indicating a particularly high level of camouflaging. This may reflect significant efforts to fit in or cope with social expectations, which can sometimes come at the cost of personal well-being. ';
       }
     } else {
+      // eslint-disable-next-line
       catqfeedback += 'This suggests a lower reliance on camouflaging strategies. While this might mean less stress associated with social interactions, its important to recognize that everyones experience is unique, and there might be other factors affecting your social experiences. ';
     }
 
@@ -289,28 +309,35 @@ function Feedback() {
     // Compensation feedback
     catqfeedback += `Compensation scored ${compensationScore}. `;
     if (compensationScore > 41) {
+      // eslint-disable-next-line
       catqfeedback += 'This is considered high, indicating you actively work to compensate for difficulties in social situations. While this can be effective, its also important to be mindful of the potential for fatigue or stress resulting from these efforts. ';
     } else {
+      // eslint-disable-next-line
       catqfeedback += 'This indicates a moderate or lower level of active compensation. Its essential to find a balance that allows you to interact comfortably without overextending yourself. ';
     }
 
     // Masking feedback
     catqfeedback += `Masking scored ${maskingScore}. `;
     if (maskingScore > 37) {
+      // eslint-disable-next-line
       catqfeedback += 'This is high, reflecting significant efforts to mask autistic traits. While this may help in certain social contexts, it can also hinder authentic interactions and contribute to feelings of isolation or exhaustion. ';
     } else {
+      // eslint-disable-next-line
       catqfeedback += 'This suggests a moderate or lower effort to mask autistic traits, which might allow for more genuine interactions but also pose challenges in some social settings. Finding strategies that support your well-being while navigating social complexities is key. ';
     }
 
     // Assimilation feedback
     catqfeedback += `Assimilation scored ${assimilationScore}. `;
     if (assimilationScore > 44) {
+      // eslint-disable-next-line
       catqfeedback += 'This indicates a strong effort to assimilate into social groups. Its important to consider whether these efforts align with your values and needs, and to seek environments where you feel accepted for who you are. ';
     } else {
+      // eslint-disable-next-line
       catqfeedback += 'This suggests a moderate or lower level of effort to assimilate, which can be a sign of comfort with your social identity or a preference for authenticity over conformity. Embrace what feels right for you, and seek out like-minded individuals or communities. ';
     }
 
     // Conclude with implications and advice
+    // eslint-disable-next-line
     catqfeedback += 'High scores in any of these areas can correlate with increased social anxiety and may impact your overall well-being. Its important to consider self-care strategies and to seek support when needed. There are many resources available for individuals who camouflage, including support groups, therapy, and community organizations focused on neurodiversity and autism acceptance. Exploring these options can provide you with additional coping mechanisms and a sense of community. Remember, its okay to seek help and to prioritize your mental health.';
 
     return catqfeedback;
@@ -441,6 +468,7 @@ function Feedback() {
 
   const getRAADSRFeedback = (totalScore, languageScore, socialRelatednessScore, sensoryMotorScore, circumscribedInterestsScore) => {
     let raadsrFeedback = `Your RAADS-R Total Score is ${totalScore}, which `;
+    // eslint-disable-next-line
     if (totalScore === null || languageScore === null || socialRelatednessScore === null || sensoryMotorScore === null || circumscribedInterestsScore === null) {
       return 'Please complete the RAADS-R to receive detailed feedback.';
     }
@@ -449,6 +477,7 @@ function Feedback() {
     if (totalScore >= 65) {
       raadsrFeedback += `indicates a likelihood of autistic traits. Specifically, a score of ${totalScore} `;
       if (totalScore >= 130) {
+        // eslint-disable-next-line
         raadsrFeedback += 'is in the range strongly associated with autism, similar to scores typically observed in diagnosed individuals. This suggests a high presence of autistic traits across various areas.';
       } else if (totalScore < 130 && totalScore >= 65) {
         raadsrFeedback += 'suggests significant autistic traits, warranting further evaluation by a healthcare professional.';
@@ -471,6 +500,7 @@ function Feedback() {
     // Social Relatedness
     raadsrFeedback += `\nSocial Relatedness: ${socialRelatednessScore}. `;
     if (socialRelatednessScore > 31) {
+      // eslint-disable-next-line
       raadsrFeedback += 'This score points to significant challenges in social interaction and understanding others, which are core aspects of autism.';
     } else {
       raadsrFeedback += 'This suggests fewer difficulties in social situations, though individual experiences vary.';
@@ -479,6 +509,7 @@ function Feedback() {
     // Sensory-Motor
     raadsrFeedback += `\nSensory-Motor: ${sensoryMotorScore}. `;
     if (sensoryMotorScore > 16) {
+      // eslint-disable-next-line
       raadsrFeedback += 'This indicates heightened sensitivity or challenges with sensory and motor aspects, often experienced by autistic individuals.';
     } else {
       raadsrFeedback += 'This score suggests typical sensory-motor experiences.';
@@ -493,9 +524,11 @@ function Feedback() {
     }
 
     // General advice based on subscale insights
+    // eslint-disable-next-line
     raadsrFeedback += '\n\nEach subscale score sheds light on specific areas that might be influencing your overall experience. It’s important to remember that the RAADS-R, while insightful, is not a diagnostic tool. ';
 
     // Next steps
+    // eslint-disable-next-line
     raadsrFeedback += 'If your scores indicate autistic traits or if you have concerns based on your experiences, seeking a comprehensive evaluation from a healthcare professional is a crucial next step. An evaluation can provide a more complete understanding of your neurotype and guide towards supportive resources and strategies. Remember, autism is a spectrum, and individual experiences vary widely.';
 
     return raadsrFeedback;
@@ -541,6 +574,7 @@ function Feedback() {
       borderWidth: 1,
     }, {
       label: feedback.map((item) => item.firstName),
+      // eslint-disable-next-line
       data: [feedback.map((item) => item.raadsrScore), feedback.map((item) => item.language), feedback.map((item) => item.socialRelatedness), feedback.map((item) => item.sensoryMotor), feedback.map((item) => item.circumscribedInterests)],
       backgroundColor: 'rgba(255, 0, 255, 0.2)',
       borderColor: 'rgba(255, 0, 255, 1)',
@@ -581,7 +615,7 @@ function Feedback() {
       borderWidth: 1,
     }, {
       label: 'Asperger (n = 135)',
-      data: [null, 10.06, 65.07, 28.96, 27.44], // Assuming null for missing data
+      data: [null, 10.06, 65.07, 28.96, 27.44],
       backgroundColor: 'rgba(54, 162, 235, 0.2)',
       borderColor: 'rgba(54, 162, 235, 1)',
       borderWidth: 1,
@@ -631,7 +665,7 @@ function Feedback() {
   };
 
   const feedbackBoxStyle = {
-    backgroundColor: '#F7E6E3', // Light green background
+    backgroundColor: '#F7E6E3',
     padding: '10px',
     margin: '10px 0',
     border: '2px solid #eee',
@@ -764,12 +798,12 @@ function Feedback() {
                     cursor: 'pointer',
                     background: 'none',
                     border: 'none',
-                    padding: '10px 0', // Adjusted for visual balance
+                    padding: '10px 0',
                     font: 'inherit',
                     color: 'inherit',
-                    textAlign: 'center', // Align text to the left
+                    textAlign: 'center',
                     width: '100%',
-                    alignItems: 'center', // Center items vertically
+                    alignItems: 'center',
                     marginLeft: '44%',
                     display: 'flex',
                   }}
@@ -778,18 +812,15 @@ function Feedback() {
                     AQ10 Score:
                     {item.aq10}
                   </strong>
-                  {/* Use a span for the arrow, changing its direction based on the section's open/closed state */}
                   <span
                     style={{
                       transition: 'transform 0.2s ease',
-                      transform: isFeedbackOpen[item.id] ? 'rotate(180deg)' : 'rotate(0deg)', // Ensuring the condition is applied correctly
+                      transform: isFeedbackOpen[item.id] ? 'rotate(180deg)' : 'rotate(0deg)',
                     }}
                   >
                     ▼
-                    {/* This arrow rotates based on the section state */}
                   </span>
                 </button>
-                {/* Conditionally render the feedback based on the item's collapsible state */}
                 {isFeedbackOpen[item.id] && (
                   <p>
                     <strong>
@@ -801,10 +832,9 @@ function Feedback() {
               </div>
 
               <div style={feedbackBoxStyle}>
-                {/* Button to toggle visibility of Autism Spectrum Quotient Score feedback */}
                 <button
                   type="button"
-                  onClick={() => toggleAQFeedback(item.id)} // Assuming toggleAQFeedback is your state toggle function
+                  onClick={() => toggleAQFeedback(item.id)}
                   onKeyPress={(e) => e.key === 'Enter' && toggleAQFeedback(item.id)}
                   style={{
                     cursor: 'pointer',
@@ -816,7 +846,7 @@ function Feedback() {
                     textAlign: 'center',
                     width: '100%',
                     display: 'flex',
-                    justifyContent: 'center', // Center content
+                    justifyContent: 'center',
                     alignItems: 'center',
                   }}
                 >
@@ -828,7 +858,7 @@ function Feedback() {
                     style={{
                       transition: 'transform 0.2s ease',
                       transform: isAQFeedbackOpen[item.id] ? 'rotate(180deg)' : 'rotate(0deg)',
-                      marginLeft: '10px', // Add space between text and arrow
+                      marginLeft: '10px',
                     }}
                   >
                     ▼
@@ -851,11 +881,15 @@ function Feedback() {
                 </div>
                 <div>
                   <p>
-                    In the graph you can see your score and the mean AQ scores and subscale scores of autistic people (n: 58), controls (n: 174), students from the University of Cambridge (n: 840), and UK Mathematics Olympiad winners (n: 16).
+                    In the graph you can see your score and the mean AQ scores and subscale scores of autistic people
+                    (n: 58), controls (n: 174), students from the University of Cambridge (n: 840), and UK Mathematics
+                    Olympiad winners (n: 16).
                   </p>
                   <br />
                   <p>
-                    [Taken from The Autism-Spectrum Quotient (AQ): Evidence from Asperger Syndrome/High-Functioning Autism, Males and Females, Scientists and Mathematicians (Baron-Cohen et al., 2001)]
+                    [Taken from The Autism-Spectrum Quotient (AQ):
+                    Evidence from Asperger Syndrome/High-Functioning Autism, Males and Females,
+                    Scientists and Mathematicians (Baron-Cohen et al., 2001)]
                   </p>
                 </div>
               </div>
@@ -864,8 +898,8 @@ function Feedback() {
                 {/* Toggle button for CAT-Q details and feedback */}
                 <button
                   type="button"
-                  onClick={() => toggleFeedback(item.id, 'CATQ')} // Adjust function to handle CAT-Q toggling
-                  onKeyPress={(e) => e.key === 'Enter' && toggleFeedback(item.id, 'CATQ')} // Ensures accessibility
+                  onClick={() => toggleFeedback(item.id, 'CATQ')}
+                  onKeyPress={(e) => e.key === 'Enter' && toggleFeedback(item.id, 'CATQ')}
                   style={{
                     cursor: 'pointer',
                     background: 'none',
@@ -873,11 +907,11 @@ function Feedback() {
                     padding: '10px 0',
                     font: 'inherit',
                     color: 'inherit',
-                    textAlign: 'center', // Center align text and arrow
+                    textAlign: 'center',
                     width: '100%',
-                    justifyContent: 'center', // Center items horizontally
-                    alignItems: 'center', // Center items vertically
-                    display: 'flex', // Use flexbox for layout
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    display: 'flex',
                   }}
                 >
                   <strong>
@@ -937,15 +971,19 @@ function Feedback() {
                 </div>
                 <div>
                   <p>
-                    In the graph you can see your score and the Average total CAT-Q scores of autistic female, male and non-binary people. You can also see Total scores of Neurotypical people.
+                    In the graph you can see your score and the Average total CAT-Q scores of autistic female,
+                    male and non-binary people. You can also see Total scores of Neurotypical people.
                   </p>
                   <br />
                   <p>
-                    Autistic females and autistic non-binary people camouflage the most. Surprisingly, neurotypical females camouflage the least!
+                    Autistic females and autistic non-binary people camouflage the most.
+                    Surprisingly, neurotypical females camouflage the least!
                   </p>
                   <br />
                   <p>
-                    [Taken from The Autism-Spectrum Quotient (AQ): Evidence from Asperger Syndrome/High-Functioning Autism, Males and Females, Scientists and Mathematicians (Baron-Cohen et al., 2001)]
+                    [Taken from The Autism-Spectrum Quotient (AQ):
+                    Evidence from Asperger Syndrome/High-Functioning Autism, Males and Females, Scientists and Mathematicians
+                    (Baron-Cohen et al., 2001)]
                   </p>
                 </div>
               </div>
@@ -955,11 +993,17 @@ function Feedback() {
                 </div>
                 <div>
                   <p>
-                    From the graph you can see the differences in the average scores of autistic people compared to neurotypicals. As you can see, autistic males and autistic non-binary people mask less than their neurotypical counterparts, but do score higher in Compensation and Assimilation. Autistic men don’t camouflage much more than neurotypical men. The same is true for non-binary people. If you look at the previous graph, you will see that is because non-binary people camouflage a lot in general, irrespective of whether they are autistic or neurotypical.
+                    From the graph you can see the differences in the average scores of autistic people compared to neurotypicals.
+                    As you can see, autistic males and autistic non-binary people mask less than their neurotypical counterparts,
+                    but do score higher in Compensation and Assimilation. Autistic men don’t camouflage much more than neurotypical men.
+                    The same is true for non-binary people. If you look at the previous graph, you will see that is because non-binary people
+                    camouflage a lot in general, irrespective of whether they are autistic or neurotypical.
                   </p>
                   <br />
                   <p>
-                    [Taken from The Autism-Spectrum Quotient (AQ): Evidence from Asperger Syndrome/High-Functioning Autism, Males and Females, Scientists and Mathematicians (Baron-Cohen et al., 2001)]
+                    [Taken from The Autism-Spectrum Quotient (AQ):
+                    Evidence from Asperger Syndrome/High-Functioning Autism, Males and Females, Scientists and
+                    Mathematicians (Baron-Cohen et al., 2001)]
                   </p>
                 </div>
               </div>
@@ -969,7 +1013,7 @@ function Feedback() {
                 <button
                   type="button"
                   onClick={() => toggleFeedback(item.id, 'RAADSR')} // Adjust function to handle RAADS-R toggling
-                  onKeyPress={(e) => e.key === 'Enter' && toggleFeedback(item.id, 'RAADSR')} // Ensures accessibility
+                  onKeyPress={(e) => e.key === 'Enter' && toggleFeedback(item.id, 'RAADSR')}
                   style={{
                     cursor: 'pointer',
                     background: 'none',
@@ -977,11 +1021,11 @@ function Feedback() {
                     padding: '10px 0',
                     font: 'inherit',
                     color: 'inherit',
-                    textAlign: 'center', // Center align text and arrow
+                    textAlign: 'center',
                     width: '100%',
-                    justifyContent: 'center', // Center items horizontally
-                    alignItems: 'center', // Center items vertically
-                    display: 'flex', // Use flexbox for layout
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    display: 'flex',
                   }}
                 >
                   <strong>
@@ -991,7 +1035,7 @@ function Feedback() {
                     style={{
                       transition: 'transform 0.2s ease',
                       transform: isFeedbackOpen[item.id] ? 'rotate(180deg)' : 'rotate(0deg)', // Rotate arrow based on state
-                      marginLeft: '10px', // Add some space between text and arrow
+                      marginLeft: '10px',
                     }}
                   >
                     ▼
@@ -1047,11 +1091,16 @@ function Feedback() {
                 </div>
                 <div>
                   <p>
-                    The graph shows the average total scores and subscores for people taking the RAADS-R online, divided by autistic people, suspected autistic people, and non-autistic people (neurotypicals).
+                    The graph shows the average total scores and subscores for people taking the RAADS-R online,
+                    divided by autistic people, suspected autistic people, and non-autistic people (neurotypicals).
                   </p>
                   <br />
                   <p>
-                    The data can be considered skewed since it is based on people taking the RAADS–R online, which for research purposes starts with the question as to whether you are diagnosed with autism, suspect you’re autistic, or are not autistic. But some people that answered the latter will—contrary to their own expectations—end up scoring in the autistic range. Due to this misattribution, their scores get counted as neurotypical scores despite scoring in the autistic range, thus skewing the results.
+                    The data can be considered skewed since it is based on people taking the RAADS–R online,
+                    which for research purposes starts with the question as to whether you are diagnosed with autism,
+                    suspect you’re autistic, or are not autistic. But some people that answered the latter will—contrary to
+                    their own expectations—end up scoring in the autistic range. Due to this misattribution, their scores get
+                    counted as neurotypical scores despite scoring in the autistic range, thus skewing the results.
                   </p>
                 </div>
               </div>
@@ -1065,7 +1114,9 @@ function Feedback() {
                   </p>
                   <br />
                   <p>
-                    [The Ritvo Autism Asperger Diagnostic Scale-Revised (RAADS–R): A scale to assist the diagnosis of autism spectrum disorder in adults: An international validation study (Ritvo et al., 2011)]
+                    [The Ritvo Autism Asperger Diagnostic Scale-Revised (RAADS–R):
+                    A scale to assist the diagnosis of autism spectrum disorder in adults:
+                    An international validation study (Ritvo et al., 2011)]
                   </p>
                 </div>
               </div>
@@ -1082,7 +1133,10 @@ function Feedback() {
                             {gameItem.score ?? 'No score available'}
                           </strong>
                           <br />
-                          <strong>This score is out of 17 scenarios, each adding up to 1 point. For proper analysis it is recommended the user re-do the Social Interaction Game in the presence of a professional.</strong>
+                          <strong>
+                            This score is out of 17 scenarios, each adding up to 1 point.
+                            For proper analysis it is recommended the user re-do the Social Interaction Game in the presence of a professional.
+                          </strong>
                         </p>
                       </div>
                     ) : null
