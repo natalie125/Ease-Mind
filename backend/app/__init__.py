@@ -32,7 +32,6 @@ def create_app(testing=False):
         CORS(app) # Enables CORS
         print("Running locally - CORS has been enabled.")
     else:
-        CORS(app, resources={r"/api/*": {"origins": ["https://archie-adams.github.io/larks", "https://d28uu5wwh8m9ry.cloudfront.net/"]}})
         print("Running on EC2 - CORS not enabled in __init__.py")
 
     bcrypt.init_app(app)
