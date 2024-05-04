@@ -26,8 +26,7 @@
     "__mocks__",
     "./declaration.d.ts",
     "./cypress.config.js",
-    "jest.config.ts",
-    "frontend/**/*.js"
+    "jest.config.ts"
   ],
   "exclude": ["node_modules"]
 }
