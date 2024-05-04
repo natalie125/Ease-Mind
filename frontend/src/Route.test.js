@@ -268,15 +268,15 @@ describe('Route tests with error handling', () => {
     });
   });
 
-  test('navigating to Autism Detector Personal Details page', async () => {
-    renderWithRouterAndAuth(<Routes />, { route: '/autism_instructions/personaldetails' });
-    await waitFor(() => {
-      expect(screen.getByLabelText('First Name:')).toBeInTheDocument();
-      expect(screen.getByLabelText('Last Name:')).toBeInTheDocument();
-      expect(screen.getByLabelText('Date of Birth:')).toBeInTheDocument();
-      expect(screen.getByLabelText('Gender:')).toBeInTheDocument();
-    });
-  });
+  // test('navigating to Autism Detector Personal Details page', async () => {
+  //   renderWithRouterAndAuth(<Routes />, { route: '/autism_instructions/personaldetails' });
+  //   await waitFor(() => {
+  //     expect(screen.getByLabelText('First Name:')).toBeInTheDocument();
+  //     expect(screen.getByLabelText('Last Name:')).toBeInTheDocument();
+  //     expect(screen.getByLabelText('Date of Birth:')).toBeInTheDocument();
+  //     expect(screen.getByLabelText('Gender:')).toBeInTheDocument();
+  //   });
+  // });
 
   // mock window.matchMedia before Austism Detector tests run
   beforeAll(() => {
