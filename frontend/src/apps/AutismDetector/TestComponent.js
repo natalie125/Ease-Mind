@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { render, fireEvent } from '@testing-library/react';
-import TestComponent from './TestComponent';
+import TestComponent from './test';
 
 // Utility to render the component within the Router context
 function renderWithRouter(ui, { route = '/' } = {}) {
