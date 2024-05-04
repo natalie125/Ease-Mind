@@ -316,7 +316,7 @@ class AutismGameFeedback(db.Model):
     feedback = db.Column(db.String(500), nullable=False)
     sentiment = db.Column(db.String(100), nullable=False)
     user = relationship('Users', backref='Autismgame_feedback')
-=======
+
 #Social Phobia Inventory Test Question for EaseMind
 class SPINQuestion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
