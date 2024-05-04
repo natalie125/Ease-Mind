@@ -10,7 +10,7 @@ const BASEURL = process.env.NODE_ENV === 'development'
 
 function catq() {
   const [answers, setAnswers] = useState({});
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // For showing one question at a time
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [testResult, setTestResult] = useState({ score: null, resultMessage: null });
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
@@ -148,7 +148,7 @@ function catq() {
 
   const handleCloseModalAndNavigate = () => {
     setShowModal(false);
-    navigate('/autism_instructions/questionnairetype'); // Navigate to the desired URL on modal close
+    navigate('/autism_instructions/questionnairetype');
   };
 
   const handleChange = (id, value) => {
@@ -206,11 +206,15 @@ function catq() {
     const assimilationScore = calculateScore([7, 10, 13, 16, 25], false) + calculateScore([3, 19, 22], true);
 
     // Constructing the result message
+    // eslint-disable-next-line
     const resultMessage = `Your total score is ${catqtotalScore}, which ${catqtotalScore >= 100 ? 'indicates' : 'does not indicate'} significant camouflaging of autistic traits. 
     \nCompensation Score: ${compensationScore} 
     \nMasking Score: ${maskingScore} 
     \nAssimilation Score: ${assimilationScore}
-    \n\nA total score of 100 or above suggests that you might be camouflaging autistic traits. This camouflaging can involve different strategies such as compensation, masking, and assimilation to navigate social situations. It's important to consider these scores in the context of personal experiences and, if needed, seek professional advice for a comprehensive understanding.`;
+    \n\nA total score of 100 or above suggests that you might be camouflaging autistic traits.
+    This camouflaging can involve different strategies such as compensation, masking, and assimilation to navigate social situations.
+    It's important to consider these scores in the context of personal experiences and,
+    if needed, seek professional advice for a comprehensive understanding.`;
 
     setTestResult({
       score: catqtotalScore,
@@ -237,6 +241,7 @@ function catq() {
         config,
       );
     } catch (error) {
+      // eslint-disable-next-line
       console.error('Error saving the test result:', error);
     }
   };
