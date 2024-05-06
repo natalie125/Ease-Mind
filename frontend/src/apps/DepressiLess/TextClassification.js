@@ -1,27 +1,39 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { AuthTokenContext } from '../../App';
 import {
   buttonStyle,
   containerStyle,
   inputContainerStyle,
   inputStyle,
+  wrapperStyle,
+  chatContainerStyle,
 } from './styles/Styles';
-import './TextClassification.css';
 
+// Determine base URL based on environment
 const BASEURL = process.env.NODE_ENV === 'development'
   ? process.env.REACT_APP_DEV
   : process.env.REACT_APP_PROD;
 
 function TextClassification() {
   const { token } = useContext(AuthTokenContext);
-  const navigate = useNavigate();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [responses, setResponses] = useState([]);
   const [feedbackMessage, setFeedbackMessage] = useState('');
-  const [classificationResult, setClassificationResult] = useState(null);
   const [additionalQuestion, setAdditionalQuestion] = useState('');
-  const [additionalAnswer, setAdditionalAnswer] = useState('');
+  const [selectedQuestion, setSelectedQuestion] = useState('');
+  const [selectedAnswer, setSelectedAnswer] = useState('');
+  const [answeredPredefinedQuestions, setAnsweredPredefinedQuestions] = useState(false);
+
+  const predefinedQuestions = [
+    'What is depression?',
+    'What are the symptoms of depression?',
+    'How is depression treated?',
+    'What can I do when I feel overwhelmed?',
+    'I feel sad, what can I do to feel better?',
+    'How can I deal with loneliness?',
+    'What is something I can do to improve my mental well-being?',
+    "I don't know how to deal with my emotions, can you help me?",
+  ];
 
   const questions = [
     'Are there any worries or challenges that you have been facing lately?',
@@ -41,31 +53,47 @@ function TextClassification() {
     e.preventDefault();
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      return;
-    }
+    } else {
+      try {
+        const response = await fetch(`${BASEURL}/submit_answers`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ answers: responses }),
+        });
 
+        const data = await response.json();
+        if (response.ok) {
+          setFeedbackMessage(data.message);
+          setAnsweredPredefinedQuestions(true);
+        } else {
+          throw new Error(data.error || 'Unknown error occurred');
+        }
+      } catch (error) {
+        setFeedbackMessage(error.toString());
+      }
+    }
+  };
+
+  const handleQuestionClick = async (question) => {
     try {
-      const response = await fetch(`${BASEURL}/text_classification`, {
+      const response = await fetch(`${BASEURL}/answer_question`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ text: responses.join(' ').trim() }),
+        body: JSON.stringify({ question }),
       });
-
       const data = await response.json();
       if (response.ok) {
-        setClassificationResult(data);
-        setFeedbackMessage('All responses processed successfully.');
-        if (data.classification === 'High Risk' && data.confidence > 0.75) {
-          setFeedbackMessage(
-            (prevMessage) => `${prevMessage} We would like to suggest you speak to a professional and check out our online resources.`,
-          );
-          navigate('/OnlineResources');
-        }
+        setSelectedQuestion(question);
+        setSelectedAnswer(data.answer);
+        setFeedbackMessage('');
       } else {
-        throw new Error(data.error || 'Unknown error occurred');
+        throw new Error(data.error || 'Failed to get an answer');
       }
     } catch (error) {
       setFeedbackMessage(error.toString());
@@ -86,7 +114,9 @@ function TextClassification() {
       });
       const data = await response.json();
       if (response.ok) {
-        setAdditionalAnswer(data.answer);
+        setSelectedQuestion(additionalQuestion.trim());
+        setSelectedAnswer(data.answer);
+        setFeedbackMessage('');
         setAdditionalQuestion('');
       } else {
         throw new Error(data.error || 'Failed to get an answer');
@@ -98,52 +128,70 @@ function TextClassification() {
 
   return (
     <div style={containerStyle}>
-      <h2>
-        Hello, I am here to help you. Can you please provide the answers to these
-        questions?
-      </h2>
-      <form onSubmit={handleSubmit} style={inputContainerStyle}>
-        <textarea
-          id="responseInput"
-          name="response"
-          value={responses[currentQuestionIndex] || ''}
-          onChange={handleChange}
-          placeholder={questions[currentQuestionIndex]}
-          style={inputStyle}
-        />
-        <button type="submit" style={buttonStyle}>
-          {currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Submit All Answers'}
-        </button>
-      </form>
-      {classificationResult && (
+      <div style={{ display: 'flex', gap: '400px' }}>
+        <div style={chatContainerStyle}>
+          <h2>Answer the following questions:</h2>
+          <form onSubmit={handleSubmit} style={inputContainerStyle}>
+            <textarea
+              id="responseInput"
+              name="response"
+              value={responses[currentQuestionIndex] || ''}
+              onChange={handleChange}
+              placeholder={questions[currentQuestionIndex]}
+              style={{ ...inputStyle, height: '100px' }}
+            />
+            <button type="submit" style={buttonStyle}>
+              {currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Submit All Answers'}
+            </button>
+          </form>
+        </div>
+        <div style={wrapperStyle}>
+          {/* Container for predefined questions */}
+          <h2>Click on a question to get the answer:</h2>
+          {/* Display predefined questions as buttons */}
+          {predefinedQuestions.map((question) => (
+            <button
+              key={question}
+              style={buttonStyle}
+              onClick={() => handleQuestionClick(question)}
+              type="button"
+            >
+              {question}
+            </button>
+          ))}
+        </div>
+      </div>
+      <hr />
+      {selectedQuestion && (
         <div>
           <p>
-            After processing, we identify that your text shows signs of
-            {classificationResult.classification.toLowerCase()}
+            <strong>Question:</strong>
             {' '}
-            with a confidence of
-            {classificationResult.confidence.toFixed(2)}
-            .
+            {selectedQuestion}
           </p>
-          <form onSubmit={handleAdditionalQuestionSubmit}>
+          <p>
+            <strong>Answer:</strong>
+            {' '}
+            {selectedAnswer}
+          </p>
+        </div>
+      )}
+      <hr />
+      {answeredPredefinedQuestions && (
+        <div>
+          <h2>Ask your own question:</h2>
+          <form onSubmit={handleAdditionalQuestionSubmit} style={inputContainerStyle}>
             <input
               type="text"
               value={additionalQuestion}
               onChange={(e) => setAdditionalQuestion(e.target.value)}
-              placeholder="Have more questions? Ask here:"
+              placeholder="Enter your question"
               style={inputStyle}
             />
             <button type="submit" style={buttonStyle}>
-              Get Answer
+              Ask
             </button>
           </form>
-          {additionalAnswer && (
-            <div>
-              <strong>Answer:</strong>
-              {' '}
-              {additionalAnswer}
-            </div>
-          )}
         </div>
       )}
       {feedbackMessage && <p className="feedback-message">{feedbackMessage}</p>}

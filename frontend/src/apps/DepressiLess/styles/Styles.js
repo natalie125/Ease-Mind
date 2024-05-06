@@ -210,3 +210,24 @@ export const baseButtonStyle = {
   fontSize: '1rem', // Match your button font size
   backgroundColor: '#B9B9B9',
 };
+
+export const predefinedQuestionsContainerStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  gap: '10px',
+};
+
+export const mainContentStyle = {
+  display: 'flex',
+  flexDirection: 'row', // Display elements horizontally
+  gap: '20px', // Add space between elements
+  alignItems: 'flex-start', // Align items at the top
+};
+
+export const chatContainerStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '20px',
+};

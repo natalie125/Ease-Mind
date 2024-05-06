@@ -144,11 +144,10 @@ class ChatMessage(db.Model):
 
 class TextClassification(db.Model):
     __tablename__ = 'text_classification'
-
+    
     id = db.Column(db.Integer, primary_key=True)
-    user_input = db.Column(db.Text, nullable=False)
-    classification = db.Column(db.String(120), nullable=False)
-    confidence = db.Column(db.Float, nullable=False)
+    user_input = db.Column(db.Text, nullable=False)  # Stores concatenated user responses
     user_id = db.Column(db.Integer, db.ForeignKey('user_information.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
 # ---------------------------------------------------------------------------- #
