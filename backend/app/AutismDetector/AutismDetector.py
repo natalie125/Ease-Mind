@@ -122,7 +122,7 @@ def handle_notes():
         
         note_label = 1 if autistic_characteristics_count >= 15 else 0  # Adjust the criteria as needed
         
-        new_note = models.Note(
+        new_note = models.AutismNote(
             user_id=current_user_id,
             note=note_text,
             prediction=note_label
