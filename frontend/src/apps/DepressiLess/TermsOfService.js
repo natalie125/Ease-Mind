@@ -7,7 +7,7 @@ import {
 } from './styles/Styles';
 
 function TermsOfService() {
-  const navigate = useNavigate(); // This line defines `navigate` by calling `useNavigate`
+  const navigate = useNavigate();
 
   const goBack = () => {
     navigate(-1); // Uses `navigate` to go back to the previous page
