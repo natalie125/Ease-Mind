@@ -102,7 +102,7 @@ tokenizer = joblib.load('/Users/ayesharahman1/Desktop/larks/backend/app/AutismDe
 def handle_notes():
     current_user_id = get_jwt_identity()
     if request.method == 'GET':
-        user_notes = models.Note.query.filter_by(user_id=current_user_id).all()
+        user_notes = models.AutismNote.query.filter_by(user_id=current_user_id).all()
         notes_list = [{"id": note.id, "note": note.note, "timestamp": note.timestamp.isoformat(), "prediction": note.prediction} for note in user_notes]
         return jsonify({"notes": notes_list}), 200
     elif request.method == 'POST':
