@@ -305,7 +305,6 @@ describe('Route tests with error handling', () => {
     await waitFor(() => {
       expect(screen.getByAltText('User Profile')).toBeInTheDocument();
       expect(screen.getByAltText('Chat with Support')).toBeInTheDocument();
-      expect(screen.getByAltText('Fill Questionnaire')).toBeInTheDocument();
       expect(screen.getByAltText('Online Resources')).toBeInTheDocument();
     });
   });

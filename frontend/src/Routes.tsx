@@ -68,6 +68,13 @@ import EaseMindDailyQ from './apps/EaseMind/DailyQ';
 import EaseMindPTSDTest from './apps/EaseMind/PTSD';
 
 import DepressiLess from './apps/DepressiLess/DepressiLess';
+import DepressiLessUserInfoForm from './apps/DepressiLess/UserInfoForm';
+import DepressiLessTermsOfService from './apps/DepressiLess/TermsOfService';
+import DepressiLessOnlineResources from './apps/DepressiLess/OnlineResources';
+import DepressiLessUserMedicalHistory from './apps/DepressiLess/UserMedicalHistory';
+import DepressiLessUserMentalHealthHistory from './apps/DepressiLess/UserMentalHealthHistory';
+import DepressiLessChatSupport from './apps/DepressiLess/ChatSupport';
+import DepressiLessTextClassification from './apps/DepressiLess/TextClassification';
 
 // If we want to check each time? Maybe it could be a use memo for when the token changes only?
 // https://stackoverflow.com/questions/60017604/react-router-check-that-jwt-is-valid-before-rendering-a-private-route
@@ -150,6 +157,14 @@ function Routes() {
         <Route path="/autism_instructions/feedback" element={<AutismDetectorFeedback />} />
 
         <Route path="/DepressiLess" element={<DepressiLess />} />
+        <Route path="/DepressiLess/UserInfoForm" element={<DepressiLessUserInfoForm />} />
+        <Route path="/DepressiLess/TermsOfService" element={<DepressiLessTermsOfService />} />
+        <Route path="/DepressiLess/OnlineResources" element={<DepressiLessOnlineResources />} />
+        <Route path="/DepressiLess/UserMentalHealthHistory" element={<DepressiLessUserMentalHealthHistory />} />
+        <Route path="/DepressiLess/UserMedicalHistory" element={<DepressiLessUserMedicalHistory />} />
+        <Route path="/DepressiLess/ChatSupport" element={<DepressiLessChatSupport />} />
+        <Route path="/DepressiLess/TextClassification" element={<DepressiLessTextClassification />} />
+        <Route path="/DepressiLess/OnlineResources" element={<DepressiLessOnlineResources />} />
 
       </Route>
 
