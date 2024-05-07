@@ -1,33 +1,18 @@
-
-import os
 import logging
-import torch
-import nltk
 import traceback
 from app import db
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
 from nltk.sentiment import SentimentIntensityAnalyzer
 from flask import Flask, request, jsonify, current_app
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.models import UserInformation, UserMentalHealthHistory, UserMedicalHistory, ChatMessage, TextClassification
+from app.models import UserInformation, UserMentalHealthHistory, UserMedicalHistory, TextClassification
 from app.endpoints import auth_bp
-from transformers import DistilBertTokenizer, DistilBertForQuestionAnswering
-from sentence_transformers import SentenceTransformer, util
-import numpy as np
+from sentence_transformers import SentenceTransformer
 
-# Initialization of NLTK resources
-nltk.download('stopwords')
-nltk.download('wordnet')
-nltk.download('punkt')
+sia = SentimentIntensityAnalyzer()  # Initialize SentimentIntensityAnalyzer
 
-lemmatizer = WordNetLemmatizer()
-stop_words = set(stopwords.words('english'))
-sia = SentimentIntensityAnalyzer()
-
-
-# Load a pre-trained sentence transformer model (e.g., 'all-MiniLM-L6-v2' for speed and efficiency)
+# Load a pre-trained sentence transformer model
+# 'all-MiniLM-L6-v2' is used for speed and efficiency
 model_st = SentenceTransformer('all-MiniLM-L6-v2')
 
 # Define a dictionary of predefined responses for common depression-related questions
@@ -35,25 +20,26 @@ predefined_responses = {
     "What is depression?": "Depression is a common mental health disorder characterized by persistent feelings of sadness, hopelessness, and loss of interest in activities.",
     "What are the symptoms of depression?": "Common symptoms of depression include persistent sadness, loss of interest in activities, changes in appetite or weight, sleep disturbances, fatigue, feelings of worthlessness or guilt, and difficulty concentrating.",
     "How is depression treated?": "Treatment for depression often includes a combination of medication, therapy, and lifestyle changes. Antidepressant medications and psychotherapy (talk therapy) are commonly used.",
-    "What can I do when I feel overwhelmed?":"It's important to seek professional help if you are feeling overwhelmed.",
-    "I feel sad, what can I do to feel better?":"Remember to take care of yourself and prioritize self-care activities.",
-    "How can I deal with loneliness?":"Talking to a trusted friend or family member can help alleviate feelings of loneliness.",
-    "What is something I can do to improve my mental well-being?":"Engaging in physical activity can have a positive impact on mental well-being.",
-    "I don't know how to deal with my emotions, can you help me?": "Consider journaling as a way to express and process your emotions."
+    "What can I do when I feel overwhelmed?": "It's important to seek professional help if you are feeling overwhelmed.",
+    "I feel sad, what can I do to feel better?": "Remember to take care of yourself and prioritize self-care activities.",
+    "How can I deal with loneliness?": "Talking to a trusted friend or family member can help alleviate feelings of loneliness.",
+    "What is something I can do to improve my mental well-being?": "Engaging in physical activity can have a positive impact on mental well-being.",
+    "I don't know how to deal with my emotions, can you help me?": "Consider journaling as a way to express and process your emotions and most importantly seek professional help."
 }
 
-# Dictionary to store embeddings
+# Dictionary to store embeddings of predefined responses
 response_embeddings = {key: model_st.encode(response, convert_to_tensor=True) for key, response in predefined_responses.items()}
 
+# Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 
-# Define preprocessing function
+# Define preprocessing function for text
 def preprocess_text(text):
     # Simple preprocessing, can be improved further
     return text.strip().lower()
 
-# Error handler
+# Error handler for unexpected errors
 @app.errorhandler(Exception)
 def handle_unexpected_error(error):
     traceback.print_exc()  # Print traceback for detailed error analysis
@@ -67,6 +53,7 @@ def test_endpoint():
     return jsonify({"message": "Test endpoint reached"}), 200
 
 # Routes for user information management
+
 @auth_bp.route('/get_user_info', methods=['GET'])
 @jwt_required()
 def get_user_info():
@@ -165,46 +152,26 @@ def add_medical_history():
         current_app.logger.error(f'Error adding medical history: {e}')
         return jsonify({"error": "Failed to add medical history"}), 500
 
-# Route for posting chat messages
-@auth_bp.route('/chat_message', methods=['POST'])
-@jwt_required()
-def post_chat_message():
-    current_user_id = get_jwt_identity()
-    data = request.json
-    try:
-        new_message = ChatMessage(
-            message=data['message'],
-            user_id=current_user_id
-        )
-        db.session.add(new_message)
-        db.session.commit()
-        return jsonify({"message": "Chat message posted successfully"}), 201
-    except Exception as e:
-        current_app.logger.error(f'Error posting chat message: {e}')
-        return jsonify({"error": "Failed to post chat message"}), 500
 
-# Route for submitting answers related to depression
-@auth_bp.route('/submit_answers', methods=['POST'])
+@auth_bp.route("/classify_depression", methods=["GET"])
 @jwt_required()
-def submit_answers():
-    current_user_id = get_jwt_identity()
-    data = request.json
-    try:
-        concatenated_answers = " ".join(data['answers'])
-        
-        new_text_classification = TextClassification(
-            user_input=concatenated_answers,
-            user_id=current_user_id
-        )
-        db.session.add(new_text_classification)
-        db.session.commit()
-        return jsonify({"message": "Answers submitted successfully"}), 200
+def classify_depression(answers):
+    # Initialize cumulative scores
+    negative_score = 0
+    for answer in answers:
+        scores = sia.polarity_scores(answer)
+        negative_score += scores['neg']
     
-    except Exception as e:
-        current_app.logger.error(f'Error during submission: {str(e)}')
-        db.session.rollback()  # Rollback the session in case of error
-        return jsonify({"error": "An internal server error occurred"}), 500
+    # Example threshold to detect depression
+    depression_threshold = 0.5
+    if negative_score / len(answers) > depression_threshold:
+        return "Depression likely"
+    else:
+        return "Depression unlikely"
 
+
+@auth_bp.route("/get_context", methods=["GET"])
+@jwt_required()
 def get_user_context(user_id):
     # Fetch user-specific data from the database
     mental_history = UserMentalHealthHistory.query.filter_by(user_id=user_id).first()
@@ -223,36 +190,56 @@ def get_user_context(user_id):
     
     return ' '.join(context)
 
-# Route for answering questions related to depression
+# Route for submitting answers related to depression (with classification)
+@auth_bp.route('/submit_answers', methods=['POST'])
+@jwt_required()
+def submit_and_classify_answers():
+    current_user_id = get_jwt_identity()
+    data = request.json
+    try:
+        concatenated_answers = " ".join(data['answers'])
+        
+        # Classify depression based on answers
+        depression_classification = classify_depression(data['answers'])
+        
+        new_text_classification = TextClassification(
+            user_input=concatenated_answers,
+            user_id=current_user_id,
+            classification=depression_classification
+        )
+        db.session.add(new_text_classification)
+        db.session.commit()
+        
+        return jsonify({
+            "message": "Answers submitted and classified successfully",
+            "classification": depression_classification
+        }), 200
+
+    except Exception as e:
+        current_app.logger.error(f'Error during submission and classification: {str(e)}')
+        db.session.rollback()
+        return jsonify({"error": "An internal server error occurred"}), 500
+
+# Route for answering questions related to depression (with classification awareness)
 @auth_bp.route("/answer_question", methods=["POST"])
 @jwt_required()
-def answer_question():
+def answer_question_with_classification():
     user_id = get_jwt_identity()
     data = request.get_json()
     question = data.get("question", "").strip()
 
-    # Check if the question is one of the predefined ones and return the answer directly
+    # Check if the question is predefined
     if question in predefined_responses:
         return jsonify({"answer": predefined_responses[question]}), 200
 
-    # For non-predefined questions, use the user's context to generate an answer
+    # Retrieve user context and classification
     user_context = get_user_context(user_id)
-    context_embedding = model_st.encode(user_context, convert_to_tensor=True).detach().numpy()
-    question_embedding = model_st.encode(question, convert_to_tensor=True).detach().numpy()
-
-    # Calculate the cosine similarity between the question and the user context
-    similarity_scores = util.pytorch_cos_sim(torch.tensor(question_embedding), torch.tensor(context_embedding))
-
-    # Convert similarity_scores to a NumPy array
-    similarity_scores_numpy = similarity_scores.cpu().detach().numpy()
-
-    # Extract the maximum value from the NumPy array
-    similarity = similarity_scores_numpy.max()
-
-    # Generate a response based on the similarity
-    if similarity > 0.5:  # This threshold can be adjusted based on your needs
-        response = f"Based on your profile and the context, here is some information: {user_context}"
+    recent_classification = TextClassification.query.filter_by(user_id=user_id).order_by(TextClassification.id.desc()).first()
+    
+    # Create a response based on classification and context
+    if recent_classification:
+        response = f"Your recent classification is {recent_classification.classification}. {user_context}"
     else:
-        response = "Sorry, I do not have enough information to answer that question."
+        response = "No previous classification available. " + user_context
 
-    return jsonify({"answer": response, "similarity_score": float(similarity)}), 200
+    return jsonify({"answer": response}), 200

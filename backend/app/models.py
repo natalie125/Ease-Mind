@@ -147,6 +147,7 @@ class TextClassification(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     user_input = db.Column(db.Text, nullable=False)  # Stores concatenated user responses
+    classification = db.Column(db.String(255), nullable=False)  # Add classification column
     user_id = db.Column(db.Integer, db.ForeignKey('user_information.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 

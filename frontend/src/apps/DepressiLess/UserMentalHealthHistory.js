@@ -86,39 +86,6 @@ function UserMentalHealthHistory() {
       });
   };
 
-  /*
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      setFeedbackMessage('Please correct the errors before submitting.');
-      return;
-    }
-
-    try {
-      const response = await axios.post(
-        `${BASEURL}api/depressiLess/UserMentalHealthHistory`,
-        mentalHealthInfo,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      if (response.status === 201) {
-        console.log('yay');
-        navigate('/DepressiLess/UserMedicalHistory');
-      } else {
-        console.log('sad');
-      }
-    } catch (error) {
-      console.error('There was a problem with the fetch operation:', error);
-      alert('Failed to submit mental health history. Please try again.');
-    }
-  };
-*/
   return (
     <div style={containerWithStepsStyle}>
       <StepIndicator currentStep={1} />

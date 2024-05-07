@@ -195,7 +195,7 @@ function UserInfoForm() {
           <div style={inputContainerStyle}>
             <label htmlFor="age">Age:</label>
             <input
-              type="number" // Change 'integer' to 'number' to be correct HTML
+              type="number"
               id="age"
               name="age"
               value={userInformation.age}

@@ -19,7 +19,7 @@ function TextClassification() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [responses, setResponses] = useState([]);
   const [feedbackMessage, setFeedbackMessage] = useState('');
-  const [additionalQuestion, setAdditionalQuestion] = useState('');
+  const [additionalEntry, setAdditionalEntry] = useState('');
   const [selectedQuestion, setSelectedQuestion] = useState('');
   const [selectedAnswer, setSelectedAnswer] = useState('');
   const [answeredPredefinedQuestions, setAnsweredPredefinedQuestions] = useState(false);
@@ -77,7 +77,7 @@ function TextClassification() {
     }
   };
 
-  const handleQuestionClick = async (question) => {
+  const handlePredefinedQuestionClick = async (question) => {
     try {
       const response = await fetch(`${BASEURL}/answer_question`, {
         method: 'POST',
@@ -100,26 +100,24 @@ function TextClassification() {
     }
   };
 
-  const handleAdditionalQuestionSubmit = async (e) => {
+  const handleAdditionalEntrySubmit = async (e) => {
     e.preventDefault();
-    if (!additionalQuestion.trim()) return;
+    if (!additionalEntry.trim()) return;
     try {
-      const response = await fetch(`${BASEURL}/answer_question`, {
+      const response = await fetch(`${BASEURL}/chat_message`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ question: additionalQuestion.trim() }),
+        body: JSON.stringify({ message: additionalEntry.trim() }),
       });
-      const data = await response.json();
       if (response.ok) {
-        setSelectedQuestion(additionalQuestion.trim());
-        setSelectedAnswer(data.answer);
-        setFeedbackMessage('');
-        setAdditionalQuestion('');
+        setFeedbackMessage('Thank you for sharing your feelings.');
+        setAdditionalEntry('');
       } else {
-        throw new Error(data.error || 'Failed to get an answer');
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to submit your entry');
       }
     } catch (error) {
       setFeedbackMessage(error.toString());
@@ -148,12 +146,11 @@ function TextClassification() {
         <div style={wrapperStyle}>
           {/* Container for predefined questions */}
           <h2>Click on a question to get the answer:</h2>
-          {/* Display predefined questions as buttons */}
           {predefinedQuestions.map((question) => (
             <button
               key={question}
               style={buttonStyle}
-              onClick={() => handleQuestionClick(question)}
+              onClick={() => handlePredefinedQuestionClick(question)}
               type="button"
             >
               {question}
@@ -179,19 +176,17 @@ function TextClassification() {
       <hr />
       {answeredPredefinedQuestions && (
         <div>
-          <h2>Ask your own question:</h2>
-          <form onSubmit={handleAdditionalQuestionSubmit} style={inputContainerStyle}>
-            <input
-              type="text"
-              value={additionalQuestion}
-              onChange={(e) => setAdditionalQuestion(e.target.value)}
-              placeholder="Enter your question"
-              style={inputStyle}
+          <h2>Feel free to tell us more about how you feel:</h2>
+          <form onSubmit={handleAdditionalEntrySubmit} style={inputContainerStyle}>
+            <textarea
+              value={additionalEntry}
+              onChange={(e) => setAdditionalEntry(e.target.value)}
+              placeholder="Share your feelings or emotions here."
+              style={{ ...inputStyle, height: '100px' }}
             />
-            <button type="submit" style={buttonStyle}>
-              Ask
-            </button>
+            <button type="submit" style={buttonStyle}>Submit Entry</button>
           </form>
+          <p>If you feel like you want more support, check the online resources page.</p>
         </div>
       )}
       {feedbackMessage && <p className="feedback-message">{feedbackMessage}</p>}

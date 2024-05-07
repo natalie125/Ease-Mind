@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 import userProfileLogo from '../../images/userinformation-logo.png';
 import supportChatLogo from '../../images/supportchat-logo.png';
-// import questionnaireLogo from '../../images/questionnaire-logo.png';
 import onlineResourcesLogo from '../../images/onlineresources-logo.png';
 
 const containerStyle = {
