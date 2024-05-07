@@ -72,16 +72,12 @@ function UserMentalHealthHistory() {
       )
       .then((response) => {
         if (response.status === 201) {
-          console.log('Submission successful:', response.data);
-          console.log('Navigating with userId:', response.data.id);
           navigate('/DepressiLess/UserMedicalHistory', { state: { userId: response.data.id } });
         } else {
-          console.log('Submission response not successful:', response);
           setFeedbackMessage('Failed to submit mental health history. Please try again.');
         }
       })
       .catch((error) => {
-        console.error('Submission error:', error.response || error);
         setFeedbackMessage('Failed to submit mental health history. Please try again.');
       });
   };

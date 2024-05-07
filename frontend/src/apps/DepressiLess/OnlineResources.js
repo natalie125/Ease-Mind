@@ -142,7 +142,8 @@ function ResourcePrivacyNotice({ onClose }) {
             The resources are supplementary and should be used in conjunction with professional guidance.
           </p>
           <p>
-            While we strive to ensure the quality and accuracy of the information, we cannot guarantee its completeness or suitability for any particular purpose.
+            While we strive to ensure the quality and accuracy of the information,
+            we cannot guarantee its completeness or suitability for any particular purpose.
             <p>
               Please consult with a qualified professional for personal advice.
             </p>
@@ -172,7 +173,11 @@ function OnlineResources() {
     { name: 'BetterHelp', url: 'https://www.betterhelp.com', logo: betterHelpLogo },
     { name: 'Psychology Today', url: 'https://www.psychologytoday.com', logo: psychologyTodayLogo },
     { name: 'Mind (UK)', url: 'https://www.mind.org.uk/', logo: mindUKLogo },
-    { name: 'National Health Service (NHS) 111', url: 'https://www.nhs.uk/using-the-nhs/nhs-services/urgent-and-emergency-care/nhs-111/', logo: ukHotlineLogo },
+    {
+      name: 'National Health Service (NHS) 111',
+      url: 'https://www.nhs.uk/using-the-nhs/nhs-services/urgent-and-emergency-care/nhs-111/',
+      logo: ukHotlineLogo,
+    },
     { name: 'Calm', url: 'https://www.calm.com/', logo: calmLogo },
     { name: '7 Cups', url: 'https://www.7cups.com/', logo: sevenCupsLogo },
     { name: 'British Psychological Society', url: 'https://www.bps.org.uk/', logo: bpsLogo },

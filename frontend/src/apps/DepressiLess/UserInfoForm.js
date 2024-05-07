@@ -69,7 +69,6 @@ function UserInfoForm() {
 
   useEffect(() => {
     const endpoint = 'http://127.0.0.1:5000/get_user_info';
-    console.log(`Bearer token: ${token}`); // Debug token output
     axios.get(endpoint, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -96,7 +95,8 @@ function UserInfoForm() {
     if (!userInformation.name.trim()) newErrors.name = 'Name is required';
     if (!userInformation.genderIdentity.trim()) newErrors.gender_identity = 'Gender Identity is required';
     if (!userInformation.sexAssignedAtBirth.trim()) newErrors.sex_assigned_at_birth = 'Sex assigned at birth is required';
-    if (!userInformation.age.trim() || Number.isNaN(Number(userInformation.age)) || Number(userInformation.age) <= 0) newErrors.age = 'Valid age is required';
+    if (!userInformation.age.trim() || Number.isNaN(Number(userInformation.age))
+    || Number(userInformation.age) <= 0) newErrors.age = 'Valid age is required';
     if (!userInformation.nationality.trim()) newErrors.nationality = 'Nationality is required';
     setErrors(newErrors);
     return formIsValid && Object.keys(newErrors).length === 0;

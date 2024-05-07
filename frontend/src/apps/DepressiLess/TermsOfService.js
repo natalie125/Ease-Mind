@@ -26,7 +26,9 @@ function TermsOfService() {
       <section style={privacyNoticesectionStyle}>
         <h3>Use of Our Service</h3>
         <p>
-          ○ DepressiLess provides is a support tool used for the purpose of assisting professionals in making faster and more accurate diagnosis for depression. Our services are subject to the terms below.
+          ○ DepressiLess provides is a support tool used for the purpose of assisting professionals
+          in making faster and more accurate diagnosis for depression.
+          Our services are subject to the terms below.
           ○ Users must be 15 or older to use this service.
           ○ Users must provide accurate, complete, and up-to-date information when creating an account and using the service.
         </p>
@@ -34,14 +36,16 @@ function TermsOfService() {
       <section style={privacyNoticesectionStyle}>
         <h3>Privacy Policy</h3>
         <p>
-          ○ Our Privacy Policy describes how we handle the information you provide to us when you use our services. You understand that through your use of our services, you consent to the collection and use of this information.
+          ○ Our Privacy Policy describes how we handle the information you provide to us when you use our services.
+          You understand that through your use of our services, you consent to the collection and use of this information.
         </p>
       </section>
       <section style={privacyNoticesectionStyle}>
         <h3>User Responsibilities</h3>
         <p>
           ○ You are responsible for all activity that occurs under your account.
-          ○ You must maintain the security of your account and promptly notify us if you discover or suspect that someone has accessed your account without your permission.
+          ○ You must maintain the security of your account and promptly notify us
+          if you discover or suspect that someone has accessed your account without your permission.
         </p>
       </section>
       <section style={privacyNoticesectionStyle}>
@@ -60,13 +64,15 @@ function TermsOfService() {
       <section style={privacyNoticesectionStyle}>
         <h3>Termination</h3>
         <p>
-          ○ We may terminate or suspend access to our service immediately, without prior notice, for any reason whatsoever, including without limitation if you breach the Terms.
+          ○ We may terminate or suspend access to our service immediately, without prior notice,
+          for any reason whatsoever, including without limitation if you breach the Terms.
         </p>
       </section>
       <section style={privacyNoticesectionStyle}>
         <h3>Termination</h3>
         <p>
-          ○ We reserve the right to modify or replace these Terms at any time. We will make reasonable efforts to provide notice prior to any new terms taking effect.
+          ○ We reserve the right to modify or replace these Terms at any time.
+          We will make reasonable efforts to provide notice prior to any new terms taking effect.
         </p>
       </section>
 
@@ -98,7 +104,8 @@ function TermsOfService() {
       <section style={privacyNoticesectionStyle}>
         <h3>Data Usage</h3>
         <p>
-          ○ The data we collect is used to provide, maintain, and improve our services, to develop new services, and to protect DepressiLess and our users.
+          ○ The data we collect is used to provide, maintain, and improve our services,
+          to develop new services, and to protect DepressiLess and our users.
           ○ We may also use the data to communicate with you, such as to send you service updates and support messages.
         </p>
       </section>
@@ -114,7 +121,8 @@ function TermsOfService() {
       <section style={privacyNoticesectionStyle}>
         <h3>Data Security</h3>
         <p>
-          ○ We work hard to protect DepressiLess and our users from unauthorized access, alteration, disclosure, or destruction of information we hold.
+          ○ We work hard to protect DepressiLess and our users from unauthorized access, alteration,
+          disclosure, or destruction of information we hold.
         </p>
       </section>
       <section style={privacyNoticesectionStyle}>
@@ -126,7 +134,8 @@ function TermsOfService() {
       <section style={privacyNoticesectionStyle}>
         <h3>Changes to This Policy</h3>
         <p>
-          Our Privacy Policy may change from time to time. We will post any policy changes on this page and, if the changes are significant, we will provide a more prominent notice.
+          Our Privacy Policy may change from time to time.
+          We will post any policy changes on this page and, if the changes are significant, we will provide a more prominent notice.
         </p>
       </section>
 

@@ -27,7 +27,6 @@ function UserMedicalHistory() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log('Received userId:', location.state?.userId);
     setMedicalHistoryInfo((prevState) => ({
       ...prevState,
       [name]: value,
@@ -73,17 +72,13 @@ function UserMedicalHistory() {
       )
       .then((response) => {
         if (response.status === 201) {
-          console.log('Submission successful:', response.data);
           navigate('/DepressiLess');
         } else {
-          console.log('Submission response not successful:', response);
           setFeedbackMessage('Failed to submit medical history. Please try again.');
         }
       })
       .catch((error) => {
-        console.error('Submission error:', error.response || error);
         if (error.response && error.response.data.errors) {
-          console.error('Validation errors:', error.response.data.errors);
           setFeedbackMessage('Failed to submit medical history. Please correct the errors and try again.');
           // Optionally, display the error messages to the user
           setErrors(error.response.data.errors);
