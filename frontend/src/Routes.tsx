@@ -33,17 +33,39 @@ import DipstikCamera from './apps/Dipstik/DipstikCamera';
 import DipstikResults from './apps/Dipstik/DipstikResults';
 
 import RootsRadar from './apps/RootsRadar/RootsRadar';
+import AddNewPatientBasic from './apps/RootsRadar/AddNewPatientBasic';
+import MakeModelFromDatabase from './apps/RootsRadar/MakeModelFromDatabase';
+import GetPatients from './apps/RootsRadar/GetPatients';
+import SystemStatistics from './apps/RootsRadar/SystemStatistics';
+import Diagnoses from './apps/RootsRadar/Diagnoses';
+import Consent from './apps/RootsRadar/Consent';
+import AddNew from './apps/RootsRadar/AddNew';
+import SelfReportHistory from './apps/RootsRadar/SelfReportHistory';
+import PatientHistoryTree from './apps/RootsRadar/PatientHistoryTree';
 
 import AutismDetector from './apps/AutismDetector/AutismDetector';
-
 import AutismDetectorPersonalDetails from './apps/AutismDetector/personaldetails';
-import AutismDetectorQuestionnaire from './apps/AutismDetector/questionnaire';
+import AutismDetectorQuestionnaireType from './apps/AutismDetector/questionnairetype';
+import AutismDetectorAQ10 from './apps/AutismDetector/aq10';
+import AutismDetectorAutismSpectrumQuotient from './apps/AutismDetector/autismspectrumquotient';
+import AutismDetectorCATQ from './apps/AutismDetector/catq';
+import AutismDetectorRAADSR from './apps/AutismDetector/raadsr';
+import AutismDetectorTrackingAndNotes from './apps/AutismDetector/trackingandnotes';
+import AutismDetectorGame from './apps/AutismDetector/game.js';
+import AutismDetectorTest from './apps/AutismDetector/TestComponent‎.js';
+import AutismDetectorFeedback from './apps/AutismDetector/feedback.js';
+import AutismDetectorEyeTracking from './apps/AutismDetector/eyeTracking.js';
 
 import EaseMind from './apps/EaseMind/EaseMind';
 import EaseMindPersonalDetails from './apps/EaseMind/PersonalDetails';
 import EaseMindAnxietyLevelTest from './apps/EaseMind/AnxietyLevelTest';
 import EaseMindChatBox from './apps/EaseMind/ChatBox';
 import EaseMindReport from './apps/EaseMind/report';
+import EaseMindTestPage from './apps/EaseMind/TestPage';
+import EaseMindSPIN from './apps/EaseMind/SPIN';
+import EaseMindPD from './apps/EaseMind/panic';
+import EaseMindDailyQ from './apps/EaseMind/DailyQ';
+import EaseMindPTSDTest from './apps/EaseMind/PTSD';
 
 import DepressiLess from './apps/DepressiLess/DepressiLess';
 import DepressiLessUserInfoForm from './apps/DepressiLess/UserInfoForm';
@@ -100,16 +122,39 @@ function Routes() {
         </Route>
 
         <Route path="/roots-radar" element={<RootsRadar />} />
+        <Route path="/roots-radar/add-new-patient-basic" element={<AddNewPatientBasic />} />
+        <Route path="/roots-radar/add-new-patient" element={<AddNew />} />
+        <Route path="/roots-radar/make-models-from-database" element={<MakeModelFromDatabase />} />
+        <Route path="/roots-radar/get-patients" element={<GetPatients />} />
+        <Route path="/roots-radar/system-statistics" element={<SystemStatistics />} />
+        <Route path="/roots-radar/patient" element={<PatientHistoryTree />} />
+        <Route path="/roots-radar/self-report-history" element={<SelfReportHistory />} />
+        <Route path="/roots-radar/diagnoses" element={<Diagnoses />} />
+        <Route path="/roots-radar/consent" element={<Consent />} />
 
         <Route path="/EaseMind" element={<EaseMind />} />
         <Route path="/EaseMind_personal_details" element={<EaseMindPersonalDetails />} />
         <Route path="/EaseMind_anxiety-level-test" element={<EaseMindAnxietyLevelTest />} />
         <Route path="/EaseMind_chatbox" element={<EaseMindChatBox />} />
         <Route path="/EaseMind_report" element={<EaseMindReport />} />
+        <Route path="/EaseMind_testpage" element={<EaseMindTestPage />} />
+        <Route path="/EaseMind_spin" element={<EaseMindSPIN />} />
+        <Route path="/EaseMind_pd" element={<EaseMindPD />} />
+        <Route path="/EaseMind_dailyQ" element={<EaseMindDailyQ />} />
+        <Route path="/EaseMind_ptsd" element={<EaseMindPTSDTest />} />
 
         <Route path="/autism_instructions" element={<AutismDetector />} />
         <Route path="/autism_instructions/personaldetails" element={<AutismDetectorPersonalDetails />} />
-        <Route path="/autism_instructions/questionnaire" element={<AutismDetectorQuestionnaire />} />
+        <Route path="/autism_instructions/questionnairetype" element={<AutismDetectorQuestionnaireType />} />
+        <Route path="/autism_instructions/aq10" element={<AutismDetectorAQ10 />} />
+        <Route path="/autism_instructions/autismspectrumquotient" element={<AutismDetectorAutismSpectrumQuotient />} />
+        <Route path="/autism_instructions/cat_q" element={<AutismDetectorCATQ />} />
+        <Route path="/autism_instructions/raads_r" element={<AutismDetectorRAADSR />} />
+        <Route path="/autism_instructions/trackingandnotes" element={<AutismDetectorTrackingAndNotes />} />
+        <Route path="/autism_instructions/game" element={<AutismDetectorGame />} />
+        <Route path="/autism_instructions/test" element={<AutismDetectorTest />} />
+        <Route path="/autism_instructions/eyeTracking" element={<AutismDetectorEyeTracking />} />
+        <Route path="/autism_instructions/feedback" element={<AutismDetectorFeedback />} />
 
         <Route path="/DepressiLess" element={<DepressiLess />} />
         <Route path="/DepressiLess/UserInfoForm" element={<DepressiLessUserInfoForm />} />

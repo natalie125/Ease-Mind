@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AnxietyLevelTest.css';
 import { AuthTokenContext } from '../../App';
 
@@ -6,15 +7,16 @@ function AnxietyLevelTest() {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [resultMessage, setResultMessage] = useState('');
-  const [error, setError] = useState(''); // Add this state to store potential error messages
+  const [error, setError] = useState('');
   const { token } = useContext(AuthTokenContext);
-
+  const navigate = useNavigate();
+  // Fetch anxiety questions
   useEffect(() => {
     const fetchQuestions = async () => {
       const response = await fetch('http://127.0.0.1:5000/EAquestions', {
-        method: 'GET', // Explicitly specify the method for clarity
+        method: 'GET',
         headers: {
-          Authorization: `Bearer ${token}`, // Assuming token is correctly obtained here
+          Authorization: `Bearer ${token}`,
         },
       });
       if (response.ok) {
@@ -66,7 +68,7 @@ function AnxietyLevelTest() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`, // Ensure you have the token
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ score }), // Send the score to your backend
       });
@@ -85,6 +87,13 @@ function AnxietyLevelTest() {
 
   return (
     <div className="anxietyLevelTestContainer">
+      <button
+        type="button"
+        className="GoBackButton"
+        onClick={() => navigate('/EaseMind')} // Navigate to EaseMind page
+      >
+        Go Back
+      </button>
       <h1>Anxiety Level Test</h1>
       <h2 className="timeframe-note">In the past 2 weeks:</h2>
       <form onSubmit={handleSubmit}>

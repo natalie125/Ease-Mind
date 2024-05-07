@@ -1,0 +1,80 @@
+.pageContainer {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    width: 100vw;
+    box-sizing: border-box;
+}
+
+.chartContainer {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.header {
+    color: #42A5F5;
+    text-align: center;
+}
+
+.button {
+    background-color: #42A5F5;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+.alertSuccess {
+    color: green;
+    background-color: #E8F5E9;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.alertWarning {
+    color: darkorange;
+    background-color: #FFF3E0;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.selectContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100px;
+    margin: 20px 0;
+}
+
+.selectStyle {
+    width: 200px;
+    padding: 10px;
+    margin: 0 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.feedbackSection {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.userInfo h1 {
+    margin-bottom: 10px;
+}
+
+.userInfo p {
+    margin-bottom: 10px;
+}

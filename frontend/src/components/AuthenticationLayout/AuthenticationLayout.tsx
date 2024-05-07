@@ -5,6 +5,7 @@ import './AuthenticationLayout.scss';
 function AuthenticationLayout() {
   return (
     <div className="authentication-body">
+      <p style={{ color: 'white', marginTop: '2rem' }}>Warning: Backend is not connected.</p>
       <Outlet />
     </div>
   );

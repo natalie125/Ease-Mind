@@ -16,22 +16,24 @@ function Header() {
       <div className="header-buttons">
         <div className="dropdown">
           <button className="dropdown-button" type="button">
-            Apps
+            APPS
             <div className="dropdown-content">
               <Link to="/skin-scan">Skin Scan</Link>
               <Link to="/dipstik">Dipstik</Link>
               <Link to="/paralysis-analysis">Paralysis Analysis</Link>
               <Link to="/shreyas/tonsillitis_instructions">Tonsillitis Detector</Link>
-              <Link to="/roots-radar">Roots Radar App</Link>
+              <Link to="/roots-radar">Roots Radar</Link>
               <Link to="/EaseMind">EaseMind</Link>
               <Link to="/autism_instructions">Autism Detector</Link>
               <Link to="/food_allergy_chatbot">Food Allergy Chatbot</Link>
             </div>
           </button>
         </div>
-        <button data-cy="logoutBtn" onClick={() => setToken(null)} type="button">
-          Logout
-        </button>
+        <div>
+          <button data-cy="logoutBtn" onClick={() => setToken(null)} type="button">
+            LOGOUT
+          </button>
+        </div>
       </div>
     </header>
   );

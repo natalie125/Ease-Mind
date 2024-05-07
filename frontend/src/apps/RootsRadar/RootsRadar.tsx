@@ -1,82 +1,133 @@
-import React, { useState, useContext } from 'react';
-import axios from 'axios';
+import React, { useContext } from 'react';
 import { AuthTokenContext } from '../../App';
-
-const BASEURL = process.env.NODE_ENV === 'development'
-  ? process.env.REACT_APP_DEV
-  : process.env.REACT_APP_PROD;
+import './RootsRadar.scss';
 
 function RootsRadar() {
-  const { token } = useContext(AuthTokenContext);
-  const [id, setId] = useState('');
-  const [text, setText] = useState('');
+  const { rootsRadarRole, email, id } = useContext(AuthTokenContext);
 
-  const handlePostText = async () => {
-    await axios
-      .post(
-        `${BASEURL}api/roots-radar/mvp-string`,
-        { text },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          setId(response.data.id);
-        } else {
-          setId(`ERROR: ${response.data.msg}`);
-        }
-      });
-  };
+  if (!id) {
+    return <p>Error: No user id specified.</p>;
+  }
 
-  const handleGetText = async () => {
-    await axios
-      .get(`${BASEURL}api/roots-radar/mvp-string`, {
-        params: { id },
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          setText(response.data.text);
-        } else {
-          setText(response.data.msg);
-        }
-      });
-  };
+  if (rootsRadarRole?.toString() === '0') {
+    // user
+    return (
+      <div className="rootsRadar" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <h1>Roots Radar</h1>
+        <div className="body-div">
+          <h2>
+            Welcome&nbsp;
+            {email}
+            !
+          </h2>
+          <div className="links-div">
+            <a href={`/roots-radar/patient?patient=${id}`}>🌲 View your family tree</a>
+            <a href={`/roots-radar/self-report-history?patient=${id}`}>👪 Report your family history</a>
+            <a href={`/roots-radar/diagnoses?patient=${id}`}>🏥 View your diagnoses</a>
+            <a href="/roots-radar/consent">☑ Give your families doctors consent to use your records</a>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
+  if (rootsRadarRole?.toString() === '1') {
+    // caregiver
+    return (
+      <div className="rootsRadar" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <h1>Roots Radar</h1>
+        <div className="body-div">
+          <h2>
+            Welcome&nbsp;
+            {email}
+            !
+          </h2>
+          <div className="links-div">
+            <a href="/roots-radar/add-new-patient">➕👶 Add new patient (from birth)</a>
+            <a href="/roots-radar/get-patients">🔍 View your patients</a>
+            <a href="/roots-radar/add-new-patient-basic">❓ Manually Query the Model</a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (rootsRadarRole?.toString() === '2') {
+    // admin
+    return (
+      <div className="rootsRadar" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <h1>Roots Radar</h1>
+        <div className="body-div">
+          <h2>
+            Welcome&nbsp;
+            {email}
+            !
+          </h2>
+          <div className="links-div">
+            <a href="/roots-radar/make-models-from-database">🏗 Make Model From Database</a>
+            <a href="/roots-radar/system-statistics">📊 System Statistics</a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (rootsRadarRole?.toString() === '3') {
+    // developer
+    return (
+      <div className="rootsRadar" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <h1>Roots Radar</h1>
+        <div className="body-div">
+          <h2>
+            Welcome&nbsp;
+            {email}
+            !
+          </h2>
+          <div className="links-div">
+            <a href={`/roots-radar/patient?patient=${id}`}>🌲 View your family tree</a>
+            <a href="/roots-radar/diagnoses">🏥 View your diagnoses</a>
+            <a href="/roots-radar/consent">☑ Give your families doctors consent to use your records</a>
+          </div>
+        </div>
+        <hr />
+        <h1>Roots Radar</h1>
+        <div className="body-div">
+          <h2>
+            Welcome&nbsp;
+            {email}
+            !
+          </h2>
+          <div className="links-div">
+            <a href="/roots-radar/add-new-patient">➕👶 Add new patient (from birth)</a>
+            <a href="/roots-radar/add-new-patient-basic">➕👩 Add new patient (adult - unknown parents)</a>
+            <a href="/roots-radar/get-patients">🔍 View your patients</a>
+          </div>
+        </div>
+        <hr />
+        <h1>Roots Radar</h1>
+        <div className="body-div">
+          <h2>
+            Welcome&nbsp;
+            {email}
+            !
+          </h2>
+          <div className="links-div">
+            <a href="/roots-radar/make-models-from-database">🏗 Make Model From Database</a>
+            <a href="/roots-radar/system-statistics">📊 System Statistics</a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // console.log(rootsRadarRole);
+  // console.log(email);
   return (
-    <div>
-      <h1>Roots Radar</h1>
-      <p>
-        id:
-        {id}
-      </p>
-      <input type="text" id="id_input" value={id} onChange={(e) => setId(e.target.value)} />
-      <hr />
-      <p>
-        Text:
-        {text}
-      </p>
-      <input type="text" id="text_input" value={text} onChange={(e) => setText(e.target.value)} />
-      <hr />
-      <button
-        type="button"
-        onClick={() => handleGetText()}
-        disabled={id === ''}
-      >
-        get text of id
-      </button>
-      <button
-        type="button"
-        onClick={() => handlePostText()}
-        disabled={text === ''}
-      >
-        add new text in db
-      </button>
-    </div>
+    <p>
+      Error: Incorrect value for rootsRadarRole (
+      {rootsRadarRole}
+      )
+    </p>
   );
 }
 

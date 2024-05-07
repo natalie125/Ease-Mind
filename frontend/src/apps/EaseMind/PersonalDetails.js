@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import './EaseMind.css';
+import { useNavigate } from 'react-router-dom';
+import './AnxietyLevelTest.css';
 import { AuthTokenContext } from '../../App';
 
 function PersonalDetails() {
@@ -21,7 +22,8 @@ function PersonalDetails() {
   const [formSubmissionMessage, setFormSubmissionMessage] = useState('');
   const [fetchError, setFetchError] = useState(''); // State for fetch errors
   const { token } = useContext(AuthTokenContext);
-
+  const navigate = useNavigate();
+  // Fetch personal details
   useEffect(() => {
     const fetchUserDetails = async () => {
       const endpoint = 'http://127.0.0.1:5000/get_epersonal_details';
@@ -102,7 +104,7 @@ function PersonalDetails() {
       throw new Error(`Error saving details: ${error.message}`);
     }
   };
-
+  // Save updated details
   const saveDetails = async (e) => {
     e.preventDefault();
     setFormSubmissionMessage('');
@@ -121,6 +123,13 @@ function PersonalDetails() {
 
   return (
     <div className="easeMindContainer">
+      <button
+        type="button"
+        className="GoBackButton"
+        onClick={() => navigate('/EaseMind')}
+      >
+        Go Back
+      </button>
       <h2 className="easeMindTitle">Please fill in the details below:</h2>
       <form onSubmit={saveDetails}>
         <label>
