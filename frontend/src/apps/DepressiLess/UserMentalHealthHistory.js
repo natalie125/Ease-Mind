@@ -78,7 +78,11 @@ function UserMentalHealthHistory() {
         }
       })
       .catch((error) => {
-        setFeedbackMessage('Failed to submit mental health history. Please try again.');
+        if (error.response && error.response.status === 400) {
+          setFeedbackMessage('Invalid data. Please check your input.');
+        } else {
+          setFeedbackMessage('Failed to submit mental health history. Please try again.');
+        }
       });
   };
 
