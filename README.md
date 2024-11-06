@@ -2,7 +2,7 @@
 # Please do not use these tools for medical purposes as they are prototypes and not clinically approved.
 
 ---
-
+The project consists of a platform developed collaboratively by myself and other students, with the EaseMind app being my individual contribution. The conbribution table is available in the Larks Wiki (2023).
 # LARKS Group Project
 
 ## Wiki
